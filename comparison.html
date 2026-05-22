@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>생애기록 서비스 비교분석 · LifeScript vs 당신 삶의 이야기(with LifeOS)</title>
+<meta name="description" content="AI 자동 집필형 'LifeScript'와 전문 작가 인터뷰형 '당신 삶의 이야기(with LifeOS)'의 포지셔닝·모델·고객을 비교분석합니다." />
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+<style>
+  :root{
+    --ls:#3056d3;           /* LifeScript - tech/AI blue */
+    --ls-soft:#eaf0ff;
+    --ls-deep:#1f2f7a;
+    --yi:#c2682a;           /* 당신삶의이야기 - human/warm amber */
+    --yi-soft:#fbf0e6;
+    --yi-deep:#8a4516;
+    --ink:#1a1d24;
+    --muted:#5b6472;
+    --line:#e6e9ef;
+    --bg:#f6f7f9;
+    --card:#ffffff;
+    --radius:16px;
+    --shadow:0 1px 2px rgba(16,24,40,.04),0 8px 24px rgba(16,24,40,.06);
+    --shadow-lg:0 24px 60px rgba(16,24,40,.12);
+    --maxw:1080px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;color:var(--ink);background:var(--bg);
+    font-family:"Pretendard",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif;
+    line-height:1.65;-webkit-font-smoothing:antialiased;letter-spacing:-.01em;
+  }
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+  h1,h2,h3,h4{line-height:1.25;letter-spacing:-.02em;margin:0}
+  p{margin:0}
+  a{color:inherit}
+
+  /* ---------- Hero ---------- */
+  header.hero{
+    background:
+      radial-gradient(1200px 400px at 12% -10%, rgba(48,86,211,.18), transparent 60%),
+      radial-gradient(1200px 400px at 92% 0%, rgba(194,104,42,.16), transparent 60%),
+      linear-gradient(180deg,#0e1422,#141b2d);
+    color:#fff;padding:64px 0 120px;position:relative;overflow:hidden;
+  }
+  .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;
+    letter-spacing:.04em;color:#aab4c8;background:rgba(255,255,255,.07);
+    border:1px solid rgba(255,255,255,.14);padding:6px 12px;border-radius:999px}
+  .eyebrow .dot{width:7px;height:7px;border-radius:50%;background:#7e9bff}
+  header.hero h1{font-size:clamp(28px,4.4vw,46px);font-weight:800;margin:18px 0 14px;color:#fff}
+  header.hero h1 .vs{color:#8aa0ff;font-weight:700;margin:0 6px}
+  header.hero h1 .yi{color:#f0a663}
+  header.hero p.sub{max-width:720px;color:#c4ccdb;font-size:clamp(15px,1.7vw,18px)}
+  .meta{margin-top:26px;display:flex;flex-wrap:wrap;gap:10px 22px;color:#9aa6bd;font-size:13px}
+  .meta b{color:#cdd5e6;font-weight:600}
+
+  /* ---------- TL;DR cards ---------- */
+  .pull{margin-top:-78px;position:relative;z-index:2}
+  .twocol{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+  .sumcard{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow-lg);
+    padding:28px 26px;border-top:5px solid var(--c);position:relative;overflow:hidden}
+  .sumcard.ls{--c:var(--ls)}
+  .sumcard.yi{--c:var(--yi)}
+  .sumcard .tag{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.03em;
+    color:var(--c);background:var(--cb);padding:5px 11px;border-radius:8px}
+  .sumcard.ls .tag{--cb:var(--ls-soft)}
+  .sumcard.yi .tag{--cb:var(--yi-soft)}
+  .sumcard h3{font-size:21px;font-weight:800;margin:14px 0 4px}
+  .sumcard .role{font-size:14px;color:var(--muted);font-weight:600;margin-bottom:14px}
+  .sumcard .line{font-size:15.5px;color:#2c3340}
+  .sumcard .line b{color:var(--c)}
+  .sumcard .kw{margin-top:18px;display:flex;flex-wrap:wrap;gap:8px}
+  .kw span{font-size:12.5px;font-weight:600;color:#3a4150;background:#f2f4f8;
+    border:1px solid var(--line);padding:5px 10px;border-radius:999px}
+
+  /* ---------- Spectrum ---------- */
+  section{padding:54px 0}
+  .sec-head{margin-bottom:26px}
+  .sec-head .kicker{font-size:13px;font-weight:700;color:var(--ls);letter-spacing:.06em;text-transform:uppercase}
+  .sec-head h2{font-size:clamp(22px,2.8vw,30px);font-weight:800;margin-top:8px}
+  .sec-head p{color:var(--muted);margin-top:8px;font-size:15.5px;max-width:760px}
+
+  .spectrum{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    box-shadow:var(--shadow);padding:30px 28px}
+  .axis{margin:22px 0 6px}
+  .axis + .axis{margin-top:28px}
+  .axis .albl{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:10px;text-align:center}
+  .bar{position:relative;height:10px;border-radius:999px;
+    background:linear-gradient(90deg,var(--ls) 0%,#9aa3b8 50%,var(--yi) 100%)}
+  .bar .pin{position:absolute;top:50%;transform:translate(-50%,-50%);width:18px;height:18px;
+    border-radius:50%;border:3px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.18)}
+  .ends{display:flex;justify-content:space-between;margin-top:12px;font-size:13.5px;font-weight:700}
+  .ends .l{color:var(--ls)}
+  .ends .r{color:var(--yi)}
+
+  /* ---------- Table ---------- */
+  .tablewrap{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    box-shadow:var(--shadow);overflow:hidden}
+  table{width:100%;border-collapse:collapse;font-size:14.5px}
+  thead th{padding:18px 18px;text-align:left;font-weight:800;font-size:15px;vertical-align:top}
+  thead th.dim{width:18%;background:#fafbfc;color:var(--muted);font-weight:700;font-size:13px}
+  thead th.cls{background:var(--ls-soft);color:var(--ls-deep);border-bottom:3px solid var(--ls)}
+  thead th.cyi{background:var(--yi-soft);color:var(--yi-deep);border-bottom:3px solid var(--yi)}
+  thead th .sm{display:block;font-size:12px;font-weight:600;color:var(--muted);margin-top:3px}
+  tbody td{padding:15px 18px;border-top:1px solid var(--line);vertical-align:top;color:#2c3340}
+  tbody td.dim{background:#fafbfc;font-weight:700;color:#3a4150;font-size:13.5px}
+  tbody tr:hover td:not(.dim){background:#fcfdff}
+  tbody td b.hl-ls{color:var(--ls-deep)}
+  tbody td b.hl-yi{color:var(--yi-deep)}
+  .cls-cell{border-left:1px solid #eef1f8}
+  .cyi-cell{border-left:1px solid #f5ece2}
+
+  /* ---------- Reasons ---------- */
+  .reasons{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .rcard{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    box-shadow:var(--shadow);padding:26px 22px;position:relative}
+  .rcard .no{font-size:13px;font-weight:800;color:#fff;background:var(--ink);width:30px;height:30px;
+    display:flex;align-items:center;justify-content:center;border-radius:9px;margin-bottom:14px}
+  .rcard h4{font-size:17.5px;font-weight:800;margin-bottom:10px;line-height:1.35}
+  .rcard p{font-size:14.5px;color:#3a4150}
+  .rcard p + p{margin-top:10px}
+  .rcard .quote{margin-top:14px;font-size:13.5px;color:var(--muted);border-left:3px solid var(--line);
+    padding:6px 0 6px 12px;font-style:normal}
+
+  /* ---------- Synergy / funnel ---------- */
+  .synergy{background:linear-gradient(180deg,#101627,#0d1320);color:#fff;border-radius:22px;
+    padding:42px 34px;box-shadow:var(--shadow-lg)}
+  .synergy h2{color:#fff;font-size:clamp(21px,2.6vw,28px)}
+  .synergy .lead{color:#bcc6db;margin-top:10px;max-width:740px;font-size:15.5px}
+  .funnel{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-top:30px}
+  .step{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:14px;
+    padding:22px 20px;position:relative}
+  .step .ix{font-size:12px;font-weight:700;letter-spacing:.05em;color:#8aa0ff}
+  .step.warm .ix{color:#f0a663}
+  .step h4{color:#fff;font-size:17px;font-weight:800;margin:8px 0 6px}
+  .step .who{font-size:12.5px;color:#9aa6bd;font-weight:600;margin-bottom:12px}
+  .step p{font-size:13.8px;color:#cfd6e6}
+  .step .arrow{position:absolute;right:-20px;top:50%;transform:translateY(-50%);
+    font-size:22px;color:#54607a;z-index:3}
+  .synergy .note{margin-top:26px;font-size:14px;color:#aeb8cd;border-top:1px solid rgba(255,255,255,.1);padding-top:18px}
+  .synergy .note b{color:#e6ebf5}
+
+  /* ---------- Footer ---------- */
+  footer{padding:40px 0 70px;color:var(--muted);font-size:13px}
+  footer .line{height:1px;background:var(--line);margin-bottom:22px}
+  footer .ft{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+  .disc{max-width:640px;line-height:1.6}
+
+  /* ---------- Print / toolbar ---------- */
+  .toolbar{position:fixed;right:18px;bottom:18px;z-index:50}
+  .toolbar button{font-family:inherit;font-size:13.5px;font-weight:700;color:#fff;background:var(--ink);
+    border:none;border-radius:999px;padding:12px 20px;box-shadow:var(--shadow-lg);cursor:pointer}
+  .toolbar button:hover{background:#2b313d}
+
+  /* ---------- Responsive ---------- */
+  @media (max-width:860px){
+    .twocol{grid-template-columns:1fr}
+    .reasons{grid-template-columns:1fr}
+    .funnel{grid-template-columns:1fr}
+    .step .arrow{display:none}
+    .pull{margin-top:-90px}
+    thead th.dim,tbody td.dim{width:30%}
+  }
+  @media print{
+    body{background:#fff}
+    .toolbar{display:none}
+    header.hero{background:#0e1422 !important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .sumcard,.tablewrap,.rcard,.spectrum,.synergy{box-shadow:none}
+    section{padding:24px 0}
+    .synergy{background:#101627 !important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="eyebrow"><span class="dot"></span>생애기록 서비스 비교분석</span>
+    <h1><span class="ls">LifeScript</span><span class="vs">vs</span><span class="yi">당신 삶의 이야기</span><br/>두 아이템, 무엇이 다른가</h1>
+    <p class="sub">같은 ‘생애기록’ 시장에 서 있지만 출발점이 정반대입니다. 한쪽은 <b style="color:#fff">AI가 결과물을 자동 생산</b>하고, 다른 한쪽은 <b style="color:#fff">사람이 인터뷰로 기억을 길어 올립니다</b>. 포지셔닝·모델·고객을 한 장에 정리했습니다.</p>
+    <div class="meta">
+      <span><b>대상 아이템</b> · LifeScript (자서전 AI) / 당신 삶의 이야기 (with LifeOS)</span>
+      <span><b>구분 축</b> · 결과물 중심 ↔ 인터뷰 과정 중심</span>
+    </div>
+  </div>
+</header>
+
+<!-- TL;DR -->
+<div class="wrap pull">
+  <div class="twocol">
+    <div class="sumcard ls">
+      <span class="tag">LifeScript · 자서전 AI</span>
+      <h3>AI가 ‘주연’인 셀프서비스</h3>
+      <div class="role">결과물 중심 · 빠르고 편리한 자동 집필</div>
+      <p class="line">AI 캐릭터 <b>Vivi</b>가 질문하고 사용자는 답만 하면, <b>AI가 자서전을 생성</b>합니다. 하루 10분 대화로 결과물을 완성하는 데 초점을 둡니다.</p>
+      <div class="kw"><span>AI 자동 집필</span><span>앱 셀프서비스</span><span>구독 모델</span><span>저가·대량</span><span>본인이 직접 사용</span></div>
+    </div>
+    <div class="sumcard yi">
+      <span class="tag">당신 삶의 이야기 · with LifeOS</span>
+      <h3>사람이 ‘주연’인 대면 서비스</h3>
+      <div class="role">인터뷰 과정 중심 · 깊이와 교감</div>
+      <p class="line">30년 경력 전문 작가가 방문해 인터뷰하고 <b>사람이 집필</b>하며, <b>LifeOS</b>가 전사·요약·질문추천으로 그 과정을 돕습니다.</p>
+      <div class="kw"><span>전문 작가 대행</span><span>대면 인터뷰</span><span>프로젝트 단가</span><span>중·고가</span><span>자녀가 부모님께</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- Spectrum -->
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kicker">At a glance</div>
+      <h2>한 축 위의 정반대 두 점</h2>
+      <p>두 아이템은 ‘조금 다른’ 것이 아니라, 핵심 가치 축에서 서로 마주 보는 양 끝에 있습니다.</p>
+    </div>
+    <div class="spectrum">
+      <div class="axis">
+        <div class="albl">집필의 무게중심</div>
+        <div class="bar"><span class="pin" style="left:12%;background:var(--ls)"></span><span class="pin" style="left:88%;background:var(--yi)"></span></div>
+        <div class="ends"><span class="l">결과물(자동 생산)</span><span class="r">과정(인터뷰·기억 발굴)</span></div>
+      </div>
+      <div class="axis">
+        <div class="albl">AI의 역할</div>
+        <div class="bar"><span class="pin" style="left:10%;background:var(--ls)"></span><span class="pin" style="left:90%;background:var(--yi)"></span></div>
+        <div class="ends"><span class="l">AI가 주연(작가)</span><span class="r">AI는 조연(보조 도구)</span></div>
+      </div>
+      <div class="axis">
+        <div class="albl">접근 방식 · 단가</div>
+        <div class="bar"><span class="pin" style="left:15%;background:var(--ls)"></span><span class="pin" style="left:85%;background:var(--yi)"></span></div>
+        <div class="ends"><span class="l">셀프 · 저가 · 대량</span><span class="r">대행 · 중고가 · 고관여</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Comparison table -->
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kicker">Side by side</div>
+      <h2>항목별 비교</h2>
+      <p>철학부터 비즈니스 모델, 확장 비전까지 핵심 10개 항목을 나란히 비교합니다.</p>
+    </div>
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr>
+            <th class="dim">항목</th>
+            <th class="cls">LifeScript<span class="sm">자서전 AI · 셀프서비스 앱</span></th>
+            <th class="cyi">당신 삶의 이야기 (with LifeOS)<span class="sm">전문 작가 대행 + 집필 지원 OS</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="dim">철학</td><td class="cls-cell">“쉽고 편리하게” 결과물 완성</td><td class="cyi-cell">“집필은 마지막 단계다” — <b class="hl-yi">과정의 품질</b>이 결과를 결정</td></tr>
+          <tr><td class="dim">중심축</td><td class="cls-cell"><b class="hl-ls">결과물 중심</b></td><td class="cyi-cell"><b class="hl-yi">인터뷰·과정 중심</b></td></tr>
+          <tr><td class="dim">누가 작업하나</td><td class="cls-cell">Vivi가 질문 → 본인이 답 → <b class="hl-ls">AI가 글 생성</b></td><td class="cyi-cell">전문 작가가 방문 인터뷰 → <b class="hl-yi">사람이 집필</b>, LifeOS가 보조</td></tr>
+          <tr><td class="dim">AI의 위치</td><td class="cls-cell"><b class="hl-ls">주연</b> (작가 역할)</td><td class="cyi-cell"><b class="hl-yi">조연</b> (전사·요약·감정감지·질문추천·누락탐지)</td></tr>
+          <tr><td class="dim">고객 / 주인공</td><td class="cls-cell">본인이 직접 사용 (사용자=주인공)</td><td class="cyi-cell">주로 <b class="hl-yi">자녀가 부모님께</b> (구매자≠주인공)</td></tr>
+          <tr><td class="dim">정서적 톤</td><td class="cls-cell">재미·편의·효율 (“하루 10분”)</td><td class="cyi-cell">절박함·교감 (“기억이 사라지기 전, 골든타임”)</td></tr>
+          <tr><td class="dim">비즈니스 모델</td><td class="cls-cell">구독 SaaS (라이트 무료 / 스탠다드 / 프리미엄)</td><td class="cyi-cell">프로젝트 단가 50~180만원 + LifeOS B2B SaaS (월 9~80만원)</td></tr>
+          <tr><td class="dim">시장 포지션</td><td class="cls-cell">저가·대량 (AI 자동 생성)</td><td class="cyi-cell">중간~고급 (전문 대행, ‘중간 시장 공백’ 선점)</td></tr>
+          <tr><td class="dim">1차 타깃</td><td class="cls-cell">B2C 본인 (6080·4050, 디지털 능숙층)</td><td class="cyi-cell">B2C 시니어/자녀 + <b class="hl-yi">B2B 작가·에이전시·기업 사사·지자체</b></td></tr>
+          <tr><td class="dim">확장 비전</td><td class="cls-cell">앱 기능 확장 (감정일기·유언장·타임캡슐) + 화제성 마케팅</td><td class="cyi-cell">자서전 → 생애기록 플랫폼 → <b class="hl-yi">디지털 유산관리 API 인프라</b></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- Reasons -->
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kicker">Why they feel different</div>
+      <h2>‘결’이 다른 3가지 이유</h2>
+      <p>표면적 차이가 아니라 구조적으로 다른 방향을 향합니다.</p>
+    </div>
+    <div class="reasons">
+      <div class="rcard">
+        <div class="no">1</div>
+        <h4>서로의 안티테제다</h4>
+        <p>LifeOS의 시장분석은 <b>“AI 자동 자서전(설문+AI 생성·인터뷰 없음 → 표면적, 감정·맥락 소실, ‘내 이야기’ 같지 않음)”</b>을 비판 대상으로 삼습니다.</p>
+        <p>그 정의가 사실상 LifeScript의 포지션입니다. 두 아이템은 같은 시장에서 정확히 반대편에 섭니다.</p>
+      </div>
+      <div class="rcard">
+        <div class="no">2</div>
+        <h4>AI 신뢰의 방향이 반대다</h4>
+        <p>LifeScript의 세일즈 포인트는 “AI가 알아서 묻고 알아서 써준다”.</p>
+        <p>당신 삶의 이야기는 “<b>AI가 절대 대체할 수 없는</b> 대면 신뢰와 교감”. LifeOS는 한발 더 나아가 “<b>의뢰인 데이터를 AI 학습에 쓰지 않는다</b>”를 차별점으로 내세웁니다.</p>
+      </div>
+      <div class="rcard">
+        <div class="no">3</div>
+        <h4>파는 것이 다르다</h4>
+        <p>LifeScript는 <b>제품(자동 생산 도구)</b>을, 당신 삶의 이야기는 <b>관계와 깊은 기록 경험</b>을 팝니다.</p>
+        <p class="quote">그래서 단가·고객·메시지 톤이 모두 갈립니다 — 효율 vs 진정성.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Synergy -->
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="synergy">
+      <h2>충돌이 아니라 ‘하나의 여정’으로 묶일 수 있다</h2>
+      <p class="lead">단가·관여도·고객층이 깔끔하게 갈리기 때문에, 두 아이템은 경쟁 관계가 아니라 한 고객 여정의 서로 다른 단계로 배치할 수 있습니다.</p>
+      <div class="funnel">
+        <div class="step">
+          <div class="ix">ENTRY · 저가 · 셀프</div>
+          <h4>LifeScript</h4>
+          <div class="who">디지털 능숙한 본인 · 대량 유입</div>
+          <p>무료/라이트로 진입 장벽을 낮춰 폭넓게 유입하고, 기억 데이터를 축적합니다.</p>
+          <span class="arrow">→</span>
+        </div>
+        <div class="step warm">
+          <div class="ix">CORE · 중고가 · 고관여</div>
+          <h4>당신 삶의 이야기</h4>
+          <div class="who">자녀 · 시니어 가정 · 깊은 기록 수요</div>
+          <p>전문 작가 대면 인터뷰로 업셀. 효율형의 약점(표면성·감정 소실)을 보완합니다.</p>
+          <span class="arrow">→</span>
+        </div>
+        <div class="step">
+          <div class="ix">INFRA · B2B · 플랫폼</div>
+          <h4>LifeOS</h4>
+          <div class="who">작가 · 에이전시 · 기업/지자체</div>
+          <p>양쪽의 작가·에이전시 생산성을 받치는 SaaS. 생애기록 인프라로 확장합니다.</p>
+        </div>
+      </div>
+      <p class="note"><b>핵심:</b> LifeScript의 약점(표면성·감정 소실)은 당신 삶의 이야기가 보완하고, 당신 삶의 이야기의 약점(작가 수=공급 상한·고비용)은 LifeScript의 자동화·확장성이 보완합니다. 이는 LifeOS가 지목한 <b>‘중간 시장 공백 선점’</b> 전략과 정확히 맞물립니다.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="line"></div>
+    <div class="ft">
+      <div class="disc">본 비교분석은 제공된 서비스 기획 자료(LifeScript 소개서, LifeOS 기획·전략 문서, 당신 삶의 이야기 제안서)를 근거로 작성된 요약입니다. 가격·수치·로드맵은 자료 기준이며 실제 운영 조건에 따라 달라질 수 있습니다.</div>
+      <div style="text-align:right">생애기록 서비스 비교분석<br/>LifeScript vs 당신 삶의 이야기 (with LifeOS)</div>
+    </div>
+  </div>
+</footer>
+
+<div class="toolbar"><button onclick="window.print()">PDF로 저장 / 인쇄</button></div>
+
+</body>
+</html>
