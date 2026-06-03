@@ -901,6 +901,23 @@ function toast(msg){
   el.textContent=msg;el.classList.add('show');
   clearTimeout(toastT);toastT=setTimeout(()=>el.classList.remove('show'),1800);
 }
+
+/* ---------- presentation deep-links: ?view=desktop ?screen=story|book|family ?demo=memorial ---------- */
+(function(){
+  try{
+    const q=new URLSearchParams(location.search);
+    if(q.get('view')==='desktop') setDevice('desktop');
+    const isDesk=()=>document.getElementById('view-desktop').classList.contains('on');
+    const go=(n)=>{ isDesk()?showD(n):showM(n); };
+    const demo=q.get('demo'), screen=q.get('screen');
+    if(demo==='memorial'){
+      go('book');
+      bookPage=CHAPTERS.length-1;
+      document.getElementById('m-book').innerHTML=bookHTML(bookPage);
+      document.getElementById('d-book-inner').innerHTML=bookHTML(bookPage);
+    } else if(screen){ go(screen); }
+  }catch(e){}
+})();
 </script>
 </body>
 </html>
