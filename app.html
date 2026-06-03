@@ -3,197 +3,249 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Pet Lifebook · 사용자 화면 (모바일 · 데스크탑)</title>
-<meta name="description" content="Pet Lifebook 사용자 화면 데모 — 모바일 앱과 데스크탑(PC)에서 자료를 올리고, 분석 후 타임라인과 라이프북을 보는 흐름." />
+<title>Pet Lifebook · 하루와 다시 만나는 앱</title>
+<meta name="description" content="Pet Lifebook 사용자 화면 — 설명이 아니라 감정으로. 오늘의 하루, 삶의 이야기, 함께 기억하기, 라이프북." />
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
 <style>
   :root{
     --brand:#1f9e8a;--brand-deep:#0f6f60;--brand-soft:#e6f6f2;
     --warm:#e8804a;--warm-soft:#fbeee4;--warm-deep:#a8501f;
-    --ink:#16191f;--muted:#5b6472;--line:#e8eaef;--bg:#eef1f3;--card:#fff;
-    --shadow:0 1px 2px rgba(16,24,40,.05),0 8px 24px rgba(16,24,40,.07);
-    --shadow-lg:0 30px 70px rgba(16,24,40,.18);
+    --cream:#fbf6ee;--cream2:#f6ede0;
+    --ink:#2a2620;--muted:#7a7266;--line:#ece4d6;--card:#fff;
+    --shadow:0 1px 2px rgba(60,40,20,.05),0 10px 28px rgba(60,40,20,.08);
+    --shadow-lg:0 30px 70px rgba(40,30,15,.18);
   }
   *{box-sizing:border-box}
   body{margin:0;color:var(--ink);background:
-      radial-gradient(900px 500px at 50% -10%, rgba(31,158,138,.10), transparent 60%),
-      var(--bg);
+      radial-gradient(800px 480px at 50% -10%, rgba(232,128,74,.12), transparent 60%),#eee7db;
     font-family:"Pretendard",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
     line-height:1.6;-webkit-font-smoothing:antialiased;letter-spacing:-.01em;min-height:100vh}
   h1,h2,h3,h4{margin:0;line-height:1.25;letter-spacing:-.02em}
-  p{margin:0}
-  button{font-family:inherit}
+  p{margin:0}button{font-family:inherit}
 
-  /* ---------- page chrome ---------- */
-  .page-top{max-width:1180px;margin:0 auto;padding:22px 24px 6px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
-  .brandmark{display:flex;align-items:center;gap:9px;font-weight:800;font-size:17px}
-  .brandmark .paw{width:28px;height:28px;border-radius:9px;background:linear-gradient(135deg,var(--brand),var(--warm));
-    display:flex;align-items:center;justify-content:center;font-size:15px}
+  .page-top{max-width:1180px;margin:0 auto;padding:22px 24px 4px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .brandmark{display:flex;align-items:center;gap:9px;font-weight:800;font-size:17px;color:#2a2620}
+  .brandmark .paw{width:28px;height:28px;border-radius:9px;background:linear-gradient(135deg,var(--brand),var(--warm));display:flex;align-items:center;justify-content:center;font-size:15px}
   .page-top .sub{font-size:13px;color:var(--muted);font-weight:600}
-  .page-top .back{margin-left:auto;font-size:13px;font-weight:700;color:var(--brand-deep);
-    background:var(--brand-soft);border:1px solid #cfe9e2;border-radius:999px;padding:8px 15px;text-decoration:none}
+  .page-top .back{margin-left:auto;font-size:13px;font-weight:700;color:var(--brand-deep);background:var(--brand-soft);border:1px solid #cfe9e2;border-radius:999px;padding:8px 15px;text-decoration:none}
 
-  /* ---------- device toggle ---------- */
-  .switcher{max-width:1180px;margin:14px auto 0;padding:0 24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .switcher{max-width:1180px;margin:12px auto 0;padding:0 24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
   .seg{display:inline-flex;background:#fff;border:1px solid var(--line);border-radius:999px;padding:5px;box-shadow:var(--shadow)}
-  .seg button{border:none;background:none;font-size:14px;font-weight:700;color:var(--muted);
-    padding:9px 18px;border-radius:999px;cursor:pointer;display:flex;align-items:center;gap:7px;transition:.15s}
+  .seg button{border:none;background:none;font-size:14px;font-weight:700;color:var(--muted);padding:9px 18px;border-radius:999px;cursor:pointer;display:flex;align-items:center;gap:7px;transition:.15s}
   .seg button.on{background:var(--ink);color:#fff}
-  .switch-note{font-size:13px;color:var(--muted)}
-  .switch-note b{color:var(--ink)}
+  .switch-note{font-size:13px;color:var(--muted)}.switch-note b{color:var(--ink)}
 
-  /* ---------- stage ---------- */
-  .stage{max-width:1180px;margin:26px auto 70px;padding:0 24px;display:flex;justify-content:center}
+  .stage{max-width:1180px;margin:24px auto 70px;padding:0 24px;display:flex;justify-content:center}
   .view{display:none}.view.on{display:block;animation:fade .35s ease}
   @keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 
-  /* ====================================================== MOBILE ===== */
-  .phone{width:392px;max-width:100%;background:#0c1614;border-radius:46px;padding:13px;
-    box-shadow:var(--shadow-lg);margin:0 auto;position:relative}
-  .phone .screen{background:#f6f8f7;border-radius:34px;overflow:hidden;position:relative;height:780px;display:flex;flex-direction:column}
-  .notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:150px;height:28px;background:#0c1614;
-    border-radius:0 0 18px 18px;z-index:30}
-  .statusbar{height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 22px;
-    font-size:13px;font-weight:700;color:var(--ink);flex:none}
-  .statusbar .r{display:flex;gap:6px;font-size:12px}
+  /* gradients used as photo placeholders */
+  .ph-spring{background:linear-gradient(135deg,#f7c4d8,#e88aa8)}
+  .ph-walk{background:linear-gradient(135deg,#7fd3c0,#1f9e8a)}
+  .ph-hosp{background:linear-gradient(135deg,#a7b0bd,#6b7280)}
+  .ph-jeju{background:linear-gradient(135deg,#7ec0f0,#3a7bd5)}
+  .ph-senior{background:linear-gradient(135deg,#f0c98a,#d99a4e)}
+  .ph-home{background:linear-gradient(135deg,#f6b88a,#e8804a)}
 
-  .appbar{padding:8px 18px 12px;display:flex;align-items:center;gap:10px;flex:none;background:#fff;border-bottom:1px solid var(--line)}
-  .appbar .av{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--brand),var(--warm));
-    display:flex;align-items:center;justify-content:center;font-size:16px}
+  /* ============================ MOBILE ============================ */
+  .phone{width:392px;max-width:100%;background:#0c1614;border-radius:46px;padding:13px;box-shadow:var(--shadow-lg);margin:0 auto;position:relative}
+  .screen{background:var(--cream);border-radius:34px;overflow:hidden;position:relative;height:800px;display:flex;flex-direction:column}
+  .notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:150px;height:28px;background:#0c1614;border-radius:0 0 18px 18px;z-index:30}
+  .statusbar{height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 22px;font-size:13px;font-weight:700;flex:none}
+  .statusbar .r{display:flex;gap:6px;font-size:12px}
+  .appbar{padding:6px 18px 12px;display:flex;align-items:center;gap:10px;flex:none}
+  .appbar .av{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#f6a36b,#e8804a);display:flex;align-items:center;justify-content:center;font-size:17px;border:2px solid #fff;box-shadow:var(--shadow)}
   .appbar .t b{font-size:15px;font-weight:800;display:block}
-  .appbar .t span{font-size:11.5px;color:var(--muted)}
+  .appbar .t span{font-size:11px;color:var(--muted)}
   .appbar .bell{margin-left:auto;font-size:17px}
 
-  .mscroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
-  .mpad{padding:18px}
+  .mscroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;position:relative}
+  .mscreen{display:none;padding:6px 18px 26px}.mscreen.on{display:block;animation:fade .3s ease}
 
-  /* tab bar */
-  .tabbar{flex:none;display:flex;background:#fff;border-top:1px solid var(--line);padding:8px 6px 16px}
-  .tabbar button{flex:1;border:none;background:none;display:flex;flex-direction:column;align-items:center;gap:3px;
-    font-size:10.5px;font-weight:700;color:#aab2bd;cursor:pointer;padding:5px 0}
+  /* --- HOME (오늘의 하루) --- */
+  .today{border-radius:20px;overflow:hidden;position:relative;box-shadow:var(--shadow);min-height:240px;display:flex;flex-direction:column;justify-content:flex-end}
+  .today .bg{position:absolute;inset:0}
+  .today .bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.05) 0%,rgba(0,0,0,.55) 100%)}
+  .today .tcontent{position:relative;padding:18px;color:#fff}
+  .today .badge{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:800;background:rgba(255,255,255,.22);backdrop-filter:blur(4px);padding:5px 11px;border-radius:999px;letter-spacing:.03em}
+  .today h2{font-size:21px;font-weight:800;margin:11px 0 6px;line-height:1.35;text-shadow:0 1px 8px rgba(0,0,0,.3)}
+  .today .meta{font-size:12px;opacity:.92}
+  .today .play{position:absolute;right:16px;bottom:16px;width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.9);display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--ink);box-shadow:var(--shadow);border:none;cursor:pointer}
+
+  .addrow{margin-top:16px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow)}
+  .addrow .em{font-size:22px}
+  .addrow .x b{font-size:14px;font-weight:800;display:block}
+  .addrow .x span{font-size:12px;color:var(--muted)}
+  .addrow button{margin-left:auto;border:none;background:linear-gradient(135deg,var(--brand),#27b39c);color:#fff;font-weight:800;font-size:13px;padding:10px 15px;border-radius:999px;cursor:pointer;white-space:nowrap}
+
+  .secttl{font-size:14px;font-weight:800;margin:22px 4px 12px;display:flex;align-items:center;gap:7px}
+  .story-mini{display:flex;flex-direction:column;gap:11px}
+  .smini{display:flex;gap:13px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:15px;padding:11px;box-shadow:var(--shadow);cursor:pointer;transition:.14s}
+  .smini:hover{transform:translateY(-1px)}
+  .smini .thumb{width:58px;height:58px;border-radius:12px;flex:none}
+  .smini .b b{font-size:14.5px;font-weight:800;display:block}
+  .smini .b p{font-size:12.5px;color:var(--muted);margin-top:2px}
+  .smini .go{margin-left:auto;color:#c9bfae;font-size:18px}
+
+  /* --- UPLOAD / DISCOVERING --- */
+  .uploadpick{text-align:center;padding:28px 6px}
+  .uploadpick .drop{border:2px dashed #d8cbb4;border-radius:20px;padding:38px 18px;background:linear-gradient(180deg,#fffdf8,#f7efe1);cursor:pointer;transition:.16s}
+  .uploadpick .drop:hover{border-color:var(--brand);background:#f1faf6}
+  .uploadpick .ic{font-size:40px}
+  .uploadpick h3{font-weight:800;font-size:19px;margin:12px 0 5px}
+  .uploadpick p{color:var(--muted);font-size:13.5px}
+  .uploadpick .chips{display:flex;justify-content:center;gap:7px;flex-wrap:wrap;margin-top:14px}
+  .uploadpick .chips span{font-size:11.5px;font-weight:600;color:#6b6253;background:#f1ece0;border:1px solid var(--line);padding:5px 10px;border-radius:999px}
+
+  .discover{padding:24px 6px;text-align:center}
+  .discover .found{font-size:34px;font-weight:800;color:var(--brand-deep)}
+  .discover .reading{font-size:15px;font-weight:700;margin-top:2px}
+  .discover .sub{font-size:12.5px;color:var(--muted);margin-top:4px}
+  .dlive{margin-top:22px;display:flex;flex-direction:column;gap:10px;text-align:left}
+  .dline{display:flex;align-items:center;gap:11px;font-size:14px;color:#b6ab97;opacity:0;transform:translateY(6px);transition:.4s;
+    background:#fff;border:1px solid var(--line);border-radius:13px;padding:12px 14px;box-shadow:var(--shadow)}
+  .dline.show{opacity:1;transform:none;color:var(--ink)}
+  .dline .ck{width:22px;height:22px;border-radius:7px;background:#e7ddc9;color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex:none;transition:.3s}
+  .dline.show .ck{background:var(--brand)}
+  .dline b{color:var(--brand-deep)}
+
+  /* --- CINEMATIC REVEAL --- */
+  .reveal{position:relative;border-radius:22px;overflow:hidden;padding:34px 22px;text-align:center;color:#fff;
+    background:radial-gradient(600px 260px at 50% 0%,rgba(232,128,74,.5),transparent 60%),linear-gradient(160deg,#173a34,#0f231f)}
+  .reveal .spark{font-size:24px}
+  .reveal h2{font-size:25px;font-weight:800;margin:6px 0 20px}
+  .ritem{opacity:0;transform:translateY(12px)}
+  .reveal.play .ritem{animation:rise .7s ease forwards}
+  @keyframes rise{to{opacity:1;transform:none}}
+  .reveal.play .ritem:nth-child(2){animation-delay:.15s}
+  .reveal.play .ritem:nth-child(3){animation-delay:1.0s}
+  .reveal.play .ritem:nth-child(4){animation-delay:1.5s}
+  .reveal.play .ritem:nth-child(5){animation-delay:2.0s}
+  .reveal.play .ritem:nth-child(6){animation-delay:2.6s}
+  .reveal.play .ritem:nth-child(7){animation-delay:3.1s}
+  .rstats{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+  .rstats .s{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:13px;padding:12px 14px;min-width:74px}
+  .rstats .s b{display:block;font-size:21px;font-weight:800;color:#ffd9a8}
+  .rstats .s span{font-size:11px;color:#cfe0db}
+  .rdiv{margin:20px 0 16px;font-size:12px;font-weight:800;letter-spacing:.12em;color:#9af0df}
+  .rfind{display:flex;align-items:center;gap:13px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);border-radius:15px;padding:14px 16px;margin-bottom:11px;text-align:left}
+  .rfind .e{font-size:24px;flex:none}
+  .rfind .lbl{font-size:11.5px;color:#bcd3cd}
+  .rfind .v{font-size:17px;font-weight:800}
+  .rcta{display:flex;gap:10px;margin-top:8px}
+  .rcta button{flex:1;border:none;border-radius:999px;padding:13px;font-weight:800;font-size:13.5px;cursor:pointer}
+  .rcta .p{background:linear-gradient(135deg,#5fe3cc,#a9f0e2);color:#06231f}
+  .rcta .g{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.22)}
+
+  /* --- STORY FEED (삶의 이야기) --- */
+  .sfeed{display:flex;flex-direction:column;gap:18px}
+  .scard{background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:var(--shadow)}
+  .scard .cover{height:150px;position:relative;display:flex;align-items:flex-start;padding:13px}
+  .scard .cover .season{background:rgba(255,255,255,.85);backdrop-filter:blur(3px);padding:5px 12px;border-radius:999px;font-size:13px;font-weight:800;color:var(--ink)}
+  .scard .cover .place{position:absolute;right:13px;bottom:13px;background:rgba(0,0,0,.34);color:#fff;padding:4px 11px;border-radius:999px;font-size:11.5px;font-weight:700;backdrop-filter:blur(3px)}
+  .scard .body{padding:16px 17px 17px}
+  .scard .story{font-size:16px;line-height:1.7;color:#332e26;font-weight:600}
+  .scard .meta{display:flex;gap:14px;margin-top:13px;font-size:12.5px;color:var(--muted)}
+  .scard .meta b{color:var(--ink)}
+  .scard .strip{display:flex;gap:6px;margin-top:13px}
+  .scard .strip i{flex:1;height:46px;border-radius:8px;display:block;opacity:.9}
+
+  /* --- LIFEBOOK (interactive) --- */
+  .book{background:linear-gradient(180deg,#fffdf8,#f8f0e2);border:1px solid #ece0cc;border-radius:18px;box-shadow:var(--shadow);overflow:hidden}
+  .book-cover{padding:26px 22px;text-align:center;background:radial-gradient(400px 160px at 50% 0%,rgba(232,128,74,.22),transparent 60%),linear-gradient(135deg,#173a34,#0f2a26);color:#fff}
+  .book-cover .ttl{font-size:12px;letter-spacing:.18em;color:#9af0df;font-weight:700}
+  .book-cover h3{font-size:24px;font-weight:800;margin:8px 0 4px}
+  .book-cover p{color:#cfe0db;font-size:12.5px}
+  .book-pg{padding:22px;border-top:1px solid #ece0cc}
+  .book-pg .cnum{font-size:11px;font-weight:800;color:var(--warm-deep);letter-spacing:.06em}
+  .book-pg h4{font-size:19px;font-weight:800;margin:5px 0 12px}
+  .book-pg .scene{height:130px;border-radius:13px;margin-bottom:14px}
+  .book-pg .quote{font-size:15.5px;line-height:1.85;color:#3a3128;font-style:italic;border-left:3px solid var(--warm);padding-left:14px}
+  .portal{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px}
+  .portal button{display:flex;align-items:center;gap:8px;justify-content:center;border:1px solid var(--line);background:#fff;
+    border-radius:11px;padding:11px;font-size:12.5px;font-weight:700;color:#4a4338;cursor:pointer;transition:.14s}
+  .portal button:hover{border-color:var(--brand);color:var(--brand-deep);background:var(--brand-soft)}
+  .book-nav{display:flex;align-items:center;justify-content:space-between;padding:14px 22px;border-top:1px solid #ece0cc;color:var(--muted);font-size:13px;font-weight:700}
+  .book-nav button{border:1px solid var(--line);background:#fff;width:38px;height:38px;border-radius:50%;font-size:16px;cursor:pointer}
+
+  /* --- FAMILY (함께 기억하기) --- */
+  .fam-hd{background:linear-gradient(135deg,var(--brand-soft),var(--warm-soft));border:1px solid #e6ddcb;border-radius:18px;padding:18px;text-align:center}
+  .fam-hd h3{font-size:18px;font-weight:800}
+  .fam-hd p{font-size:12.5px;color:var(--muted);margin-top:4px}
+  .fam-avatars{display:flex;justify-content:center;gap:10px;margin-top:14px}
+  .fam-avatars .fa{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;border:2px solid #fff;box-shadow:var(--shadow)}
+  .fam-avatars .fa.add{background:#fff;border:2px dashed var(--brand);color:var(--brand);font-size:22px;cursor:pointer}
+  .fam-avatars .nm{font-size:10px;color:var(--muted);text-align:center;margin-top:3px;font-weight:600}
+  .fam-col{display:flex;flex-direction:column;align-items:center}
+  .fam-feed{margin-top:8px;display:flex;flex-direction:column;gap:11px}
+  .fitem{display:flex;gap:12px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:14px;padding:13px;box-shadow:var(--shadow)}
+  .fitem .fav{width:38px;height:38px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;font-size:17px}
+  .fitem .ft b{font-size:13.5px;font-weight:800}
+  .fitem .ft .q{font-size:13px;color:#4a4338;margin-top:3px}
+  .fitem .ft .tm{font-size:11px;color:#b6ab97;margin-top:4px}
+
+  /* --- BOTTOM TAB --- */
+  .tabbar{flex:none;display:flex;align-items:flex-end;background:#fff;border-top:1px solid var(--line);padding:8px 6px 16px}
+  .tabbar button{flex:1;border:none;background:none;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10px;font-weight:700;color:#b3a994;cursor:pointer;padding:5px 0}
   .tabbar button .i{font-size:19px}
   .tabbar button.on{color:var(--brand-deep)}
+  .tabbar button.center{transform:translateY(-10px)}
+  .tabbar button.center .i{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--brand),var(--warm));color:#fff;display:flex;align-items:center;justify-content:center;font-size:26px;box-shadow:0 8px 20px rgba(31,158,138,.4);margin-bottom:2px}
 
-  /* ====================================================== DESKTOP ===== */
-  .desktop{width:1080px;max-width:100%;background:#fff;border-radius:16px;overflow:hidden;
-    box-shadow:var(--shadow-lg);border:1px solid var(--line)}
-  .browser{height:46px;background:#f1f3f5;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:14px;padding:0 16px}
-  .browser .dots{display:flex;gap:7px}
-  .browser .dots i{width:12px;height:12px;border-radius:50%;display:block}
+  .toast{position:absolute;left:50%;bottom:84px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;
+    font-size:13px;font-weight:600;padding:11px 18px;border-radius:999px;opacity:0;transition:.3s;z-index:40;white-space:nowrap;box-shadow:var(--shadow-lg)}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  .mcap{text-align:center;font-size:12.5px;color:var(--muted);margin-top:16px}
+
+  /* ============================ DESKTOP ============================ */
+  .desktop{width:1080px;max-width:100%;background:#fff;border-radius:16px;overflow:hidden;box-shadow:var(--shadow-lg);border:1px solid var(--line)}
+  .browser{height:46px;background:#f1ece1;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:14px;padding:0 16px}
+  .browser .dots{display:flex;gap:7px}.browser .dots i{width:12px;height:12px;border-radius:50%;display:block}
   .browser .dots i:nth-child(1){background:#ff5f57}.browser .dots i:nth-child(2){background:#febc2e}.browser .dots i:nth-child(3){background:#28c840}
-  .browser .url{flex:1;background:#fff;border:1px solid var(--line);border-radius:8px;height:28px;
-    display:flex;align-items:center;padding:0 12px;font-size:12.5px;color:var(--muted);gap:7px}
-  .dapp{display:grid;grid-template-columns:228px 1fr;min-height:660px}
-  .side{background:#0e1714;color:#cfe0db;padding:22px 16px;display:flex;flex-direction:column;gap:4px}
-  .side .logo{display:flex;align-items:center;gap:10px;font-weight:800;color:#fff;font-size:16px;margin-bottom:20px;padding:0 6px}
+  .browser .url{flex:1;background:#fff;border:1px solid var(--line);border-radius:8px;height:28px;display:flex;align-items:center;padding:0 12px;font-size:12.5px;color:var(--muted);gap:7px}
+  .dapp{display:grid;grid-template-columns:236px 1fr;min-height:680px}
+  .side{background:#12211d;color:#cfe0db;padding:22px 16px;display:flex;flex-direction:column;gap:4px}
+  .side .logo{display:flex;align-items:center;gap:10px;font-weight:800;color:#fff;font-size:16px;margin-bottom:18px;padding:0 6px}
   .side .logo .paw{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,var(--brand),var(--warm));display:flex;align-items:center;justify-content:center}
-  .side .pet{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:12px;
-    padding:12px;display:flex;align-items:center;gap:10px;margin-bottom:16px}
-  .side .pet .face{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#f6a36b,#e8804a);display:flex;align-items:center;justify-content:center;font-size:18px}
-  .side .pet b{font-size:14px;color:#fff;display:block}
-  .side .pet span{font-size:11px;color:#9fb6b0}
-  .snav{border:none;background:none;text-align:left;color:#aec3bd;font-size:14px;font-weight:600;
-    padding:11px 12px;border-radius:10px;cursor:pointer;display:flex;align-items:center;gap:11px;width:100%;transition:.12s}
+  .side .pet{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:12px;display:flex;align-items:center;gap:10px;margin-bottom:16px}
+  .side .pet .face{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#f6a36b,#e8804a);display:flex;align-items:center;justify-content:center;font-size:19px}
+  .side .pet b{font-size:14px;color:#fff;display:block}.side .pet span{font-size:11px;color:#9fb6b0}
+  .snav{border:none;background:none;text-align:left;color:#aec3bd;font-size:14px;font-weight:600;padding:11px 12px;border-radius:10px;cursor:pointer;display:flex;align-items:center;gap:11px;width:100%;transition:.12s}
   .snav:hover{background:rgba(255,255,255,.05);color:#fff}
-  .snav.on{background:var(--brand);color:#fff}
-  .snav .i{font-size:16px}
-  .side .upcta{margin-top:auto;background:linear-gradient(135deg,var(--brand),#27b39c);color:#06231f;
-    border:none;border-radius:12px;padding:13px;font-weight:800;font-size:13.5px;cursor:pointer}
-  .main{padding:30px 34px;overflow-y:auto;max-height:660px}
-  .main-head{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;margin-bottom:24px;flex-wrap:wrap}
+  .snav.on{background:var(--brand);color:#fff}.snav .i{font-size:16px}
+  .side .upcta{margin-top:auto;background:linear-gradient(135deg,var(--brand),#27b39c);color:#fff;border:none;border-radius:12px;padding:13px;font-weight:800;font-size:13.5px;cursor:pointer}
+  .main{padding:30px 34px;overflow-y:auto;max-height:680px;background:var(--cream)}
+  .dscreen{display:none}.dscreen.on{display:block;animation:fade .3s ease}
+  .main-head{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;margin-bottom:22px;flex-wrap:wrap}
   .main-head h2{font-size:24px;font-weight:800}
   .main-head p{font-size:13.5px;color:var(--muted);margin-top:4px}
-  .seg-sm{display:inline-flex;background:#f1f3f5;border-radius:10px;padding:4px}
+
+  .d-drop{border:2px dashed #d8cbb4;border-radius:18px;text-align:center;cursor:pointer;background:linear-gradient(180deg,#fffdf8,#f6ede0);transition:.16s;padding:50px 24px}
+  .d-drop:hover{border-color:var(--brand);background:#eefaf6}
+  .d-drop .ic{font-size:38px}.d-drop h3{font-size:20px;font-weight:800;margin:12px 0 6px}.d-drop p{color:var(--muted)}
+  .d-drop .chips{display:flex;justify-content:center;gap:7px;flex-wrap:wrap;margin-top:14px}
+  .d-drop .chips span{font-size:11.5px;font-weight:600;color:#6b6253;background:#f1ece0;border:1px solid var(--line);padding:5px 10px;border-radius:999px}
+  .d-cards3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}
+  .d-cards3 .c{background:#fff;border:1px solid var(--line);border-radius:13px;padding:16px}
+  .d-cards3 .c b{font-size:13.5px}.d-cards3 .c p{font-size:12.5px;color:var(--muted);margin-top:4px}
+
+  .seg-sm{display:inline-flex;background:#f1ece1;border-radius:10px;padding:4px}
   .seg-sm button{border:none;background:none;font-size:13px;font-weight:700;color:var(--muted);padding:8px 16px;border-radius:8px;cursor:pointer}
   .seg-sm button.on{background:#fff;color:var(--ink);box-shadow:var(--shadow)}
+  .helper{font-size:12.5px;color:var(--muted);text-align:center;margin-top:16px}
 
-  /* ---------- shared: upload ---------- */
-  .uploadbox{border:2px dashed #c4d2ce;border-radius:18px;text-align:center;cursor:pointer;
-    background:linear-gradient(180deg,#fbfdfc,#f3f8f6);transition:.16s}
-  .uploadbox:hover{border-color:var(--brand);background:#eefaf6}
-  .uploadbox .ic{font-size:38px}
-  .uploadbox h3{font-weight:800;margin:12px 0 6px}
-  .uploadbox p{color:var(--muted)}
-  .chiprow{display:flex;justify-content:center;gap:7px;flex-wrap:wrap;margin-top:14px}
-  .chiprow span{font-size:11.5px;font-weight:600;color:#46505f;background:#eef2f1;border:1px solid var(--line);padding:5px 10px;border-radius:999px}
-
-  /* analyzing */
-  .analyze{text-align:center}
-  .ring{width:54px;height:54px;border-radius:50%;border:4px solid var(--brand-soft);border-top-color:var(--brand);
-    animation:spin 1s linear infinite;margin:0 auto 16px}
-  @keyframes spin{to{transform:rotate(360deg)}}
-  .analyze h3{font-weight:800}
-  .analyze .reading{font-size:13px;color:var(--muted);margin-top:4px}
-  .pbar{height:9px;border-radius:999px;background:#eef2f1;overflow:hidden;margin:18px auto;max-width:420px}
-  .pbar > i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--brand),var(--warm));transition:width .4s}
-  .alist{display:grid;gap:8px;max-width:420px;margin:0 auto;text-align:left}
-  .acheck{display:flex;align-items:center;gap:10px;font-size:13.5px;color:#b4bcc6;opacity:.45;transition:.3s;
-    background:#fafbfc;border:1px solid var(--line);border-radius:10px;padding:10px 12px}
-  .acheck.done{opacity:1;color:var(--ink);background:#fff;border-color:#d7ece6}
-  .acheck .b{width:20px;height:20px;border-radius:6px;background:#e7ebee;color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex:none}
-  .acheck.done .b{background:var(--brand)}
-  .acheck b{color:var(--brand-deep)}
-
-  /* ---------- shared: timeline ---------- */
-  .tl{position:relative;padding-left:26px}
-  .tl::before{content:"";position:absolute;left:7px;top:6px;bottom:6px;width:2px;background:var(--line)}
-  .tl-item{position:relative;margin-bottom:16px}
-  .tl-item::before{content:"";position:absolute;left:-26px;top:6px;width:14px;height:14px;border-radius:50%;
-    background:#fff;border:3px solid var(--brand)}
-  .tl-card{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:var(--shadow)}
-  .tl-card .cover{height:120px;display:flex;align-items:flex-end;padding:12px;color:#fff}
-  .tl-card .cover .loc{background:rgba(0,0,0,.34);padding:4px 10px;border-radius:999px;font-size:11.5px;font-weight:700;backdrop-filter:blur(3px)}
-  .tl-card .body{padding:14px 16px}
-  .tl-card .yr{font-size:12px;font-weight:800;color:var(--brand-deep)}
-  .tl-card h4{font-size:16px;font-weight:800;margin:2px 0 8px}
-  .tl-card .ai{font-size:13.5px;color:#2c3a36;background:var(--brand-soft);border-left:3px solid var(--brand);
-    border-radius:0 9px 9px 0;padding:9px 12px}
-  .tl-card .ai .w{font-size:10.5px;font-weight:800;color:var(--brand-deep);display:block;letter-spacing:.03em;margin-bottom:2px}
-  .tl-card .meta{display:flex;gap:14px;margin-top:11px;font-size:12px;color:var(--muted)}
-  .tl-card .meta b{color:var(--ink)}
-
-  /* ---------- shared: lifebook ---------- */
-  .book{background:linear-gradient(180deg,#fffdf8,#fbf6ec);border:1px solid #ece2cf;border-radius:16px;
-    box-shadow:var(--shadow);overflow:hidden}
-  .book-cover{padding:30px 26px;text-align:center;background:
-      radial-gradient(500px 200px at 50% 0%, rgba(232,128,74,.18), transparent 60%),linear-gradient(135deg,#173a34,#0f2a26);color:#fff}
-  .book-cover .ttl{font-size:13px;letter-spacing:.18em;color:#9af0df;font-weight:700}
-  .book-cover h3{font-size:26px;font-weight:800;margin:8px 0 4px}
-  .book-cover p{color:#cfe0db;font-size:13px}
-  .book-cover .emo{font-size:34px;margin-top:10px}
-  .chapter{padding:24px 26px;border-top:1px solid #ece2cf}
-  .chapter .cnum{font-size:11.5px;font-weight:800;color:var(--warm-deep);letter-spacing:.06em}
-  .chapter h4{font-size:19px;font-weight:800;margin:5px 0 12px}
-  .chapter .quote{font-size:15.5px;line-height:1.85;color:#3a3128;font-style:italic;
-    border-left:3px solid var(--warm);padding-left:14px}
-  .chapter .based{margin-top:12px;font-size:12px;color:var(--muted)}
-  .chapter .based b{color:var(--warm-deep)}
-  .book-spread{display:grid;grid-template-columns:1fr 1fr}
-  .book-spread .chapter:nth-child(even){border-left:1px solid #ece2cf}
-  @media(max-width:760px){.book-spread{grid-template-columns:1fr}.book-spread .chapter:nth-child(even){border-left:none}}
-
-  .result-tabs{display:none}
-  .helper{font-size:12.5px;color:var(--muted);text-align:center;margin-top:14px}
-
-  /* hide desktop on small screens with note */
-  .smallnote{display:none;max-width:560px;margin:20px auto;background:#fff;border:1px solid var(--line);
-    border-radius:14px;padding:18px;text-align:center;font-size:13.5px;color:var(--muted)}
-  @media(max-width:1120px){
-    .desktop{transform:scale(.72);transform-origin:top center}
-    #view-desktop.on{display:flex;justify-content:center;overflow:hidden;height:560px}
-  }
-  @media(max-width:780px){
-    #view-desktop .desktop{display:none}
-    #view-desktop.on .smallnote{display:block}
-  }
+  .smallnote{display:none;max-width:560px;margin:20px auto;background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px;text-align:center;font-size:13.5px;color:var(--muted)}
+  @media(max-width:1120px){.desktop{transform:scale(.72);transform-origin:top center}#view-desktop.on{display:flex;justify-content:center;overflow:hidden;height:600px}}
+  @media(max-width:780px){#view-desktop .desktop{display:none}#view-desktop.on .smallnote{display:block}}
 </style>
 </head>
 <body>
 
 <div class="page-top">
   <span class="brandmark"><span class="paw">🐾</span>Pet Lifebook</span>
-  <span class="sub">사용자 화면 데모 · 올리면 삶의 이야기로</span>
+  <span class="sub">하루와 다시 만나는 앱</span>
   <a class="back" href="index.html">← 제품 소개로</a>
 </div>
 
@@ -202,7 +254,7 @@
     <button id="t-mobile" class="on" onclick="setDevice('mobile')">📱 모바일 앱</button>
     <button id="t-desktop" onclick="setDevice('desktop')">💻 데스크탑 (PC)</button>
   </div>
-  <span class="switch-note" id="dev-note"><b>평소엔 모바일</b>로 그날그날 올리고, 예전 자료가 많을 땐 PC에서 한번에 올립니다.</span>
+  <span class="switch-note" id="dev-note"><b>모바일 앱</b> — 열면 ‘오늘의 하루’가 먼저 반겨줍니다.</span>
 </div>
 
 <div class="stage">
@@ -214,81 +266,139 @@
       <div class="screen">
         <div class="statusbar"><span>9:41</span><span class="r">📶 🔋</span></div>
         <div class="appbar">
-          <div class="av">🐾</div>
-          <div class="t"><b>하루</b><span>14살 · 푸들 · 우리 가족</span></div>
+          <div class="av">🐩</div>
+          <div class="t"><b>하루</b><span>14살 · 2010.05~ · 우리 가족</span></div>
           <div class="bell">🔔</div>
         </div>
+        <div class="toast" id="m-toast"></div>
 
-        <div class="mscroll">
-          <!-- mobile: upload state -->
-          <div class="mpad" id="m-upload">
-            <div style="background:linear-gradient(135deg,#173a34,#0f2a26);border-radius:16px;padding:18px;color:#fff;margin-bottom:16px">
-              <div style="font-size:12px;color:#9af0df;font-weight:700">오늘의 한 줄</div>
-              <div style="font-size:15.5px;font-weight:700;margin-top:4px">정리하지 마세요. 그냥 다 올리세요 — 나머지는 AI가 합니다.</div>
+        <div class="mscroll" id="m-scroll">
+
+          <!-- HOME: 오늘의 하루 -->
+          <div class="mscreen on" id="s-home">
+            <div class="today">
+              <div class="bg ph-walk"></div>
+              <div class="tcontent">
+                <span class="badge">✨ 오늘의 하루 · AI가 발견한 기억</span>
+                <h2>“비 오는 날이면 현관 앞에서<br/>먼저 기다리던 아이”</h2>
+                <div class="meta">2023 봄 · 한강공원</div>
+              </div>
+              <button class="play" onclick="toast('회상 영상을 재생합니다 ▶')">▶</button>
             </div>
-            <div class="uploadbox" style="padding:34px 18px" onclick="runFlow('mobile')">
-              <div class="ic">📷</div>
-              <h3>사진·영상 올리기</h3>
-              <p style="font-size:13.5px">갤러리에서 선택하거나 여기를 탭하세요</p>
-              <div class="chiprow"><span>📷 카메라</span><span>🖼️ 갤러리</span><span>📄 병원기록</span><span>🎙️ 음성메모</span></div>
+
+            <div class="addrow">
+              <span class="em">📥</span>
+              <div class="x"><b>오늘 추가된 기억 3개</b><span>가족이 함께 채우고 있어요</span></div>
+              <button onclick="goUpload()">＋ 사진 올리기</button>
             </div>
-            <p class="helper">▶︎ 탭하면 “하루”의 자료 분석이 시작됩니다 (시뮬레이션)</p>
-            <div style="margin-top:18px">
-              <div style="font-size:13px;font-weight:800;color:var(--muted);margin-bottom:8px">최근 올린 자료</div>
-              <div style="display:flex;gap:8px">
-                <div style="flex:1;height:64px;border-radius:10px;background:linear-gradient(135deg,#5fc9b3,#1f9e8a)"></div>
-                <div style="flex:1;height:64px;border-radius:10px;background:linear-gradient(135deg,#f6a36b,#e8804a)"></div>
-                <div style="flex:1;height:64px;border-radius:10px;background:linear-gradient(135deg,#6fb1f0,#3a7bd5)"></div>
-                <div style="flex:1;height:64px;border-radius:10px;background:#e7ebee;display:flex;align-items:center;justify-content:center;color:#8a93a0;font-weight:800">+8</div>
+
+            <div class="secttl">🧡 최근 발견한 이야기</div>
+            <div class="story-mini">
+              <div class="smini" onclick="showM('story')"><div class="thumb ph-spring"></div>
+                <div class="b"><b>봄 산책을 좋아했어요</b><p>2020~2024 · 봄철 산책이 가장 많았어요</p></div><div class="go">›</div></div>
+              <div class="smini" onclick="showM('story')"><div class="thumb ph-hosp"></div>
+                <div class="b"><b>건강이 변하던 시기</b><p>2022 · 슬개골 수술을 이겨냈어요</p></div><div class="go">›</div></div>
+              <div class="smini" onclick="showM('family')"><div class="thumb ph-senior"></div>
+                <div class="b"><b>가족이 더한 기억</b><p>엄마가 메모를 남겼어요</p></div><div class="go">›</div></div>
+            </div>
+          </div>
+
+          <!-- UPLOAD pick -->
+          <div class="mscreen" id="s-upload">
+            <div class="uploadpick">
+              <div class="drop" onclick="runFlow('m')">
+                <div class="ic">📷</div>
+                <h3>하루의 기억을 더해주세요</h3>
+                <p>정리하지 않아도 돼요. 그냥 올리면 AI가 읽어요.</p>
+                <div class="chips"><span>🖼️ 갤러리</span><span>🎬 영상</span><span>📄 병원기록</span><span>🎙️ 음성</span></div>
+              </div>
+              <p class="helper">▶︎ 탭하면 하루의 자료를 ‘발견’하기 시작합니다</p>
+            </div>
+          </div>
+
+          <!-- DISCOVERING -->
+          <div class="mscreen" id="s-discover">
+            <div class="discover">
+              <div class="found" id="m-found">5,421장</div>
+              <div class="reading">발견됨</div>
+              <div class="sub" id="m-reading">하루의 삶을 읽고 있습니다…</div>
+              <div class="dlive" id="m-dlive">
+                <div class="dline"><span class="ck">✓</span><span><b>2019~2024</b> 사진을 발견했어요</span></div>
+                <div class="dline"><span class="ck">✓</span><span><b>한강공원</b> 등 자주 간 장소 4곳을 찾았어요</span></div>
+                <div class="dline"><span class="ck">✓</span><span>병원기록 <b>17건</b>을 발견했어요</span></div>
+                <div class="dline"><span class="ck">✓</span><span>가족 사진을 연결하고 있어요</span></div>
               </div>
             </div>
           </div>
 
-          <!-- mobile: analyzing -->
-          <div class="mpad analyze" id="m-analyze" style="display:none;padding-top:34px">
-            <div class="ring" id="m-ring"></div>
-            <h3 id="m-atitle">하루의 삶을 읽고 있습니다…</h3>
-            <div class="reading" id="m-reading">EXIF 날짜·위치를 시간축으로 정렬하는 중</div>
-            <div class="pbar"><i id="m-bar"></i></div>
-            <div class="alist" id="m-alist">
-              <div class="acheck"><span class="b">✓</span><span><b>328장</b> 사진 분석 완료</span></div>
-              <div class="acheck"><span class="b">✓</span><span>병원 기록 <b>2건</b> 감지</span></div>
-              <div class="acheck"><span class="b">✓</span><span>자주 간 장소 <b>3곳</b> 발견</span></div>
-              <div class="acheck"><span class="b">✓</span><span>산책 패턴 · 가족 기억 연결</span></div>
+          <!-- REVEAL (cinematic) -->
+          <div class="mscreen" id="s-reveal">
+            <div class="reveal" id="m-reveal">
+              <div class="ritem"><div class="spark">✨</div><h2>하루의 삶을<br/>읽었습니다.</h2></div>
+              <div class="ritem rstats">
+                <div class="s"><b id="cn-yr">0</b><span>년의 시간</span></div>
+                <div class="s"><b id="cn-ph">0</b><span>장의 사진</span></div>
+                <div class="s"><b id="cn-hp">0</b><span>병원기록</span></div>
+                <div class="s"><b id="cn-wk">0</b><span>번의 산책</span></div>
+              </div>
+              <div class="ritem rdiv">AI가 발견한 하루</div>
+              <div class="ritem rfind"><span class="e">🌸</span><div><div class="lbl">가장 행복했던 계절</div><div class="v">봄</div></div></div>
+              <div class="ritem rfind"><span class="e">📍</span><div><div class="lbl">가장 좋아한 장소</div><div class="v">한강공원</div></div></div>
+              <div class="ritem rfind"><span class="e">🐾</span><div><div class="lbl">가장 자주 반복된 습관</div><div class="v">비 오는 날 산책</div></div></div>
+              <div class="ritem rcta">
+                <button class="p" onclick="showM('story')">삶의 이야기 보기</button>
+                <button class="g" onclick="showM('book')">라이프북 보기</button>
+              </div>
             </div>
           </div>
 
-          <!-- mobile: result -->
-          <div id="m-result" style="display:none">
-            <div class="mpad" style="padding-bottom:6px">
-              <div style="background:linear-gradient(120deg,var(--brand-soft),var(--warm-soft));border:1px solid #dcefe9;
-                border-radius:14px;padding:14px 16px;display:flex;gap:10px;align-items:center">
-                <span style="font-size:22px">✨</span>
-                <div><div style="font-weight:800;font-size:14.5px">하루의 삶이 엮였습니다</div>
-                <div style="font-size:12.5px;color:var(--muted)">아래에서 타임라인과 라이프북을 확인하세요</div></div>
-              </div>
-              <div class="seg-sm" style="margin-top:16px;width:100%;display:flex">
-                <button class="on" style="flex:1" onclick="mobileTab('timeline',this)">📍 타임라인</button>
-                <button style="flex:1" onclick="mobileTab('book',this)">📖 라이프북</button>
+          <!-- STORY FEED: 삶의 이야기 -->
+          <div class="mscreen" id="s-story">
+            <div class="secttl" style="margin-top:8px">📍 하루의 삶의 이야기</div>
+            <div class="sfeed" id="m-sfeed"></div>
+          </div>
+
+          <!-- FAMILY: 함께 기억하기 -->
+          <div class="mscreen" id="s-family">
+            <div class="fam-hd">
+              <h3>우리 가족이 함께 꾸며요</h3>
+              <p>흩어진 기억을 가족이 함께 채울수록, 하루의 이야기는 더 깊어져요</p>
+              <div class="fam-avatars">
+                <div class="fam-col"><div class="fa" style="background:linear-gradient(135deg,#7fd3c0,#1f9e8a)">🙂</div><div class="nm">나</div></div>
+                <div class="fam-col"><div class="fa" style="background:linear-gradient(135deg,#f6a36b,#e8804a)">👩</div><div class="nm">엄마</div></div>
+                <div class="fam-col"><div class="fa" style="background:linear-gradient(135deg,#7ec0f0,#3a7bd5)">🧒</div><div class="nm">동생</div></div>
+                <div class="fam-col"><div class="fa" style="background:linear-gradient(135deg,#c79bf0,#8a5fd0)">👧</div><div class="nm">이모</div></div>
+                <div class="fam-col"><div class="fa add" onclick="toast('가족 초대 링크를 복사했어요 🔗')">＋</div><div class="nm">초대</div></div>
               </div>
             </div>
-            <div class="mpad" style="padding-top:14px">
-              <div id="m-timeline" class="tl"></div>
-              <div id="m-book" style="display:none"></div>
+            <div class="secttl">최근 가족이 더한 기억</div>
+            <div class="fam-feed">
+              <div class="fitem"><div class="fav" style="background:linear-gradient(135deg,#f6a36b,#e8804a)">👩</div>
+                <div class="ft"><b>엄마가 메모를 추가했어요</b><div class="q">“비 올 때 어떤 우산 꼭 들고 나가야 했지”</div><div class="tm">2시간 전</div></div></div>
+              <div class="fitem"><div class="fav" style="background:linear-gradient(135deg,#7ec0f0,#3a7bd5)">🧒</div>
+                <div class="ft"><b>동생이 사진을 추가했어요</b><div class="q">2018 크리스마스 · 12장</div><div class="tm">어제</div></div></div>
+              <div class="fitem"><div class="fav" style="background:linear-gradient(135deg,#c79bf0,#8a5fd0)">👧</div>
+                <div class="ft"><b>이모가 기억을 추가했어요</b><div class="q">“이 공원 자주 갔던 곳이야”</div><div class="tm">3일 전</div></div></div>
             </div>
           </div>
+
+          <!-- LIFEBOOK -->
+          <div class="mscreen" id="s-book">
+            <div id="m-book"></div>
+          </div>
+
         </div>
 
         <div class="tabbar">
-          <button class="on" id="mtab-home" onclick="resetFlow('mobile')"><span class="i">🏠</span>홈</button>
-          <button id="mtab-tl" onclick="gotoResult('timeline')"><span class="i">📍</span>타임라인</button>
-          <button id="mtab-bk" onclick="gotoResult('book')"><span class="i">📖</span>라이프북</button>
-          <button><span class="i">👨‍👩‍👧</span>가족</button>
-          <button><span class="i">⚙️</span>설정</button>
+          <button class="on" id="tab-home" onclick="showM('home')"><span class="i">🏠</span>오늘의 하루</button>
+          <button id="tab-story" onclick="showM('story')"><span class="i">📍</span>삶의 이야기</button>
+          <button class="center" onclick="goUpload()"><span class="i">＋</span>기억 올리기</button>
+          <button id="tab-family" onclick="showM('family')"><span class="i">👨‍👩‍👧</span>함께 기억</button>
+          <button id="tab-book" onclick="showM('book')"><span class="i">📖</span>라이프북</button>
         </div>
       </div>
     </div>
-    <p style="text-align:center;font-size:12.5px;color:var(--muted);margin-top:16px">모바일 앱 — 평소 그날의 순간을 가볍게 올리는 메인 환경</p>
+    <p class="mcap">모바일 앱 — 설명이 아니라 감정으로. 열면 ‘오늘의 하루’가 먼저 반겨줍니다.</p>
   </div>
 
   <!-- ============================ DESKTOP ============================ -->
@@ -301,131 +411,173 @@
       <div class="dapp">
         <div class="side">
           <div class="logo"><span class="paw">🐾</span>Pet Lifebook</div>
-          <div class="pet"><div class="face">🐩</div><div><b>하루</b><span>14살 · 푸들</span></div></div>
-          <button class="snav on" id="dnav-up" onclick="desktopNav('upload',this)"><span class="i">⬆️</span>올리기</button>
-          <button class="snav" id="dnav-tl" onclick="desktopNav('timeline',this)"><span class="i">📍</span>생애 타임라인</button>
-          <button class="snav" id="dnav-bk" onclick="desktopNav('book',this)"><span class="i">📖</span>라이프북</button>
-          <button class="snav"><span class="i">👨‍👩‍👧</span>가족 공유</button>
-          <button class="snav"><span class="i">⚙️</span>설정</button>
-          <button class="upcta" onclick="runFlow('desktop')">+ 자료 올리기</button>
+          <div class="pet"><div class="face">🐩</div><div><b>하루</b><span>14살 · 2010.05~</span></div></div>
+          <button class="snav on" id="dnav-home" onclick="showD('home',this)"><span class="i">🏠</span>홈</button>
+          <button class="snav" id="dnav-story" onclick="showD('story',this)"><span class="i">📖</span>하루의 이야기</button>
+          <button class="snav" id="dnav-book" onclick="showD('book',this)"><span class="i">📔</span>라이프북</button>
+          <button class="snav" id="dnav-family" onclick="showD('family',this)"><span class="i">👨‍👩‍👧</span>함께 기억하기</button>
+          <button class="upcta" onclick="runFlow('d')">＋ 자료 올리기</button>
         </div>
         <div class="main">
 
-          <!-- desktop: upload -->
-          <div id="d-upload">
-            <div class="main-head">
-              <div><h2>예전 자료까지 한번에 올리세요</h2>
-              <p>PC에 쌓인 폴더째 사진·영상·병원 PDF를 드래그하면, AI가 시간순으로 정리합니다.</p></div>
-            </div>
-            <div class="uploadbox" style="padding:54px 24px" onclick="runFlow('desktop')">
+          <!-- desktop home / upload -->
+          <div class="dscreen on" id="d-home">
+            <div class="main-head"><div><h2>예전 자료까지 한번에 올리세요</h2>
+              <p>PC에 쌓인 폴더째 사진·영상·병원 PDF를 드래그하면, AI가 시간순으로 정리해요.</p></div></div>
+            <div class="d-drop" onclick="runFlow('d')">
               <div class="ic">🗂️📷</div>
-              <h3 style="font-size:20px">폴더째 끌어다 놓으세요</h3>
-              <p>사진 수천 장도 괜찮아요 — 중복·흔들린 사진은 자동으로 걸러냅니다</p>
-              <div class="chiprow">
-                <span>📁 폴더 업로드</span><span>📷 사진 5,421</span><span>🎬 영상 38</span>
-                <span>📄 병원 PDF 17</span><span>💬 카톡 내보내기</span>
-              </div>
+              <h3>폴더째 끌어다 놓으세요</h3>
+              <p>사진 수천 장도 괜찮아요 — 중복·흔들린 사진은 자동으로 걸러내요</p>
+              <div class="chips"><span>📁 폴더 업로드</span><span>📷 사진 5,421</span><span>🎬 영상 38</span><span>📄 병원 PDF 17</span><span>💬 카톡 내보내기</span></div>
             </div>
-            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px">
-              <div style="background:#fff;border:1px solid var(--line);border-radius:13px;padding:16px">
-                <div style="font-size:20px">🧹</div><b style="font-size:13.5px">중복 자동 정리</b>
-                <p style="font-size:12.5px;color:var(--muted);margin-top:4px">유사·흔들린 사진은 대표 한 장만 남깁니다.</p></div>
-              <div style="background:#fff;border:1px solid var(--line);border-radius:13px;padding:16px">
-                <div style="font-size:20px">📅</div><b style="font-size:13.5px">EXIF 날짜·위치</b>
-                <p style="font-size:12.5px;color:var(--muted);margin-top:4px">원본 업로드 시 촬영일·장소를 자동으로 읽습니다.</p></div>
-              <div style="background:#fff;border:1px solid var(--line);border-radius:13px;padding:16px">
-                <div style="font-size:20px">🔒</div><b style="font-size:13.5px">원본은 선택 보관</b>
-                <p style="font-size:12.5px;color:var(--muted);margin-top:4px">기억 정보만 남기고 원본 장기보관은 선택형입니다.</p></div>
+            <div class="d-cards3">
+              <div class="c"><div style="font-size:20px">🧹</div><b>중복 자동 정리</b><p>유사·흔들린 사진은 대표 한 장만 남겨요.</p></div>
+              <div class="c"><div style="font-size:20px">📅</div><b>날짜·장소 자동 인식</b><p>원본을 올리면 촬영일·장소를 자동으로 읽어요.</p></div>
+              <div class="c"><div style="font-size:20px">🔒</div><b>원본은 선택 보관</b><p>기억만 남기고 원본 장기보관은 선택형이에요.</p></div>
             </div>
-            <p class="helper" style="margin-top:18px">▶︎ 업로드 영역을 클릭하면 “하루”의 5,421장 분석이 시작됩니다 (시뮬레이션)</p>
+            <p class="helper">▶︎ 업로드 영역을 클릭하면 하루의 5,421장을 ‘발견’하기 시작해요</p>
           </div>
 
-          <!-- desktop: analyzing -->
-          <div id="d-analyze" class="analyze" style="display:none;padding-top:40px">
-            <div class="ring" id="d-ring"></div>
-            <h3 style="font-size:20px" id="d-atitle">하루의 삶을 읽고 있습니다…</h3>
-            <div class="reading" id="d-reading">5,421장의 EXIF·GPS·병원기록을 시간축으로 정렬하는 중</div>
-            <div class="pbar"><i id="d-bar"></i></div>
-            <div class="alist" id="d-alist">
-              <div class="acheck"><span class="b">✓</span><span><b>5,421장</b> 사진 분석 완료</span></div>
-              <div class="acheck"><span class="b">✓</span><span>병원 기록 <b>17건</b> 감지 — 슬개골 수술 포함</span></div>
-              <div class="acheck"><span class="b">✓</span><span>자주 간 장소 <b>4곳</b> · 산책 추정 <b>432회</b></span></div>
-              <div class="acheck"><span class="b">✓</span><span>봄철 산책 비중 <b>43%</b> · 보호자 밀착 패턴 복원</span></div>
-              <div class="acheck"><span class="b">✓</span><span>가족 기억 <b>12개</b> 연결 — 한 권으로 엮는 중</span></div>
+          <!-- desktop discovering -->
+          <div class="dscreen" id="d-discover">
+            <div class="discover" style="max-width:520px;margin:30px auto 0">
+              <div class="found" id="d-found">5,421장</div>
+              <div class="reading">발견됨</div>
+              <div class="sub" id="d-reading">하루의 삶을 읽고 있습니다…</div>
+              <div class="dlive" id="d-dlive">
+                <div class="dline"><span class="ck">✓</span><span><b>2010~2024</b> 사진을 발견했어요</span></div>
+                <div class="dline"><span class="ck">✓</span><span>자주 간 장소 <b>4곳</b> · 산책 <b>432회</b>를 찾았어요</span></div>
+                <div class="dline"><span class="ck">✓</span><span>병원기록 <b>17건</b> · 슬개골 수술을 발견했어요</span></div>
+                <div class="dline"><span class="ck">✓</span><span>가족 기억 <b>12개</b>를 연결하고 있어요</span></div>
+              </div>
             </div>
           </div>
 
-          <!-- desktop: result -->
-          <div id="d-result" style="display:none">
-            <div class="main-head">
-              <div><h2 id="d-rtitle">하루의 생애 타임라인</h2>
-              <p>흩어진 5,421장이 시간 위에 엮여, 한눈에 보이는 ‘삶의 흐름’이 되었습니다.</p></div>
-              <div class="seg-sm">
-                <button class="on" id="dtab-tl" onclick="desktopTab('timeline')">📍 타임라인</button>
-                <button id="dtab-bk" onclick="desktopTab('book')">📖 라이프북</button>
+          <!-- desktop reveal -->
+          <div class="dscreen" id="d-reveal">
+            <div class="reveal" id="d-reveal-card" style="max-width:560px;margin:10px auto">
+              <div class="ritem"><div class="spark">✨</div><h2>하루의 삶을 읽었습니다.</h2></div>
+              <div class="ritem rstats">
+                <div class="s"><b id="dcn-yr">0</b><span>년의 시간</span></div>
+                <div class="s"><b id="dcn-ph">0</b><span>장의 사진</span></div>
+                <div class="s"><b id="dcn-hp">0</b><span>병원기록</span></div>
+                <div class="s"><b id="dcn-wk">0</b><span>번의 산책</span></div>
+              </div>
+              <div class="ritem rdiv">AI가 발견한 하루</div>
+              <div class="ritem rfind"><span class="e">🌸</span><div><div class="lbl">가장 행복했던 계절</div><div class="v">봄</div></div></div>
+              <div class="ritem rfind"><span class="e">📍</span><div><div class="lbl">가장 좋아한 장소</div><div class="v">한강공원</div></div></div>
+              <div class="ritem rfind"><span class="e">🐾</span><div><div class="lbl">가장 자주 반복된 습관</div><div class="v">비 오는 날 산책</div></div></div>
+              <div class="ritem rcta">
+                <button class="p" onclick="showD('story')">하루의 이야기 보기</button>
+                <button class="g" onclick="showD('book')">라이프북 보기</button>
               </div>
             </div>
-            <div id="d-timeline" class="tl" style="max-width:640px"></div>
-            <div id="d-book" style="display:none"></div>
+          </div>
+
+          <!-- desktop story -->
+          <div class="dscreen" id="d-story">
+            <div class="main-head"><div><h2>하루의 이야기</h2><p>흩어진 5,421장이 시간 위에 엮여, 한 편의 이야기가 되었어요.</p></div>
+              <div class="seg-sm"><button class="on" id="dtab-st" onclick="desktopView('story')">📖 이야기</button><button id="dtab-bk" onclick="desktopView('book')">📔 라이프북</button></div></div>
+            <div class="sfeed" id="d-sfeed" style="max-width:640px"></div>
+          </div>
+
+          <!-- desktop book -->
+          <div class="dscreen" id="d-book">
+            <div class="main-head"><div><h2>하루의 라이프북</h2><p>지어내지 않고, 자료에 근거해서만 쓴 한 권의 이야기예요.</p></div>
+              <div class="seg-sm"><button id="dtab-st2" onclick="desktopView('story')">📖 이야기</button><button class="on" id="dtab-bk2" onclick="desktopView('book')">📔 라이프북</button></div></div>
+            <div id="d-book-inner" style="max-width:560px"></div>
+          </div>
+
+          <!-- desktop family -->
+          <div class="dscreen" id="d-family">
+            <div class="main-head"><div><h2>함께 기억하기</h2><p>가족이 함께 채울수록 하루의 이야기는 더 깊어져요.</p></div></div>
+            <div class="fam-hd" style="max-width:560px">
+              <h3>우리 가족이 함께 꾸며요</h3><p>흩어진 기억을 모아, 한 권으로</p>
+              <div class="fam-avatars">
+                <div class="fam-col"><div class="fa" style="background:linear-gradient(135deg,#7fd3c0,#1f9e8a)">🙂</div><div class="nm">나</div></div>
+                <div class="fam-col"><div class="fa" style="background:linear-gradient(135deg,#f6a36b,#e8804a)">👩</div><div class="nm">엄마</div></div>
+                <div class="fam-col"><div class="fa" style="background:linear-gradient(135deg,#7ec0f0,#3a7bd5)">🧒</div><div class="nm">동생</div></div>
+                <div class="fam-col"><div class="fa" style="background:linear-gradient(135deg,#c79bf0,#8a5fd0)">👧</div><div class="nm">이모</div></div>
+                <div class="fam-col"><div class="fa add" onclick="toast('가족 초대 링크를 복사했어요 🔗')">＋</div><div class="nm">초대</div></div>
+              </div>
+            </div>
+            <div class="secttl">최근 가족이 더한 기억</div>
+            <div class="fam-feed" style="max-width:560px">
+              <div class="fitem"><div class="fav" style="background:linear-gradient(135deg,#f6a36b,#e8804a)">👩</div><div class="ft"><b>엄마가 메모를 추가했어요</b><div class="q">“비 올 때 어떤 우산 꼭 들고 나가야 했지”</div><div class="tm">2시간 전</div></div></div>
+              <div class="fitem"><div class="fav" style="background:linear-gradient(135deg,#7ec0f0,#3a7bd5)">🧒</div><div class="ft"><b>동생이 사진을 추가했어요</b><div class="q">2018 크리스마스 · 12장</div><div class="tm">어제</div></div></div>
+              <div class="fitem"><div class="fav" style="background:linear-gradient(135deg,#c79bf0,#8a5fd0)">👧</div><div class="ft"><b>이모가 기억을 추가했어요</b><div class="q">“이 공원 자주 갔던 곳이야”</div><div class="tm">3일 전</div></div></div>
+            </div>
           </div>
 
         </div>
       </div>
     </div>
-    <div class="smallnote">💻 데스크탑(PC) 화면은 큰 화면에서 가장 잘 보입니다. 지금은 모바일 환경이라 📱 모바일 앱 화면으로 보시는 걸 권장합니다. (PC 화면도 위 토글에서 미리볼 수 있어요)</div>
+    <div class="smallnote">💻 데스크탑(PC) 화면은 큰 화면에서 가장 잘 보입니다. 지금은 화면이 좁아 📱 모바일 앱으로 보시길 권합니다. (PC 화면도 위 토글에서 미리볼 수 있어요)</div>
   </div>
 
 </div>
 
 <script>
-/* ---------- shared data ---------- */
-const TL=[
-  {grad:'linear-gradient(135deg,#f6a36b,#e8804a)',loc:'우리 집',yr:'2019',title:'입양 — 처음 만난 날',
-   ai:'작은 발로 처음 집을 디딘 날. 모든 이야기가 여기서 시작됩니다.',photos:120,memo:5,health:'첫 검진'},
-  {grad:'linear-gradient(135deg,#5fc9b3,#1f9e8a)',loc:'한강공원',yr:'2020 봄',title:'첫 산책',
-   ai:'“하루는 봄철 산책을 가장 좋아했습니다.” 이 시기부터 한강공원 방문이 반복됩니다.',photos:230,memo:8,health:'없음'},
-  {grad:'linear-gradient(135deg,#8a93a0,#5b6472)',loc:'동물병원',yr:'2022',title:'슬개골 수술',
-   ai:'병원 방문이 잦아진 구간. AI가 ‘건강 변화가 컸던 시기’로 포착했습니다.',photos:64,memo:11,health:'슬개골 수술'},
-  {grad:'linear-gradient(135deg,#6fb1f0,#3a7bd5)',loc:'제주도',yr:'2023 여름',title:'제주도 여행',
-   ai:'“하루는 바닷가를 오래 바라보았습니다.” 사진 급증 + GPS 변화로 여행을 감지했습니다.',photos:142,memo:3,health:'없음'},
-  {grad:'linear-gradient(135deg,#c79bf0,#8a5fd0)',loc:'우리 집',yr:'2025',title:'노령기',
-   ai:'14살. AI가 Senior Lifebook·건강 회고를 추천하는 시점입니다.',photos:88,memo:14,health:'정기 관리'}
+/* ---------- data ---------- */
+const STORY=[
+  {ph:'ph-home',season:'2019 겨울',emoji:'🏠',place:'우리 집',story:'작은 발 하나가 현관을 넘던 날. 그날부터 우리 집의 시간은 둘이 아니라 셋이 되었다.',photos:120,video:2,memo:5},
+  {ph:'ph-spring',season:'2020 봄',emoji:'🌸',place:'한강공원',story:'비 오는 날이면 하루는 젖은 흙냄새를 오래 맡곤 했다. 코를 땅에 박고 천천히 걸었다.',photos:42,video:3,memo:2},
+  {ph:'ph-hosp',season:'2022',emoji:'🏥',place:'동물병원',story:'아팠던 계절. 슬개골 수술을 이겨내는 동안에도, 하루는 우리를 보며 꼬리를 흔들었다.',photos:64,video:1,memo:11},
+  {ph:'ph-jeju',season:'2023 여름',emoji:'🌊',place:'제주도',story:'제주의 바닷가에서 하루는 처음 본 파도를 한참 바라보았다. 발끝에 물이 닿아도 도망가지 않았다.',photos:142,video:5,memo:3},
+  {ph:'ph-senior',season:'2025',emoji:'🍂',place:'우리 집',story:'산책은 짧아졌지만, 곁은 더 가까워졌다. 하루는 늘 같은 사람 옆에서 잠들었다.',photos:88,video:2,memo:14},
 ];
 const CHAPTERS=[
-  {n:'Chapter 1',t:'우리 처음 만난 날',q:'“2019년 봄, 작은 발 하나가 현관을 넘었다. 이름은 하루. 그날부터 우리 집의 시간은 둘이 아니라 셋이 되었다.”',based:'사진 120장 · 입양 메모 · 첫 검진 기록'},
-  {n:'Chapter 3',t:'비 오는 날의 산책',q:'“하루는 비 오는 날 흙냄새 맡기를 좋아했다. 젖은 길 위에서 한참을 서성이며, 코를 땅에 박고 천천히 걸었다.”',based:'비 오는 날 사진 반복 · 메모 “흙냄새 좋아함”'},
-  {n:'Chapter 5',t:'바다를 처음 본 여름',q:'“제주의 바닷가에서 하루는 한참을 가만히 서 있었다. 파도가 발끝에 닿을 때마다 귀가 쫑긋, 그러나 도망가지 않았다.”',based:'2023 여름 사진 142장 · 제주 GPS · 가족 메모'},
-  {n:'Chapter 8',t:'천천히, 함께 나이 들기',q:'“산책은 짧아졌지만, 곁은 더 가까워졌다. 하루는 늘 같은 사람 옆에서 잠들었다.”',based:'보호자 밀착 패턴 0.84 · 노령기 기록'}
+  {n:'Chapter 1',t:'우리 처음 만난 날',ph:'ph-home',q:'“2019년 봄, 작은 발 하나가 현관을 넘었다. 이름은 하루. 그날부터 우리 집의 시간은 셋이 되었다.”'},
+  {n:'Chapter 3',t:'비 오는 날의 산책',ph:'ph-spring',q:'“하루는 비 오는 날 흙냄새 맡기를 좋아했다. 젖은 길 위에서 한참을 서성이며, 코를 땅에 박고 천천히 걸었다.”'},
+  {n:'Chapter 5',t:'바다를 처음 본 여름',ph:'ph-jeju',q:'“제주의 바닷가에서 하루는 한참을 가만히 서 있었다. 파도가 발끝에 닿을 때마다 귀가 쫑긋, 그러나 도망가지 않았다.”'},
+  {n:'Chapter 8',t:'천천히, 함께 나이 들기',ph:'ph-senior',q:'“산책은 짧아졌지만, 곁은 더 가까워졌다. 하루는 늘 같은 사람 옆에서 잠들었다.”'},
 ];
 
-/* ---------- render helpers ---------- */
-function timelineHTML(){
-  return TL.map(d=>`
-    <div class="tl-item"><div class="tl-card">
-      <div class="cover" style="background:${d.grad}"><span class="loc">📍 ${d.loc}</span></div>
+function storyHTML(){
+  return STORY.map(d=>`
+    <div class="scard">
+      <div class="cover ${d.ph}"><span class="season">${d.emoji} ${d.season}</span><span class="place">📍 ${d.place}</span></div>
       <div class="body">
-        <div class="yr">${d.yr}</div>
-        <h4>${d.title}</h4>
-        <div class="ai"><span class="w">AI 발견</span>${d.ai}</div>
-        <div class="meta"><span><b>${d.photos}</b> 사진</span><span><b>${d.memo}</b> 메모</span><span><b>${d.health}</b></span></div>
+        <div class="story">${d.story}</div>
+        <div class="meta"><span>사진 <b>${d.photos}</b></span><span>영상 <b>${d.video}</b></span><span>가족 메모 <b>${d.memo}</b></span></div>
+        <div class="strip"><i class="${d.ph}"></i><i class="${d.ph}" style="opacity:.7"></i><i class="${d.ph}" style="opacity:.5"></i><i class="${d.ph}" style="opacity:.35"></i></div>
       </div>
-    </div></div>`).join('');
+    </div>`).join('');
 }
-function bookHTML(spread){
-  const cover=`<div class="book-cover"><div class="ttl">PET LIFEBOOK</div><h3>하루의 삶</h3>
-    <p>2019 – 2025 · 우리 가족이 함께 쓴 한 권의 이야기</p><div class="emo">🐾</div></div>`;
-  const chaps=CHAPTERS.map(c=>`<div class="chapter">
-    <div class="cnum">${c.n}</div><h4>${c.t}</h4>
-    <div class="quote">${c.q}</div>
-    <div class="based">📎 근거: <b>${c.based}</b> — 지어내지 않고 자료에 근거해서만 씀</div></div>`).join('');
-  return `<div class="book">${cover}<div class="${spread?'book-spread':''}">${chaps}</div></div>`;
+let bookPage=0;
+function bookHTML(idx){
+  const c=CHAPTERS[idx];
+  return `<div class="book">
+    <div class="book-cover"><div class="ttl">PET LIFEBOOK</div><h3>하루의 삶</h3><p>2019 – 2025 · 우리 가족이 함께 쓴 한 권의 이야기</p></div>
+    <div class="book-pg">
+      <div class="cnum">${c.n}</div><h4>${c.t}</h4>
+      <div class="scene ${c.ph}"></div>
+      <div class="quote">${c.q}</div>
+      <div class="portal">
+        <button onclick="toast('그날의 회상 영상을 재생합니다 ▶')">▶ 영상 보기</button>
+        <button onclick="toast('이 장면의 사진 모음을 엽니다 🖼️')">🖼️ 그날 사진</button>
+        <button onclick="toast('가족에게 기억 추가를 요청했어요 ✏️')">✏️ 가족 기억 추가</button>
+        <button onclick="toast('이 장면을 저장했어요 🔖')">🔖 이 장면 저장</button>
+      </div>
+    </div>
+    <div class="book-nav">
+      <button onclick="flipBook(-1)">‹</button>
+      <span>${idx+1} / ${CHAPTERS.length}</span>
+      <button onclick="flipBook(1)">›</button>
+    </div>
+  </div>`;
+}
+function flipBook(dir){
+  bookPage=(bookPage+dir+CHAPTERS.length)%CHAPTERS.length;
+  document.getElementById('m-book').innerHTML=bookHTML(bookPage);
+  document.getElementById('d-book-inner').innerHTML=bookHTML(bookPage);
 }
 
-/* render into both devices on load */
-document.getElementById('m-timeline').innerHTML=timelineHTML();
-document.getElementById('m-book').innerHTML=bookHTML(false);
-document.getElementById('d-timeline').innerHTML=timelineHTML();
-document.getElementById('d-book').innerHTML=bookHTML(true);
+/* render */
+document.getElementById('m-sfeed').innerHTML=storyHTML();
+document.getElementById('d-sfeed').innerHTML=storyHTML();
+document.getElementById('m-book').innerHTML=bookHTML(0);
+document.getElementById('d-book-inner').innerHTML=bookHTML(0);
 
 /* ---------- device switch ---------- */
 function setDevice(dev){
@@ -433,109 +585,78 @@ function setDevice(dev){
   document.getElementById('view-desktop').classList.toggle('on',dev==='desktop');
   document.getElementById('t-mobile').classList.toggle('on',dev==='mobile');
   document.getElementById('t-desktop').classList.toggle('on',dev==='desktop');
-  document.getElementById('dev-note').innerHTML = dev==='mobile'
-    ? '<b>모바일 앱</b> — 평소 그날그날의 순간을 가볍게 올리는 메인 환경입니다.'
+  document.getElementById('dev-note').innerHTML=dev==='mobile'
+    ? '<b>모바일 앱</b> — 열면 ‘오늘의 하루’가 먼저 반겨줍니다.'
     : '<b>데스크탑(PC)</b> — 예전에 쌓아둔 사진 폴더를 한번에 올릴 때 쓰는 환경입니다.';
 }
 
-/* ---------- flow engine (shared) ---------- */
+/* ---------- mobile screens ---------- */
+const M_SCREENS=['home','upload','discover','reveal','story','family','book'];
+function showM(name){
+  M_SCREENS.forEach(s=>document.getElementById('s-'+s).classList.toggle('on',s===name));
+  // tab highlight
+  const map={home:'tab-home',story:'tab-story',family:'tab-family',book:'tab-book'};
+  ['tab-home','tab-story','tab-family','tab-book'].forEach(id=>document.getElementById(id).classList.remove('on'));
+  if(map[name])document.getElementById(map[name]).classList.add('on');
+  document.getElementById('m-scroll').scrollTo({top:0,behavior:'smooth'});
+}
+function goUpload(){showM('upload');}
+
+/* ---------- desktop screens ---------- */
+const D_SCREENS=['home','discover','reveal','story','book','family'];
+function showD(name,btn){
+  D_SCREENS.forEach(s=>document.getElementById('d-'+s).classList.toggle('on',s===name));
+  const map={home:'dnav-home',story:'dnav-story',book:'dnav-book',family:'dnav-family'};
+  ['dnav-home','dnav-story','dnav-book','dnav-family'].forEach(id=>document.getElementById(id).classList.remove('on'));
+  if(map[name])document.getElementById(map[name]).classList.add('on');
+  document.querySelector('.main').scrollTo({top:0,behavior:'smooth'});
+}
+function desktopView(which){showD(which);}
+
+/* ---------- discovering + reveal flow ---------- */
 let timers=[];
 function clr(){timers.forEach(t=>clearTimeout(t));timers=[];}
-
-function runFlow(dev){
+function runFlow(P){
   clr();
-  const P=dev==='mobile'?'m':'d';
-  show(P,'analyze');
-  const bar=document.getElementById(P+'-bar');
-  const checks=[...document.querySelectorAll('#'+P+'-alist .acheck')];
-  checks.forEach(c=>c.classList.remove('done'));
-  bar.style.width='0%';
-  const ring=document.getElementById(P+'-ring');
-  ring.style.animation='';ring.innerHTML='';ring.style.borderTopColor='var(--brand)';
-
-  const readsM=['EXIF 날짜·위치를 시간축으로 정렬하는 중','사진 급증 구간에서 이벤트를 탐지하는 중','보호자 동행 패턴을 읽는 중','근거 기반으로 이야기를 엮는 중'];
-  const readsD=['5,421장의 EXIF·GPS·병원기록을 시간축으로 정렬하는 중','사진 급증 구간에서 여행을 탐지하는 중','보호자 proximity로 관계의 결을 복원하는 중','계절별 산책 패턴을 집계하는 중','근거 기반으로 라이프북을 엮는 중'];
-  const reads=dev==='mobile'?readsM:readsD;
+  if(P==='m')showM('discover'); else showD('discover');
+  const lines=[...document.querySelectorAll('#'+P+'-dlive .dline')];
+  lines.forEach(l=>l.classList.remove('show'));
+  const reads=['사진 속 날짜와 장소를 읽고 있어요','자주 간 곳과 산책 패턴을 찾고 있어요','병원기록으로 건강 변화를 살피고 있어요','가족이 함께한 순간을 잇고 있어요'];
   const readEl=document.getElementById(P+'-reading');
-
-  let p=0;const tick=setInterval(()=>{p=Math.min(100,p+4);bar.style.width=p+'%';if(p>=100)clearInterval(tick);},110);
-  timers.push(setTimeout(()=>clearInterval(tick),3200));
-
-  checks.forEach((c,i)=>timers.push(setTimeout(()=>{c.classList.add('done');if(reads[i])readEl.textContent=reads[i];},500+i*520)));
-
-  const total=500+checks.length*520+400;
-  timers.push(setTimeout(()=>{
-    document.getElementById(P+'-atitle').textContent='✓ 분석 완료 — 하루의 삶을 다 읽었습니다';
-    readEl.textContent='흩어진 자료가 시간·관계·감정으로 구조화되었습니다';
-    ring.style.animation='none';ring.innerHTML='✓';
-    ring.style.cssText+='display:flex;align-items:center;justify-content:center;font-size:24px;color:var(--brand);font-weight:800';
-    timers.push(setTimeout(()=>{
-      show(P,'result');
-      if(dev==='mobile'){setMobileTabBar('tl');}
-    },900));
-  },total));
+  const foundEl=document.getElementById(P+'-found');
+  // count-up the "found"
+  let f=0;const fi=setInterval(()=>{f=Math.min(5421,f+213);foundEl.textContent=f.toLocaleString()+'장';if(f>=5421)clearInterval(fi);},40);
+  timers.push(setTimeout(()=>clearInterval(fi),1200));
+  lines.forEach((l,i)=>timers.push(setTimeout(()=>{l.classList.add('show');if(reads[i])readEl.textContent=reads[i];},500+i*560)));
+  const total=500+lines.length*560+500;
+  timers.push(setTimeout(()=>{readEl.textContent='하루의 삶을 다 읽었어요';},total-300));
+  timers.push(setTimeout(()=>playReveal(P),total));
+}
+function countUp(id,target,dur){
+  const el=document.getElementById(id);if(!el)return;
+  const start=performance.now();
+  function step(now){
+    const t=Math.min(1,(now-start)/dur);
+    el.textContent=Math.round(target*(0.5-Math.cos(Math.PI*t)/2)).toLocaleString();
+    if(t<1)requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+function playReveal(P){
+  if(P==='m')showM('reveal'); else showD('reveal');
+  const card=document.getElementById(P==='m'?'m-reveal':'d-reveal-card');
+  card.classList.remove('play');void card.offsetWidth;card.classList.add('play');
+  const pre=P==='m'?'cn':'dcn';
+  // stats appear ~delay .15s; count after slight delay
+  setTimeout(()=>{countUp(pre+'-yr',14,900);countUp(pre+'-ph',5421,1100);countUp(pre+'-hp',17,900);countUp(pre+'-wk',432,1100);},250);
 }
 
-function show(P,state){
-  ['upload','analyze','result'].forEach(s=>{
-    const el=document.getElementById(P+'-'+s);
-    if(el)el.style.display=(s===state)?'block':'none';
-  });
-}
-
-function resetFlow(dev){
-  clr();
-  const P=dev==='mobile'?'m':'d';
-  show(P,'upload');
-  if(dev==='mobile')setMobileTabBar('home');
-}
-
-/* ---------- mobile tabs ---------- */
-function mobileTab(which,btn){
-  document.querySelectorAll('#m-result .seg-sm button').forEach(b=>b.classList.remove('on'));
-  if(btn)btn.classList.add('on');
-  document.getElementById('m-timeline').style.display=which==='timeline'?'block':'none';
-  document.getElementById('m-book').style.display=which==='book'?'block':'none';
-  setMobileTabBar(which==='book'?'bk':'tl');
-}
-function setMobileTabBar(which){
-  ['home','tl','bk'].forEach(k=>document.getElementById('mtab-'+k).classList.toggle('on',k===which));
-}
-function gotoResult(which){
-  // if not analyzed yet, run flow first
-  if(document.getElementById('m-result').style.display==='none'){
-    runFlow('mobile');
-    timers.push(setTimeout(()=>switchMobileResult(which),4000));
-  }else{switchMobileResult(which);}
-}
-function switchMobileResult(which){
-  const btns=document.querySelectorAll('#m-result .seg-sm button');
-  mobileTab(which, which==='book'?btns[1]:btns[0]);
-  document.querySelector('#view-mobile .mscroll').scrollTo({top:0,behavior:'smooth'});
-}
-
-/* ---------- desktop nav/tabs ---------- */
-function desktopNav(which,btn){
-  document.querySelectorAll('.snav').forEach(b=>b.classList.remove('on'));
-  if(btn)btn.classList.add('on');
-  if(which==='upload'){show('d','upload');return;}
-  // timeline or book → ensure analyzed
-  if(document.getElementById('d-result').style.display==='none'){
-    runFlow('desktop');
-    timers.push(setTimeout(()=>desktopTab(which),total_d()));
-  }else{desktopTab(which);}
-}
-function total_d(){return 500+5*520+400+900+50;}
-function desktopTab(which){
-  show('d','result');
-  document.getElementById('dtab-tl').classList.toggle('on',which==='timeline');
-  document.getElementById('dtab-bk').classList.toggle('on',which==='book');
-  document.getElementById('d-timeline').style.display=which==='timeline'?'block':'none';
-  document.getElementById('d-book').style.display=which==='book'?'block':'none';
-  document.getElementById('d-rtitle').textContent=which==='book'?'하루의 라이프북':'하루의 생애 타임라인';
-  // sync sidebar highlight
-  document.querySelectorAll('.snav').forEach(b=>b.classList.remove('on'));
-  document.getElementById(which==='book'?'dnav-bk':'dnav-tl').classList.add('on');
+/* ---------- toast ---------- */
+let toastT;
+function toast(msg){
+  const el=document.getElementById('m-toast');
+  el.textContent=msg;el.classList.add('show');
+  clearTimeout(toastT);toastT=setTimeout(()=>el.classList.remove('show'),1800);
 }
 </script>
 </body>
