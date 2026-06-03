@@ -96,6 +96,17 @@
   .add-nudge{margin-top:18px;width:100%;display:flex;align-items:center;justify-content:center;gap:9px;background:var(--brand-soft);border:1px dashed #b6ddd3;color:var(--brand-deep);font-weight:800;font-size:13.5px;padding:13px;border-radius:14px;cursor:pointer;font-family:inherit}
   .add-nudge span{font-weight:600;color:var(--muted);font-size:11.5px}
   .page-top .sub b{color:var(--brand-deep)}
+  .clip-modal{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.84);display:none;align-items:center;justify-content:center;padding:20px}
+  .clip-modal.on{display:flex}
+  .clip-box{position:relative;max-width:400px;width:100%}
+  .clip-box video{width:100%;max-height:76vh;border-radius:16px;background:#000;display:block}
+  .clip-x{position:absolute;top:8px;right:8px;width:34px;height:34px;border-radius:50%;background:rgba(0,0,0,.55);color:#fff;border:1px solid rgba(255,255,255,.4);font-size:15px;cursor:pointer;z-index:2;backdrop-filter:blur(3px)}
+  .clip-cap{color:#fff;text-align:center;font-size:13px;margin-top:12px;font-weight:600}
+  .clip-card{position:relative;display:block;width:100%;margin-top:16px;border:none;padding:0;border-radius:16px;overflow:hidden;cursor:pointer;box-shadow:var(--shadow);background:#000}
+  .clip-card img{width:100%;height:180px;object-fit:cover;display:block;opacity:.92}
+  .clip-card .cc-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:54px;height:54px;border-radius:50%;background:rgba(255,255,255,.9);display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--ink)}
+  .clip-card .cc-t{position:absolute;left:0;right:0;bottom:0;padding:10px 12px;color:#fff;font-size:12.5px;font-weight:700;text-align:left;background:linear-gradient(180deg,transparent,rgba(0,0,0,.6))}
+  .clipbtn{margin-top:12px;width:100%;background:var(--ink);color:#fff;border:none;border-radius:13px;padding:13px;font-weight:800;font-size:14px;cursor:pointer;font-family:inherit}
   .side .logo small{display:block;font-size:9.5px;font-weight:600;color:#7fa39a;letter-spacing:.02em;margin-top:1px}
   .hero-infer{font-size:12.5px;color:#eafff9;margin:-6px 0 16px;opacity:.96}
   /* desktop emotional home */
@@ -543,9 +554,10 @@
                 <div class="hero-chips"><span>📷 사진 18</span><span>📍 북한산 GPS</span><span>🎙️ 산책 음성</span><span>🏥 방문 없음</span></div>
                 <button class="hero-cta" onclick="showM('story')">오늘의 이야기 보기 →</button>
               </div>
-              <button class="play" onclick="toast('회상 영상을 재생합니다 ▶')">▶</button>
+              <button class="play" onclick="openClip()">▶</button>
             </div>
 
+            <button class="clip-card" onclick="openClip()"><img src="assets/haru/haru-clip-poster.jpg" alt="하루 영상"><div class="cc-play">▶</div><div class="cc-t">📹 하루의 실제 영상 · 2020.09.30 · 간식 먹는 날</div></button>
             <div class="secttl">🐾 하루가 자주 남긴 흔적</div>
             <div class="find-list">
               <button class="findcard" onclick="showM('story')">
@@ -872,6 +884,13 @@
 
 </div>
 
+<div class="clip-modal" id="clip-modal" onclick="closeClip()">
+  <div class="clip-box" onclick="event.stopPropagation()">
+    <button class="clip-x" onclick="closeClip()">✕</button>
+    <video id="clip-video" controls playsinline preload="none" poster="assets/haru/haru-clip-poster.jpg"><source src="assets/haru/haru-clip-2020.mp4" type="video/mp4"></video>
+    <div class="clip-cap">📹 하루 · 2020.09.30 · 간식 먹는 날</div>
+  </div>
+</div>
 <script>
 /* ---------- data ---------- */
 const PHOTOS=[["thumb/034.jpg",2010],["thumb/044.jpg",2011],["thumb/038.jpg",2011],["thumb/037.jpg",2011],["thumb/039.jpg",2011],["thumb/042.jpg",2011],["thumb/036.jpg",2011],["thumb/043.jpg",2011],["thumb/041.jpg",2011],["thumb/040.jpg",2011],["thumb/046.jpg",2012],["thumb/049.jpg",2012],["thumb/055.jpg",2012],["thumb/053.jpg",2012],["thumb/048.jpg",2012],["thumb/052.jpg",2012],["thumb/057.jpg",2012],["thumb/056.jpg",2012],["thumb/050.jpg",2012],["thumb/054.jpg",2012],["thumb/047.jpg",2012],["thumb/051.jpg",2012],["thumb/066.jpg",2013],["thumb/064.jpg",2013],["thumb/063.jpg",2013],["thumb/071.jpg",2013],["thumb/061.jpg",2013],["thumb/068.jpg",2013],["thumb/079.jpg",2013],["thumb/062.jpg",2013],["thumb/077.jpg",2013],["thumb/067.jpg",2013],["thumb/073.jpg",2013],["thumb/060.jpg",2013],["thumb/078.jpg",2013],["thumb/069.jpg",2013],["thumb/074.jpg",2013],["thumb/075.jpg",2013],["thumb/059.jpg",2013],["thumb/076.jpg",2013],["thumb/070.jpg",2013],["thumb/058.jpg",2013],["thumb/072.jpg",2013],["thumb/001.jpg",2013],["thumb/089.jpg",2014],["thumb/091.jpg",2014],["thumb/082.jpg",2014],["thumb/085.jpg",2014],["thumb/083.jpg",2014],["thumb/088.jpg",2014],["thumb/084.jpg",2014],["thumb/080.jpg",2014],["thumb/087.jpg",2014],["thumb/090.jpg",2014],["thumb/086.jpg",2014],["thumb/081.jpg",2014],["thumb/092.jpg",2015],["thumb/094.jpg",2015],["thumb/097.jpg",2016],["thumb/096.jpg",2016],["thumb/099.jpg",2016],["thumb/098.jpg",2016],["thumb/102.jpg",2017],["thumb/103.jpg",2017],["thumb/107.jpg",2018],["thumb/106.jpg",2018],["thumb/112.jpg",2019],["thumb/115.jpg",2019],["thumb/114.jpg",2019],["thumb/118.jpg",2019],["thumb/119.jpg",2019],["thumb/113.jpg",2019],["thumb/120.jpg",2019],["thumb/117.jpg",2019],["thumb/110.jpg",2019],["thumb/121.jpg",2019],["thumb/131.jpg",2020],["thumb/132.jpg",2020],["thumb/127.jpg",2020],["thumb/133.jpg",2020],["thumb/135.jpg",2020],["thumb/138.jpg",2020],["thumb/130.jpg",2020],["thumb/137.jpg",2020],["thumb/136.jpg",2020],["thumb/139.jpg",2020],["thumb/134.jpg",2020],["thumb/129.jpg",2020],["thumb/140.jpg",2021],["thumb/151.jpg",0],["thumb/154.jpg",0],["thumb/009.jpg",0],["thumb/003.jpg",0],["thumb/150.jpg",0],["thumb/005.jpg",0],["thumb/032.jpg",0],["thumb/007.jpg",0],["thumb/008.jpg",0],["thumb/031.jpg",0],["thumb/006.jpg",0],["thumb/152.jpg",0],["thumb/156.jpg",0],["thumb/029.jpg",0],["thumb/030.jpg",0],["thumb/025.jpg",0],["thumb/028.jpg",0],["thumb/022.jpg",0],["thumb/021.jpg",0],["thumb/023.jpg",0],["thumb/027.jpg",0],["thumb/016.jpg",0],["thumb/024.jpg",0],["thumb/014.jpg",0],["thumb/017.jpg",0],["thumb/018.jpg",0],["thumb/011.jpg",0],["thumb/010.jpg",0],["thumb/013.jpg",0],["thumb/012.jpg",0],["thumb/015.jpg",0],["thumb/026.jpg",0],["thumb/002.jpg",0],["thumb/019.jpg",0],["thumb/035.jpg",0],["thumb/153.jpg",0]];
@@ -1019,6 +1038,7 @@ function bookHTML(idx){
     inner=`<div class="book-pg lb-life"><div class="cnum">CHAPTER 04 · 함께한 말들</div><h4>하루가 자주 들은 말</h4>
       <div class="lb-lead">음성·메모 기록에서, 하루에게 가장 자주 건넨 말을 찾았어요.</div>
       <div class="bark-row"><button class="bark-btn" onclick="playBark(this)">🔊 하루 목소리 듣기</button><span class="bark-tag">음성 데모 샘플</span><audio preload="none"><source src="assets/haru/haru-bark.m4a" type="audio/mp4"></audio></div>
+      <button class="clipbtn" onclick="openClip()">▶ 하루의 실제 영상 보기 · 2020.09.30</button>
       <div class="voice-list">
         <div class="vq big"><span class="wav"><svg class="wavsvg" width="58" height="22" viewBox="0 0 58 22"><rect x="2" y="8" width="3" height="6" rx="1.5" fill="currentColor"/><rect x="7" y="5" width="3" height="12" rx="1.5" fill="currentColor"/><rect x="12" y="2" width="3" height="18" rx="1.5" fill="currentColor"/><rect x="17" y="6" width="3" height="10" rx="1.5" fill="currentColor"/><rect x="22" y="3" width="3" height="16" rx="1.5" fill="currentColor"/><rect x="27" y="7" width="3" height="8" rx="1.5" fill="currentColor"/><rect x="32" y="1" width="3" height="20" rx="1.5" fill="currentColor"/><rect x="37" y="4" width="3" height="14" rx="1.5" fill="currentColor"/><rect x="42" y="6" width="3" height="9" rx="1.5" fill="currentColor"/><rect x="47" y="2" width="3" height="17" rx="1.5" fill="currentColor"/><rect x="52" y="7" width="3" height="7" rx="1.5" fill="currentColor"/><rect x="57" y="4" width="3" height="13" rx="1.5" fill="currentColor"/></svg></span>“산책 갈까?”<em>가장 자주</em></div>
         <div class="vq">“간식 먹자”</div>
@@ -1157,6 +1177,8 @@ function enterApp(){var i=document.getElementById("intro"); if(i) i.classList.ad
 function closeSheet(){document.getElementById('m-sheet').classList.remove('on');}
 function pickUpload(){closeSheet();runFlow('m');}
 function playBark(btn){var a=btn.parentElement.querySelector('audio');if(a){a.currentTime=0;a.play();}}
+function openClip(){var m=document.getElementById('clip-modal');m.classList.add('on');var v=document.getElementById('clip-video');try{v.currentTime=0;v.play();}catch(e){}}
+function closeClip(){var m=document.getElementById('clip-modal');m.classList.remove('on');var v=document.getElementById('clip-video');if(v)v.pause();}
 
 /* ---------- desktop screens ---------- */
 const D_SCREENS=['home','upload','discover','reveal','story','book','family','famdetail'];
