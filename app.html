@@ -148,8 +148,23 @@
   .scard .story{font-size:16px;line-height:1.7;color:#332e26;font-weight:600}
   .scard .meta{display:flex;gap:14px;margin-top:13px;font-size:12.5px;color:var(--muted)}
   .scard .meta b{color:var(--ink)}
-  .scard .strip{display:flex;gap:6px;margin-top:13px}
-  .scard .strip i{flex:1;height:46px;border-radius:8px;display:block;opacity:.9}
+  /* trust / evidence UI (감성 → 신뢰) */
+  .scard .conf{position:absolute;right:13px;top:13px;background:rgba(15,42,38,.82);color:#bdeee4;font-size:11px;font-weight:800;padding:4px 10px;border-radius:999px;backdrop-filter:blur(3px)}
+  .scard .obs{font-size:15px;line-height:1.65;color:#2c281f;font-weight:600}
+  .scard .evi{display:flex;flex-wrap:wrap;gap:7px;margin-top:11px}
+  .scard .evi span{font-size:11.5px;font-weight:700;color:#5a5346;background:#f3eee3;border:1px solid var(--line);padding:4px 9px;border-radius:8px}
+  .scard .files{margin-top:9px;font-size:11px;color:#a99f8a;font-family:ui-monospace,Menlo,Consolas,monospace;word-break:break-all}
+  .scard .infer{margin-top:12px;font-size:13px;color:#3f3a30;background:#faf6ee;border:1px dashed #ddd2bf;border-radius:11px;padding:10px 12px;line-height:1.55}
+  .scard .infer b{color:var(--brand-deep)}
+  .scard .why{display:block;margin-top:8px;background:none;border:none;color:var(--brand-deep);font-weight:800;font-size:12px;cursor:pointer;padding:0}
+  .scard .why-box{display:none;margin-top:9px;font-size:12px;color:#5a5346;background:#fff;border:1px solid var(--line);border-radius:10px;padding:11px 12px;line-height:1.6}
+  .scard .why-box.on{display:block}
+  .today .infer-line{font-size:12.5px;margin-top:8px;color:#eafff9}
+  .today .infer-line b{color:#fff;border-bottom:1px dashed rgba(255,255,255,.65)}
+  .today .meta .why-mini{background:none;border:none;color:#bdeee4;font-weight:800;font-size:12px;cursor:pointer;padding:0}
+  .book-pg .based{margin-top:13px;font-size:11.5px;color:#9a8f78;line-height:1.55}
+  .book-pg .based .grounded{color:var(--brand-deep);font-weight:700}
+  .reveal .rwhy{font-size:10.5px;color:#9fc2ba;margin-top:3px}
 
   /* --- LIFEBOOK (interactive) --- */
   .book{background:linear-gradient(180deg,#fffdf8,#f8f0e2);border:1px solid #ece0cc;border-radius:18px;box-shadow:var(--shadow);overflow:hidden}
@@ -282,9 +297,10 @@
             <div class="today">
               <div class="bg ph-home"></div>
               <div class="tcontent">
-                <span class="badge">✨ 오늘의 하루 · AI가 발견한 기억</span>
-                <h2>“비 오는 날이면 현관 앞에서<br/>먼저 기다리던 아이”</h2>
-                <div class="meta">2023 봄 · 한강공원</div>
+                <span class="badge">📊 AI 추정 · 신뢰도 83%</span>
+                <h2>비 오는 날마다 현관 앞<br/>사진이 유독 많았어요</h2>
+                <div class="infer-line">🤖 AI는 하루가 <b>산책을 먼저 기다렸다</b>고 추정했어요</div>
+                <div class="meta">2023 봄 · 관련 사진 17장 · <button class="why-mini" onclick="toast('근거: 현관 앞 사진 17장 · 비 오는 날 촬영 비중 21% · 가족 메모 2건')">근거 보기 ›</button></div>
               </div>
               <button class="play" onclick="toast('회상 영상을 재생합니다 ▶')">▶</button>
             </div>
@@ -298,7 +314,7 @@
             <div class="secttl">🧡 최근 발견한 이야기</div>
             <div class="story-mini">
               <div class="smini" onclick="showM('story')"><div class="thumb ph-spring"></div>
-                <div class="b"><b>봄 산책을 좋아했어요</b><p>2020~2024 · 봄철 산책이 가장 많았어요</p></div><div class="go">›</div></div>
+                <div class="b"><b>봄에 산책 사진이 많았어요</b><p>2020~2024 · 봄철 비중 38% (AI 추정)</p></div><div class="go">›</div></div>
               <div class="smini" onclick="showM('story')"><div class="thumb ph-hosp"></div>
                 <div class="b"><b>건강이 변하던 시기</b><p>2022 · 슬개골 수술을 이겨냈어요</p></div><div class="go">›</div></div>
               <div class="smini" onclick="showM('family')"><div class="thumb ph-senior"></div>
@@ -326,10 +342,10 @@
               <div class="reading">발견됨</div>
               <div class="sub" id="m-reading">하루의 삶을 읽고 있습니다…</div>
               <div class="dlive" id="m-dlive">
-                <div class="dline"><span class="ck">✓</span><span><b>2019~2024</b> 사진을 발견했어요</span></div>
-                <div class="dline"><span class="ck">✓</span><span><b>한강공원</b> 등 자주 간 장소 4곳을 찾았어요</span></div>
-                <div class="dline"><span class="ck">✓</span><span>병원기록 <b>17건</b>을 발견했어요</span></div>
-                <div class="dline"><span class="ck">✓</span><span>가족 사진을 연결하고 있어요</span></div>
+                <div class="dline"><span class="ck">✓</span><span><b>2019.03.14</b> 첫 사진을 발견했어요</span></div>
+                <div class="dline"><span class="ck">✓</span><span><b>강남 ○○동물병원</b> 영수증을 찾았어요</span></div>
+                <div class="dline"><span class="ck">✓</span><span>2022 여름 사진 급증 <b>→ 여행으로 추정</b></span></div>
+                <div class="dline"><span class="ck">✓</span><span>비 오는 날 사진 비중 <b>21%</b> → 산책 습관 가능성</span></div>
               </div>
             </div>
           </div>
@@ -344,10 +360,10 @@
                 <div class="s"><b id="cn-hp">0</b><span>병원기록</span></div>
                 <div class="s"><b id="cn-wk">0</b><span>번의 산책</span></div>
               </div>
-              <div class="ritem rdiv">AI가 발견한 하루</div>
-              <div class="ritem rfind"><span class="e">🌸</span><div><div class="lbl">가장 행복했던 계절</div><div class="v">봄</div></div></div>
-              <div class="ritem rfind"><span class="e">📍</span><div><div class="lbl">가장 좋아한 장소</div><div class="v">한강공원</div></div></div>
-              <div class="ritem rfind"><span class="e">🐾</span><div><div class="lbl">가장 자주 반복된 습관</div><div class="v">비 오는 날 산책</div></div></div>
+              <div class="ritem rdiv">하루가 가장 자주 남긴 흔적</div>
+              <div class="ritem rfind"><span class="e">🌸</span><div><div class="lbl">가장 많이 찍힌 계절</div><div class="v">봄</div><div class="rwhy">봄 촬영 38% · 신뢰도 80%</div></div></div>
+              <div class="ritem rfind"><span class="e">📍</span><div><div class="lbl">가장 자주 기록된 장소</div><div class="v">한강공원</div><div class="rwhy">GPS 432회 · 신뢰도 88%</div></div></div>
+              <div class="ritem rfind"><span class="e">🐾</span><div><div class="lbl">가장 자주 반복된 패턴</div><div class="v">비 오는 날 산책</div><div class="rwhy">비 오는 날 촬영 21% · 신뢰도 83%</div></div></div>
               <div class="ritem rcta">
                 <button class="p" onclick="showM('story')">삶의 이야기 보기</button>
                 <button class="g" onclick="showM('book')">라이프북 보기</button>
@@ -448,10 +464,10 @@
               <div class="reading">발견됨</div>
               <div class="sub" id="d-reading">하루의 삶을 읽고 있습니다…</div>
               <div class="dlive" id="d-dlive">
-                <div class="dline"><span class="ck">✓</span><span><b>2010~2024</b> 사진을 발견했어요</span></div>
-                <div class="dline"><span class="ck">✓</span><span>자주 간 장소 <b>4곳</b> · 산책 <b>432회</b>를 찾았어요</span></div>
-                <div class="dline"><span class="ck">✓</span><span>병원기록 <b>17건</b> · 슬개골 수술을 발견했어요</span></div>
-                <div class="dline"><span class="ck">✓</span><span>가족 기억 <b>12개</b>를 연결하고 있어요</span></div>
+                <div class="dline"><span class="ck">✓</span><span><b>2010.05.20</b> 가장 오래된 사진을 발견했어요</span></div>
+                <div class="dline"><span class="ck">✓</span><span><b>강남 ○○동물병원</b> 영수증 17건을 찾았어요</span></div>
+                <div class="dline"><span class="ck">✓</span><span>2022 여름 사진 급증 <b>→ 제주 여행으로 추정</b></span></div>
+                <div class="dline"><span class="ck">✓</span><span>비 오는 날 사진 비중 <b>21%</b> → ‘비 오는 날 산책’ 추정</span></div>
               </div>
             </div>
           </div>
@@ -466,10 +482,10 @@
                 <div class="s"><b id="dcn-hp">0</b><span>병원기록</span></div>
                 <div class="s"><b id="dcn-wk">0</b><span>번의 산책</span></div>
               </div>
-              <div class="ritem rdiv">AI가 발견한 하루</div>
-              <div class="ritem rfind"><span class="e">🌸</span><div><div class="lbl">가장 행복했던 계절</div><div class="v">봄</div></div></div>
-              <div class="ritem rfind"><span class="e">📍</span><div><div class="lbl">가장 좋아한 장소</div><div class="v">한강공원</div></div></div>
-              <div class="ritem rfind"><span class="e">🐾</span><div><div class="lbl">가장 자주 반복된 습관</div><div class="v">비 오는 날 산책</div></div></div>
+              <div class="ritem rdiv">하루가 가장 자주 남긴 흔적</div>
+              <div class="ritem rfind"><span class="e">🌸</span><div><div class="lbl">가장 많이 찍힌 계절</div><div class="v">봄</div><div class="rwhy">봄 촬영 38% · 신뢰도 80%</div></div></div>
+              <div class="ritem rfind"><span class="e">📍</span><div><div class="lbl">가장 자주 기록된 장소</div><div class="v">한강공원</div><div class="rwhy">GPS 432회 · 신뢰도 88%</div></div></div>
+              <div class="ritem rfind"><span class="e">🐾</span><div><div class="lbl">가장 자주 반복된 패턴</div><div class="v">비 오는 날 산책</div><div class="rwhy">비 오는 날 촬영 21% · 신뢰도 83%</div></div></div>
               <div class="ritem rcta">
                 <button class="p" onclick="showD('story')">하루의 이야기 보기</button>
                 <button class="g" onclick="showD('book')">라이프북 보기</button>
@@ -523,29 +539,70 @@
 <script>
 /* ---------- data ---------- */
 const STORY=[
-  {ph:'ph-home',season:'2019 겨울',emoji:'🏠',place:'우리 집',story:'작은 발 하나가 현관을 넘던 날. 그날부터 우리 집의 시간은 둘이 아니라 셋이 되었다.',photos:120,video:2,memo:5},
-  {ph:'ph-spring',season:'2020 봄',emoji:'🌸',place:'한강공원',story:'비 오는 날이면 하루는 젖은 흙냄새를 오래 맡곤 했다. 코를 땅에 박고 천천히 걸었다.',photos:42,video:3,memo:2},
-  {ph:'ph-hosp',season:'2022',emoji:'🏥',place:'동물병원',story:'아팠던 계절. 슬개골 수술을 이겨내는 동안에도, 하루는 우리를 보며 꼬리를 흔들었다.',photos:64,video:1,memo:11},
-  {ph:'ph-jeju',season:'2023 여름',emoji:'🌊',place:'제주도',story:'제주의 바닷가에서 하루는 처음 본 파도를 한참 바라보았다. 발끝에 물이 닿아도 도망가지 않았다.',photos:142,video:5,memo:3},
-  {ph:'ph-senior',season:'2025',emoji:'🍂',place:'우리 집',story:'산책은 짧아졌지만, 곁은 더 가까워졌다. 하루는 늘 같은 사람 옆에서 잠들었다.',photos:88,video:2,memo:14},
+  {ph:'ph-home',season:'2019 겨울',emoji:'🏠',place:'우리 집',conf:71,
+   obs:'2019년에 찍힌 가장 오래된 사진들. 대부분 집 안에서 찍은 사진이었어요.',
+   photos:120,video:2,gps:0,memo:5,files:'📷 IMG_0431.jpg　IMG_0442.jpg　IMG_0455.jpg …',
+   infer:'이 무렵을 <b>하루와 함께한 시작점</b>으로 추정했어요.',
+   why:'근거 · 2019년 이전 사진 없음 / 입양 메모 1건 / 첫 병원 검진 기록 2019.04.02'},
+  {ph:'ph-spring',season:'2020 봄',emoji:'🌸',place:'한강공원',conf:83,
+   obs:'비 오는 날 찍은 산책 사진이 유독 많이 남아 있었어요.',
+   photos:42,video:3,gps:31,memo:2,files:'📷 IMG_4124.jpg　IMG_4125.jpg　IMG_4127.jpg …',
+   infer:'‘비 오는 날 산책’을 하루의 <b>반복 습관</b>으로 추정했어요.',
+   why:'근거 · 한강공원 GPS 31회 / 비 오는 날 촬영 42장(전체의 21%) / 가족 메모 “비 올 때 우산 꼭” 2건'},
+  {ph:'ph-hosp',season:'2022',emoji:'🏥',place:'○○동물병원',conf:90,
+   obs:'2022년에 병원 방문 기록이 눈에 띄게 늘었어요.',
+   photos:64,video:1,gps:0,memo:11,files:'📄 영수증_2022-03.pdf　진단서_슬개골.pdf …',
+   infer:'이 시기를 <b>건강 변화가 컸던 구간</b>으로 추정했어요.',
+   why:'근거 · 병원 영수증 7건(2022) / 슬개골 수술 진단서 1건 / 약 처방 기록 4건'},
+  {ph:'ph-jeju',season:'2023 여름',emoji:'🌊',place:'제주도',conf:78,
+   obs:'며칠 사이 사진이 급증했고, 촬영 위치가 평소와 달랐어요.',
+   photos:142,video:5,gps:18,memo:3,files:'📷 IMG_7781.jpg　IMG_7790.jpg　VID_7802.mov …',
+   infer:'이 구간을 <b>여행(제주)</b>으로 추정했어요.',
+   why:'근거 · 3일간 사진 142장 / GPS 제주 18건 / 항공·숙소 관련 메모 1건'},
+  {ph:'ph-senior',season:'2025',emoji:'🍂',place:'우리 집',conf:74,
+   obs:'최근 사진에서 산책 거리는 짧아지고, 집 안 사진이 늘었어요.',
+   photos:88,video:2,gps:6,memo:14,files:'📷 IMG_9912.jpg　IMG_9920.jpg …',
+   infer:'하루가 <b>노령기</b>에 접어든 것으로 추정했어요.',
+   why:'근거 · 산책 GPS 월 6회로 감소 / 실내 촬영 비중 증가 / 정기검진 기록 3건'},
 ];
 const CHAPTERS=[
-  {n:'Chapter 1',t:'우리 처음 만난 날',ph:'ph-home',q:'“2019년 봄, 작은 발 하나가 현관을 넘었다. 이름은 하루. 그날부터 우리 집의 시간은 셋이 되었다.”'},
-  {n:'Chapter 3',t:'비 오는 날의 산책',ph:'ph-spring',q:'“하루는 비 오는 날 흙냄새 맡기를 좋아했다. 젖은 길 위에서 한참을 서성이며, 코를 땅에 박고 천천히 걸었다.”'},
-  {n:'Chapter 5',t:'바다를 처음 본 여름',ph:'ph-jeju',q:'“제주의 바닷가에서 하루는 한참을 가만히 서 있었다. 파도가 발끝에 닿을 때마다 귀가 쫑긋, 그러나 도망가지 않았다.”'},
-  {n:'Chapter 8',t:'천천히, 함께 나이 들기',ph:'ph-senior',q:'“산책은 짧아졌지만, 곁은 더 가까워졌다. 하루는 늘 같은 사람 옆에서 잠들었다.”'},
+  {n:'Chapter 1',t:'가장 오래된 기록',ph:'ph-home',
+   q:'2019년에 찍힌 가장 오래된 사진 속 하루는 아직 작았다. 이 무렵부터 함께 찍은 사진이 남기 시작했다.',
+   evi:'사진 120장 · 입양 메모 1개 · 첫 검진 기록'},
+  {n:'Chapter 3',t:'비 오는 날 산책',ph:'ph-spring',
+   q:'비 오는 날 찍힌 사진이 유독 많았다. 사진 속 하루는 젖은 길 위에서 코를 땅에 대고 있는 모습이 자주 보였다.',
+   evi:'사진 42장 · 영상 3개 · 한강공원 GPS 31회 · 가족 메모 2개'},
+  {n:'Chapter 5',t:'바다를 본 여름',ph:'ph-jeju',
+   q:'2023년 여름, 제주에서 찍은 사진이 며칠 사이 늘었다. 바닷가에서 찍힌 사진 속 하루는 파도 쪽을 바라보는 장면이 많았다.',
+   evi:'사진 142장 · 영상 5개 · 제주 GPS 18건'},
+  {n:'Chapter 8',t:'천천히, 함께',ph:'ph-senior',
+   q:'최근 사진에서 산책 거리는 짧아졌다. 대신 집 안, 같은 사람 곁에서 찍힌 사진이 늘었다.',
+   evi:'사진 88장 · 실내 촬영 증가 · 정기검진 3건'},
 ];
 
 function storyHTML(){
   return STORY.map(d=>`
     <div class="scard">
-      <div class="cover ${d.ph}"><span class="season">${d.emoji} ${d.season}</span><span class="place">📍 ${d.place}</span></div>
+      <div class="cover ${d.ph}">
+        <span class="season">${d.emoji} ${d.season}</span>
+        <span class="conf">AI 추정 ${d.conf}%</span>
+        <span class="place">📍 ${d.place}</span>
+      </div>
       <div class="body">
-        <div class="story">${d.story}</div>
-        <div class="meta"><span>사진 <b>${d.photos}</b></span><span>영상 <b>${d.video}</b></span><span>가족 메모 <b>${d.memo}</b></span></div>
-        <div class="strip"><i class="${d.ph}"></i><i class="${d.ph}" style="opacity:.7"></i><i class="${d.ph}" style="opacity:.5"></i><i class="${d.ph}" style="opacity:.35"></i></div>
+        <div class="obs">${d.obs}</div>
+        <div class="evi"><span>📷 사진 ${d.photos}</span><span>🎬 영상 ${d.video}</span><span>📍 GPS ${d.gps}</span><span>📝 가족메모 ${d.memo}</span></div>
+        <div class="files">${d.files}</div>
+        <div class="infer">🤖 AI는 ${d.infer}
+          <button class="why" onclick="toggleWhy(this)">근거 보기 ›</button>
+          <div class="why-box">${d.why}</div>
+        </div>
       </div>
     </div>`).join('');
+}
+function toggleWhy(btn){
+  const box=btn.parentElement.querySelector('.why-box');
+  const on=box.classList.toggle('on');
+  btn.textContent=on?'근거 접기 ‹':'근거 보기 ›';
 }
 let bookPage=0;
 function bookHTML(idx){
@@ -556,6 +613,7 @@ function bookHTML(idx){
       <div class="cnum">${c.n}</div><h4>${c.t}</h4>
       <div class="scene ${c.ph}"></div>
       <div class="quote">${c.q}</div>
+      <div class="based">📎 ${c.evi}<br/><span class="grounded">자료에 근거해 작성 · 창작·과장 없음</span></div>
       <div class="portal">
         <button onclick="toast('그날의 회상 영상을 재생합니다 ▶')">▶ 영상 보기</button>
         <button onclick="toast('이 장면의 사진 모음을 엽니다 🖼️')">🖼️ 그날 사진</button>
