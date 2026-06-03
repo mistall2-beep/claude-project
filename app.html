@@ -223,6 +223,8 @@
   .mem-portal{margin-top:16px;text-align:center;background:#faf7f0;border:1px solid #e7ddc9;border-radius:13px;padding:16px}
   .mem-portal .mem-count{font-size:13px;font-weight:700;color:#5a5346;margin-bottom:10px}
   .mem-portal button{background:#efe7da;border:1px solid #ddd2bf;border-radius:999px;padding:9px 20px;font-weight:700;font-size:13px;color:#4a4338;cursor:pointer;font-family:inherit}
+  .mem-video{width:100%;max-height:420px;margin-top:10px;border-radius:13px;background:#000;display:block;object-fit:contain}
+  .mem-sub{margin-top:9px;font-size:12px;color:var(--muted)}
   .book-cover.big{padding:32px 24px}
   .book-cover.big .cv-meta{font-size:12px;color:#cfe0db;margin-top:6px}
   .book-cover.big .cv-photo{margin-top:18px;height:180px;border-radius:14px;overflow:hidden}
@@ -250,6 +252,7 @@
   .lb-readstats div{background:#faf6ee;border:1px solid #ece0cc;border-radius:13px;padding:14px;text-align:center}
   .lb-readstats b{display:block;font-size:23px;font-weight:800;color:var(--warm-deep)}
   .lb-readstats span{font-size:11px;color:var(--muted)}
+  .lb-readsub{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.6}
   .lb-readtitle{font-size:13px;font-weight:800;color:var(--brand-deep);margin:18px 0 10px}
   .lb-whybtn{display:block;margin-top:9px;background:none;border:none;color:var(--brand-deep);font-weight:800;font-size:12px;cursor:pointer;padding:0}
   .lb-ai .why-box{display:none;margin-top:9px;font-size:12px;color:#5a5346;background:#fff;border:1px solid var(--line);border-radius:10px;padding:11px 12px;line-height:1.6}
@@ -856,9 +859,10 @@ function lbNav(idx){return `<div class="book-nav"><button onclick="flipBook(-1)"
 function bookHTML(idx){
   const p=LB_PAGES[idx]; let inner='';
   if(p.type==='cover'){
-    inner=`<div class="book-cover big"><div class="ttl">PET LIFEBOOK</div><h3>하루의 삶</h3><p>함께한 시간이 한 권의 이야기로</p><div class="cv-meta">2010 – 2025 · 15년</div><div class="cv-photo"><img src="assets/haru/thumb/117.jpg" alt="하루"></div></div>`;
+    inner=`<div class="book-cover big"><div class="ttl">PET LIFEBOOK</div><h3>하루의 삶</h3><p>흩어진 기억이 모여, 한 권의 이야기로</p><div class="cv-meta">2010 – 2025 · 15년</div><div class="cv-photo"><img src="assets/haru/thumb/117.jpg" alt="하루"></div></div>`;
   } else if(p.type==='read'){
     inner=`<div class="book-pg"><div class="cnum">하루를 읽은 결과</div><h4>AI가 읽은 하루</h4>
+      <div class="lb-readsub">흩어진 사진 속에서, 하루가 남긴 결을 천천히 읽었어요.</div>
       <div class="lb-readstats"><div><b>15년</b><span>함께한 시간</span></div><div><b>149장</b><span>사진</span></div><div><b>12</b><span>연도의 기록</span></div><div><b>12</b><span>가족 기억</span></div></div>
       <div class="lb-readtitle">✨ AI가 발견한 하루</div>
       <div class="lb-ins"><div class="row"><span class="e">🌸</span><div><div class="k">가장 좋아했던 계절</div><div class="v">봄</div></div></div><div class="row"><span class="e">📍</span><div><div class="k">가장 오래 머문 장소</div><div class="v">북한산 둘레길</div></div></div><div class="row"><span class="e">☔</span><div><div class="k">반복된 습관</div><div class="v">비 오는 날 산책</div></div></div><div class="row"><span class="e">❤️</span><div><div class="k">가장 가까웠던 사람</div><div class="v">엄마</div></div></div></div>
@@ -866,9 +870,9 @@ function bookHTML(idx){
   } else if(p.type==='memorial'){
     inner=`<div class="book-pg"><div class="cnum">마지막 장</div><h4>함께한 시간이 남긴 흔적</h4>
       <div class="scene"><img src="assets/haru/${p.cov}" alt="하루"></div>
-      <div class="quote">2025년 여름, 마지막 사진들. 함께한 시간은 여기서 끝난 것이 아니라, 한 권의 이야기로 남았습니다.</div>
+      <div class="quote">2025년 여름, 마지막 사진들.\n함께한 시간은 사라지지 않고, 한 권의 이야기로 남았습니다.</div>
       <div class="lb-sig"><div class="sig-title">🐾 하루가 남긴 흔적</div><div class="lb-ins"><div class="row"><span class="e">🌸</span><div><div class="k">좋아했던 계절</div><div class="v">봄</div></div></div><div class="row"><span class="e">🥾</span><div><div class="k">가장 오래 걸은 길</div><div class="v">북한산 둘레길</div></div></div><div class="row"><span class="e">😊</span><div><div class="k">가장 많이 찍힌 순간</div><div class="v">산책 직후</div></div></div><div class="row"><span class="e">❤️</span><div><div class="k">가장 가까웠던 사람</div><div class="v">엄마</div></div></div></div></div>
-      <div class="mem-portal"><div class="mem-count">📷 2025년 8월의 기록 · 7장</div><button onclick="toast('그 여름의 기록을 조용히 엽니다 🌿')">조용히 보기</button></div></div>`;
+      <div class="mem-portal"><div class="mem-count">🎞️ 하루의 회상 · 27초</div><video class="mem-video" playsinline controls preload="none" poster="assets/haru/thumb/141.jpg"><source src="assets/haru/haru-memorial.mp4" type="video/mp4"></video><div class="mem-sub">조용히, 천천히 보셔도 괜찮아요.</div></div></div>`;
   } else {
     const ev=p.ev;
     const chips=[`📷 사진 ${ev.photos}장`, ev.video?`🎥 영상 ${ev.video}개`:'', ev.place?`📍 ${ev.place}`:'', ev.memo?`👨‍👩‍👧 가족 메모 ${ev.memo}개`:'', ev.extra?`✨ ${ev.extra}`:''].filter(Boolean).map(t=>`<span>${t}</span>`).join('');
@@ -877,7 +881,7 @@ function bookHTML(idx){
       <div class="cnum">${p.year}</div><h4>${p.t}</h4>
       <div class="scene"><img src="assets/haru/${p.cov}" alt="${p.t}"></div>
       <div class="quote">${p.scene}</div>
-      <div class="lb-evtitle">그 시기 하루에게 남은 흔적</div>
+      <div class="lb-evtitle">그때, 하루에게 남은 흔적</div>
       <div class="lb-ev">${chips}</div>
       <div class="lb-ai">🤖 ${p.ai}
         <button class="lb-whybtn" onclick="lbToggle(this)">왜 이렇게 읽었나요? ›</button>
