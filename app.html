@@ -37,7 +37,7 @@
   .switch-note{font-size:13px;color:var(--muted)}.switch-note b{color:var(--ink)}
 
   .stage{max-width:1180px;margin:24px auto 70px;padding:0 24px;display:flex;justify-content:center}
-  .view{display:none}.view.on{display:block;animation:fade .35s ease}
+  .view{display:none}.view.on{display:block;width:100%;animation:fade .35s ease}
   @keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 
   /* photo placeholders — real photo over gradient fallback (gradient shows if file missing) */
@@ -293,6 +293,8 @@
   .gallery.lg{grid-template-columns:repeat(6,1fr);gap:6px}
   .gallery img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:6px;display:block;background:#eadfce}
   .memnote{margin-top:14px;font-size:12px;color:var(--muted);text-align:center;background:var(--cream2);border-radius:11px;padding:11px 12px;line-height:1.55}
+  .curate-stats{display:flex;gap:7px;flex-wrap:wrap;margin:-4px 0 12px}
+  .curate-stats span{font-size:11px;font-weight:700;color:var(--brand-deep);background:var(--brand-soft);border:1px solid #cfe9e2;padding:4px 9px;border-radius:999px}
 
   /* --- LIFEBOOK (interactive) --- */
   .book{background:linear-gradient(180deg,#fffdf8,#f8f0e2);border:1px solid #ece0cc;border-radius:18px;box-shadow:var(--shadow);overflow:hidden}
@@ -346,7 +348,7 @@
   .mcap{text-align:center;font-size:12.5px;color:var(--muted);margin-top:16px}
 
   /* ============================ DESKTOP ============================ */
-  .desktop{width:1080px;max-width:100%;background:#fff;border-radius:16px;overflow:hidden;box-shadow:var(--shadow-lg);border:1px solid var(--line)}
+  .desktop{width:100%;max-width:1080px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:var(--shadow-lg);border:1px solid var(--line)}
   .browser{height:46px;background:#f1ece1;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:14px;padding:0 16px}
   .browser .dots{display:flex;gap:7px}.browser .dots i{width:12px;height:12px;border-radius:50%;display:block}
   .browser .dots i:nth-child(1){background:#ff5f57}.browser .dots i:nth-child(2){background:#febc2e}.browser .dots i:nth-child(3){background:#28c840}
@@ -383,7 +385,7 @@
   .helper{font-size:12.5px;color:var(--muted);text-align:center;margin-top:16px}
 
   .smallnote{display:none;max-width:560px;margin:20px auto;background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px;text-align:center;font-size:13.5px;color:var(--muted)}
-  @media(max-width:1120px){.desktop{transform:scale(.72);transform-origin:top center}#view-desktop.on{display:flex;justify-content:center;overflow:hidden;height:600px}}
+  @media(max-width:1120px){#view-desktop.on{display:block}.main{max-height:none}}
   @media(max-width:780px){#view-desktop .desktop{display:none}#view-desktop.on .smallnote{display:block}}
 </style>
 </head>
@@ -525,7 +527,7 @@
             <div class="secttl" style="margin-top:8px">📍 하루의 삶의 이야기</div>
             <div class="sfeed" id="m-sfeed"></div>
             <div class="secttl">📷 하루의 사진 보관함 · <b id="m-galcount">0</b>장</div>
-            <div class="galnote">AI가 실제로 읽어들인 사진이에요. 촬영 연도별로 정리했어요.</div>
+            <div class="galnote">원본 149장에서 흔들림·중복·저해상도 24장을 자동으로 정리하고, <b>대표 125장</b>을 모았어요.</div><div class="curate-stats"><span>🧹 흔들림 17</span><span>🔁 중복·유사 4</span><span>🔍 저해상도 3</span></div>
             <div class="yearbar" id="m-yearbar"></div>
             <div class="gallery" id="m-gallery"></div>
             <div class="memnote">🌈 2025년 8월의 마지막 사진들은 따로 정중히 보관하고 있어요.</div>
@@ -716,7 +718,7 @@
               <div class="seg-sm"><button class="on" id="dtab-st" onclick="desktopView('story')">📖 이야기</button><button id="dtab-bk" onclick="desktopView('book')">📔 라이프북</button></div></div>
             <div class="sfeed" id="d-sfeed" style="max-width:640px"></div>
             <div class="secttl">📷 하루의 사진 보관함 · <b id="d-galcount">0</b>장</div>
-            <div class="galnote">AI가 실제로 읽어들인 사진이에요. 촬영 연도별로 정리했어요.</div>
+            <div class="galnote">원본 149장에서 흔들림·중복·저해상도 24장을 자동으로 정리하고, <b>대표 125장</b>을 모았어요.</div><div class="curate-stats"><span>🧹 흔들림 17</span><span>🔁 중복·유사 4</span><span>🔍 저해상도 3</span></div>
             <div class="yearbar" id="d-yearbar" style="max-width:640px"></div>
             <div class="gallery lg" id="d-gallery"></div>
             <div class="memnote" style="max-width:640px">🌈 2025년 8월의 마지막 사진들은 따로 정중히 보관하고 있어요.</div>
@@ -760,7 +762,7 @@
 
 <script>
 /* ---------- data ---------- */
-const PHOTOS=[["thumb/034.jpg",2010,0],["thumb/036.jpg",2011,0],["thumb/037.jpg",2011,0],["thumb/038.jpg",2011,0],["thumb/039.jpg",2011,0],["thumb/040.jpg",2011,0],["thumb/041.jpg",2011,0],["thumb/042.jpg",2011,0],["thumb/043.jpg",2011,0],["thumb/044.jpg",2011,0],["thumb/045.jpg",2011,0],["thumb/046.jpg",2012,0],["thumb/047.jpg",2012,0],["thumb/048.jpg",2012,0],["thumb/049.jpg",2012,0],["thumb/050.jpg",2012,0],["thumb/051.jpg",2012,0],["thumb/052.jpg",2012,0],["thumb/053.jpg",2012,0],["thumb/054.jpg",2012,0],["thumb/055.jpg",2012,0],["thumb/056.jpg",2012,0],["thumb/057.jpg",2012,0],["thumb/001.jpg",2013,0],["thumb/058.jpg",2013,0],["thumb/059.jpg",2013,0],["thumb/060.jpg",2013,0],["thumb/061.jpg",2013,0],["thumb/062.jpg",2013,0],["thumb/063.jpg",2013,0],["thumb/064.jpg",2013,0],["thumb/065.jpg",2013,0],["thumb/066.jpg",2013,0],["thumb/067.jpg",2013,0],["thumb/068.jpg",2013,0],["thumb/069.jpg",2013,0],["thumb/070.jpg",2013,0],["thumb/071.jpg",2013,0],["thumb/072.jpg",2013,0],["thumb/073.jpg",2013,0],["thumb/074.jpg",2013,0],["thumb/075.jpg",2013,0],["thumb/076.jpg",2013,0],["thumb/077.jpg",2013,0],["thumb/078.jpg",2013,0],["thumb/079.jpg",2013,0],["thumb/080.jpg",2014,0],["thumb/081.jpg",2014,0],["thumb/082.jpg",2014,0],["thumb/083.jpg",2014,0],["thumb/084.jpg",2014,0],["thumb/085.jpg",2014,0],["thumb/086.jpg",2014,0],["thumb/087.jpg",2014,0],["thumb/088.jpg",2014,0],["thumb/089.jpg",2014,0],["thumb/090.jpg",2014,0],["thumb/091.jpg",2014,0],["thumb/092.jpg",2015,0],["thumb/093.jpg",2015,0],["thumb/094.jpg",2015,0],["thumb/095.jpg",2015,0],["thumb/096.jpg",2016,0],["thumb/097.jpg",2016,0],["thumb/098.jpg",2016,0],["thumb/099.jpg",2016,0],["thumb/100.jpg",2016,0],["thumb/101.jpg",2017,0],["thumb/102.jpg",2017,0],["thumb/103.jpg",2017,0],["thumb/104.jpg",2017,0],["thumb/105.jpg",2018,0],["thumb/106.jpg",2018,0],["thumb/107.jpg",2018,0],["thumb/108.jpg",2018,0],["thumb/109.jpg",2018,0],["thumb/110.jpg",2019,0],["thumb/111.jpg",2019,0],["thumb/112.jpg",2019,0],["thumb/113.jpg",2019,0],["thumb/114.jpg",2019,0],["thumb/115.jpg",2019,0],["thumb/116.jpg",2019,0],["thumb/117.jpg",2019,0],["thumb/118.jpg",2019,0],["thumb/119.jpg",2019,0],["thumb/120.jpg",2019,0],["thumb/121.jpg",2019,0],["thumb/122.jpg",2019,0],["thumb/123.jpg",2019,0],["thumb/124.jpg",2019,0],["thumb/125.jpg",2019,0],["thumb/126.jpg",2019,0],["thumb/127.jpg",2020,0],["thumb/128.jpg",2020,0],["thumb/129.jpg",2020,0],["thumb/130.jpg",2020,0],["thumb/131.jpg",2020,0],["thumb/132.jpg",2020,0],["thumb/133.jpg",2020,0],["thumb/134.jpg",2020,0],["thumb/135.jpg",2020,0],["thumb/136.jpg",2020,0],["thumb/137.jpg",2020,0],["thumb/138.jpg",2020,0],["thumb/139.jpg",2020,0],["thumb/140.jpg",2021,0],["thumb/002.jpg",0,0],["thumb/003.jpg",0,0],["thumb/004.jpg",0,0],["thumb/005.jpg",0,0],["thumb/006.jpg",0,0],["thumb/007.jpg",0,0],["thumb/008.jpg",0,0],["thumb/009.jpg",0,0],["thumb/010.jpg",0,0],["thumb/011.jpg",0,0],["thumb/012.jpg",0,0],["thumb/013.jpg",0,0],["thumb/014.jpg",0,0],["thumb/015.jpg",0,0],["thumb/016.jpg",0,0],["thumb/017.jpg",0,0],["thumb/018.jpg",0,0],["thumb/019.jpg",0,0],["thumb/020.jpg",0,0],["thumb/021.jpg",0,0],["thumb/022.jpg",0,0],["thumb/023.jpg",0,0],["thumb/024.jpg",0,0],["thumb/025.jpg",0,0],["thumb/026.jpg",0,0],["thumb/027.jpg",0,0],["thumb/028.jpg",0,0],["thumb/029.jpg",0,0],["thumb/030.jpg",0,0],["thumb/031.jpg",0,0],["thumb/032.jpg",0,0],["thumb/033.jpg",0,0],["thumb/035.jpg",0,0],["thumb/148.jpg",0,0],["thumb/149.jpg",0,0],["thumb/150.jpg",0,0],["thumb/151.jpg",0,0],["thumb/152.jpg",0,0],["thumb/153.jpg",0,0],["thumb/154.jpg",0,0],["thumb/155.jpg",0,0],["thumb/156.jpg",0,0],["thumb/141.jpg",2025,1],["thumb/142.jpg",2025,1],["thumb/143.jpg",2025,1],["thumb/144.jpg",2025,1],["thumb/145.jpg",2025,1],["thumb/146.jpg",2025,1],["thumb/147.jpg",2025,1]];
+const PHOTOS=[["thumb/034.jpg",2010],["thumb/044.jpg",2011],["thumb/038.jpg",2011],["thumb/037.jpg",2011],["thumb/039.jpg",2011],["thumb/042.jpg",2011],["thumb/036.jpg",2011],["thumb/043.jpg",2011],["thumb/041.jpg",2011],["thumb/040.jpg",2011],["thumb/046.jpg",2012],["thumb/049.jpg",2012],["thumb/055.jpg",2012],["thumb/053.jpg",2012],["thumb/048.jpg",2012],["thumb/052.jpg",2012],["thumb/057.jpg",2012],["thumb/056.jpg",2012],["thumb/050.jpg",2012],["thumb/054.jpg",2012],["thumb/047.jpg",2012],["thumb/051.jpg",2012],["thumb/066.jpg",2013],["thumb/064.jpg",2013],["thumb/063.jpg",2013],["thumb/071.jpg",2013],["thumb/061.jpg",2013],["thumb/068.jpg",2013],["thumb/079.jpg",2013],["thumb/062.jpg",2013],["thumb/077.jpg",2013],["thumb/067.jpg",2013],["thumb/073.jpg",2013],["thumb/060.jpg",2013],["thumb/078.jpg",2013],["thumb/069.jpg",2013],["thumb/074.jpg",2013],["thumb/075.jpg",2013],["thumb/059.jpg",2013],["thumb/076.jpg",2013],["thumb/070.jpg",2013],["thumb/058.jpg",2013],["thumb/072.jpg",2013],["thumb/001.jpg",2013],["thumb/089.jpg",2014],["thumb/091.jpg",2014],["thumb/082.jpg",2014],["thumb/085.jpg",2014],["thumb/083.jpg",2014],["thumb/088.jpg",2014],["thumb/084.jpg",2014],["thumb/080.jpg",2014],["thumb/087.jpg",2014],["thumb/090.jpg",2014],["thumb/086.jpg",2014],["thumb/081.jpg",2014],["thumb/092.jpg",2015],["thumb/094.jpg",2015],["thumb/097.jpg",2016],["thumb/096.jpg",2016],["thumb/099.jpg",2016],["thumb/098.jpg",2016],["thumb/102.jpg",2017],["thumb/103.jpg",2017],["thumb/107.jpg",2018],["thumb/106.jpg",2018],["thumb/112.jpg",2019],["thumb/115.jpg",2019],["thumb/114.jpg",2019],["thumb/118.jpg",2019],["thumb/119.jpg",2019],["thumb/113.jpg",2019],["thumb/120.jpg",2019],["thumb/117.jpg",2019],["thumb/110.jpg",2019],["thumb/121.jpg",2019],["thumb/131.jpg",2020],["thumb/132.jpg",2020],["thumb/127.jpg",2020],["thumb/133.jpg",2020],["thumb/135.jpg",2020],["thumb/138.jpg",2020],["thumb/130.jpg",2020],["thumb/137.jpg",2020],["thumb/136.jpg",2020],["thumb/139.jpg",2020],["thumb/134.jpg",2020],["thumb/129.jpg",2020],["thumb/140.jpg",2021],["thumb/151.jpg",0],["thumb/154.jpg",0],["thumb/009.jpg",0],["thumb/003.jpg",0],["thumb/150.jpg",0],["thumb/005.jpg",0],["thumb/032.jpg",0],["thumb/007.jpg",0],["thumb/008.jpg",0],["thumb/031.jpg",0],["thumb/006.jpg",0],["thumb/152.jpg",0],["thumb/156.jpg",0],["thumb/029.jpg",0],["thumb/030.jpg",0],["thumb/025.jpg",0],["thumb/028.jpg",0],["thumb/022.jpg",0],["thumb/021.jpg",0],["thumb/023.jpg",0],["thumb/027.jpg",0],["thumb/016.jpg",0],["thumb/024.jpg",0],["thumb/014.jpg",0],["thumb/017.jpg",0],["thumb/018.jpg",0],["thumb/011.jpg",0],["thumb/010.jpg",0],["thumb/013.jpg",0],["thumb/012.jpg",0],["thumb/015.jpg",0],["thumb/026.jpg",0],["thumb/002.jpg",0],["thumb/019.jpg",0],["thumb/035.jpg",0],["thumb/153.jpg",0]];
 function buildGallery(){
   const g=PHOTOS.filter(p=>!p[2]);
   const hist={}; g.forEach(p=>{if(p[1])hist[p[1]]=(hist[p[1]]||0)+1;});
