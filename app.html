@@ -99,6 +99,21 @@
   .add-nudge span{font-weight:600;color:var(--muted);font-size:11.5px}
   .page-top .sub b{color:var(--brand-deep)}
   .build-badge{font-size:10.5px;font-weight:800;color:#fff;background:var(--brand);padding:3px 9px;border-radius:999px;margin-left:6px}
+  /* desktop lifebook: chapter rail + 2-col spread (사진 35 / 해석 65) */
+  .dbook-wrap{display:grid;grid-template-columns:178px 1fr;gap:22px;align-items:start}
+  .dbook-rail{position:sticky;top:8px;background:#fbf7ef;border:1px solid #ece0cc;border-radius:14px;padding:14px 10px;display:flex;flex-direction:column;gap:2px}
+  .dbook-rail .dr-h{font-size:10px;font-weight:800;color:var(--muted);letter-spacing:.12em;padding:2px 9px 9px}
+  .dbook-rail .dr-item{display:flex;align-items:center;gap:9px;text-align:left;background:none;border:none;font-family:inherit;font-size:12.5px;font-weight:700;color:#6b6253;padding:9px;border-radius:9px;cursor:pointer;width:100%}
+  .dbook-rail .dr-item:hover{background:#f1e9da}
+  .dbook-rail .dr-item.on{background:var(--brand);color:#fff}
+  .dbook-rail .dr-item .dr-n{font-size:10px;font-weight:800;opacity:.65;min-width:15px}
+  #d-book-inner{min-width:0}
+  #d-book-inner .book-pg.lb-life:has(.lb-evphoto){display:grid;grid-template-columns:300px 1fr;column-gap:30px;align-items:start}
+  #d-book-inner .book-pg.lb-life:has(.lb-evphoto) > *{grid-column:2;min-width:0}
+  #d-book-inner .book-pg.lb-life:has(.lb-evphoto) > .cnum,#d-book-inner .book-pg.lb-life:has(.lb-evphoto) > h4{grid-column:2}
+  #d-book-inner .book-pg.lb-life:has(.lb-evphoto) > .lb-evphoto{grid-column:1;grid-row:1 / span 99;align-self:start;margin-top:30px}
+  #d-book-inner .book-pg.lb-life:has(.lb-evphoto) > .lb-evphoto img{height:400px}
+  #d-book-inner .lb-ev{gap:8px}
   .clip-modal{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.84);display:none;align-items:center;justify-content:center;padding:20px}
   .clip-modal.on{display:flex}
   .clip-box{position:relative;max-width:400px;width:100%}
@@ -570,7 +585,7 @@
 
 <div class="page-top">
   <span class="brandmark"><span class="paw">🐾</span>Pet Lifebook</span>
-  <span class="sub">powered by <b>LifeOS</b> · 하루와 다시 만나는 앱</span><span class="build-badge">빌드 06-03 · v10</span>
+  <span class="sub">powered by <b>LifeOS</b> · 하루와 다시 만나는 앱</span><span class="build-badge">빌드 06-03 · 데스크탑 v11</span>
   <a class="back" href="index.html">← 제품 소개로</a>
 </div>
 
@@ -913,7 +928,10 @@
           <div class="dscreen" id="d-book">
             <div class="main-head"><div><h2>하루의 라이프북</h2><p>지어내지 않고, 자료에 근거해서만 쓴 한 권의 이야기예요.</p></div>
               <div class="seg-sm"><button id="dtab-st2" onclick="desktopView('story')">📖 이야기</button><button class="on" id="dtab-bk2" onclick="desktopView('book')">📔 라이프북</button></div></div>
-            <div id="d-book-inner" style="max-width:560px"></div>
+            <div class="dbook-wrap">
+              <div class="dbook-rail" id="d-book-rail"></div>
+              <div id="d-book-inner"></div>
+            </div>
           </div>
 
           <!-- desktop family -->
@@ -1167,10 +1185,13 @@ function heatBarsHTML(season){var get=function(p){return season==='전체'?p.vis
 function replayRoute(btn){var pg=btn.closest('.book-pg');var dot=pg.querySelector('.rdot');if(!dot)return;var pts=[[30,150],[80,120],[130,134],[195,82],[248,104],[292,68]];dot.setAttribute('opacity','1');var segDur=560,t0=null;function step(ts){if(!t0)t0=ts;var el=ts-t0;var i=Math.min(pts.length-2,Math.floor(el/segDur));var fr=Math.min(1,(el-i*segDur)/segDur);var a=pts[i],b=pts[i+1];dot.setAttribute('cx',a[0]+(b[0]-a[0])*fr);dot.setAttribute('cy',a[1]+(b[1]-a[1])*fr);if(el<segDur*(pts.length-1))requestAnimationFrame(step);else setTimeout(function(){dot.setAttribute('opacity','0');},900);}requestAnimationFrame(step);if(typeof toast==='function')toast('GPS·사진 시간정보로 그날의 길을 다시 이어봤어요 🐾');}
 function selectSeason(btn,season){var pg=btn.closest('.book-pg');pg.querySelectorAll('.season-filter .sf-btn').forEach(function(b){b.classList.toggle('on',b===btn);});pg.querySelector('.heat-bars').innerHTML=heatBarsHTML(season);}
 function selectPlace(btn,i){const pg=btn.closest('.book-pg');pg.querySelector('.place-card').innerHTML=placeCardHTML(i);pg.querySelectorAll('.heatbar').forEach((b,j)=>b.classList.toggle('on',j===i));}
+function chapterRailHTML(){var lab=LB_PAGES.map(function(p,i){var t=p.type;var name=t==='cover'?'표지':t==='contents'?'목차':t==='read'?'AI가 읽은 하루':t==='map'?'함께 걸은 길':t==='health'?'건강과 변화':t==='voice'?'함께한 말들':t==='signature'?'하루가 남긴 흔적':t==='video'?'회상 영상':t==='keep'?'한 권으로 남기기':(p.title||'챕터');var num=p.ch?p.ch:'';return '<button class="dr-item" data-i="'+i+'" onclick="gotoBookPage('+i+')"><span class="dr-n">'+(num||'·')+'</span>'+name+'</button>';}).join('');return '<div class="dr-h">CHAPTERS</div>'+lab;}
+function updateRail(){var r=document.getElementById('d-book-rail');if(!r)return;if(!r.innerHTML)r.innerHTML=chapterRailHTML();var items=r.querySelectorAll('.dr-item');for(var k=0;k<items.length;k++){items[k].classList.toggle('on',+items[k].dataset.i===bookPage);}}
+function gotoBookPage(i){bookPage=i;document.getElementById('m-book').innerHTML=bookHTML(i);document.getElementById('d-book-inner').innerHTML=bookHTML(i);updateRail();var dbi=document.getElementById('d-book-inner');if(dbi)dbi.scrollIntoView({block:'nearest'});}
 function flipBook(dir){
   bookPage=(bookPage+dir+LB_PAGES.length)%LB_PAGES.length;
   document.getElementById('m-book').innerHTML=bookHTML(bookPage);
-  document.getElementById('d-book-inner').innerHTML=bookHTML(bookPage);
+  document.getElementById('d-book-inner').innerHTML=bookHTML(bookPage);updateRail();
 }
 
 /* render */
@@ -1233,7 +1254,7 @@ document.getElementById('d-timeline').innerHTML=timelineHTML();
 document.getElementById('m-sfeed').innerHTML=storyHTML();
 document.getElementById('d-sfeed').innerHTML=storyHTML();
 document.getElementById('m-book').innerHTML=bookHTML(0);
-document.getElementById('d-book-inner').innerHTML=bookHTML(0);
+document.getElementById('d-book-inner').innerHTML=bookHTML(0);updateRail();
 
 /* ---------- device switch ---------- */
 function setDevice(dev){
@@ -1269,7 +1290,7 @@ function pickMusic(btn,trk){memTrack=trk;document.querySelectorAll('.music-pick 
 function memPlay(v){if(memTrack){var a=document.getElementById('mem-music');a.src='assets/haru/'+memTrack;a.currentTime=v.currentTime%27;a.play().catch(function(){});}}
 function memPause(){var a=document.getElementById('mem-music');if(a)a.pause();}
 function memEnd(){var a=document.getElementById('mem-music');if(a){a.pause();a.currentTime=0;}}
-function openKeep(){goAny('book');var i=LB_PAGES.findIndex(function(x){return x.type==='keep';});bookPage=i>=0?i:LB_PAGES.length-1;document.getElementById('m-book').innerHTML=bookHTML(bookPage);document.getElementById('d-book-inner').innerHTML=bookHTML(bookPage);}
+function openKeep(){goAny('book');var i=LB_PAGES.findIndex(function(x){return x.type==='keep';});bookPage=i>=0?i:LB_PAGES.length-1;document.getElementById('m-book').innerHTML=bookHTML(bookPage);document.getElementById('d-book-inner').innerHTML=bookHTML(bookPage);updateRail();}
 
 /* ---------- desktop screens ---------- */
 const D_SCREENS=['home','upload','discover','reveal','story','book','family','famdetail'];
@@ -1343,7 +1364,7 @@ function toast(msg){
       const t=demoMap[demo]; const i=LB_PAGES.findIndex(x=>x.type===t);
       bookPage = i>=0 ? i : 0;
       document.getElementById('m-book').innerHTML=bookHTML(bookPage);
-      document.getElementById('d-book-inner').innerHTML=bookHTML(bookPage);
+      document.getElementById('d-book-inner').innerHTML=bookHTML(bookPage);updateRail();
     } else if(screen){ go(screen); }
   }catch(e){}
 })();
