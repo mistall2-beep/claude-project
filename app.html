@@ -299,6 +299,17 @@
   .gallery{display:grid;grid-template-columns:repeat(4,1fr);gap:4px}
   .gallery.lg{grid-template-columns:repeat(6,1fr);gap:6px}
   .gallery img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:6px;display:block;background:#eadfce}
+  .ht-sub{font-size:12.5px;color:var(--muted);margin:-6px 0 14px}
+  .htimeline{position:relative;padding-left:30px}
+  .htimeline::before{content:"";position:absolute;left:9px;top:8px;bottom:18px;width:2px;background:linear-gradient(180deg,var(--brand),var(--warm))}
+  .ht-item{position:relative;display:flex;gap:12px;width:100%;text-align:left;background:none;border:none;cursor:pointer;font-family:inherit;padding:0 0 14px}
+  .ht-item::before{content:"";position:absolute;left:-26px;top:20px;width:14px;height:14px;border-radius:50%;background:#fff;border:3px solid var(--brand);z-index:1;transition:.15s}
+  .ht-item:hover::before{transform:scale(1.2)}
+  .ht-item .ht-photo{width:66px;height:66px;border-radius:13px;object-fit:cover;flex:none;background:#eadfce;box-shadow:var(--shadow)}
+  .ht-item .ht-b{flex:1;background:#fff;border:1px solid var(--line);border-radius:13px;padding:11px 13px;box-shadow:var(--shadow)}
+  .ht-item .ht-yr{font-size:12px;font-weight:800;color:var(--brand-deep)}
+  .ht-item .ht-t{font-size:14.5px;font-weight:800;margin-top:1px}
+  .ht-item .ht-n{font-size:12px;color:var(--muted);margin-top:3px;line-height:1.5}
   .memnote{margin-top:14px;font-size:12px;color:var(--muted);text-align:center;background:var(--cream2);border-radius:11px;padding:11px 12px;line-height:1.55}
   .curate-stats{display:flex;gap:7px;flex-wrap:wrap;margin:-4px 0 12px}
   .curate-stats span{font-size:11px;font-weight:700;color:var(--brand-deep);background:var(--brand-soft);border:1px solid #cfe9e2;padding:4px 9px;border-radius:999px}
@@ -531,7 +542,10 @@
 
           <!-- STORY FEED: 삶의 이야기 -->
           <div class="mscreen" id="s-story">
-            <div class="secttl" style="margin-top:8px">📍 하루의 삶의 이야기</div>
+            <div class="secttl" style="margin-top:8px">📅 하루의 타임라인</div>
+            <div class="ht-sub">2010년부터 2025년까지, 하루의 생애 흐름이에요.</div>
+            <div class="htimeline" id="m-timeline"></div>
+            <div class="secttl">📖 더 자세한 이야기</div>
             <div class="sfeed" id="m-sfeed"></div>
             <div class="secttl">📷 하루의 사진 보관함 · <b id="m-galcount">0</b>장</div>
             <div class="galnote">원본 149장에서 흔들림·중복·저해상도 24장을 자동으로 정리하고, <b>대표 125장</b>을 모았어요.</div><div class="curate-stats"><span>🧹 흔들림 17</span><span>🔁 중복·유사 4</span><span>🔍 저해상도 3</span></div>
@@ -723,6 +737,10 @@
           <div class="dscreen" id="d-story">
             <div class="main-head"><div><h2>하루의 이야기</h2><p>흩어진 149장이 시간 위에 엮여, 한 편의 이야기가 되었어요.</p></div>
               <div class="seg-sm"><button class="on" id="dtab-st" onclick="desktopView('story')">📖 이야기</button><button id="dtab-bk" onclick="desktopView('book')">📔 라이프북</button></div></div>
+            <div class="secttl">📅 하루의 타임라인</div>
+            <div class="ht-sub">2010년부터 2025년까지, 하루의 생애 흐름이에요.</div>
+            <div class="htimeline" id="d-timeline" style="max-width:640px"></div>
+            <div class="secttl">📖 더 자세한 이야기</div>
             <div class="sfeed" id="d-sfeed" style="max-width:640px"></div>
             <div class="secttl">📷 하루의 사진 보관함 · <b id="d-galcount">0</b>장</div>
             <div class="galnote">원본 149장에서 흔들림·중복·저해상도 24장을 자동으로 정리하고, <b>대표 125장</b>을 모았어요.</div><div class="curate-stats"><span>🧹 흔들림 17</span><span>🔁 중복·유사 4</span><span>🔍 저해상도 3</span></div>
@@ -919,6 +937,24 @@ function flipBook(dir){
 }
 
 /* render */
+const TIMELINE=[
+  {year:'2010',cov:'thumb/037.jpg',title:'처음 만난 날',note:'가장 오래된 사진 · 함께의 시작',go:'book'},
+  {year:'2013',cov:'thumb/069.jpg',title:'가장 빛나던 해',note:'사진이 가장 많았던 해 · 23장',go:'story'},
+  {year:'2016',cov:'thumb/098.jpg',title:'늘 곁에 있던 사이',note:'보호자와 함께한 시간',go:'family'},
+  {year:'2019',cov:'thumb/117.jpg',title:'다시 늘어난 웃음',note:'정면을 보고 활짝 웃던 날',go:'story'},
+  {year:'2020 봄',cov:'sniff-spring.jpg',title:'비 오는 날 산책',note:'봄철 산책 사진이 유독 많았어요',go:'story'},
+  {year:'2025',cov:'portrait.jpg',title:'마지막 계절',note:'함께한 시간은 이야기로 남았어요',go:'book'},
+];
+function goAny(n){document.getElementById('view-desktop').classList.contains('on')?showD(n):showM(n);}
+function timelineHTML(){
+  return TIMELINE.map(d=>`
+    <button class="ht-item" onclick="goAny('${d.go}')">
+      <img class="ht-photo" src="assets/haru/${d.cov}" alt="${d.title}">
+      <div class="ht-b"><div class="ht-yr">${d.year}</div><div class="ht-t">${d.title}</div><div class="ht-n">${d.note}</div></div>
+    </button>`).join('');
+}
+document.getElementById('m-timeline').innerHTML=timelineHTML();
+document.getElementById('d-timeline').innerHTML=timelineHTML();
 document.getElementById('m-sfeed').innerHTML=storyHTML();
 document.getElementById('d-sfeed').innerHTML=storyHTML();
 document.getElementById('m-book').innerHTML=bookHTML(0);
