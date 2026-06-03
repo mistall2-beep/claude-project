@@ -273,6 +273,11 @@
   .toc-row .tx span{font-size:12px;color:var(--muted)}
   .lb-spine-note{font-size:12.5px;color:var(--muted);text-align:center;background:#faf6ee;border:1px solid #ece0cc;border-radius:11px;padding:11px;line-height:1.5}
   .lb-readtitle{font-size:13px;font-weight:800;color:var(--brand-deep);margin:18px 0 10px}
+  .src-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+  .src-grid div{background:#faf6ee;border:1px solid #ece0cc;border-radius:11px;padding:10px 6px;text-align:center;font-size:10.5px;color:var(--muted)}
+  .src-grid div span{font-size:18px;display:block}
+  .src-grid div b{display:block;font-size:16px;font-weight:800;color:var(--warm-deep);margin:2px 0 1px}
+  .dline .ck{font-size:13px}
   .lb-whybtn{display:block;margin-top:9px;background:none;border:none;color:var(--brand-deep);font-weight:800;font-size:12px;cursor:pointer;padding:0}
   .lb-ai .why-box{display:none;margin-top:9px;font-size:12px;color:#5a5346;background:#fff;border:1px solid var(--line);border-radius:10px;padding:11px 12px;line-height:1.6}
   .lb-ai .why-box.on{display:block}
@@ -559,10 +564,10 @@
               <div class="reading">발견됨</div>
               <div class="sub" id="m-reading">하루의 삶을 읽고 있습니다…</div>
               <div class="dlive" id="m-dlive">
-                <div class="dline"><span class="ck">✓</span><span><b>2010년</b> 가장 오래된 사진을 발견했어요</span></div>
-                <div class="dline"><span class="ck">✓</span><span><b>2013년</b> 사진이 가장 많았어요 (23장)</span></div>
-                <div class="dline"><span class="ck">✓</span><span>가족과 함께 찍은 사진을 연결했어요</span></div>
-                <div class="dline"><span class="ck">✓</span><span>봄철 사진 급증 <b>→ 비 오는 날 산책 추정</b></span></div>
+                <div class="dline"><span class="ck">📷</span><span><b>2010년</b> 가장 오래된 사진을 발견했어요</span></div>
+                <div class="dline"><span class="ck">🏥</span><span>동물병원 <b>진료기록 9건</b>·약 영수증을 읽었어요</span></div>
+                <div class="dline"><span class="ck">🗺️</span><span>GPS에서 <b>북한산 둘레길</b> 산책 경로를 복원했어요</span></div>
+                <div class="dline"><span class="ck">🎙️</span><span>음성·메모에서 하루를 부르던 기록을 찾았어요</span></div>
               </div>
             </div>
           </div>
@@ -646,9 +651,11 @@
             <div class="sh-sub">정리 안 하셔도 돼요. 그냥 올리세요.<br/>AI가 하루의 삶을 읽어요.</div>
             <div class="sheet-opts">
               <button onclick="pickUpload()"><span>📷</span>사진·영상</button>
-              <button onclick="pickUpload()"><span>📄</span>병원기록</button>
+              <button onclick="pickUpload()"><span>🏥</span>진료기록</button>
+              <button onclick="pickUpload()"><span>💊</span>약 영수증</button>
+              <button onclick="pickUpload()"><span>🗺️</span>산책 기록</button>
               <button onclick="pickUpload()"><span>🎙️</span>음성</button>
-              <button onclick="pickUpload()"><span>✍️</span>메모</button>
+              <button onclick="pickUpload()"><span>📝</span>메모</button>
             </div>
             <div class="sheet-note">올리는 건 언제나 무료예요.<br/><b>흩어진 기억을 올리면, 삶의 이야기로 엮여요.</b></div>
           </div>
@@ -748,10 +755,10 @@
               <div class="reading">발견됨</div>
               <div class="sub" id="d-reading">하루의 삶을 읽고 있습니다…</div>
               <div class="dlive" id="d-dlive">
-                <div class="dline"><span class="ck">✓</span><span><b>2010.05.20</b> 가장 오래된 사진을 발견했어요</span></div>
-                <div class="dline"><span class="ck">✓</span><span><b>강남 ○○동물병원</b> 영수증 17건을 찾았어요</span></div>
-                <div class="dline"><span class="ck">✓</span><span>2022 여름 사진 급증 <b>→ 제주 여행으로 추정</b></span></div>
-                <div class="dline"><span class="ck">✓</span><span>비 오는 날 사진 비중 <b>21%</b> → ‘비 오는 날 산책’ 추정</span></div>
+                <div class="dline"><span class="ck">📷</span><span>사진 <b>149장</b>·영상 12개를 시간순으로 정렬했어요</span></div>
+                <div class="dline"><span class="ck">🏥</span><span>동물병원 <b>진료기록 9건</b>·약 영수증 6건을 읽었어요</span></div>
+                <div class="dline"><span class="ck">🗺️</span><span>GPS·산책지도에서 <b>북한산 둘레길</b> 경로를 복원했어요</span></div>
+                <div class="dline"><span class="ck">🎙️</span><span>음성·메모·카톡에서 가족의 기억을 연결했어요</span></div>
               </div>
             </div>
           </div>
@@ -876,28 +883,28 @@ const LB_PAGES=[
   {type:'chapter',ch:'01',kicker:'정체성',title:'하루라는 아이',
    lead:'흩어진 사진 속에서, 하루가 어떤 아이였는지를 먼저 읽었어요. 사진은 그 증거예요.',
    traits:[['🐾','조심스러운 성격'],['🌳','산책을 좋아함'],['❤️','엄마 밀착형'],['🌸','봄에 가장 활발']],
-   ev:['📷 사진 149장 분석','📅 2010–2025'],cov:'portrait.jpg',conf:78,
+   ev:['📷 사진 149','📝 메모 18','🏥 진료기록 9'],cov:'portrait.jpg',conf:78,
    why:'근거 · 정면 응시 사진 다수 / 야외 산책 사진 비중 / 보호자 동반 거리 분석'},
   {type:'chapter',ch:'02',kicker:'시간',title:'함께한 계절',
    lead:'하루의 시간은 계절을 따라 흘렀어요.',
    ai:'봄에 사진이 가장 많았고 산책 기록이 늘었어요.<br>겨울에는 집 안에서 찍은 사진이 많아졌습니다.',
-   ev:['🌸 봄 비중 38%','📅 2010–2025'],cov:'flowers.jpg',conf:80,
+   ev:['🌸 봄 38%','🗺️ 산책지도','🎥 영상'],cov:'flowers.jpg',conf:80,
    why:'근거 · 계절별 촬영 분포 / 봄 야외·겨울 실내 비중'},
   {type:'chapter',ch:'03',kicker:'반복된 습관',title:'비 오는 날이면 먼저 현관 앞에 앉던 아이',
    ai:'2020~2023년 사이 비 오는 날 사진 비율이 유독 높았어요.<br>특히 봄철 북한산 둘레길 방문이 반복되었습니다.',
-   ev:['📷 사진 42장','📍 북한산 둘레길 31회','🎥 영상 3개'],
+   ev:['📷 사진 42','🗺️ 북한산 GPS 31회','🎥 영상 3','🎙️ 음성 1','📝 메모 2'],
    fam:[{who:'엄마',txt:'산책 가자고 먼저 현관 앞에서 기다리곤 했어요.'}],
    cov:'sniff-spring.jpg',conf:83,
    why:'근거 · 비 오는 날 촬영 42장 / 북한산 GPS 31회 / 가족 메모 2건'},
   {type:'chapter',ch:'04',kicker:'관계',title:'늘 같은 사람 곁에',
    ai:'사진 속 하루는 보호자와 가까운 거리에서 자주 찍혔어요.<br>특히 엄마와의 밀착도가 가장 높았습니다.',
-   ev:['❤️ proximity 0.84','👨‍👩‍👧 보호자 동반 사진 다수'],
+   ev:['❤️ proximity 0.84','👨‍👩‍👧 가족 사진 48%','💬 카톡 대화'],
    fam:[{who:'아빠',txt:'차 타고 나가는 걸 제일 좋아했죠.'}],
    cov:'thumb/098.jpg',conf:81,
    why:'근거 · 보호자 동반 사진 빈도 / 촬영 거리(밀착) 분석'},
   {type:'chapter',ch:'05',kicker:'변화',title:'천천히, 함께 나이 들기',
    ai:'후반부 사진에서 산책 거리는 짧아지고, 집 안 사진이 늘었어요.<br>정기검진 기록도 함께 늘었습니다.',
-   ev:['🚶 산책 빈도 감소','🏥 정기검진 증가'],cov:'thumb/124.jpg',conf:74,
+   ev:['🏥 진료기록 9','💊 약 영수증 6','🗺️ 산책거리 감소'],cov:'thumb/124.jpg',conf:74,
    why:'근거 · 후반기 실내 촬영 비중↑ / 산책 GPS 빈도↓'},
   {type:'signature'},
   {type:'video'},
@@ -958,7 +965,7 @@ function bookHTML(idx){
     inner=`<div class="book-pg"><div class="cnum">하루를 읽은 결과</div><h4>AI가 읽은 하루</h4>
       <div class="lb-readsub">사진이 아니라, 하루의 삶을 먼저 읽었어요. 사진은 그 근거예요.</div>
       <div class="lb-readstats"><div><b>15년</b><span>함께한 시간</span></div><div><b>149장</b><span>사진</span></div><div><b>12</b><span>연도의 기록</span></div><div><b>12</b><span>가족 기억</span></div></div>
-      <div class="lb-readtitle">✨ AI가 발견한 하루</div>
+      <div class="lb-readtitle">📥 AI가 읽어들인 자료</div><div class="src-grid"><div><span>📷</span><b>149</b>사진</div><div><span>🎥</span><b>12</b>영상</div><div><span>🎙️</span><b>5</b>음성</div><div><span>📝</span><b>18</b>메모</div><div><span>🏥</span><b>9</b>진료기록</div><div><span>💊</span><b>6</b>약 영수증</div><div><span>🗺️</span><b>14</b>산책지도</div><div><span>💬</span><b>120</b>카톡</div></div><div class="lb-readtitle">✨ AI가 발견한 하루</div>
       <div class="lb-ins"><div class="row"><span class="e">🌸</span><div><div class="k">가장 좋아했던 계절</div><div class="v">봄</div></div></div><div class="row"><span class="e">📍</span><div><div class="k">가장 오래 머문 장소</div><div class="v">북한산 둘레길</div></div></div><div class="row"><span class="e">☔</span><div><div class="k">반복된 습관</div><div class="v">비 오는 날 산책</div></div></div><div class="row"><span class="e">❤️</span><div><div class="k">가장 가까웠던 사람</div><div class="v">엄마</div></div></div></div>
       <div class="based">📎 사진·시간·관계 분석 기반 · <span class="grounded">자료에 근거해 추정</span></div></div>`;
   } else if(p.type==='signature'){
