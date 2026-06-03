@@ -225,6 +225,9 @@
   .mem-portal button{background:#efe7da;border:1px solid #ddd2bf;border-radius:999px;padding:9px 20px;font-weight:700;font-size:13px;color:#4a4338;cursor:pointer;font-family:inherit}
   .mem-video{width:100%;max-height:420px;margin-top:10px;border-radius:13px;background:#000;display:block;object-fit:contain}
   .mem-sub{margin-top:9px;font-size:12px;color:var(--muted)}
+  .vsub{font-size:13px;color:var(--muted);margin:2px 0 12px}
+  .mem-count2{margin-top:12px;font-size:12px;color:var(--muted);text-align:center}
+  .mem-next{margin-top:16px;font-size:12.5px;color:var(--brand-deep);font-weight:700;text-align:center;background:var(--brand-soft);border:1px solid #cfe9e2;border-radius:11px;padding:11px}
   .book-cover.big{padding:32px 24px}
   .book-cover.big .cv-meta{font-size:12px;color:#cfe0db;margin-top:6px}
   .book-cover.big .cv-photo{margin-top:18px;height:180px;border-radius:14px;overflow:hidden}
@@ -310,6 +313,18 @@
   .ht-item .ht-yr{font-size:12px;font-weight:800;color:var(--brand-deep)}
   .ht-item .ht-t{font-size:14.5px;font-weight:800;margin-top:1px}
   .ht-item .ht-n{font-size:12px;color:var(--muted);margin-top:3px;line-height:1.5}
+  /* horizontal timeline */
+  .htl{overflow-x:auto;-webkit-overflow-scrolling:touch;padding:2px 2px 6px;scroll-snap-type:x proximity}
+  .htl-track{display:flex;gap:14px;position:relative;padding-top:6px;width:max-content}
+  .htl-track::before{content:"";position:absolute;left:14px;right:14px;top:13px;height:2px;background:linear-gradient(90deg,var(--brand),var(--warm))}
+  .htl-item{flex:0 0 164px;scroll-snap-align:start;background:none;border:none;cursor:pointer;font-family:inherit;text-align:left;position:relative;padding:22px 0 0}
+  .htl-item .dot{position:absolute;top:7px;left:14px;width:13px;height:13px;border-radius:50%;background:#fff;border:3px solid var(--brand);z-index:1;transition:.15s}
+  .htl-item:hover .dot{transform:scale(1.25)}
+  .htl-item .photo{width:100%;height:120px;border-radius:13px;object-fit:cover;box-shadow:var(--shadow);background:#eadfce}
+  .htl-item .yr{font-size:12px;font-weight:800;color:var(--brand-deep);margin-top:9px}
+  .htl-item .t{font-size:14px;font-weight:800;margin-top:1px}
+  .htl-item .n{font-size:11.5px;color:var(--muted);margin-top:3px;line-height:1.45}
+  .htl-hint{font-size:11px;color:#b3a994;text-align:center;margin-top:6px}
   .memnote{margin-top:14px;font-size:12px;color:var(--muted);text-align:center;background:var(--cream2);border-radius:11px;padding:11px 12px;line-height:1.55}
   .curate-stats{display:flex;gap:7px;flex-wrap:wrap;margin:-4px 0 12px}
   .curate-stats span{font-size:11px;font-weight:700;color:var(--brand-deep);background:var(--brand-soft);border:1px solid #cfe9e2;padding:4px 9px;border-radius:999px}
@@ -350,6 +365,31 @@
   .fitem .ft b{font-size:13.5px;font-weight:800}
   .fitem .ft .q{font-size:13px;color:#4a4338;margin-top:3px}
   .fitem .ft .tm{font-size:11px;color:#b6ab97;margin-top:4px}
+  .fitem{width:100%;text-align:left;cursor:pointer;font-family:inherit}
+  .fitem .ft{flex:1}
+  .fitem .fgo{color:#c9bfae;font-size:18px;align-self:center}
+  .fd-back{background:none;border:none;color:var(--brand-deep);font-weight:800;font-size:14px;cursor:pointer;padding:6px 0;font-family:inherit}
+  .fd-photo{position:relative;height:230px;border-radius:16px;overflow:hidden;margin-top:6px}
+  .fd-photo img{width:100%;height:100%;object-fit:cover;display:block}
+  .fd-photo .fd-yr{position:absolute;left:12px;bottom:12px;background:rgba(0,0,0,.4);color:#fff;font-size:12px;font-weight:700;padding:5px 11px;border-radius:999px;backdrop-filter:blur(3px)}
+  .fd-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:var(--shadow);margin-top:14px}
+  .fd-head{display:flex;align-items:center;gap:11px}
+  .fd-head .fd-av{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex:none}
+  .fd-head b{font-size:14.5px;font-weight:800;display:block}
+  .fd-head span{font-size:11.5px;color:var(--muted)}
+  .fd-title{font-size:17px;font-weight:800;margin:14px 0 6px}
+  .fd-quote{font-size:15px;line-height:1.75;color:#3a3128;font-style:italic;border-left:3px solid var(--warm);padding-left:13px}
+  .fd-react{display:flex;gap:9px;margin-top:16px;flex-wrap:wrap}
+  .fd-react button{background:var(--cream);border:1px solid var(--line);border-radius:999px;padding:9px 15px;font-size:13px;font-weight:700;color:#4a4338;cursor:pointer;font-family:inherit}
+  .fd-reps{display:flex;flex-direction:column;gap:9px}
+  .fd-rep{display:flex;gap:10px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:11px 13px}
+  .fd-rep .fd-rav{width:30px;height:30px;border-radius:50%;background:var(--cream2);display:flex;align-items:center;justify-content:center;font-size:15px;flex:none}
+  .fd-rep b{font-size:12.5px;font-weight:800;display:block}
+  .fd-rep span{font-size:13px;color:#4a4338}
+  .fd-norep{font-size:13px;color:var(--muted);text-align:center;padding:10px}
+  .fd-add{display:flex;gap:8px;margin-top:14px}
+  .fd-add input{flex:1;border:1px solid var(--line);border-radius:12px;padding:11px 13px;font-size:13px;font-family:inherit;background:#fff}
+  .fd-add button{background:linear-gradient(135deg,var(--brand),#27b39c);color:#fff;border:none;border-radius:12px;padding:0 16px;font-weight:800;font-size:13px;cursor:pointer;font-family:inherit}
 
   /* --- BOTTOM TAB --- */
   .tabbar{flex:none;display:flex;align-items:flex-end;background:#fff;border-top:1px solid var(--line);padding:8px 6px 16px}
@@ -544,7 +584,7 @@
           <div class="mscreen" id="s-story">
             <div class="secttl" style="margin-top:8px">📅 하루의 타임라인</div>
             <div class="ht-sub">2010년부터 2025년까지, 하루의 생애 흐름이에요.</div>
-            <div class="htimeline" id="m-timeline"></div>
+            <div id="m-timeline"></div>
             <div class="secttl">📖 더 자세한 이야기</div>
             <div class="sfeed" id="m-sfeed"></div>
             <div class="secttl">📷 하루의 사진 보관함 · <b id="m-galcount">0</b>장</div>
@@ -568,15 +608,11 @@
               </div>
             </div>
             <div class="secttl">최근 가족이 더한 기억</div>
-            <div class="fam-feed">
-              <div class="fitem"><div class="fav" style="background:linear-gradient(135deg,#f6a36b,#e8804a)">👩</div>
-                <div class="ft"><b>엄마가 메모를 추가했어요</b><div class="q">“비 올 때 어떤 우산 꼭 들고 나가야 했지”</div><div class="tm">2시간 전</div></div></div>
-              <div class="fitem"><div class="fav" style="background:linear-gradient(135deg,#7ec0f0,#3a7bd5)">🧒</div>
-                <div class="ft"><b>동생이 사진을 추가했어요</b><div class="q">2018 크리스마스 · 12장</div><div class="tm">어제</div></div></div>
-              <div class="fitem"><div class="fav" style="background:linear-gradient(135deg,#c79bf0,#8a5fd0)">👧</div>
-                <div class="ft"><b>이모가 기억을 추가했어요</b><div class="q">“이 공원 자주 갔던 곳이야”</div><div class="tm">3일 전</div></div></div>
-            </div>
+            <div class="fam-feed" id="m-famfeed"></div>
           </div>
+
+          <!-- 함께 기억: 세부 페이지 -->
+          <div class="mscreen" id="s-famdetail"><div id="m-famdetail"></div></div>
 
           <!-- LIFEBOOK -->
           <div class="mscreen" id="s-book">
@@ -739,7 +775,7 @@
               <div class="seg-sm"><button class="on" id="dtab-st" onclick="desktopView('story')">📖 이야기</button><button id="dtab-bk" onclick="desktopView('book')">📔 라이프북</button></div></div>
             <div class="secttl">📅 하루의 타임라인</div>
             <div class="ht-sub">2010년부터 2025년까지, 하루의 생애 흐름이에요.</div>
-            <div class="htimeline" id="d-timeline" style="max-width:640px"></div>
+            <div id="d-timeline"></div>
             <div class="secttl">📖 더 자세한 이야기</div>
             <div class="sfeed" id="d-sfeed" style="max-width:640px"></div>
             <div class="secttl">📷 하루의 사진 보관함 · <b id="d-galcount">0</b>장</div>
@@ -770,12 +806,11 @@
               </div>
             </div>
             <div class="secttl">최근 가족이 더한 기억</div>
-            <div class="fam-feed" style="max-width:560px">
-              <div class="fitem"><div class="fav" style="background:linear-gradient(135deg,#f6a36b,#e8804a)">👩</div><div class="ft"><b>엄마가 메모를 추가했어요</b><div class="q">“비 올 때 어떤 우산 꼭 들고 나가야 했지”</div><div class="tm">2시간 전</div></div></div>
-              <div class="fitem"><div class="fav" style="background:linear-gradient(135deg,#7ec0f0,#3a7bd5)">🧒</div><div class="ft"><b>동생이 사진을 추가했어요</b><div class="q">2018 크리스마스 · 12장</div><div class="tm">어제</div></div></div>
-              <div class="fitem"><div class="fav" style="background:linear-gradient(135deg,#c79bf0,#8a5fd0)">👧</div><div class="ft"><b>이모가 기억을 추가했어요</b><div class="q">“이 공원 자주 갔던 곳이야”</div><div class="tm">3일 전</div></div></div>
-            </div>
+            <div class="fam-feed" id="d-famfeed" style="max-width:560px"></div>
           </div>
+
+          <!-- 함께 기억 세부(PC) -->
+          <div class="dscreen" id="d-famdetail"><div id="d-famdetail-inner"></div></div>
 
         </div>
       </div>
@@ -848,6 +883,7 @@ const LB_PAGES=[
    why:'근거 · 봄철 산책 사진 다수 / 비 오는 날 촬영 비중 높음 / 가족 메모 “비 올 때 우산 꼭” 2건',
    fam:[{who:'엄마',txt:'비 오는 날이면 산책 가자고 현관 앞에서 기다렸어요.'}]},
   {type:'memorial',cov:'portrait.jpg'},
+  {type:'video'},
 ];
 
 function storyHTML(){
@@ -896,6 +932,7 @@ function bookHTML(idx){
         <div class="toc-row"><span class="n">03</span><div class="tx"><b>가장 빛나던 해</b><span>2013</span></div></div>
         <div class="toc-row"><span class="n">04</span><div class="tx"><b>비 오는 날 산책</b><span>2020 봄</span></div></div>
         <div class="toc-row"><span class="n">05</span><div class="tx"><b>함께한 시간이 남긴 흔적</b><span>마지막 계절</span></div></div>
+        <div class="toc-row"><span class="n">06</span><div class="tx"><b>하루의 회상 영상</b><span>27초</span></div></div>
       </div>
       <div class="lb-spine-note">흩어진 사진이 시간 순서대로, 한 권으로 엮였어요.</div></div>`;
   } else if(p.type==='read'){
@@ -910,7 +947,13 @@ function bookHTML(idx){
       <div class="scene"><img src="assets/haru/${p.cov}" alt="하루"></div>
       <div class="quote">2025년 여름, 마지막 사진들.\n함께한 시간은 사라지지 않고, 한 권의 이야기로 남았습니다.</div>
       <div class="lb-sig"><div class="sig-title">🐾 하루가 남긴 흔적</div><div class="lb-ins"><div class="row"><span class="e">🌸</span><div><div class="k">좋아했던 계절</div><div class="v">봄</div></div></div><div class="row"><span class="e">🥾</span><div><div class="k">가장 오래 걸은 길</div><div class="v">북한산 둘레길</div></div></div><div class="row"><span class="e">😊</span><div><div class="k">가장 많이 찍힌 순간</div><div class="v">산책 직후</div></div></div><div class="row"><span class="e">❤️</span><div><div class="k">가장 가까웠던 사람</div><div class="v">엄마</div></div></div></div></div>
-      <div class="mem-portal"><div class="mem-count">🎞️ 하루의 회상 · 27초</div><video class="mem-video" playsinline controls preload="none" poster="assets/haru/thumb/141.jpg"><source src="assets/haru/haru-memorial.mp4" type="video/mp4"></video><div class="mem-sub">조용히, 천천히 보셔도 괜찮아요.</div></div></div>`;
+      <div class="mem-next">🎞️ 다음 장에서 하루의 회상 영상을 볼 수 있어요</div></div>`;
+  } else if(p.type==='video'){
+    inner=`<div class="book-pg"><div class="cnum">회상 영상</div><h4>하루의 회상</h4>
+      <div class="vsub">하루야, 고마웠어 · 함께한 15년</div>
+      <video class="mem-video" playsinline controls preload="none" poster="assets/haru/thumb/117.jpg"><source src="assets/haru/haru-memorial.mp4" type="video/mp4"></video>
+      <div class="mem-sub">조용히, 천천히 보셔도 괜찮아요.</div>
+      <div class="mem-count2">📷 2025년 8월의 기록 · 7장 · 조용히 보관 중</div></div>`;
   } else {
     const ev=p.ev;
     const chips=[`📷 사진 ${ev.photos}장`, ev.video?`🎥 영상 ${ev.video}개`:'', ev.place?`📍 ${ev.place}`:'', ev.memo?`👨‍👩‍👧 가족 메모 ${ev.memo}개`:'', ev.extra?`✨ ${ev.extra}`:''].filter(Boolean).map(t=>`<span>${t}</span>`).join('');
@@ -947,12 +990,50 @@ const TIMELINE=[
 ];
 function goAny(n){document.getElementById('view-desktop').classList.contains('on')?showD(n):showM(n);}
 function timelineHTML(){
-  return TIMELINE.map(d=>`
-    <button class="ht-item" onclick="goAny('${d.go}')">
-      <img class="ht-photo" src="assets/haru/${d.cov}" alt="${d.title}">
-      <div class="ht-b"><div class="ht-yr">${d.year}</div><div class="ht-t">${d.title}</div><div class="ht-n">${d.note}</div></div>
-    </button>`).join('');
+  return `<div class="htl"><div class="htl-track">`+TIMELINE.map(d=>`
+    <button class="htl-item" onclick="goAny('${d.go}')">
+      <span class="dot"></span>
+      <img class="photo" src="assets/haru/${d.cov}" alt="${d.title}">
+      <div class="yr">${d.year}</div><div class="t">${d.title}</div><div class="n">${d.note}</div>
+    </button>`).join('')+`</div></div><div class="htl-hint">← 좌우로 밀어 보세요 →</div>`;
 }
+const FAM=[
+  {who:'엄마',emoji:'👩',color:'linear-gradient(135deg,#f6a36b,#e8804a)',act:'메모를 추가했어요',title:'비 오는 날의 기억',
+   quote:'비 오는 날이면 산책 가자고 현관 앞에서 먼저 기다렸어요. 우산을 들면 그렇게 좋아했죠.',cov:'sniff-spring.jpg',date:'2시간 전',hearts:5,year:'2020 봄',
+   replies:[{who:'나',emoji:'🙂',txt:'맞아 ㅋㅋ 우산만 들면 방방 뛰었지'},{who:'이모',emoji:'👧',txt:'그 모습이 아직 생생해요'}]},
+  {who:'동생',emoji:'🧒',color:'linear-gradient(135deg,#7ec0f0,#3a7bd5)',act:'사진을 추가했어요',title:'2018 크리스마스',
+   quote:'트리 앞에서 안 떨어지려고 했어. 산타 모자 씌우니까 신기하게 가만히 있더라.',cov:'thumb/069.jpg',date:'어제',hearts:8,year:'2018 겨울',
+   replies:[{who:'엄마',emoji:'👩',txt:'이 사진 진짜 보물이다 🤍'}]},
+  {who:'이모',emoji:'👧',color:'linear-gradient(135deg,#c79bf0,#8a5fd0)',act:'기억을 추가했어요',title:'우리 자주 가던 공원',
+   quote:'이 공원 자주 갔던 곳이야. 벤치에 앉으면 꼭 무릎에 올라왔어.',cov:'flowers.jpg',date:'3일 전',hearts:4,year:'2019',
+   replies:[]},
+];
+function famFeedHTML(){
+  return FAM.map((m,i)=>`<button class="fitem" onclick="openFam(${i})"><div class="fav" style="background:${m.color}">${m.emoji}</div>
+    <div class="ft"><b>${m.who}가 ${m.act}</b><div class="q">“${m.quote.slice(0,22)}…”</div><div class="tm">${m.date} · ❤️ ${m.hearts}</div></div><div class="fgo">›</div></button>`).join('');
+}
+function famDetailHTML(i,back){
+  const m=FAM[i];
+  const reps=m.replies.length? m.replies.map(r=>`<div class="fd-rep"><span class="fd-rav">${r.emoji}</span><div><b>${r.who}</b><span>${r.txt}</span></div></div>`).join('') : '<div class="fd-norep">첫 한마디를 남겨보세요.</div>';
+  return `<button class="fd-back" onclick="goAny('family')">‹ 함께 기억</button>
+    <div class="fd-photo"><img src="assets/haru/${m.cov}" alt="${m.title}"><span class="fd-yr">${m.year}</span></div>
+    <div class="fd-card">
+      <div class="fd-head"><span class="fd-av" style="background:${m.color}">${m.emoji}</span><div><b>${m.who}의 기억</b><span>${m.date}</span></div></div>
+      <div class="fd-title">${m.title}</div>
+      <div class="fd-quote">“${m.quote}”</div>
+      <div class="fd-react"><button onclick="toast('공감을 보냈어요 ❤️')">❤️ ${m.hearts}</button><button onclick="toast('이 기억을 라이프북에 담았어요 📖')">📖 라이프북에 담기</button></div>
+    </div>
+    <div class="secttl">가족의 한마디</div>
+    <div class="fd-reps">${reps}</div>
+    <div class="fd-add"><input placeholder="이 기억에 한마디 남기기…"><button onclick="toast('한마디를 남겼어요 🤍')">남기기</button></div>`;
+}
+function openFam(i){
+  document.getElementById('m-famdetail').innerHTML=famDetailHTML(i);
+  document.getElementById('d-famdetail-inner').innerHTML=famDetailHTML(i);
+  goAny('famdetail');
+}
+document.getElementById('m-famfeed').innerHTML=famFeedHTML();
+document.getElementById('d-famfeed').innerHTML=famFeedHTML();
 document.getElementById('m-timeline').innerHTML=timelineHTML();
 document.getElementById('d-timeline').innerHTML=timelineHTML();
 document.getElementById('m-sfeed').innerHTML=storyHTML();
@@ -972,7 +1053,7 @@ function setDevice(dev){
 }
 
 /* ---------- mobile screens ---------- */
-const M_SCREENS=['home','upload','discover','reveal','story','family','book'];
+const M_SCREENS=['home','upload','discover','reveal','story','family','famdetail','book'];
 function showM(name){
   M_SCREENS.forEach(s=>document.getElementById('s-'+s).classList.toggle('on',s===name));
   // tab highlight
@@ -987,7 +1068,7 @@ function closeSheet(){document.getElementById('m-sheet').classList.remove('on');
 function pickUpload(){closeSheet();runFlow('m');}
 
 /* ---------- desktop screens ---------- */
-const D_SCREENS=['home','upload','discover','reveal','story','book','family'];
+const D_SCREENS=['home','upload','discover','reveal','story','book','family','famdetail'];
 function showD(name,btn){
   D_SCREENS.forEach(s=>document.getElementById('d-'+s).classList.toggle('on',s===name));
   const map={home:'dnav-home',story:'dnav-story',book:'dnav-book',family:'dnav-family'};
@@ -1052,9 +1133,9 @@ function toast(msg){
     const isDesk=()=>document.getElementById('view-desktop').classList.contains('on');
     const go=(n)=>{ isDesk()?showD(n):showM(n); };
     const demo=q.get('demo'), screen=q.get('screen');
-    if(demo==='memorial'){
+    if(demo==='memorial'||demo==='video'){
       go('book');
-      bookPage=LB_PAGES.length-1;
+      bookPage = demo==='video' ? LB_PAGES.length-1 : LB_PAGES.length-2;
       document.getElementById('m-book').innerHTML=bookHTML(bookPage);
       document.getElementById('d-book-inner').innerHTML=bookHTML(bookPage);
     } else if(screen){ go(screen); }
