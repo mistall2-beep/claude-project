@@ -1224,9 +1224,11 @@ function toast(msg){
     const isDesk=()=>document.getElementById('view-desktop').classList.contains('on');
     const go=(n)=>{ isDesk()?showD(n):showM(n); };
     const demo=q.get('demo'), screen=q.get('screen');
-    if(demo==='memorial'||demo==='video'){
+    const demoMap={memorial:'signature',video:'video',voice:'voice',keep:'keep',map:'map',health:'health',read:'read'};
+    if(demo && demoMap[demo]){
       go('book');
-      bookPage = demo==='video' ? LB_PAGES.length-1 : LB_PAGES.length-2;
+      const t=demoMap[demo]; const i=LB_PAGES.findIndex(x=>x.type===t);
+      bookPage = i>=0 ? i : 0;
       document.getElementById('m-book').innerHTML=bookHTML(bookPage);
       document.getElementById('d-book-inner').innerHTML=bookHTML(bookPage);
     } else if(screen){ go(screen); }
