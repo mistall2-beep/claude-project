@@ -245,6 +245,16 @@
   .map-note{font-size:11.5px;color:var(--muted);margin-top:8px}
   .med-note{margin-top:10px;font-size:11.5px;font-weight:700;color:var(--warm-deep);background:var(--warm-soft);border:1px solid #f0d8c4;border-radius:10px;padding:9px 11px}
   .keepcta-r{margin-top:4px;background:linear-gradient(135deg,#5fe3cc,#a9f0e2);color:#06231f;border:none;border-radius:999px;padding:13px;font-weight:800;font-size:14px;cursor:pointer;font-family:inherit;width:100%}
+  .vkeep{margin-top:16px;background:linear-gradient(135deg,#173a34,#0f231f);border-radius:16px;padding:18px;text-align:center;color:#fff}
+  .vkeep-t{font-size:15px;font-weight:800;line-height:1.5}
+  .vkeep-sub{font-size:12.5px;color:#bcd3cd;margin-top:6px}
+  .vkeep-opts{display:flex;gap:9px;margin-top:14px}
+  .vkeep-opts button{flex:1;border:none;border-radius:999px;padding:12px;font-weight:800;font-size:13px;cursor:pointer;font-family:inherit}
+  .vkeep-opts .vk-p{background:linear-gradient(135deg,#5fe3cc,#a9f0e2);color:#06231f}
+  .vkeep-opts .vk-g{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.25)}
+  .preserve-note{margin-top:9px;font-size:12px;color:var(--muted);line-height:1.55;background:#faf6ee;border:1px solid #ece0cc;border-radius:10px;padding:10px 12px}
+  .preserve-note b{color:var(--brand-deep)}
+  .map-hl{margin-top:10px;font-size:13.5px;font-weight:800;color:var(--brand-deep);background:var(--brand-soft);border:1px solid #cfe9e2;border-radius:11px;padding:10px 13px;text-align:center}
   .vsub{font-size:13px;color:var(--muted);margin:2px 0 12px}
   .mem-count2{margin-top:12px;font-size:12px;color:var(--muted);text-align:center}
   .mem-next{margin-top:16px;font-size:12.5px;color:var(--brand-deep);font-weight:700;text-align:center;background:var(--brand-soft);border:1px solid #cfe9e2;border-radius:11px;padding:11px}
@@ -560,7 +570,7 @@
                 <div class="hero-date">2020년 봄 · AI가 발견</div>
                 <h2>비 오는 날 사진이<br/>유독 많이 남아 있었어요</h2>
                 <div class="hero-infer">🤖 AI는 하루가 산책을 기다렸다고 추정했어요</div>
-                <div class="hero-chips"><span>📷 사진 18</span><span>📍 북한산 GPS</span><span>🎙️ 산책 음성</span><span>🏥 방문 없음</span></div>
+                <div class="hero-chips"><span>📷 사진 18</span><span>📍 봉산 GPS</span><span>🎙️ 산책 음성</span><span>🏥 방문 없음</span></div>
                 <button class="hero-cta" onclick="showM('story')">오늘의 이야기 보기 →</button>
               </div>
               <button class="play" onclick="openClip()">▶</button>
@@ -576,7 +586,7 @@
               </button>
               <button class="findcard" onclick="showM('story')">
                 <span class="fic">📍</span>
-                <span class="fbody"><b>가장 오래 머문 장소 · 북한산 둘레길</b><span>위치 기록 432회</span></span>
+                <span class="fbody"><b>가장 오래 머문 장소 · 봉산 둘레길</b><span>위치 기록 432회</span></span>
                 <span class="fgo">›</span>
               </button>
               <button class="findcard" onclick="showM('story')">
@@ -623,7 +633,7 @@
               <div class="dlive" id="m-dlive">
                 <div class="dline"><span class="ck">📷</span><span><b>2010년</b> 가장 오래된 사진을 발견했어요</span></div>
                 <div class="dline"><span class="ck">🏥</span><span>동물병원 <b>진료기록 9건</b>·약 영수증을 읽었어요</span></div>
-                <div class="dline"><span class="ck">🗺️</span><span>GPS에서 <b>북한산 둘레길</b> 산책 경로를 복원했어요</span></div>
+                <div class="dline"><span class="ck">🗺️</span><span>GPS에서 <b>봉산 둘레길</b> 산책 경로를 복원했어요</span></div>
                 <div class="dline"><span class="ck">🎙️</span><span>음성·메모에서 하루를 부르던 기록을 찾았어요</span></div>
               </div>
             </div>
@@ -641,7 +651,7 @@
               </div>
               <div class="ritem rdiv">하루가 가장 자주 남긴 흔적</div>
               <div class="ritem rfind"><span class="e">🌸</span><div><div class="lbl">가장 많이 찍힌 계절</div><div class="v">봄</div><div class="rwhy">봄 촬영 38% · 신뢰도 80%</div></div></div>
-              <div class="ritem rfind"><span class="e">📍</span><div><div class="lbl">가장 자주 기록된 장소</div><div class="v">북한산 둘레길</div><div class="rwhy">GPS 432회 · 신뢰도 88%</div></div></div>
+              <div class="ritem rfind"><span class="e">📍</span><div><div class="lbl">가장 자주 기록된 장소</div><div class="v">봉산 둘레길</div><div class="rwhy">GPS 432회 · 신뢰도 88%</div></div></div>
               <div class="ritem rfind"><span class="e">🐾</span><div><div class="lbl">가장 자주 반복된 패턴</div><div class="v">비 오는 날 산책</div><div class="rwhy">비 오는 날 촬영 21% · 신뢰도 83%</div></div></div>
               <div class="ritem rpunch">하루와 함께한 시간이<br/>한 권의 이야기로 엮였습니다.</div>
               <button class="ritem keepcta-r" onclick="openKeep()">📖 한 권으로 남기기</button>
@@ -769,14 +779,14 @@
                 <span class="hero-tag">오늘 AI가 읽은 하루 · 2020 봄</span>
                 <h2>비 오는 날 사진이 유독 많이 남아 있었어요</h2>
                 <div class="hero-infer">🤖 AI는 하루가 산책을 기다렸다고 추정했어요</div>
-                <div class="hero-chips"><span>📷 사진 18</span><span>📍 북한산 GPS</span><span>🎙️ 산책 음성</span><span>🏥 방문 없음</span></div>
+                <div class="hero-chips"><span>📷 사진 18</span><span>📍 봉산 GPS</span><span>🎙️ 산책 음성</span><span>🏥 방문 없음</span></div>
                 <button class="hero-cta" onclick="showD('story')" style="align-self:flex-start">오늘의 이야기 보기 →</button>
               </div>
             </div>
             <div class="secttl">🐾 하루가 자주 남긴 흔적</div>
             <div class="d-find">
               <button class="findcard" onclick="showD('story')"><span class="fic">🌸</span><span class="fbody"><b>가장 좋아한 계절 · 봄</b><span>봄철 산책 비중 38% · 사진 83장 기반</span></span><span class="fgo">›</span></button>
-              <button class="findcard" onclick="showD('story')"><span class="fic">📍</span><span class="fbody"><b>가장 오래 머문 장소 · 북한산 둘레길</b><span>위치 기록 432회</span></span><span class="fgo">›</span></button>
+              <button class="findcard" onclick="showD('story')"><span class="fic">📍</span><span class="fbody"><b>가장 오래 머문 장소 · 봉산 둘레길</b><span>위치 기록 432회</span></span><span class="fgo">›</span></button>
               <button class="findcard" onclick="showD('story')"><span class="fic">☔</span><span class="fbody"><b>반복된 습관 · 비 오는 날 산책</b><span>비 오는 날 사진 비율 21%</span></span><span class="fgo">›</span></button>
               <button class="findcard" onclick="showD('book')"><span class="fic">🎨</span><span class="fbody"><b>특별한 기억 · 하루 그림 발견</b><span>가족이 그린 그림 1점 → 라이프북 표지</span></span><span class="fgo">›</span></button>
             </div>
@@ -815,7 +825,7 @@
               <div class="dlive" id="d-dlive">
                 <div class="dline"><span class="ck">📷</span><span>사진 <b>149장</b>·영상 12개를 시간순으로 정렬했어요</span></div>
                 <div class="dline"><span class="ck">🏥</span><span>동물병원 <b>진료기록 9건</b>·약 영수증 6건을 읽었어요</span></div>
-                <div class="dline"><span class="ck">🗺️</span><span>GPS·산책지도에서 <b>북한산 둘레길</b> 경로를 복원했어요</span></div>
+                <div class="dline"><span class="ck">🗺️</span><span>GPS·산책지도에서 <b>봉산 둘레길</b> 경로를 복원했어요</span></div>
                 <div class="dline"><span class="ck">🎙️</span><span>음성·메모·카톡에서 가족의 기억을 연결했어요</span></div>
               </div>
             </div>
@@ -833,7 +843,7 @@
               </div>
               <div class="ritem rdiv">하루가 가장 자주 남긴 흔적</div>
               <div class="ritem rfind"><span class="e">🌸</span><div><div class="lbl">가장 많이 찍힌 계절</div><div class="v">봄</div><div class="rwhy">봄 촬영 38% · 신뢰도 80%</div></div></div>
-              <div class="ritem rfind"><span class="e">📍</span><div><div class="lbl">가장 자주 기록된 장소</div><div class="v">북한산 둘레길</div><div class="rwhy">GPS 432회 · 신뢰도 88%</div></div></div>
+              <div class="ritem rfind"><span class="e">📍</span><div><div class="lbl">가장 자주 기록된 장소</div><div class="v">봉산 둘레길</div><div class="rwhy">GPS 432회 · 신뢰도 88%</div></div></div>
               <div class="ritem rfind"><span class="e">🐾</span><div><div class="lbl">가장 자주 반복된 패턴</div><div class="v">비 오는 날 산책</div><div class="rwhy">비 오는 날 촬영 21% · 신뢰도 83%</div></div></div>
               <div class="ritem rpunch">하루와 함께한 시간이<br/>한 권의 이야기로 엮였습니다.</div>
               <button class="ritem keepcta-r" onclick="openKeep()">📖 한 권으로 남기기</button>
@@ -937,7 +947,7 @@ const STORY=[
    obs:'2019년에 사진이 다시 늘었어요. 웃는 표정이 많이 담겼어요.',photos:17,year:2019,
    infer:'함께한 시간이 <b>다시 풍성해진 시기</b>로 추정했어요.',
    why:'근거 · 2019년 사진 17장(재증가) / 정면·웃는 표정 다수'},
-  {covers:['sniff-spring.jpg','flowers.jpg','thumb/137.jpg'],season:'2020 봄',emoji:'🌸',place:'북한산 둘레길',conf:83,
+  {covers:['sniff-spring.jpg','flowers.jpg','thumb/137.jpg'],season:'2020 봄',emoji:'🌸',place:'봉산 둘레길',conf:83,
    obs:'비 오는 날·봄철 산책 사진이 유독 많이 남아 있었어요.',photos:13,year:2020,
    infer:'‘비 오는 날 산책’을 하루의 <b>반복 습관</b>으로 추정했어요.',
    why:'근거 · 봄철 산책 사진 다수 / 비 오는 날 촬영 비중 높음 / 가족 메모 “비 올 때 우산 꼭”'},
@@ -956,7 +966,7 @@ const LB_PAGES=[
   {type:'voice',ch:'04'},
   {type:'chapter',ch:'05',kicker:'반복된 삶',title:'반복된 하루의 습관',
    lead:'여러 자료에서 반복적으로 나타난 하루의 루틴이에요.',
-   patterns:[['☔','비 오는 날 산책'],['🚗','차 타고 나가기'],['🌸','꽃길 산책'],['⛰️','북한산 둘레길']],
+   patterns:[['☔','비 오는 날 산책'],['🚗','차 타고 나가기'],['🌸','꽃길 산책'],['⛰️','봉산 둘레길']],
    ev:['📷 사진 42','🗺️ GPS 31회','🎥 영상 3','🎙️ 음성 2','📝 메모 4'],cov:'sniff-spring.jpg',conf:83,
    fam:[{who:'엄마',txt:'비 오면 꼭 먼저 현관 앞에서 기다렸어요.'}],
    why:'근거 · 비 오는 날 촬영 42장 / GPS 31회 / 음성·메모 반복'},
@@ -1024,17 +1034,18 @@ function bookHTML(idx){
       <div class="lb-readtitle">📥 AI가 읽어들인 자료</div>
       <div class="src-grid"><div><span>📷</span><b>149</b>사진</div><div><span>🎥</span><b>12</b>영상</div><div><span>🎙️</span><b>5</b>음성</div><div><span>📝</span><b>18</b>메모</div><div><span>🏥</span><b>9</b>진료기록</div><div><span>💊</span><b>6</b>약 영수증</div><div><span>🗺️</span><b>14</b>산책지도</div><div><span>💬</span><b>120</b>카톡</div></div>
       <div class="lb-readtitle">✨ AI가 발견한 삶</div>
-      <div class="lb-ins"><div class="row"><span class="e">🌸</span><div><div class="k">가장 행복했던 계절</div><div class="v">봄</div></div></div><div class="row"><span class="e">☔</span><div><div class="k">반복된 습관</div><div class="v">비 오는 날 산책</div></div></div><div class="row"><span class="e">📍</span><div><div class="k">가장 오래 머문 장소</div><div class="v">북한산 둘레길</div></div></div><div class="row"><span class="e">🏥</span><div><div class="k">건강 변화</div><div class="v">11살 이후 병원 방문 증가</div></div></div><div class="row"><span class="e">❤️</span><div><div class="k">가장 가까웠던 사람</div><div class="v">엄마</div></div></div><div class="row"><span class="e">🎙️</span><div><div class="k">자주 들린 단어</div><div class="v">“산책 갈까?”</div></div></div></div>
+      <div class="lb-ins"><div class="row"><span class="e">🌸</span><div><div class="k">가장 행복했던 계절</div><div class="v">봄</div></div></div><div class="row"><span class="e">☔</span><div><div class="k">반복된 습관</div><div class="v">비 오는 날 산책</div></div></div><div class="row"><span class="e">📍</span><div><div class="k">가장 오래 머문 장소</div><div class="v">봉산 둘레길</div></div></div><div class="row"><span class="e">🏥</span><div><div class="k">건강 변화</div><div class="v">11살 이후 병원 방문 증가</div></div></div><div class="row"><span class="e">❤️</span><div><div class="k">가장 가까웠던 사람</div><div class="v">엄마</div></div></div><div class="row"><span class="e">🎙️</span><div><div class="k">자주 들린 단어</div><div class="v">“산책 갈까?”</div></div></div></div>
       <div class="based">📎 멀티모달 분석 기반 · <span class="grounded">자료에 근거해 추정</span></div></div>`;
   } else if(p.type==='map'){
     inner=`<div class="book-pg lb-life"><div class="cnum">CHAPTER 02 · 함께 걸은 길</div><h4>산책 경로 복원</h4>
       <div class="lb-lead">GPS·사진 위치·시간 기록을 바탕으로, 하루가 자주 걸은 길을 복원했어요.</div>
-      <div class="lb-map"><span class="map-est">추정 경로</span><svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice"><rect width="320" height="180" fill="#e8f1ec"/><ellipse cx="68" cy="58" rx="56" ry="40" fill="#d4e8d6"/><ellipse cx="252" cy="120" rx="64" ry="46" fill="#cfe6da"/><ellipse cx="170" cy="150" rx="50" ry="30" fill="#dceee4"/><polyline points="30,150 80,120 130,134 190,82 245,108 292,68" fill="none" stroke="#1f9e8a" stroke-width="3.5" stroke-dasharray="7 5" stroke-linecap="round"/><g font-family="sans-serif" font-size="11" font-weight="700"><circle cx="30" cy="150" r="6" fill="#e8804a" stroke="#fff" stroke-width="2"/><text x="38" y="154" fill="#3a3128">집</text><circle cx="130" cy="134" r="6" fill="#e8804a" stroke="#fff" stroke-width="2"/><text x="138" y="138" fill="#3a3128">동네 공원</text><circle cx="292" cy="68" r="7" fill="#1f9e8a" stroke="#fff" stroke-width="2"/><text x="222" y="56" fill="#0f6f60" font-weight="800">북한산 둘레길</text></g></svg></div>
+      <div class="lb-map"><span class="map-est">추정 경로</span><svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice"><rect width="320" height="180" fill="#e8f1ec"/><ellipse cx="68" cy="58" rx="56" ry="40" fill="#d4e8d6"/><ellipse cx="252" cy="120" rx="64" ry="46" fill="#cfe6da"/><ellipse cx="170" cy="150" rx="50" ry="30" fill="#dceee4"/><polyline points="30,150 80,120 130,134 190,82 245,108 292,68" fill="none" stroke="#1f9e8a" stroke-width="3.5" stroke-dasharray="7 5" stroke-linecap="round"/><g font-family="sans-serif" font-size="11" font-weight="700"><circle cx="30" cy="150" r="6" fill="#e8804a" stroke="#fff" stroke-width="2"/><text x="38" y="154" fill="#3a3128">집</text><circle cx="130" cy="134" r="6" fill="#e8804a" stroke="#fff" stroke-width="2"/><text x="138" y="138" fill="#3a3128">동네 공원</text><circle cx="292" cy="68" r="7" fill="#1f9e8a" stroke="#fff" stroke-width="2"/><text x="222" y="56" fill="#0f6f60" font-weight="800">봉산 둘레길</text></g></svg></div>
+      <div class="map-hl">⛰️ 봉산 둘레길 · 총 31회 방문</div>
       <div class="map-note">📍 GPS·사진 위치·시간 기록 기반 추정 경로예요.</div>
-      <div class="map-stats"><div><b>37곳</b>산책 장소</div><div><b>북한산</b>가장 오래 걸은 길</div><div><b>128km</b>누적 거리</div></div>
+      <div class="map-stats"><div><b>37곳</b>산책 장소</div><div><b>봉산</b>가장 오래 걸은 길</div><div><b>128km</b>누적 거리</div></div>
       <div class="lb-evtitle">증거</div>
       <div class="lb-ev"><span>📍 산책 장소 37곳</span><span>🗺️ 반복 루트 3개</span><span>🚶 누적 128km</span></div>
-      <div class="lb-ai">🤖 AI가 읽은 하루<br>북한산 둘레길이 가장 자주 반복된 루트였어요. 봄철 산책 빈도가 특히 높았습니다.<button class="lb-whybtn" onclick="lbToggle(this)">왜 이렇게 읽었나요? ›</button><div class="why-box">근거 · GPS 포인트 군집 / 북한산 둘레길 31회 / 계절별 산책 빈도<br>신뢰도 82% · 자료에 근거해 추정</div></div></div>`;
+      <div class="lb-ai">🤖 AI가 읽은 하루<br>봉산 둘레길이 가장 자주 반복된 루트였어요. 봄철 산책 빈도가 특히 높았습니다.<button class="lb-whybtn" onclick="lbToggle(this)">왜 이렇게 읽었나요? ›</button><div class="why-box">근거 · GPS 포인트 군집 / 봉산 둘레길 31회 / 계절별 산책 빈도<br>신뢰도 82% · 자료에 근거해 추정</div></div></div>`;
   } else if(p.type==='health'){
     inner=`<div class="book-pg lb-life"><div class="cnum">CHAPTER 03 · 건강과 변화</div><h4>천천히 달라진 하루</h4>
       <div class="lb-lead">업로드된 진료기록·약 영수증을 바탕으로 건강 흐름을 정리했어요.</div>
@@ -1050,7 +1061,8 @@ function bookHTML(idx){
   } else if(p.type==='voice'){
     inner=`<div class="book-pg lb-life"><div class="cnum">CHAPTER 04 · 함께한 말들</div><h4>하루가 자주 들은 말</h4>
       <div class="lb-lead">음성·메모 기록에서, 하루에게 가장 자주 건넨 말을 찾았어요.</div>
-      <div class="bark-row"><button class="bark-btn" onclick="playBark(this)">🔊 하루의 실제 음성 기록</button><span class="bark-tag">업로드된 영상에서 추출</span><audio preload="none"><source src="assets/haru/haru-voice.m4a" type="audio/mp4"></audio></div>
+      <div class="bark-row"><button class="bark-btn" onclick="playBark(this)">🔊 하루의 실제 소리</button><span class="bark-tag">보존된 기록</span><audio preload="none"><source src="assets/haru/haru-voice.m4a" type="audio/mp4"></audio></div>
+      <div class="preserve-note">업로드된 음성 기록에서 짖는 소리와 숨소리를 그대로 <b>보존</b>했어요. (되살린 게 아니에요)</div>
       <button class="clipbtn" onclick="openClip()">▶ 하루의 실제 영상 보기 · 2020.09.30</button>
       <div class="voice-list">
         <div class="vq big"><span class="wav"><svg class="wavsvg" width="58" height="22" viewBox="0 0 58 22"><rect x="2" y="8" width="3" height="6" rx="1.5" fill="currentColor"/><rect x="7" y="5" width="3" height="12" rx="1.5" fill="currentColor"/><rect x="12" y="2" width="3" height="18" rx="1.5" fill="currentColor"/><rect x="17" y="6" width="3" height="10" rx="1.5" fill="currentColor"/><rect x="22" y="3" width="3" height="16" rx="1.5" fill="currentColor"/><rect x="27" y="7" width="3" height="8" rx="1.5" fill="currentColor"/><rect x="32" y="1" width="3" height="20" rx="1.5" fill="currentColor"/><rect x="37" y="4" width="3" height="14" rx="1.5" fill="currentColor"/><rect x="42" y="6" width="3" height="9" rx="1.5" fill="currentColor"/><rect x="47" y="2" width="3" height="17" rx="1.5" fill="currentColor"/><rect x="52" y="7" width="3" height="7" rx="1.5" fill="currentColor"/><rect x="57" y="4" width="3" height="13" rx="1.5" fill="currentColor"/></svg></span>“산책 갈까?”<em>가장 자주</em></div>
@@ -1064,7 +1076,7 @@ function bookHTML(idx){
   } else if(p.type==='signature'){
     inner=`<div class="book-pg"><div class="cnum">CHAPTER 06 · signature</div><h4>하루가 남긴 흔적</h4>
       <div class="lb-lead">함께한 시간은 사라지지 않고, 이렇게 남았습니다.</div>
-      <div class="lb-sig"><div class="lb-ins"><div class="row"><span class="e">🌸</span><div><div class="k">좋아했던 계절</div><div class="v">봄</div></div></div><div class="row"><span class="e">🥾</span><div><div class="k">가장 오래 걸은 길</div><div class="v">북한산 둘레길</div></div></div><div class="row"><span class="e">☔</span><div><div class="k">반복된 습관</div><div class="v">비 오는 날 산책</div></div></div><div class="row"><span class="e">😊</span><div><div class="k">가장 많이 남긴 순간</div><div class="v">산책 직후</div></div></div><div class="row"><span class="e">❤️</span><div><div class="k">가장 가까웠던 사람</div><div class="v">엄마</div></div></div></div></div>
+      <div class="lb-sig"><div class="lb-ins"><div class="row"><span class="e">🌸</span><div><div class="k">좋아했던 계절</div><div class="v">봄</div></div></div><div class="row"><span class="e">🥾</span><div><div class="k">가장 오래 걸은 길</div><div class="v">봉산 둘레길</div></div></div><div class="row"><span class="e">☔</span><div><div class="k">반복된 습관</div><div class="v">비 오는 날 산책</div></div></div><div class="row"><span class="e">😊</span><div><div class="k">가장 많이 남긴 순간</div><div class="v">산책 직후</div></div></div><div class="row"><span class="e">❤️</span><div><div class="k">가장 가까웠던 사람</div><div class="v">엄마</div></div></div></div></div>
       <div class="lb-evphoto"><span class="lb-evcap">📷 근거가 된 사진</span><img src="assets/haru/portrait.jpg" alt="하루"></div></div>`;
   } else if(p.type==='video'){
     inner=`<div class="book-pg"><div class="cnum">회상 영상</div><h4>하루의 회상</h4>
@@ -1073,7 +1085,10 @@ function bookHTML(idx){
       <audio id="mem-music" preload="none" loop></audio>
       <div class="music-pick"><span class="mp-lbl">🎵 배경음악 선택</span><button class="mp-btn on" onclick="pickMusic(this,'')">🔇 무음</button><button class="mp-btn" onclick="pickMusic(this,'music-piano.m4a')">🎹 피아노</button><button class="mp-btn" onclick="pickMusic(this,'music-forest.m4a')">🌲 숲소리</button></div>
       <div class="mem-sub">음악은 직접 고르세요 · 자동재생하지 않아요.</div>
-      <div class="mem-count2">📷 2025년 8월의 기록 · 7장 · 조용히 보관 중</div></div>`;
+      <div class="mem-count2">📷 2025년 8월의 기록 · 7장 · 조용히 보관 중</div>
+      <div class="vkeep"><div class="vkeep-t">하루와 함께한 시간을<br>조용한 회상 영상으로 만들었어요.</div>
+        <div class="vkeep-sub">라이프북과 함께 보관할까요?</div>
+        <div class="vkeep-opts"><button class="vk-p" onclick="openKeep()">📖 라이프북으로 남기기</button><button class="vk-g" onclick="toast('영구 보관을 선택했어요 🗄️ (데모)')">♾️ 영구 보관</button></div></div></div>`;
   } else if(p.type==='keep'){
     inner=`<div class="book-pg keep-pg"><div class="cnum">KEEP · 한 권으로</div><h4>이 이야기를 한 권으로 남기기</h4>
       <div class="keep-lead">하루의 15년이 한 권으로 엮였습니다.<br>PDF 라이프북으로 남기시겠어요?</div>
