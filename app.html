@@ -114,6 +114,22 @@
   #d-book-inner .book-pg.lb-life:has(.lb-evphoto) > .lb-evphoto{grid-column:1;grid-row:1 / span 99;align-self:start;margin-top:30px}
   #d-book-inner .book-pg.lb-life:has(.lb-evphoto) > .lb-evphoto img{height:400px}
   #d-book-inner .lb-ev{gap:8px}
+  /* desktop life-evidence panel emphasis */
+  #d-book-inner .book-pg.lb-life:has(.lb-evphoto) .lb-evtitle{font-size:10px;letter-spacing:.1em;color:var(--brand-deep);background:var(--brand-soft);border:1px solid #cfe9e2;display:inline-block;padding:5px 11px;border-radius:8px;margin-top:18px}
+  #d-book-inner .book-pg.lb-life:has(.lb-evphoto) .lb-ev{background:#faf6ee;border:1px solid #ece0cc;border-radius:12px;padding:12px;margin-top:8px}
+  /* desktop bottom timeline rail (hover preview) */
+  .d-tl-rail{margin-top:20px;background:#fbf7ef;border:1px solid #ece0cc;border-radius:14px;padding:14px 22px 16px}
+  .d-tl-rail .tl-h{font-size:10px;font-weight:800;color:var(--muted);letter-spacing:.12em;margin-bottom:18px}
+  .d-tl-rail .tl-track{position:relative;height:46px;margin:0 10px}
+  .d-tl-rail .tl-line{position:absolute;left:0;right:0;top:7px;height:2px;background:linear-gradient(90deg,var(--brand),var(--warm))}
+  .d-tl-rail .tl-dot{position:absolute;top:0;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center}
+  .d-tl-rail .tl-dot .dot{width:15px;height:15px;border-radius:50%;border:3px solid var(--brand);background:#fff;cursor:pointer;padding:0;z-index:2;transition:.15s}
+  .d-tl-rail .tl-dot .dot:hover{transform:scale(1.25);background:var(--brand)}
+  .d-tl-rail .tl-dot .yr{font-size:10.5px;font-weight:800;color:var(--muted);margin-top:8px}
+  .d-tl-rail .tl-dot .tip{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);width:126px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:6px;box-shadow:var(--shadow-lg);opacity:0;pointer-events:none;transition:.15s;z-index:5}
+  .d-tl-rail .tl-dot:hover .tip{opacity:1}
+  .d-tl-rail .tl-dot .tip img{width:100%;height:84px;object-fit:cover;border-radius:7px;display:block}
+  .d-tl-rail .tl-dot .tip span{display:block;font-size:11px;font-weight:700;color:#4a4338;margin-top:5px;text-align:center}
   .clip-modal{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.84);display:none;align-items:center;justify-content:center;padding:20px}
   .clip-modal.on{display:flex}
   .clip-box{position:relative;max-width:400px;width:100%}
@@ -591,7 +607,7 @@
 
 <div class="page-top">
   <span class="brandmark"><span class="paw">🐾</span>Pet Lifebook</span>
-  <span class="sub">powered by <b>LifeOS</b> · 하루와 다시 만나는 앱</span><span class="build-badge">빌드 06-03 · 산책영상 v12</span>
+  <span class="sub">powered by <b>LifeOS</b> · 하루와 다시 만나는 앱</span><span class="build-badge">빌드 06-03 · 타임라인 v13</span>
   <a class="back" href="index.html">← 제품 소개로</a>
 </div>
 
@@ -938,6 +954,7 @@
               <div class="dbook-rail" id="d-book-rail"></div>
               <div id="d-book-inner"></div>
             </div>
+            <div class="d-tl-rail" id="d-tl-rail"></div>
           </div>
 
           <!-- desktop family -->
@@ -1193,6 +1210,7 @@ function selectSeason(btn,season){var pg=btn.closest('.book-pg');pg.querySelecto
 function selectPlace(btn,i){const pg=btn.closest('.book-pg');pg.querySelector('.place-card').innerHTML=placeCardHTML(i);pg.querySelectorAll('.heatbar').forEach((b,j)=>b.classList.toggle('on',j===i));}
 function chapterRailHTML(){var lab=LB_PAGES.map(function(p,i){var t=p.type;var name=t==='cover'?'표지':t==='contents'?'목차':t==='read'?'AI가 읽은 하루':t==='map'?'함께 걸은 길':t==='health'?'건강과 변화':t==='voice'?'함께한 말들':t==='signature'?'하루가 남긴 흔적':t==='video'?'회상 영상':t==='keep'?'한 권으로 남기기':(p.title||'챕터');var num=p.ch?p.ch:'';return '<button class="dr-item" data-i="'+i+'" onclick="gotoBookPage('+i+')"><span class="dr-n">'+(num||'·')+'</span>'+name+'</button>';}).join('');return '<div class="dr-h">CHAPTERS</div>'+lab;}
 function updateRail(){var r=document.getElementById('d-book-rail');if(!r)return;if(!r.innerHTML)r.innerHTML=chapterRailHTML();var items=r.querySelectorAll('.dr-item');for(var k=0;k<items.length;k++){items[k].classList.toggle('on',+items[k].dataset.i===bookPage);}}
+function renderTlRail(){var r=document.getElementById('d-tl-rail');if(!r)return;var items=[{y:2010,t:'처음 만난 날',cov:'thumb/037.jpg',type:'c1'},{y:2013,t:'가장 빛나던 해',cov:'thumb/069.jpg',type:'read'},{y:2016,t:'늘 곁에',cov:'thumb/098.jpg',type:'voice'},{y:2019,t:'다시 웃음',cov:'thumb/117.jpg',type:'c1'},{y:2020,t:'봄 산책',cov:'sniff-spring.jpg',type:'map'},{y:2023,t:'봄꽃길',cov:'haru-walk-spring-poster.jpg',type:'map'},{y:2025,t:'마지막 산책',cov:'portrait.jpg',type:'signature'}];var find=function(t){if(t==='c1')return LB_PAGES.findIndex(function(p){return p.type==='chapter'&&p.ch==='01';});return LB_PAGES.findIndex(function(p){return p.type===t;});};r.innerHTML='<div class="tl-h">생애 타임라인</div><div class="tl-track"><div class="tl-line"></div>'+items.map(function(it){var x=(it.y-2010)/15*100;var idx=find(it.type);return '<div class="tl-dot" style="left:'+x+'%"><div class="tip"><img src="assets/haru/'+it.cov+'"><span>'+it.y+' · '+it.t+'</span></div><button class="dot" onclick="gotoBookPage('+idx+')"></button><div class="yr">'+it.y+'</div></div>';}).join('')+'</div>';}
 function gotoBookPage(i){bookPage=i;document.getElementById('m-book').innerHTML=bookHTML(i);document.getElementById('d-book-inner').innerHTML=bookHTML(i);updateRail();var dbi=document.getElementById('d-book-inner');if(dbi)dbi.scrollIntoView({block:'nearest'});}
 function flipBook(dir){
   bookPage=(bookPage+dir+LB_PAGES.length)%LB_PAGES.length;
@@ -1260,7 +1278,7 @@ document.getElementById('d-timeline').innerHTML=timelineHTML();
 document.getElementById('m-sfeed').innerHTML=storyHTML();
 document.getElementById('d-sfeed').innerHTML=storyHTML();
 document.getElementById('m-book').innerHTML=bookHTML(0);
-document.getElementById('d-book-inner').innerHTML=bookHTML(0);updateRail();
+document.getElementById('d-book-inner').innerHTML=bookHTML(0);updateRail();renderTlRail();
 
 /* ---------- device switch ---------- */
 function setDevice(dev){
