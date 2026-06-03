@@ -40,13 +40,13 @@
   .view{display:none}.view.on{display:block;animation:fade .35s ease}
   @keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 
-  /* gradients used as photo placeholders */
-  .ph-spring{background:linear-gradient(135deg,#f7c4d8,#e88aa8)}
-  .ph-walk{background:linear-gradient(135deg,#7fd3c0,#1f9e8a)}
+  /* photo placeholders — real photo over gradient fallback (gradient shows if file missing) */
+  .ph-spring{background:url('assets/haru/sniff-spring.jpg') center/cover no-repeat,linear-gradient(135deg,#f7c4d8,#e88aa8)}
+  .ph-walk{background:url('assets/haru/flowers.jpg') center/cover no-repeat,linear-gradient(135deg,#7fd3c0,#1f9e8a)}
   .ph-hosp{background:linear-gradient(135deg,#a7b0bd,#6b7280)}
-  .ph-jeju{background:linear-gradient(135deg,#7ec0f0,#3a7bd5)}
-  .ph-senior{background:linear-gradient(135deg,#f0c98a,#d99a4e)}
-  .ph-home{background:linear-gradient(135deg,#f6b88a,#e8804a)}
+  .ph-jeju{background:url('assets/haru/flowers.jpg') center/cover no-repeat,linear-gradient(135deg,#7ec0f0,#3a7bd5)}
+  .ph-senior{background:url('assets/haru/forest-walk.jpg') center/cover no-repeat,linear-gradient(135deg,#f0c98a,#d99a4e)}
+  .ph-home{background:url('assets/haru/portrait.jpg') center 30%/cover no-repeat,linear-gradient(135deg,#f6b88a,#e8804a)}
 
   /* ============================ MOBILE ============================ */
   .phone{width:392px;max-width:100%;background:#0c1614;border-radius:46px;padding:13px;box-shadow:var(--shadow-lg);margin:0 auto;position:relative}
@@ -153,7 +153,10 @@
 
   /* --- LIFEBOOK (interactive) --- */
   .book{background:linear-gradient(180deg,#fffdf8,#f8f0e2);border:1px solid #ece0cc;border-radius:18px;box-shadow:var(--shadow);overflow:hidden}
-  .book-cover{padding:26px 22px;text-align:center;background:radial-gradient(400px 160px at 50% 0%,rgba(232,128,74,.22),transparent 60%),linear-gradient(135deg,#173a34,#0f2a26);color:#fff}
+  .book-cover{padding:26px 22px;text-align:center;color:#fff;background:
+      linear-gradient(180deg,rgba(15,42,38,.5),rgba(15,42,38,.8)),
+      url('assets/haru/painting.jpg') center/cover no-repeat,
+      linear-gradient(135deg,#173a34,#0f2a26)}
   .book-cover .ttl{font-size:12px;letter-spacing:.18em;color:#9af0df;font-weight:700}
   .book-cover h3{font-size:24px;font-weight:800;margin:8px 0 4px}
   .book-cover p{color:#cfe0db;font-size:12.5px}
@@ -277,7 +280,7 @@
           <!-- HOME: 오늘의 하루 -->
           <div class="mscreen on" id="s-home">
             <div class="today">
-              <div class="bg ph-walk"></div>
+              <div class="bg ph-home"></div>
               <div class="tcontent">
                 <span class="badge">✨ 오늘의 하루 · AI가 발견한 기억</span>
                 <h2>“비 오는 날이면 현관 앞에서<br/>먼저 기다리던 아이”</h2>
