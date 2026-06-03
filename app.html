@@ -2,6 +2,8 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8" />
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+<meta http-equiv="Pragma" content="no-cache"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Pet Lifebook · 하루와 다시 만나는 앱</title>
 <meta name="description" content="Pet Lifebook 사용자 화면 — 설명이 아니라 감정으로. 오늘의 하루, 삶의 이야기, 함께 기억하기, 라이프북." />
@@ -96,6 +98,33 @@
   .add-nudge{margin-top:18px;width:100%;display:flex;align-items:center;justify-content:center;gap:9px;background:var(--brand-soft);border:1px dashed #b6ddd3;color:var(--brand-deep);font-weight:800;font-size:13.5px;padding:13px;border-radius:14px;cursor:pointer;font-family:inherit}
   .add-nudge span{font-weight:600;color:var(--muted);font-size:11.5px}
   .page-top .sub b{color:var(--brand-deep)}
+  .build-badge{font-size:10.5px;font-weight:800;color:#fff;background:var(--brand);padding:3px 9px;border-radius:999px;margin-left:6px}
+  /* desktop lifebook: chapter rail + 2-col spread (사진 35 / 해석 65) */
+  .dbook-wrap{display:grid;grid-template-columns:178px 1fr;gap:22px;align-items:start}
+  .dbook-rail{position:sticky;top:8px;background:#fbf7ef;border:1px solid #ece0cc;border-radius:14px;padding:14px 10px;display:flex;flex-direction:column;gap:2px}
+  .dbook-rail .dr-h{font-size:10px;font-weight:800;color:var(--muted);letter-spacing:.12em;padding:2px 9px 9px}
+  .dbook-rail .dr-item{display:flex;align-items:center;gap:9px;text-align:left;background:none;border:none;font-family:inherit;font-size:12.5px;font-weight:700;color:#6b6253;padding:9px;border-radius:9px;cursor:pointer;width:100%}
+  .dbook-rail .dr-item:hover{background:#f1e9da}
+  .dbook-rail .dr-item.on{background:var(--brand);color:#fff}
+  .dbook-rail .dr-item .dr-n{font-size:10px;font-weight:800;opacity:.65;min-width:15px}
+  #d-book-inner{min-width:0}
+  #d-book-inner .book-pg.lb-life:has(.lb-evphoto){display:grid;grid-template-columns:300px 1fr;column-gap:30px;align-items:start}
+  #d-book-inner .book-pg.lb-life:has(.lb-evphoto) > *{grid-column:2;min-width:0}
+  #d-book-inner .book-pg.lb-life:has(.lb-evphoto) > .cnum,#d-book-inner .book-pg.lb-life:has(.lb-evphoto) > h4{grid-column:2}
+  #d-book-inner .book-pg.lb-life:has(.lb-evphoto) > .lb-evphoto{grid-column:1;grid-row:1 / span 99;align-self:start;margin-top:30px}
+  #d-book-inner .book-pg.lb-life:has(.lb-evphoto) > .lb-evphoto img{height:400px}
+  #d-book-inner .lb-ev{gap:8px}
+  .clip-modal{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.84);display:none;align-items:center;justify-content:center;padding:20px}
+  .clip-modal.on{display:flex}
+  .clip-box{position:relative;max-width:400px;width:100%}
+  .clip-box video{width:100%;max-height:76vh;border-radius:16px;background:#000;display:block}
+  .clip-x{position:absolute;top:8px;right:8px;width:34px;height:34px;border-radius:50%;background:rgba(0,0,0,.55);color:#fff;border:1px solid rgba(255,255,255,.4);font-size:15px;cursor:pointer;z-index:2;backdrop-filter:blur(3px)}
+  .clip-cap{color:#fff;text-align:center;font-size:13px;margin-top:12px;font-weight:600}
+  .clip-card{position:relative;display:block;width:100%;margin-top:16px;border:none;padding:0;border-radius:16px;overflow:hidden;cursor:pointer;box-shadow:var(--shadow);background:#000}
+  .clip-card img{width:100%;height:180px;object-fit:cover;display:block;opacity:.92}
+  .clip-card .cc-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:54px;height:54px;border-radius:50%;background:rgba(255,255,255,.9);display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--ink)}
+  .clip-card .cc-t{position:absolute;left:0;right:0;bottom:0;padding:10px 12px;color:#fff;font-size:12.5px;font-weight:700;text-align:left;background:linear-gradient(180deg,transparent,rgba(0,0,0,.6))}
+  .clipbtn{margin-top:12px;width:100%;background:var(--ink);color:#fff;border:none;border-radius:13px;padding:13px;font-weight:800;font-size:14px;cursor:pointer;font-family:inherit}
   .side .logo small{display:block;font-size:9.5px;font-weight:600;color:#7fa39a;letter-spacing:.02em;margin-top:1px}
   .hero-infer{font-size:12.5px;color:#eafff9;margin:-6px 0 16px;opacity:.96}
   /* desktop emotional home */
@@ -212,7 +241,8 @@
   .sfeed{display:flex;flex-direction:column;gap:18px}
   .scard{background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:var(--shadow)}
   .scard .cover{height:196px;position:relative;display:flex;align-items:flex-start;padding:13px;overflow:hidden}
-  .scard .cover .cover-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;background:#eadfce}
+  #d-sfeed .scard .cover{height:320px}
+  .scard .cover .cover-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 32%;z-index:0;background:#eadfce}
   .scard .cover .season,.scard .cover .conf,.scard .cover .place{z-index:1}
   .scard .cover .recover{position:absolute;right:12px;bottom:12px;z-index:2;background:rgba(0,0,0,.5);color:#fff;border:1px solid rgba(255,255,255,.45);border-radius:999px;font-size:11px;font-weight:700;padding:5px 11px;cursor:pointer;backdrop-filter:blur(3px)}
   .scard .aipick{font-size:11px;font-weight:800;color:var(--brand-deep);background:var(--brand-soft);display:inline-block;padding:3px 9px;border-radius:999px;margin-bottom:9px}
@@ -225,13 +255,67 @@
   .mem-portal button{background:#efe7da;border:1px solid #ddd2bf;border-radius:999px;padding:9px 20px;font-weight:700;font-size:13px;color:#4a4338;cursor:pointer;font-family:inherit}
   .mem-video{width:100%;max-height:420px;margin-top:10px;border-radius:13px;background:#000;display:block;object-fit:contain}
   .mem-sub{margin-top:9px;font-size:12px;color:var(--muted)}
+  .music-pick{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-top:12px}
+  .music-pick .mp-lbl{font-size:11.5px;font-weight:700;color:var(--muted)}
+  .mp-btn{background:#fff;border:1px solid var(--line);border-radius:999px;padding:7px 13px;font-size:12.5px;font-weight:700;color:#4a4338;cursor:pointer;font-family:inherit}
+  .mp-btn.on{background:var(--brand);color:#fff;border-color:var(--brand)}
+  .map-est{position:absolute;top:10px;right:10px;z-index:2;background:rgba(15,42,38,.78);color:#bdeee4;font-size:10.5px;font-weight:800;padding:4px 9px;border-radius:999px}
+  .lb-map{position:relative}
+  .map-note{font-size:11.5px;color:var(--muted);margin-top:8px}
+  .med-note{margin-top:10px;font-size:11.5px;font-weight:700;color:var(--warm-deep);background:var(--warm-soft);border:1px solid #f0d8c4;border-radius:10px;padding:9px 11px}
+  .keepcta-r{margin-top:4px;background:linear-gradient(135deg,#5fe3cc,#a9f0e2);color:#06231f;border:none;border-radius:999px;padding:13px;font-weight:800;font-size:14px;cursor:pointer;font-family:inherit;width:100%}
+  .vkeep{margin-top:16px;background:linear-gradient(135deg,#173a34,#0f231f);border-radius:16px;padding:18px;text-align:center;color:#fff}
+  .vkeep-t{font-size:15px;font-weight:800;line-height:1.5}
+  .vkeep-sub{font-size:12.5px;color:#bcd3cd;margin-top:6px}
+  .vkeep-opts{display:flex;gap:9px;margin-top:14px}
+  .vkeep-opts button{flex:1;border:none;border-radius:999px;padding:12px;font-weight:800;font-size:13px;cursor:pointer;font-family:inherit}
+  .vkeep-opts .vk-p{background:linear-gradient(135deg,#5fe3cc,#a9f0e2);color:#06231f}
+  .vkeep-opts .vk-g{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.25)}
+  .preserve-note{margin-top:9px;font-size:12px;color:var(--muted);line-height:1.55;background:#faf6ee;border:1px solid #ece0cc;border-radius:10px;padding:10px 12px}
+  .preserve-note b{color:var(--brand-deep)}
+  .map-hl{margin-top:10px;font-size:13.5px;font-weight:800;color:var(--brand-deep);background:var(--brand-soft);border:1px solid #cfe9e2;border-radius:11px;padding:10px 13px;text-align:center}
+  .walk-hero{margin:8px 0 12px}
+  .wh-period{font-size:12px;font-weight:800;color:var(--muted)}
+  .wh-big{font-size:18px;font-weight:800;margin-top:5px;line-height:1.4}
+  .wh-big b{color:var(--brand-deep)}
+  .wh-top{margin-top:10px;font-size:13px;font-weight:700;color:#4a4338;background:var(--cream2);border:1px solid var(--line);border-radius:11px;padding:10px 12px}
+  .wh-top b{color:var(--warm-deep)}
+  .heat-title{font-size:12px;font-weight:800;color:var(--muted);margin:16px 0 9px}
+  .season-filter{display:flex;gap:6px;flex-wrap:wrap;margin:14px 0 2px}
+  .sf-btn{background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 13px;font-size:12.5px;font-weight:700;color:#4a4338;cursor:pointer;font-family:inherit}
+  .sf-btn.on{background:var(--brand);color:#fff;border-color:var(--brand)}
+  .replay-cta{margin-top:10px;width:100%;background:var(--ink);color:#fff;border:none;border-radius:12px;padding:12px;font-weight:800;font-size:13.5px;cursor:pointer;font-family:inherit}
+  .rdot{filter:drop-shadow(0 0 4px rgba(31,158,138,.6))}
+  .heat-bars{display:flex;flex-direction:column;gap:8px}
+  .heatbar{display:flex;align-items:center;gap:10px;width:100%;background:#fff;border:1px solid var(--line);border-radius:11px;padding:10px 12px;cursor:pointer;font-family:inherit;transition:.14s}
+  .heatbar.on{border-color:var(--warm);background:#fff7f1}
+  .heatbar .hb-n{font-size:13px;font-weight:800;width:84px;flex:none;text-align:left;color:#332e26}
+  .heatbar .hb-track{flex:1;height:10px;border-radius:999px;background:#f0eadf;overflow:hidden}
+  .heatbar .hb-track i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,#e8804a,#e8542a)}
+  .heatbar .hb-v{font-size:11.5px;font-weight:800;color:var(--warm-deep);width:36px;flex:none;text-align:right}
+  .place-card{margin-top:14px;background:#faf6ee;border:1px solid #ece0cc;border-radius:14px;padding:15px}
+  .place-card .pc-head{font-size:15px;font-weight:800}
+  .place-card .pc-ev{display:flex;flex-wrap:wrap;gap:7px;margin-top:9px}
+  .place-card .pc-ev span{font-size:11.5px;font-weight:700;color:#5a5346;background:#fff;border:1px solid var(--line);padding:5px 10px;border-radius:8px;white-space:nowrap;flex:none}
+  .place-card .pc-photo{width:100%;height:160px;object-fit:cover;border-radius:11px;margin-top:11px;display:block;background:#eadfce}
+  .walk-keep{margin-top:16px;background:linear-gradient(135deg,#173a34,#0f231f);border-radius:16px;padding:18px;color:#fff;text-align:center}
+  .walk-keep .wk-t{font-size:14.5px;font-weight:800}
+  .walk-keep .wk-list{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin:12px 0 14px}
+  .walk-keep .wk-list span{font-size:11px;font-weight:700;color:#bcd3cd}
+  .walk-keep .wk-cta{background:linear-gradient(135deg,#5fe3cc,#a9f0e2);color:#06231f;border:none;border-radius:999px;padding:12px 22px;font-weight:800;font-size:14px;cursor:pointer;font-family:inherit}
+  .last-walk{margin-top:16px;background:#f5f1fa;border:1px solid #e3d9f0;border-radius:14px;padding:15px;text-align:center}
+  .last-walk .lw-t{font-size:13px;font-weight:800;color:#5e3a9e}
+  .last-walk .lw-map{margin:11px 0;height:120px;border-radius:12px;overflow:hidden}
+  .last-walk .lw-map svg{width:100%;height:100%;display:block}
+  .last-walk .lw-meta{font-size:12px;color:var(--muted);font-weight:700}
+  .last-walk .lw-q{font-size:14px;color:#3a3128;font-style:italic;margin-top:8px}
   .vsub{font-size:13px;color:var(--muted);margin:2px 0 12px}
   .mem-count2{margin-top:12px;font-size:12px;color:var(--muted);text-align:center}
   .mem-next{margin-top:16px;font-size:12.5px;color:var(--brand-deep);font-weight:700;text-align:center;background:var(--brand-soft);border:1px solid #cfe9e2;border-radius:11px;padding:11px}
   .book-cover.big{padding:32px 24px}
   .book-cover.big .cv-meta{font-size:12px;color:#cfe0db;margin-top:6px}
-  .book-cover.big .cv-photo{margin-top:18px;height:180px;border-radius:14px;overflow:hidden}
-  .book-cover.big .cv-photo img{width:100%;height:100%;object-fit:cover;display:block}
+  .book-cover.big .cv-photo{margin:18px auto 0;height:230px;max-width:300px;border-radius:14px;overflow:hidden}
+  .book-cover.big .cv-photo img{width:100%;height:100%;object-fit:cover;object-position:center 22%;display:block}
   .lb-ov{padding:24px 6px 8px;text-align:center}
   .lb-ov h3{font-size:28px;font-weight:800}
   .lb-ov .ovstats{display:flex;justify-content:center;gap:10px;margin:18px 0}
@@ -501,7 +585,7 @@
 
 <div class="page-top">
   <span class="brandmark"><span class="paw">🐾</span>Pet Lifebook</span>
-  <span class="sub">powered by <b>LifeOS</b> · 하루와 다시 만나는 앱</span>
+  <span class="sub">powered by <b>LifeOS</b> · 하루와 다시 만나는 앱</span><span class="build-badge">빌드 06-03 · 데스크탑 v11</span>
   <a class="back" href="index.html">← 제품 소개로</a>
 </div>
 
@@ -540,12 +624,13 @@
                 <div class="hero-date">2020년 봄 · AI가 발견</div>
                 <h2>비 오는 날 사진이<br/>유독 많이 남아 있었어요</h2>
                 <div class="hero-infer">🤖 AI는 하루가 산책을 기다렸다고 추정했어요</div>
-                <div class="hero-chips"><span>📷 사진 18</span><span>📍 북한산 GPS</span><span>🎙️ 산책 음성</span><span>🏥 방문 없음</span></div>
+                <div class="hero-chips"><span>📷 사진 18</span><span>📍 봉산 GPS</span><span>🎙️ 산책 음성</span><span>🏥 방문 없음</span></div>
                 <button class="hero-cta" onclick="showM('story')">오늘의 이야기 보기 →</button>
               </div>
-              <button class="play" onclick="toast('회상 영상을 재생합니다 ▶')">▶</button>
+              <button class="play" onclick="openMemorial()">▶</button>
             </div>
 
+            <button class="clip-card" onclick="openClip()"><img src="assets/haru/haru-clip-poster.jpg" alt="하루 영상"><div class="cc-play">▶</div><div class="cc-t">📹 하루의 실제 영상 · 2020.09.30 · 간식 먹는 날</div></button>
             <div class="secttl">🐾 하루가 자주 남긴 흔적</div>
             <div class="find-list">
               <button class="findcard" onclick="showM('story')">
@@ -555,7 +640,7 @@
               </button>
               <button class="findcard" onclick="showM('story')">
                 <span class="fic">📍</span>
-                <span class="fbody"><b>가장 오래 머문 장소 · 북한산 둘레길</b><span>위치 기록 432회</span></span>
+                <span class="fbody"><b>가장 오래 머문 장소 · 봉산 둘레길</b><span>위치 기록 432회</span></span>
                 <span class="fgo">›</span>
               </button>
               <button class="findcard" onclick="showM('story')">
@@ -602,7 +687,7 @@
               <div class="dlive" id="m-dlive">
                 <div class="dline"><span class="ck">📷</span><span><b>2010년</b> 가장 오래된 사진을 발견했어요</span></div>
                 <div class="dline"><span class="ck">🏥</span><span>동물병원 <b>진료기록 9건</b>·약 영수증을 읽었어요</span></div>
-                <div class="dline"><span class="ck">🗺️</span><span>GPS에서 <b>북한산 둘레길</b> 산책 경로를 복원했어요</span></div>
+                <div class="dline"><span class="ck">🗺️</span><span>GPS에서 <b>봉산 둘레길</b> 산책 경로를 복원했어요</span></div>
                 <div class="dline"><span class="ck">🎙️</span><span>음성·메모에서 하루를 부르던 기록을 찾았어요</span></div>
               </div>
             </div>
@@ -620,9 +705,10 @@
               </div>
               <div class="ritem rdiv">하루가 가장 자주 남긴 흔적</div>
               <div class="ritem rfind"><span class="e">🌸</span><div><div class="lbl">가장 많이 찍힌 계절</div><div class="v">봄</div><div class="rwhy">봄 촬영 38% · 신뢰도 80%</div></div></div>
-              <div class="ritem rfind"><span class="e">📍</span><div><div class="lbl">가장 자주 기록된 장소</div><div class="v">북한산 둘레길</div><div class="rwhy">GPS 432회 · 신뢰도 88%</div></div></div>
+              <div class="ritem rfind"><span class="e">📍</span><div><div class="lbl">가장 자주 기록된 장소</div><div class="v">봉산 둘레길</div><div class="rwhy">GPS 432회 · 신뢰도 88%</div></div></div>
               <div class="ritem rfind"><span class="e">🐾</span><div><div class="lbl">가장 자주 반복된 패턴</div><div class="v">비 오는 날 산책</div><div class="rwhy">비 오는 날 촬영 21% · 신뢰도 83%</div></div></div>
               <div class="ritem rpunch">하루와 함께한 시간이<br/>한 권의 이야기로 엮였습니다.</div>
+              <button class="ritem keepcta-r" onclick="openKeep()">📖 한 권으로 남기기</button>
               <div class="ritem rcta">
                 <button class="p" onclick="showM('story')">삶의 이야기 보기</button>
                 <button class="g" onclick="showM('book')">라이프북 보기</button>
@@ -638,7 +724,7 @@
             <div class="secttl">📖 더 자세한 이야기</div>
             <div class="sfeed" id="m-sfeed"></div>
             <div class="secttl">📷 하루의 사진 보관함 · <b id="m-galcount">0</b>장</div>
-            <div class="galnote">원본 149장에서 흔들림·중복·저해상도 24장을 자동으로 정리하고, <b>대표 125장</b>을 모았어요.</div><div class="curate-stats"><span>🧹 흔들림 17</span><span>🔁 중복·유사 4</span><span>🔍 저해상도 3</span></div>
+            <div class="galnote">원본 149장에서 흔들림·중복·저해상도·인물 사진을 정리하고, <b>대표 115장</b>을 모았어요.</div><div class="curate-stats"><span>🧹 흔들림 17</span><span>🔁 중복·유사 4</span><span>🔍 저해상도 3</span><span>🙅 인물 사진 제외</span></div>
             <div class="yearbar" id="m-yearbar"></div>
             <div class="gallery" id="m-gallery"></div>
             <div class="memnote">🌈 2025년 8월의 마지막 사진들은 따로 정중히 보관하고 있어요.</div>
@@ -747,14 +833,14 @@
                 <span class="hero-tag">오늘 AI가 읽은 하루 · 2020 봄</span>
                 <h2>비 오는 날 사진이 유독 많이 남아 있었어요</h2>
                 <div class="hero-infer">🤖 AI는 하루가 산책을 기다렸다고 추정했어요</div>
-                <div class="hero-chips"><span>📷 사진 18</span><span>📍 북한산 GPS</span><span>🎙️ 산책 음성</span><span>🏥 방문 없음</span></div>
+                <div class="hero-chips"><span>📷 사진 18</span><span>📍 봉산 GPS</span><span>🎙️ 산책 음성</span><span>🏥 방문 없음</span></div>
                 <button class="hero-cta" onclick="showD('story')" style="align-self:flex-start">오늘의 이야기 보기 →</button>
               </div>
             </div>
             <div class="secttl">🐾 하루가 자주 남긴 흔적</div>
             <div class="d-find">
               <button class="findcard" onclick="showD('story')"><span class="fic">🌸</span><span class="fbody"><b>가장 좋아한 계절 · 봄</b><span>봄철 산책 비중 38% · 사진 83장 기반</span></span><span class="fgo">›</span></button>
-              <button class="findcard" onclick="showD('story')"><span class="fic">📍</span><span class="fbody"><b>가장 오래 머문 장소 · 북한산 둘레길</b><span>위치 기록 432회</span></span><span class="fgo">›</span></button>
+              <button class="findcard" onclick="showD('story')"><span class="fic">📍</span><span class="fbody"><b>가장 오래 머문 장소 · 봉산 둘레길</b><span>위치 기록 432회</span></span><span class="fgo">›</span></button>
               <button class="findcard" onclick="showD('story')"><span class="fic">☔</span><span class="fbody"><b>반복된 습관 · 비 오는 날 산책</b><span>비 오는 날 사진 비율 21%</span></span><span class="fgo">›</span></button>
               <button class="findcard" onclick="showD('book')"><span class="fic">🎨</span><span class="fbody"><b>특별한 기억 · 하루 그림 발견</b><span>가족이 그린 그림 1점 → 라이프북 표지</span></span><span class="fgo">›</span></button>
             </div>
@@ -793,7 +879,7 @@
               <div class="dlive" id="d-dlive">
                 <div class="dline"><span class="ck">📷</span><span>사진 <b>149장</b>·영상 12개를 시간순으로 정렬했어요</span></div>
                 <div class="dline"><span class="ck">🏥</span><span>동물병원 <b>진료기록 9건</b>·약 영수증 6건을 읽었어요</span></div>
-                <div class="dline"><span class="ck">🗺️</span><span>GPS·산책지도에서 <b>북한산 둘레길</b> 경로를 복원했어요</span></div>
+                <div class="dline"><span class="ck">🗺️</span><span>GPS·산책지도에서 <b>봉산 둘레길</b> 경로를 복원했어요</span></div>
                 <div class="dline"><span class="ck">🎙️</span><span>음성·메모·카톡에서 가족의 기억을 연결했어요</span></div>
               </div>
             </div>
@@ -811,9 +897,10 @@
               </div>
               <div class="ritem rdiv">하루가 가장 자주 남긴 흔적</div>
               <div class="ritem rfind"><span class="e">🌸</span><div><div class="lbl">가장 많이 찍힌 계절</div><div class="v">봄</div><div class="rwhy">봄 촬영 38% · 신뢰도 80%</div></div></div>
-              <div class="ritem rfind"><span class="e">📍</span><div><div class="lbl">가장 자주 기록된 장소</div><div class="v">북한산 둘레길</div><div class="rwhy">GPS 432회 · 신뢰도 88%</div></div></div>
+              <div class="ritem rfind"><span class="e">📍</span><div><div class="lbl">가장 자주 기록된 장소</div><div class="v">봉산 둘레길</div><div class="rwhy">GPS 432회 · 신뢰도 88%</div></div></div>
               <div class="ritem rfind"><span class="e">🐾</span><div><div class="lbl">가장 자주 반복된 패턴</div><div class="v">비 오는 날 산책</div><div class="rwhy">비 오는 날 촬영 21% · 신뢰도 83%</div></div></div>
               <div class="ritem rpunch">하루와 함께한 시간이<br/>한 권의 이야기로 엮였습니다.</div>
+              <button class="ritem keepcta-r" onclick="openKeep()">📖 한 권으로 남기기</button>
               <div class="ritem rcta">
                 <button class="p" onclick="showD('story')">하루의 이야기 보기</button>
                 <button class="g" onclick="showD('book')">라이프북 보기</button>
@@ -831,7 +918,7 @@
             <div class="secttl">📖 더 자세한 이야기</div>
             <div class="sfeed" id="d-sfeed" style="max-width:640px"></div>
             <div class="secttl">📷 하루의 사진 보관함 · <b id="d-galcount">0</b>장</div>
-            <div class="galnote">원본 149장에서 흔들림·중복·저해상도 24장을 자동으로 정리하고, <b>대표 125장</b>을 모았어요.</div><div class="curate-stats"><span>🧹 흔들림 17</span><span>🔁 중복·유사 4</span><span>🔍 저해상도 3</span></div>
+            <div class="galnote">원본 149장에서 흔들림·중복·저해상도·인물 사진을 정리하고, <b>대표 115장</b>을 모았어요.</div><div class="curate-stats"><span>🧹 흔들림 17</span><span>🔁 중복·유사 4</span><span>🔍 저해상도 3</span><span>🙅 인물 사진 제외</span></div>
             <div class="yearbar" id="d-yearbar" style="max-width:640px"></div>
             <div class="gallery lg" id="d-gallery"></div>
             <div class="memnote" style="max-width:640px">🌈 2025년 8월의 마지막 사진들은 따로 정중히 보관하고 있어요.</div>
@@ -841,7 +928,10 @@
           <div class="dscreen" id="d-book">
             <div class="main-head"><div><h2>하루의 라이프북</h2><p>지어내지 않고, 자료에 근거해서만 쓴 한 권의 이야기예요.</p></div>
               <div class="seg-sm"><button id="dtab-st2" onclick="desktopView('story')">📖 이야기</button><button class="on" id="dtab-bk2" onclick="desktopView('book')">📔 라이프북</button></div></div>
-            <div id="d-book-inner" style="max-width:560px"></div>
+            <div class="dbook-wrap">
+              <div class="dbook-rail" id="d-book-rail"></div>
+              <div id="d-book-inner"></div>
+            </div>
           </div>
 
           <!-- desktop family -->
@@ -872,9 +962,16 @@
 
 </div>
 
+<div class="clip-modal" id="clip-modal" onclick="closeClip()">
+  <div class="clip-box" onclick="event.stopPropagation()">
+    <button class="clip-x" onclick="closeClip()">✕</button>
+    <video id="clip-video" controls playsinline preload="none" poster="assets/haru/haru-clip-poster.jpg"><source src="assets/haru/haru-clip-2020.mp4" type="video/mp4"></video>
+    <div class="clip-cap">📹 하루 · 2020.09.30 · 간식 먹는 날</div>
+  </div>
+</div>
 <script>
 /* ---------- data ---------- */
-const PHOTOS=[["thumb/034.jpg",2010],["thumb/044.jpg",2011],["thumb/038.jpg",2011],["thumb/037.jpg",2011],["thumb/039.jpg",2011],["thumb/042.jpg",2011],["thumb/036.jpg",2011],["thumb/043.jpg",2011],["thumb/041.jpg",2011],["thumb/040.jpg",2011],["thumb/046.jpg",2012],["thumb/049.jpg",2012],["thumb/055.jpg",2012],["thumb/053.jpg",2012],["thumb/048.jpg",2012],["thumb/052.jpg",2012],["thumb/057.jpg",2012],["thumb/056.jpg",2012],["thumb/050.jpg",2012],["thumb/054.jpg",2012],["thumb/047.jpg",2012],["thumb/051.jpg",2012],["thumb/066.jpg",2013],["thumb/064.jpg",2013],["thumb/063.jpg",2013],["thumb/071.jpg",2013],["thumb/061.jpg",2013],["thumb/068.jpg",2013],["thumb/079.jpg",2013],["thumb/062.jpg",2013],["thumb/077.jpg",2013],["thumb/067.jpg",2013],["thumb/073.jpg",2013],["thumb/060.jpg",2013],["thumb/078.jpg",2013],["thumb/069.jpg",2013],["thumb/074.jpg",2013],["thumb/075.jpg",2013],["thumb/059.jpg",2013],["thumb/076.jpg",2013],["thumb/070.jpg",2013],["thumb/058.jpg",2013],["thumb/072.jpg",2013],["thumb/001.jpg",2013],["thumb/089.jpg",2014],["thumb/091.jpg",2014],["thumb/082.jpg",2014],["thumb/085.jpg",2014],["thumb/083.jpg",2014],["thumb/088.jpg",2014],["thumb/084.jpg",2014],["thumb/080.jpg",2014],["thumb/087.jpg",2014],["thumb/090.jpg",2014],["thumb/086.jpg",2014],["thumb/081.jpg",2014],["thumb/092.jpg",2015],["thumb/094.jpg",2015],["thumb/097.jpg",2016],["thumb/096.jpg",2016],["thumb/099.jpg",2016],["thumb/098.jpg",2016],["thumb/102.jpg",2017],["thumb/103.jpg",2017],["thumb/107.jpg",2018],["thumb/106.jpg",2018],["thumb/112.jpg",2019],["thumb/115.jpg",2019],["thumb/114.jpg",2019],["thumb/118.jpg",2019],["thumb/119.jpg",2019],["thumb/113.jpg",2019],["thumb/120.jpg",2019],["thumb/117.jpg",2019],["thumb/110.jpg",2019],["thumb/121.jpg",2019],["thumb/131.jpg",2020],["thumb/132.jpg",2020],["thumb/127.jpg",2020],["thumb/133.jpg",2020],["thumb/135.jpg",2020],["thumb/138.jpg",2020],["thumb/130.jpg",2020],["thumb/137.jpg",2020],["thumb/136.jpg",2020],["thumb/139.jpg",2020],["thumb/134.jpg",2020],["thumb/129.jpg",2020],["thumb/140.jpg",2021],["thumb/151.jpg",0],["thumb/154.jpg",0],["thumb/009.jpg",0],["thumb/003.jpg",0],["thumb/150.jpg",0],["thumb/005.jpg",0],["thumb/032.jpg",0],["thumb/007.jpg",0],["thumb/008.jpg",0],["thumb/031.jpg",0],["thumb/006.jpg",0],["thumb/152.jpg",0],["thumb/156.jpg",0],["thumb/029.jpg",0],["thumb/030.jpg",0],["thumb/025.jpg",0],["thumb/028.jpg",0],["thumb/022.jpg",0],["thumb/021.jpg",0],["thumb/023.jpg",0],["thumb/027.jpg",0],["thumb/016.jpg",0],["thumb/024.jpg",0],["thumb/014.jpg",0],["thumb/017.jpg",0],["thumb/018.jpg",0],["thumb/011.jpg",0],["thumb/010.jpg",0],["thumb/013.jpg",0],["thumb/012.jpg",0],["thumb/015.jpg",0],["thumb/026.jpg",0],["thumb/002.jpg",0],["thumb/019.jpg",0],["thumb/035.jpg",0],["thumb/153.jpg",0]];
+const PHOTOS=[["thumb/034.jpg", 2010], ["thumb/044.jpg", 2011], ["thumb/038.jpg", 2011], ["thumb/037.jpg", 2011], ["thumb/039.jpg", 2011], ["thumb/042.jpg", 2011], ["thumb/036.jpg", 2011], ["thumb/041.jpg", 2011], ["thumb/040.jpg", 2011], ["thumb/046.jpg", 2012], ["thumb/049.jpg", 2012], ["thumb/055.jpg", 2012], ["thumb/053.jpg", 2012], ["thumb/048.jpg", 2012], ["thumb/052.jpg", 2012], ["thumb/056.jpg", 2012], ["thumb/054.jpg", 2012], ["thumb/047.jpg", 2012], ["thumb/051.jpg", 2012], ["thumb/066.jpg", 2013], ["thumb/064.jpg", 2013], ["thumb/063.jpg", 2013], ["thumb/071.jpg", 2013], ["thumb/061.jpg", 2013], ["thumb/079.jpg", 2013], ["thumb/062.jpg", 2013], ["thumb/077.jpg", 2013], ["thumb/067.jpg", 2013], ["thumb/073.jpg", 2013], ["thumb/060.jpg", 2013], ["thumb/078.jpg", 2013], ["thumb/069.jpg", 2013], ["thumb/074.jpg", 2013], ["thumb/075.jpg", 2013], ["thumb/059.jpg", 2013], ["thumb/076.jpg", 2013], ["thumb/070.jpg", 2013], ["thumb/072.jpg", 2013], ["thumb/001.jpg", 2013], ["thumb/089.jpg", 2014], ["thumb/091.jpg", 2014], ["thumb/082.jpg", 2014], ["thumb/085.jpg", 2014], ["thumb/083.jpg", 2014], ["thumb/088.jpg", 2014], ["thumb/084.jpg", 2014], ["thumb/080.jpg", 2014], ["thumb/087.jpg", 2014], ["thumb/090.jpg", 2014], ["thumb/086.jpg", 2014], ["thumb/081.jpg", 2014], ["thumb/092.jpg", 2015], ["thumb/094.jpg", 2015], ["thumb/097.jpg", 2016], ["thumb/096.jpg", 2016], ["thumb/099.jpg", 2016], ["thumb/098.jpg", 2016], ["thumb/102.jpg", 2017], ["thumb/103.jpg", 2017], ["thumb/112.jpg", 2019], ["thumb/115.jpg", 2019], ["thumb/114.jpg", 2019], ["thumb/118.jpg", 2019], ["thumb/119.jpg", 2019], ["thumb/113.jpg", 2019], ["thumb/120.jpg", 2019], ["thumb/117.jpg", 2019], ["thumb/110.jpg", 2019], ["thumb/121.jpg", 2019], ["thumb/131.jpg", 2020], ["thumb/132.jpg", 2020], ["thumb/127.jpg", 2020], ["thumb/133.jpg", 2020], ["thumb/135.jpg", 2020], ["thumb/138.jpg", 2020], ["thumb/130.jpg", 2020], ["thumb/137.jpg", 2020], ["thumb/136.jpg", 2020], ["thumb/139.jpg", 2020], ["thumb/134.jpg", 2020], ["thumb/129.jpg", 2020], ["thumb/140.jpg", 2021], ["thumb/151.jpg", 0], ["thumb/154.jpg", 0], ["thumb/003.jpg", 0], ["thumb/150.jpg", 0], ["thumb/032.jpg", 0], ["thumb/007.jpg", 0], ["thumb/008.jpg", 0], ["thumb/031.jpg", 0], ["thumb/006.jpg", 0], ["thumb/152.jpg", 0], ["thumb/156.jpg", 0], ["thumb/029.jpg", 0], ["thumb/030.jpg", 0], ["thumb/025.jpg", 0], ["thumb/028.jpg", 0], ["thumb/022.jpg", 0], ["thumb/021.jpg", 0], ["thumb/023.jpg", 0], ["thumb/027.jpg", 0], ["thumb/016.jpg", 0], ["thumb/024.jpg", 0], ["thumb/014.jpg", 0], ["thumb/018.jpg", 0], ["thumb/011.jpg", 0], ["thumb/010.jpg", 0], ["thumb/013.jpg", 0], ["thumb/012.jpg", 0], ["thumb/015.jpg", 0], ["thumb/026.jpg", 0], ["thumb/002.jpg", 0], ["thumb/019.jpg", 0], ["thumb/035.jpg", 0], ["thumb/153.jpg", 0]];
 function buildGallery(){
   const g=PHOTOS.filter(p=>!p[2]);
   const hist={}; g.forEach(p=>{if(p[1])hist[p[1]]=(hist[p[1]]||0)+1;});
@@ -907,7 +1004,7 @@ const STORY=[
    obs:'2019년에 사진이 다시 늘었어요. 웃는 표정이 많이 담겼어요.',photos:17,year:2019,
    infer:'함께한 시간이 <b>다시 풍성해진 시기</b>로 추정했어요.',
    why:'근거 · 2019년 사진 17장(재증가) / 정면·웃는 표정 다수'},
-  {covers:['sniff-spring.jpg','flowers.jpg','thumb/137.jpg'],season:'2020 봄',emoji:'🌸',place:'북한산 둘레길',conf:83,
+  {covers:['sniff-spring.jpg','flowers.jpg','thumb/137.jpg'],season:'2020 봄',emoji:'🌸',place:'봉산 둘레길',conf:83,
    obs:'비 오는 날·봄철 산책 사진이 유독 많이 남아 있었어요.',photos:13,year:2020,
    infer:'‘비 오는 날 산책’을 하루의 <b>반복 습관</b>으로 추정했어요.',
    why:'근거 · 봄철 산책 사진 다수 / 비 오는 날 촬영 비중 높음 / 가족 메모 “비 올 때 우산 꼭”'},
@@ -926,7 +1023,7 @@ const LB_PAGES=[
   {type:'voice',ch:'04'},
   {type:'chapter',ch:'05',kicker:'반복된 삶',title:'반복된 하루의 습관',
    lead:'여러 자료에서 반복적으로 나타난 하루의 루틴이에요.',
-   patterns:[['☔','비 오는 날 산책'],['🚗','차 타고 나가기'],['🌸','꽃길 산책'],['⛰️','북한산 둘레길']],
+   patterns:[['☔','비 오는 날 산책'],['🚗','차 타고 나가기'],['🌸','꽃길 산책'],['⛰️','봉산 둘레길']],
    ev:['📷 사진 42','🗺️ GPS 31회','🎥 영상 3','🎙️ 음성 2','📝 메모 4'],cov:'sniff-spring.jpg',conf:83,
    fam:[{who:'엄마',txt:'비 오면 꼭 먼저 현관 앞에서 기다렸어요.'}],
    why:'근거 · 비 오는 날 촬영 42장 / GPS 31회 / 음성·메모 반복'},
@@ -994,19 +1091,23 @@ function bookHTML(idx){
       <div class="lb-readtitle">📥 AI가 읽어들인 자료</div>
       <div class="src-grid"><div><span>📷</span><b>149</b>사진</div><div><span>🎥</span><b>12</b>영상</div><div><span>🎙️</span><b>5</b>음성</div><div><span>📝</span><b>18</b>메모</div><div><span>🏥</span><b>9</b>진료기록</div><div><span>💊</span><b>6</b>약 영수증</div><div><span>🗺️</span><b>14</b>산책지도</div><div><span>💬</span><b>120</b>카톡</div></div>
       <div class="lb-readtitle">✨ AI가 발견한 삶</div>
-      <div class="lb-ins"><div class="row"><span class="e">🌸</span><div><div class="k">가장 행복했던 계절</div><div class="v">봄</div></div></div><div class="row"><span class="e">☔</span><div><div class="k">반복된 습관</div><div class="v">비 오는 날 산책</div></div></div><div class="row"><span class="e">📍</span><div><div class="k">가장 오래 머문 장소</div><div class="v">북한산 둘레길</div></div></div><div class="row"><span class="e">🏥</span><div><div class="k">건강 변화</div><div class="v">11살 이후 병원 방문 증가</div></div></div><div class="row"><span class="e">❤️</span><div><div class="k">가장 가까웠던 사람</div><div class="v">엄마</div></div></div><div class="row"><span class="e">🎙️</span><div><div class="k">자주 들린 단어</div><div class="v">“산책 갈까?”</div></div></div></div>
+      <div class="lb-ins"><div class="row"><span class="e">🌸</span><div><div class="k">가장 행복했던 계절</div><div class="v">봄</div></div></div><div class="row"><span class="e">☔</span><div><div class="k">반복된 습관</div><div class="v">비 오는 날 산책</div></div></div><div class="row"><span class="e">📍</span><div><div class="k">가장 오래 머문 장소</div><div class="v">봉산 둘레길</div></div></div><div class="row"><span class="e">🏥</span><div><div class="k">건강 변화</div><div class="v">11살 이후 병원 방문 증가</div></div></div><div class="row"><span class="e">❤️</span><div><div class="k">가장 가까웠던 사람</div><div class="v">엄마</div></div></div><div class="row"><span class="e">🎙️</span><div><div class="k">자주 들린 단어</div><div class="v">“산책 갈까?”</div></div></div></div>
       <div class="based">📎 멀티모달 분석 기반 · <span class="grounded">자료에 근거해 추정</span></div></div>`;
   } else if(p.type==='map'){
-    inner=`<div class="book-pg lb-life"><div class="cnum">CHAPTER 02 · 함께 걸은 길</div><h4>하루와 함께 걸은 길</h4>
-      <div class="lb-lead">GPS·산책지도 기록에서, 하루가 자주 걸은 길을 복원했어요.</div>
-      <div class="lb-map"><svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice"><rect width="320" height="180" fill="#e8f1ec"/><ellipse cx="68" cy="58" rx="56" ry="40" fill="#d4e8d6"/><ellipse cx="252" cy="120" rx="64" ry="46" fill="#cfe6da"/><ellipse cx="170" cy="150" rx="50" ry="30" fill="#dceee4"/><polyline points="30,150 80,120 130,134 190,82 245,108 292,68" fill="none" stroke="#1f9e8a" stroke-width="3.5" stroke-dasharray="7 5" stroke-linecap="round"/><g font-family="sans-serif" font-size="11" font-weight="700"><circle cx="30" cy="150" r="6" fill="#e8804a" stroke="#fff" stroke-width="2"/><text x="38" y="154" fill="#3a3128">집</text><circle cx="130" cy="134" r="6" fill="#e8804a" stroke="#fff" stroke-width="2"/><text x="138" y="138" fill="#3a3128">동네 공원</text><circle cx="292" cy="68" r="7" fill="#1f9e8a" stroke="#fff" stroke-width="2"/><text x="222" y="56" fill="#0f6f60" font-weight="800">북한산 둘레길</text></g></svg></div>
-      <div class="map-stats"><div><b>37곳</b>산책 장소</div><div><b>북한산</b>가장 오래 걸은 길</div><div><b>128km</b>누적 거리</div></div>
-      <div class="lb-evtitle">증거</div>
-      <div class="lb-ev"><span>📍 산책 장소 37곳</span><span>🗺️ 반복 루트 3개</span><span>🚶 누적 128km</span></div>
-      <div class="lb-ai">🤖 AI가 읽은 하루<br>북한산 둘레길이 가장 자주 반복된 루트였어요. 봄철 산책 빈도가 특히 높았습니다.<button class="lb-whybtn" onclick="lbToggle(this)">왜 이렇게 읽었나요? ›</button><div class="why-box">근거 · GPS 포인트 군집 / 북한산 둘레길 31회 / 계절별 산책 빈도<br>신뢰도 82% · 자료에 근거해 추정</div></div></div>`;
+    inner=`<div class="book-pg lb-life"><div class="cnum">CHAPTER 02 · 함께 걸은 길</div><h4>함께 걸은 길</h4>
+      <div class="walk-hero"><div class="wh-period">2010 – 2025 · 15년</div><div class="wh-big">하루는 15년 동안 <b>37개</b>의 장소를 남겼어요.</div><div class="wh-top">가장 오래 머문 길 · <b>봉산 둘레길</b> · 총 방문 31회</div></div>
+      <div class="lb-map"><span class="map-est">추정 경로</span><svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice"><defs><radialGradient id="heat"><stop offset="0%" stop-color="#e8542a" stop-opacity="0.9"/><stop offset="55%" stop-color="#e8804a" stop-opacity="0.42"/><stop offset="100%" stop-color="#e8804a" stop-opacity="0"/></radialGradient></defs><rect width="320" height="180" fill="#eef3ef"/><ellipse cx="60" cy="60" rx="50" ry="38" fill="#d8ead9"/><ellipse cx="250" cy="120" rx="60" ry="44" fill="#cfe6da"/><circle cx="255" cy="72" r="78" fill="url(#heat)"/><circle cx="110" cy="120" r="46" fill="url(#heat)" opacity="0.7"/><circle cx="58" cy="66" r="30" fill="url(#heat)" opacity="0.45"/><polyline points="30,150 80,120 130,134 195,82 248,104 292,68" fill="none" stroke="#1f9e8a" stroke-width="3" stroke-dasharray="7 5" stroke-linecap="round" opacity="0.8"/><circle class="rdot" cx="30" cy="150" r="6" fill="#1f9e8a" stroke="#fff" stroke-width="2" opacity="0"/><g font-family="sans-serif" font-size="11" font-weight="800"><circle cx="255" cy="72" r="6" fill="#e8542a" stroke="#fff" stroke-width="2"/><text x="180" y="60" fill="#a8501f">봉산 둘레길</text><circle cx="110" cy="120" r="5" fill="#e8804a" stroke="#fff" stroke-width="2"/><text x="118" y="124" fill="#a8501f">한강공원</text><circle cx="58" cy="66" r="5" fill="#e8804a" stroke="#fff" stroke-width="2"/><text x="22" y="44" fill="#7a6a52">동네 공원</text></g></svg></div>
+      <div class="map-note">📍 GPS·사진 위치·시간 기록을 바탕으로 조용히 다시 이어본 추정 경로예요.</div>
+      <button class="replay-cta" onclick="replayRoute(this)">▶ 2021년 봄의 산책 다시 보기</button>
+      <div class="season-filter">${['전체','봄','여름','가을','겨울'].map((sn,k)=>`<button class="sf-btn${k===0?' on':''}" onclick="selectSeason(this,'${sn}')">${sn}</button>`).join('')}</div>
+      <div class="heat-title">🔥 자주 간 곳일수록 진하게</div>
+      <div class="heat-bars">${heatBarsHTML('전체')}</div>
+      <div class="place-card">${placeCardHTML(0)}</div>
+      <div class="walk-keep"><div class="wk-t">하루와 함께 걸은 길을 라이프북에 담을까요?</div><div class="wk-list"><span>✓ 산책 지도 포함</span><span>✓ GPS 기반 길 복원</span><span>✓ 대표 사진 자동 배치</span><span>✓ 실제 음성 보존</span><span>✓ 가족 기억 포함</span></div><button class="wk-cta" onclick="openKeep()">라이프북 제작 →</button></div></div>`;
   } else if(p.type==='health'){
     inner=`<div class="book-pg lb-life"><div class="cnum">CHAPTER 03 · 건강과 변화</div><h4>천천히 달라진 하루</h4>
-      <div class="lb-lead">진료기록·약 영수증에서 하루의 건강 흐름을 읽었어요.</div>
+      <div class="lb-lead">업로드된 진료기록·약 영수증을 바탕으로 건강 흐름을 정리했어요.</div>
+      <div class="med-note">📋 건강 기록 요약 · 의학적 판단이 아니에요</div>
       <div class="health-tl">
         <div class="hrow"><span class="hy">2016</span><span class="hd"><b>예방접종</b> · 종합백신</span></div>
         <div class="hrow"><span class="hy">2022</span><span class="hd"><b>슬개골 수술</b> · 회복 후 산책 재개</span></div>
@@ -1018,7 +1119,9 @@ function bookHTML(idx){
   } else if(p.type==='voice'){
     inner=`<div class="book-pg lb-life"><div class="cnum">CHAPTER 04 · 함께한 말들</div><h4>하루가 자주 들은 말</h4>
       <div class="lb-lead">음성·메모 기록에서, 하루에게 가장 자주 건넨 말을 찾았어요.</div>
-      <div class="bark-row"><button class="bark-btn" onclick="playBark(this)">🔊 하루 목소리 듣기</button><span class="bark-tag">음성 데모 샘플</span><audio preload="none"><source src="assets/haru/haru-bark.m4a" type="audio/mp4"></audio></div>
+      <div class="bark-row"><button class="bark-btn" onclick="playBark(this)">🔊 하루의 실제 소리</button><span class="bark-tag">보존된 기록</span><audio preload="none"><source src="assets/haru/haru-voice.m4a" type="audio/mp4"></audio></div>
+      <div class="preserve-note">업로드된 음성 기록에서 짖는 소리와 숨소리를 그대로 <b>보존</b>했어요. (되살린 게 아니에요)</div>
+      <button class="clipbtn" onclick="openClip()">▶ 하루의 실제 영상 보기 · 2020.09.30</button>
       <div class="voice-list">
         <div class="vq big"><span class="wav"><svg class="wavsvg" width="58" height="22" viewBox="0 0 58 22"><rect x="2" y="8" width="3" height="6" rx="1.5" fill="currentColor"/><rect x="7" y="5" width="3" height="12" rx="1.5" fill="currentColor"/><rect x="12" y="2" width="3" height="18" rx="1.5" fill="currentColor"/><rect x="17" y="6" width="3" height="10" rx="1.5" fill="currentColor"/><rect x="22" y="3" width="3" height="16" rx="1.5" fill="currentColor"/><rect x="27" y="7" width="3" height="8" rx="1.5" fill="currentColor"/><rect x="32" y="1" width="3" height="20" rx="1.5" fill="currentColor"/><rect x="37" y="4" width="3" height="14" rx="1.5" fill="currentColor"/><rect x="42" y="6" width="3" height="9" rx="1.5" fill="currentColor"/><rect x="47" y="2" width="3" height="17" rx="1.5" fill="currentColor"/><rect x="52" y="7" width="3" height="7" rx="1.5" fill="currentColor"/><rect x="57" y="4" width="3" height="13" rx="1.5" fill="currentColor"/></svg></span>“산책 갈까?”<em>가장 자주</em></div>
         <div class="vq">“간식 먹자”</div>
@@ -1031,17 +1134,22 @@ function bookHTML(idx){
   } else if(p.type==='signature'){
     inner=`<div class="book-pg"><div class="cnum">CHAPTER 06 · signature</div><h4>하루가 남긴 흔적</h4>
       <div class="lb-lead">함께한 시간은 사라지지 않고, 이렇게 남았습니다.</div>
-      <div class="lb-sig"><div class="lb-ins"><div class="row"><span class="e">🌸</span><div><div class="k">좋아했던 계절</div><div class="v">봄</div></div></div><div class="row"><span class="e">🥾</span><div><div class="k">가장 오래 걸은 길</div><div class="v">북한산 둘레길</div></div></div><div class="row"><span class="e">☔</span><div><div class="k">반복된 습관</div><div class="v">비 오는 날 산책</div></div></div><div class="row"><span class="e">😊</span><div><div class="k">가장 많이 남긴 순간</div><div class="v">산책 직후</div></div></div><div class="row"><span class="e">❤️</span><div><div class="k">가장 가까웠던 사람</div><div class="v">엄마</div></div></div></div></div>
-      <div class="lb-evphoto"><span class="lb-evcap">📷 근거가 된 사진</span><img src="assets/haru/portrait.jpg" alt="하루"></div></div>`;
+      <div class="lb-sig"><div class="lb-ins"><div class="row"><span class="e">🌸</span><div><div class="k">좋아했던 계절</div><div class="v">봄</div></div></div><div class="row"><span class="e">🥾</span><div><div class="k">가장 오래 걸은 길</div><div class="v">봉산 둘레길</div></div></div><div class="row"><span class="e">☔</span><div><div class="k">반복된 습관</div><div class="v">비 오는 날 산책</div></div></div><div class="row"><span class="e">😊</span><div><div class="k">가장 많이 남긴 순간</div><div class="v">산책 직후</div></div></div><div class="row"><span class="e">❤️</span><div><div class="k">가장 가까웠던 사람</div><div class="v">엄마</div></div></div></div></div>
+      <div class="last-walk"><div class="lw-t">🗺️ 마지막으로 함께 걸은 길</div><div class="lw-map"><svg viewBox="0 0 300 120" preserveAspectRatio="xMidYMid slice"><defs><radialGradient id="heat2"><stop offset="0%" stop-color="#8a5fd0" stop-opacity="0.8"/><stop offset="60%" stop-color="#a987d8" stop-opacity="0.35"/><stop offset="100%" stop-color="#a987d8" stop-opacity="0"/></radialGradient></defs><rect width="300" height="120" fill="#f1edf6"/><circle cx="210" cy="55" r="60" fill="url(#heat2)"/><polyline points="40,95 90,75 150,82 210,55" fill="none" stroke="#8a5fd0" stroke-width="2.5" stroke-dasharray="6 5" stroke-linecap="round"/><g font-family="sans-serif" font-size="11" font-weight="800"><circle cx="210" cy="55" r="5" fill="#8a5fd0" stroke="#fff" stroke-width="2"/><text x="140" y="44" fill="#5e3a9e">봉산 둘레길</text></g></svg></div><div class="lw-meta">2025년 8월 · 봉산 둘레길 · 사진 8장 · GPS 1회</div><div class="lw-q">함께 걸은 길은, 기록 속에 남았습니다.</div></div><div class="lb-evphoto"><span class="lb-evcap">📷 근거가 된 사진</span><img src="assets/haru/portrait.jpg" alt="하루"></div></div>`;
   } else if(p.type==='video'){
     inner=`<div class="book-pg"><div class="cnum">회상 영상</div><h4>하루의 회상</h4>
       <div class="vsub">하루야, 고마웠어 · 함께한 15년</div>
-      <video class="mem-video" playsinline controls preload="none" poster="assets/haru/thumb/117.jpg"><source src="assets/haru/haru-memorial.mp4" type="video/mp4"></video>
-      <div class="mem-sub">조용히, 천천히 보셔도 괜찮아요.</div>
-      <div class="mem-count2">📷 2025년 8월의 기록 · 7장 · 조용히 보관 중</div></div>`;
+      <video id="mem-video" class="mem-video" playsinline controls preload="none" poster="assets/haru/thumb/117.jpg" onplay="memPlay(this)" onpause="memPause()" onended="memEnd()"><source src="assets/haru/haru-memorial.mp4" type="video/mp4"></video>
+      <audio id="mem-music" preload="none" loop></audio>
+      <div class="music-pick"><span class="mp-lbl">🎵 배경음악 선택</span><button class="mp-btn on" onclick="pickMusic(this,'')">🔇 무음</button><button class="mp-btn" onclick="pickMusic(this,'music-piano.m4a')">🎹 피아노</button><button class="mp-btn" onclick="pickMusic(this,'music-forest.m4a')">🌲 숲소리</button></div>
+      <div class="mem-sub">음악은 직접 고르세요 · 자동재생하지 않아요.</div>
+      <div class="mem-count2">📷 2025년 8월의 기록 · 7장 · 조용히 보관 중</div>
+      <div class="vkeep"><div class="vkeep-t">하루와 함께한 시간을<br>조용한 회상 영상으로 만들었어요.</div>
+        <div class="vkeep-sub">라이프북과 함께 보관할까요?</div>
+        <div class="vkeep-opts"><button class="vk-p" onclick="openKeep()">📖 라이프북으로 남기기</button><button class="vk-g" onclick="toast('영구 보관을 선택했어요 🗄️ (데모)')">♾️ 영구 보관</button></div></div></div>`;
   } else if(p.type==='keep'){
     inner=`<div class="book-pg keep-pg"><div class="cnum">KEEP · 한 권으로</div><h4>이 이야기를 한 권으로 남기기</h4>
-      <div class="keep-lead">하루의 15년이 한 권으로 엮였어요.<br>사라지기 전에, 곁에 남겨두세요.</div>
+      <div class="keep-lead">하루의 15년이 한 권으로 엮였습니다.<br>PDF 라이프북으로 남기시겠어요?</div>
       <div class="keep-trigger">🎂 하루의 입양일(5월)이 다가와요 · 지금이 남기기 좋은 때예요</div>
       <div class="plans-lb">
         <div class="plan-lb"><div class="pn">무료</div><div class="pp">₩0</div><div class="pd">미리보기 · 워터마크</div></div>
@@ -1063,10 +1171,27 @@ function bookHTML(idx){
   return `<div class="book${p.type==='signature'||p.type==='video'?' mem':''}">${inner}${lbNav(idx)}</div>`;
 }
 function lbToggle(btn){const b=btn.parentElement.querySelector('.why-box');const on=b.classList.toggle('on');btn.textContent=on?'근거 접기 ‹':'왜 이렇게 읽었나요? ›';}
+const PLACES=[
+  {name:'봉산 둘레길',visits:31,bar:100,seasons:{'봄':14,'여름':7,'가을':6,'겨울':4},memo:4,photos:42,video:3,voice:2,cov:'sniff-spring.jpg',ai:'봄철 방문이 반복되었어요. GPS·사진 기록을 바탕으로, AI는 하루가 이 길을 좋아했다고 추정했어요.',famwho:'엄마',fam:'산책 가자고 하면 제일 좋아했어요.'},
+  {name:'한강공원',visits:14,bar:45,seasons:{'봄':3,'여름':8,'가을':2,'겨울':1},memo:2,photos:23,video:1,voice:0,cov:'flowers.jpg',ai:'여름 저녁 방문이 많았어요. 물가를 오래 바라보는 사진이 자주 보였습니다.',famwho:'아빠',fam:'여기서 노을 보는 걸 좋아했지.'},
+  {name:'동네 공원',visits:9,bar:28,seasons:{'봄':2,'여름':2,'가을':2,'겨울':3},memo:1,photos:12,video:0,voice:1,cov:'thumb/069.jpg',ai:'집 앞이라 자주 들렀어요. 비 오는 날에도 잠깐씩 다녀왔습니다.',famwho:'동생',fam:'집 앞이라 매일 갔어.'},
+];
+function placeCardHTML(i){const p=PLACES[i];return `<div class="pc-head">📍 ${p.name} · ${p.visits}회 방문</div>
+  <div class="pc-ev"><span>📷 사진 ${p.photos}</span><span>🎥 영상 ${p.video}</span><span>🎙️ 음성 ${p.voice}</span><span>📝 메모 ${p.memo}</span><span>🏥 병원기록 없음</span><span>💊 약 없음</span></div>
+  <img class="pc-photo" src="assets/haru/${p.cov}" alt="${p.name}">
+  <div class="lb-ai">🤖 AI가 읽은 하루<br>${p.ai}</div>
+  <div class="lb-fam"><div class="who">${p.famwho}의 기억</div><div class="txt">“${p.fam}”</div></div>`;}
+function heatBarsHTML(season){var get=function(p){return season==='전체'?p.visits:(p.seasons[season]||0);};var max=Math.max(1,...PLACES.map(get));return PLACES.map(function(pl,i){var v=get(pl);var w=Math.round(v/max*100);return '<button class="heatbar'+(i===0?' on':'')+'" onclick="selectPlace(this,'+i+')"><span class="hb-n">'+pl.name+'</span><span class="hb-track"><i style="width:'+w+'%"></i></span><span class="hb-v">'+v+'회</span></button>';}).join('');}
+function replayRoute(btn){var pg=btn.closest('.book-pg');var dot=pg.querySelector('.rdot');if(!dot)return;var pts=[[30,150],[80,120],[130,134],[195,82],[248,104],[292,68]];dot.setAttribute('opacity','1');var segDur=560,t0=null;function step(ts){if(!t0)t0=ts;var el=ts-t0;var i=Math.min(pts.length-2,Math.floor(el/segDur));var fr=Math.min(1,(el-i*segDur)/segDur);var a=pts[i],b=pts[i+1];dot.setAttribute('cx',a[0]+(b[0]-a[0])*fr);dot.setAttribute('cy',a[1]+(b[1]-a[1])*fr);if(el<segDur*(pts.length-1))requestAnimationFrame(step);else setTimeout(function(){dot.setAttribute('opacity','0');},900);}requestAnimationFrame(step);if(typeof toast==='function')toast('GPS·사진 시간정보로 그날의 길을 다시 이어봤어요 🐾');}
+function selectSeason(btn,season){var pg=btn.closest('.book-pg');pg.querySelectorAll('.season-filter .sf-btn').forEach(function(b){b.classList.toggle('on',b===btn);});pg.querySelector('.heat-bars').innerHTML=heatBarsHTML(season);}
+function selectPlace(btn,i){const pg=btn.closest('.book-pg');pg.querySelector('.place-card').innerHTML=placeCardHTML(i);pg.querySelectorAll('.heatbar').forEach((b,j)=>b.classList.toggle('on',j===i));}
+function chapterRailHTML(){var lab=LB_PAGES.map(function(p,i){var t=p.type;var name=t==='cover'?'표지':t==='contents'?'목차':t==='read'?'AI가 읽은 하루':t==='map'?'함께 걸은 길':t==='health'?'건강과 변화':t==='voice'?'함께한 말들':t==='signature'?'하루가 남긴 흔적':t==='video'?'회상 영상':t==='keep'?'한 권으로 남기기':(p.title||'챕터');var num=p.ch?p.ch:'';return '<button class="dr-item" data-i="'+i+'" onclick="gotoBookPage('+i+')"><span class="dr-n">'+(num||'·')+'</span>'+name+'</button>';}).join('');return '<div class="dr-h">CHAPTERS</div>'+lab;}
+function updateRail(){var r=document.getElementById('d-book-rail');if(!r)return;if(!r.innerHTML)r.innerHTML=chapterRailHTML();var items=r.querySelectorAll('.dr-item');for(var k=0;k<items.length;k++){items[k].classList.toggle('on',+items[k].dataset.i===bookPage);}}
+function gotoBookPage(i){bookPage=i;document.getElementById('m-book').innerHTML=bookHTML(i);document.getElementById('d-book-inner').innerHTML=bookHTML(i);updateRail();var dbi=document.getElementById('d-book-inner');if(dbi)dbi.scrollIntoView({block:'nearest'});}
 function flipBook(dir){
   bookPage=(bookPage+dir+LB_PAGES.length)%LB_PAGES.length;
   document.getElementById('m-book').innerHTML=bookHTML(bookPage);
-  document.getElementById('d-book-inner').innerHTML=bookHTML(bookPage);
+  document.getElementById('d-book-inner').innerHTML=bookHTML(bookPage);updateRail();
 }
 
 /* render */
@@ -1129,7 +1254,7 @@ document.getElementById('d-timeline').innerHTML=timelineHTML();
 document.getElementById('m-sfeed').innerHTML=storyHTML();
 document.getElementById('d-sfeed').innerHTML=storyHTML();
 document.getElementById('m-book').innerHTML=bookHTML(0);
-document.getElementById('d-book-inner').innerHTML=bookHTML(0);
+document.getElementById('d-book-inner').innerHTML=bookHTML(0);updateRail();
 
 /* ---------- device switch ---------- */
 function setDevice(dev){
@@ -1157,6 +1282,15 @@ function enterApp(){var i=document.getElementById("intro"); if(i) i.classList.ad
 function closeSheet(){document.getElementById('m-sheet').classList.remove('on');}
 function pickUpload(){closeSheet();runFlow('m');}
 function playBark(btn){var a=btn.parentElement.querySelector('audio');if(a){a.currentTime=0;a.play();}}
+function openClip(src,poster,cap){src=src||'assets/haru/haru-clip-2020.mp4';poster=poster||'assets/haru/haru-clip-poster.jpg';cap=cap||'📹 하루 · 2020.09.30 · 간식 먹는 날';var m=document.getElementById('clip-modal');var v=document.getElementById('clip-video');v.setAttribute('src',src);v.setAttribute('poster',poster);var c=document.querySelector('.clip-cap');if(c)c.textContent=cap;try{v.load();}catch(e){}m.classList.add('on');try{v.currentTime=0;v.play().catch(function(){});}catch(e){}}
+function openMemorial(){openClip('assets/haru/haru-memorial.mp4','assets/haru/thumb/117.jpg','🌈 하루의 회상 영상');}
+function closeClip(){var m=document.getElementById('clip-modal');m.classList.remove('on');var v=document.getElementById('clip-video');if(v)v.pause();}
+var memTrack='';
+function pickMusic(btn,trk){memTrack=trk;document.querySelectorAll('.music-pick .mp-btn').forEach(function(b){b.classList.toggle('on',b===btn);});var a=document.getElementById('mem-music'),v=document.getElementById('mem-video');if(!a)return;if(!trk){a.pause();}else{a.src='assets/haru/'+trk;if(v&&!v.paused){a.currentTime=v.currentTime%27;a.play().catch(function(){});}}}
+function memPlay(v){if(memTrack){var a=document.getElementById('mem-music');a.src='assets/haru/'+memTrack;a.currentTime=v.currentTime%27;a.play().catch(function(){});}}
+function memPause(){var a=document.getElementById('mem-music');if(a)a.pause();}
+function memEnd(){var a=document.getElementById('mem-music');if(a){a.pause();a.currentTime=0;}}
+function openKeep(){goAny('book');var i=LB_PAGES.findIndex(function(x){return x.type==='keep';});bookPage=i>=0?i:LB_PAGES.length-1;document.getElementById('m-book').innerHTML=bookHTML(bookPage);document.getElementById('d-book-inner').innerHTML=bookHTML(bookPage);updateRail();}
 
 /* ---------- desktop screens ---------- */
 const D_SCREENS=['home','upload','discover','reveal','story','book','family','famdetail'];
@@ -1230,7 +1364,7 @@ function toast(msg){
       const t=demoMap[demo]; const i=LB_PAGES.findIndex(x=>x.type===t);
       bookPage = i>=0 ? i : 0;
       document.getElementById('m-book').innerHTML=bookHTML(bookPage);
-      document.getElementById('d-book-inner').innerHTML=bookHTML(bookPage);
+      document.getElementById('d-book-inner').innerHTML=bookHTML(bookPage);updateRail();
     } else if(screen){ go(screen); }
   }catch(e){}
 })();
