@@ -265,6 +265,25 @@
   .lb-readstats b{display:block;font-size:23px;font-weight:800;color:var(--warm-deep)}
   .lb-readstats span{font-size:11px;color:var(--muted)}
   .lb-readsub{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.6}
+  .bigtime{font-size:25px;font-weight:800;text-align:center;margin:14px 0;color:var(--ink)}
+  .lb-map{margin-top:6px;border-radius:14px;overflow:hidden;border:1px solid #d8e6dd;height:170px}
+  .lb-map svg{display:block;width:100%;height:100%}
+  .health-tl{margin-top:8px;position:relative;padding-left:20px}
+  .health-tl::before{content:"";position:absolute;left:5px;top:8px;bottom:8px;width:2px;background:#e0d6c2}
+  .hrow{position:relative;padding:9px 0}
+  .hrow::before{content:"";position:absolute;left:-19px;top:14px;width:10px;height:10px;border-radius:50%;background:#fff;border:3px solid var(--warm)}
+  .hrow .hy{font-size:12px;font-weight:800;color:var(--warm-deep);margin-right:8px}
+  .hrow .hd{font-size:13.5px;color:#3a3128}
+  .voice-list{margin-top:8px;display:flex;flex-direction:column;gap:10px}
+  .vq{background:#fff;border:1px solid var(--line);border-radius:13px;padding:13px 15px;font-size:15px;font-weight:700;color:#332e26;display:flex;align-items:center;gap:11px}
+  .vq.big{font-size:18px;background:var(--brand-soft);border-color:#cfe9e2}
+  .vq em{margin-left:auto;font-size:10.5px;font-weight:800;color:var(--brand-deep);font-style:normal}
+  .wav{flex:none;color:var(--brand);line-height:0}
+  .lb-patterns{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+  .lb-patterns .pt{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:9px 14px;font-size:13.5px;font-weight:700;color:#332e26}
+  .lb-patterns .pt span{font-size:17px}
+  .hero-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+  .hero-chips span{font-size:11px;font-weight:700;color:#eafff9;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.3);padding:4px 9px;border-radius:999px;backdrop-filter:blur(3px)}
   .lb-toc{margin:16px 0 14px}
   .toc-row{display:flex;align-items:center;gap:14px;padding:13px 4px;border-bottom:1px dashed #e7ddc9}
   .toc-row:last-child{border-bottom:none}
@@ -500,11 +519,11 @@
               <div class="hero-photo ph-home"></div>
               <div class="hero-grad"></div>
               <div class="hero-text">
-                <span class="hero-tag">오늘의 하루</span>
+                <span class="hero-tag">오늘 AI가 읽은 하루</span>
                 <div class="hero-date">2020년 봄 · AI가 발견</div>
                 <h2>비 오는 날 사진이<br/>유독 많이 남아 있었어요</h2>
                 <div class="hero-infer">🤖 AI는 하루가 산책을 기다렸다고 추정했어요</div>
-                <div class="hero-ev">📷 사진 18장 기반</div>
+                <div class="hero-chips"><span>📷 사진 18</span><span>📍 북한산 GPS</span><span>🎙️ 산책 음성</span><span>🏥 방문 없음</span></div>
                 <button class="hero-cta" onclick="showM('story')">오늘의 이야기 보기 →</button>
               </div>
               <button class="play" onclick="toast('회상 영상을 재생합니다 ▶')">▶</button>
@@ -708,10 +727,10 @@
               <div class="dh-photo"></div>
               <div class="dh-grad"></div>
               <div class="d-hero-text">
-                <span class="hero-tag">오늘의 하루 · 2020년 봄</span>
+                <span class="hero-tag">오늘 AI가 읽은 하루 · 2020 봄</span>
                 <h2>비 오는 날 사진이 유독 많이 남아 있었어요</h2>
                 <div class="hero-infer">🤖 AI는 하루가 산책을 기다렸다고 추정했어요</div>
-                <div class="hero-ev">📷 사진 18장 기반 · AI 추정</div>
+                <div class="hero-chips"><span>📷 사진 18</span><span>📍 북한산 GPS</span><span>🎙️ 산책 음성</span><span>🏥 방문 없음</span></div>
                 <button class="hero-cta" onclick="showD('story')" style="align-self:flex-start">오늘의 이야기 보기 →</button>
               </div>
             </div>
@@ -881,31 +900,19 @@ const LB_PAGES=[
   {type:'contents'},
   {type:'read'},
   {type:'chapter',ch:'01',kicker:'정체성',title:'하루라는 아이',
-   lead:'흩어진 사진 속에서, 하루가 어떤 아이였는지를 먼저 읽었어요. 사진은 그 증거예요.',
+   lead:'음성·표정·행동 패턴에서, 하루가 어떤 아이였는지 먼저 읽었어요.',
    traits:[['🐾','조심스러운 성격'],['🌳','산책을 좋아함'],['❤️','엄마 밀착형'],['🌸','봄에 가장 활발']],
-   ev:['📷 사진 149','📝 메모 18','🏥 진료기록 9'],cov:'portrait.jpg',conf:78,
-   why:'근거 · 정면 응시 사진 다수 / 야외 산책 사진 비중 / 보호자 동반 거리 분석'},
-  {type:'chapter',ch:'02',kicker:'시간',title:'함께한 계절',
-   lead:'하루의 시간은 계절을 따라 흘렀어요.',
-   ai:'봄에 사진이 가장 많았고 산책 기록이 늘었어요.<br>겨울에는 집 안에서 찍은 사진이 많아졌습니다.',
-   ev:['🌸 봄 38%','🗺️ 산책지도','🎥 영상'],cov:'flowers.jpg',conf:80,
-   why:'근거 · 계절별 촬영 분포 / 봄 야외·겨울 실내 비중'},
-  {type:'chapter',ch:'03',kicker:'반복된 습관',title:'비 오는 날이면 먼저 현관 앞에 앉던 아이',
-   ai:'2020~2023년 사이 비 오는 날 사진 비율이 유독 높았어요.<br>특히 봄철 북한산 둘레길 방문이 반복되었습니다.',
-   ev:['📷 사진 42','🗺️ 북한산 GPS 31회','🎥 영상 3','🎙️ 음성 1','📝 메모 2'],
-   fam:[{who:'엄마',txt:'산책 가자고 먼저 현관 앞에서 기다리곤 했어요.'}],
-   cov:'sniff-spring.jpg',conf:83,
-   why:'근거 · 비 오는 날 촬영 42장 / 북한산 GPS 31회 / 가족 메모 2건'},
-  {type:'chapter',ch:'04',kicker:'관계',title:'늘 같은 사람 곁에',
-   ai:'사진 속 하루는 보호자와 가까운 거리에서 자주 찍혔어요.<br>특히 엄마와의 밀착도가 가장 높았습니다.',
-   ev:['❤️ proximity 0.84','👨‍👩‍👧 가족 사진 48%','💬 카톡 대화'],
-   fam:[{who:'아빠',txt:'차 타고 나가는 걸 제일 좋아했죠.'}],
-   cov:'thumb/098.jpg',conf:81,
-   why:'근거 · 보호자 동반 사진 빈도 / 촬영 거리(밀착) 분석'},
-  {type:'chapter',ch:'05',kicker:'변화',title:'천천히, 함께 나이 들기',
-   ai:'후반부 사진에서 산책 거리는 짧아지고, 집 안 사진이 늘었어요.<br>정기검진 기록도 함께 늘었습니다.',
-   ev:['🏥 진료기록 9','💊 약 영수증 6','🗺️ 산책거리 감소'],cov:'thumb/124.jpg',conf:74,
-   why:'근거 · 후반기 실내 촬영 비중↑ / 산책 GPS 빈도↓'},
+   ev:['📷 사진 149','🎙️ 음성 5','📝 메모 18'],cov:'portrait.jpg',conf:78,
+   why:'근거 · 정면 응시 사진 다수 / 음성 반응 패턴 / 보호자 동반 거리'},
+  {type:'map',ch:'02'},
+  {type:'health',ch:'03'},
+  {type:'voice',ch:'04'},
+  {type:'chapter',ch:'05',kicker:'반복된 삶',title:'반복된 하루의 습관',
+   lead:'여러 자료에서 반복적으로 나타난 하루의 루틴이에요.',
+   patterns:[['☔','비 오는 날 산책'],['🚗','차 타고 나가기'],['🌸','꽃길 산책'],['⛰️','북한산 둘레길']],
+   ev:['📷 사진 42','🗺️ GPS 31회','🎥 영상 3','🎙️ 음성 2','📝 메모 4'],cov:'sniff-spring.jpg',conf:83,
+   fam:[{who:'엄마',txt:'비 오면 꼭 먼저 현관 앞에서 기다렸어요.'}],
+   why:'근거 · 비 오는 날 촬영 42장 / GPS 31회 / 음성·메모 반복'},
   {type:'signature'},
   {type:'video'},
 ];
@@ -951,27 +958,59 @@ function bookHTML(idx){
   } else if(p.type==='contents'){
     inner=`<div class="book-pg"><div class="cnum">CONTENTS · 목차</div><h4>하루의 생애, 한 권</h4>
       <div class="lb-toc">
-        <div class="toc-row"><span class="n">00</span><div class="tx"><b>AI가 읽은 하루</b><span>15년을 한눈에</span></div></div>
-        <div class="toc-row"><span class="n">01</span><div class="tx"><b>하루라는 아이</b><span>정체성</span></div></div>
-        <div class="toc-row"><span class="n">02</span><div class="tx"><b>함께한 계절</b><span>시간의 흐름</span></div></div>
-        <div class="toc-row"><span class="n">03</span><div class="tx"><b>반복된 습관</b><span>비 오는 날 산책</span></div></div>
-        <div class="toc-row"><span class="n">04</span><div class="tx"><b>늘 같은 사람 곁에</b><span>관계</span></div></div>
-        <div class="toc-row"><span class="n">05</span><div class="tx"><b>천천히, 함께 나이 들기</b><span>변화</span></div></div>
+        <div class="toc-row"><span class="n">00</span><div class="tx"><b>AI가 읽은 하루</b><span>멀티모달 요약</span></div></div>
+        <div class="toc-row"><span class="n">01</span><div class="tx"><b>하루라는 아이</b><span>정체성 · 음성·표정·행동</span></div></div>
+        <div class="toc-row"><span class="n">02</span><div class="tx"><b>함께 걸은 길</b><span>GPS·산책지도</span></div></div>
+        <div class="toc-row"><span class="n">03</span><div class="tx"><b>건강과 변화</b><span>진료기록·약 영수증</span></div></div>
+        <div class="toc-row"><span class="n">04</span><div class="tx"><b>함께한 말들</b><span>음성·메모</span></div></div>
+        <div class="toc-row"><span class="n">05</span><div class="tx"><b>반복된 하루의 습관</b><span>패턴 분석</span></div></div>
         <div class="toc-row"><span class="n">06</span><div class="tx"><b>하루가 남긴 흔적</b><span>signature</span></div></div>
         <div class="toc-row"><span class="n">07</span><div class="tx"><b>하루의 회상 영상</b><span>27초</span></div></div>
       </div>
-      <div class="lb-spine-note">삶 → 장면 → 증거 순으로, 한 권으로 엮었어요.</div></div>`;
+      <div class="lb-spine-note">사진·음성·GPS·진료기록을 함께 읽어, 한 권으로 엮었어요.</div></div>`;
   } else if(p.type==='read'){
     inner=`<div class="book-pg"><div class="cnum">하루를 읽은 결과</div><h4>AI가 읽은 하루</h4>
-      <div class="lb-readsub">사진이 아니라, 하루의 삶을 먼저 읽었어요. 사진은 그 근거예요.</div>
-      <div class="lb-readstats"><div><b>15년</b><span>함께한 시간</span></div><div><b>149장</b><span>사진</span></div><div><b>12</b><span>연도의 기록</span></div><div><b>12</b><span>가족 기억</span></div></div>
-      <div class="lb-readtitle">📥 AI가 읽어들인 자료</div><div class="src-grid"><div><span>📷</span><b>149</b>사진</div><div><span>🎥</span><b>12</b>영상</div><div><span>🎙️</span><b>5</b>음성</div><div><span>📝</span><b>18</b>메모</div><div><span>🏥</span><b>9</b>진료기록</div><div><span>💊</span><b>6</b>약 영수증</div><div><span>🗺️</span><b>14</b>산책지도</div><div><span>💬</span><b>120</b>카톡</div></div><div class="lb-readtitle">✨ AI가 발견한 하루</div>
-      <div class="lb-ins"><div class="row"><span class="e">🌸</span><div><div class="k">가장 좋아했던 계절</div><div class="v">봄</div></div></div><div class="row"><span class="e">📍</span><div><div class="k">가장 오래 머문 장소</div><div class="v">북한산 둘레길</div></div></div><div class="row"><span class="e">☔</span><div><div class="k">반복된 습관</div><div class="v">비 오는 날 산책</div></div></div><div class="row"><span class="e">❤️</span><div><div class="k">가장 가까웠던 사람</div><div class="v">엄마</div></div></div></div>
-      <div class="based">📎 사진·시간·관계 분석 기반 · <span class="grounded">자료에 근거해 추정</span></div></div>`;
+      <div class="lb-readsub">사진만이 아니라, 메모·진료기록·GPS·음성까지 함께 읽었어요.</div>
+      <div class="bigtime">15년의 시간 · 2010–2025</div>
+      <div class="lb-readtitle">📥 AI가 읽어들인 자료</div>
+      <div class="src-grid"><div><span>📷</span><b>149</b>사진</div><div><span>🎥</span><b>12</b>영상</div><div><span>🎙️</span><b>5</b>음성</div><div><span>📝</span><b>18</b>메모</div><div><span>🏥</span><b>9</b>진료기록</div><div><span>💊</span><b>6</b>약 영수증</div><div><span>🗺️</span><b>14</b>산책지도</div><div><span>💬</span><b>120</b>카톡</div></div>
+      <div class="lb-readtitle">✨ AI가 발견한 삶</div>
+      <div class="lb-ins"><div class="row"><span class="e">🌸</span><div><div class="k">가장 행복했던 계절</div><div class="v">봄</div></div></div><div class="row"><span class="e">☔</span><div><div class="k">반복된 습관</div><div class="v">비 오는 날 산책</div></div></div><div class="row"><span class="e">📍</span><div><div class="k">가장 오래 머문 장소</div><div class="v">북한산 둘레길</div></div></div><div class="row"><span class="e">🏥</span><div><div class="k">건강 변화</div><div class="v">11살 이후 병원 방문 증가</div></div></div><div class="row"><span class="e">❤️</span><div><div class="k">가장 가까웠던 사람</div><div class="v">엄마</div></div></div><div class="row"><span class="e">🎙️</span><div><div class="k">자주 들린 단어</div><div class="v">“산책 갈까?”</div></div></div></div>
+      <div class="based">📎 멀티모달 분석 기반 · <span class="grounded">자료에 근거해 추정</span></div></div>`;
+  } else if(p.type==='map'){
+    inner=`<div class="book-pg lb-life"><div class="cnum">CHAPTER 02 · 함께 걸은 길</div><h4>하루와 함께 걸은 길</h4>
+      <div class="lb-lead">GPS·산책지도 기록에서, 하루가 자주 걸은 길을 복원했어요.</div>
+      <div class="lb-map"><svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice"><rect width="320" height="180" fill="#e8f1ec"/><ellipse cx="68" cy="58" rx="56" ry="40" fill="#d4e8d6"/><ellipse cx="252" cy="120" rx="64" ry="46" fill="#cfe6da"/><ellipse cx="170" cy="150" rx="50" ry="30" fill="#dceee4"/><polyline points="30,150 80,120 130,134 190,82 245,108 292,68" fill="none" stroke="#1f9e8a" stroke-width="3.5" stroke-dasharray="7 5" stroke-linecap="round"/><g font-family="sans-serif" font-size="11" font-weight="700"><circle cx="30" cy="150" r="6" fill="#e8804a" stroke="#fff" stroke-width="2"/><text x="38" y="154" fill="#3a3128">집</text><circle cx="130" cy="134" r="6" fill="#e8804a" stroke="#fff" stroke-width="2"/><text x="138" y="138" fill="#3a3128">동네 공원</text><circle cx="292" cy="68" r="7" fill="#1f9e8a" stroke="#fff" stroke-width="2"/><text x="222" y="56" fill="#0f6f60" font-weight="800">북한산 둘레길</text></g></svg></div>
+      <div class="lb-evtitle">증거</div>
+      <div class="lb-ev"><span>📍 산책 장소 14곳</span><span>🗺️ 반복 루트 3개</span><span>🚶 누적 거리 추정</span></div>
+      <div class="lb-ai">🤖 AI가 읽은 하루<br>북한산 둘레길이 가장 자주 반복된 루트였어요. 봄철 산책 빈도가 특히 높았습니다.<button class="lb-whybtn" onclick="lbToggle(this)">왜 이렇게 읽었나요? ›</button><div class="why-box">근거 · GPS 포인트 군집 / 북한산 둘레길 31회 / 계절별 산책 빈도<br>신뢰도 82% · 자료에 근거해 추정</div></div></div>`;
+  } else if(p.type==='health'){
+    inner=`<div class="book-pg lb-life"><div class="cnum">CHAPTER 03 · 건강과 변화</div><h4>천천히 달라진 하루</h4>
+      <div class="lb-lead">진료기록·약 영수증에서 하루의 건강 흐름을 읽었어요.</div>
+      <div class="health-tl">
+        <div class="hrow"><span class="hy">2016</span><span class="hd"><b>예방접종</b> · 종합백신</span></div>
+        <div class="hrow"><span class="hy">2022</span><span class="hd"><b>슬개골 수술</b> · 회복 후 산책 재개</span></div>
+        <div class="hrow"><span class="hy">2023~</span><span class="hd"><b>노령기 정기검진</b> · 방문 증가</span></div>
+      </div>
+      <div class="lb-evtitle">증거</div>
+      <div class="lb-ev"><span>🏥 진료기록 9건</span><span>💊 약 영수증 6건</span><span>🚶 산책거리 감소</span></div>
+      <div class="lb-ai">🤖 AI가 읽은 하루<br>11살 이후 병원 방문이 늘었어요. 산책 속도는 줄었지만, ‘산책 갈까’ 한마디엔 여전히 가장 먼저 반응했습니다.<button class="lb-whybtn" onclick="lbToggle(this)">왜 이렇게 읽었나요? ›</button><div class="why-box">근거 · 진료기록 9건(후반 집중) / 약 영수증 6건 / 산책 GPS 빈도 감소<br>신뢰도 80% · 자료에 근거해 추정</div></div></div>`;
+  } else if(p.type==='voice'){
+    inner=`<div class="book-pg lb-life"><div class="cnum">CHAPTER 04 · 함께한 말들</div><h4>하루가 자주 들은 말</h4>
+      <div class="lb-lead">음성·메모 기록에서, 하루에게 가장 자주 건넨 말을 찾았어요.</div>
+      <div class="voice-list">
+        <div class="vq big"><span class="wav"><svg class="wavsvg" width="58" height="22" viewBox="0 0 58 22"><rect x="2" y="8" width="3" height="6" rx="1.5" fill="currentColor"/><rect x="7" y="5" width="3" height="12" rx="1.5" fill="currentColor"/><rect x="12" y="2" width="3" height="18" rx="1.5" fill="currentColor"/><rect x="17" y="6" width="3" height="10" rx="1.5" fill="currentColor"/><rect x="22" y="3" width="3" height="16" rx="1.5" fill="currentColor"/><rect x="27" y="7" width="3" height="8" rx="1.5" fill="currentColor"/><rect x="32" y="1" width="3" height="20" rx="1.5" fill="currentColor"/><rect x="37" y="4" width="3" height="14" rx="1.5" fill="currentColor"/><rect x="42" y="6" width="3" height="9" rx="1.5" fill="currentColor"/><rect x="47" y="2" width="3" height="17" rx="1.5" fill="currentColor"/><rect x="52" y="7" width="3" height="7" rx="1.5" fill="currentColor"/><rect x="57" y="4" width="3" height="13" rx="1.5" fill="currentColor"/></svg></span>“산책 갈까?”<em>가장 자주</em></div>
+        <div class="vq">“간식 먹자”</div>
+        <div class="vq">“하루야”</div>
+      </div>
+      <div class="lb-evtitle">증거</div>
+      <div class="lb-ev"><span>🎙️ 음성 5개</span><span>📝 메모 18개</span></div>
+      <div class="lb-ai">🤖 AI가 읽은 하루<br>“산책 갈까?”가 가장 자주 들린 말이었어요. 이 말에 하루는 늘 가장 먼저 반응했습니다.</div>
+      <div class="lb-fam"><div class="who">딸의 기억</div><div class="txt">“사진 찍으면 꼭 카메라를 봤어요.”</div></div></div>`;
   } else if(p.type==='signature'){
     inner=`<div class="book-pg"><div class="cnum">CHAPTER 06 · signature</div><h4>하루가 남긴 흔적</h4>
       <div class="lb-lead">함께한 시간은 사라지지 않고, 이렇게 남았습니다.</div>
-      <div class="lb-sig"><div class="lb-ins"><div class="row"><span class="e">🌸</span><div><div class="k">좋아했던 계절</div><div class="v">봄</div></div></div><div class="row"><span class="e">🥾</span><div><div class="k">가장 오래 걸은 길</div><div class="v">북한산 둘레길</div></div></div><div class="row"><span class="e">😊</span><div><div class="k">가장 많이 남긴 순간</div><div class="v">산책 직후</div></div></div><div class="row"><span class="e">❤️</span><div><div class="k">가장 가까웠던 사람</div><div class="v">엄마</div></div></div></div></div>
+      <div class="lb-sig"><div class="lb-ins"><div class="row"><span class="e">🌸</span><div><div class="k">좋아했던 계절</div><div class="v">봄</div></div></div><div class="row"><span class="e">🥾</span><div><div class="k">가장 오래 걸은 길</div><div class="v">북한산 둘레길</div></div></div><div class="row"><span class="e">☔</span><div><div class="k">반복된 습관</div><div class="v">비 오는 날 산책</div></div></div><div class="row"><span class="e">😊</span><div><div class="k">가장 많이 남긴 순간</div><div class="v">산책 직후</div></div></div><div class="row"><span class="e">❤️</span><div><div class="k">가장 가까웠던 사람</div><div class="v">엄마</div></div></div></div></div>
       <div class="lb-evphoto"><span class="lb-evcap">📷 근거가 된 사진</span><img src="assets/haru/portrait.jpg" alt="하루"></div></div>`;
   } else if(p.type==='video'){
     inner=`<div class="book-pg"><div class="cnum">회상 영상</div><h4>하루의 회상</h4>
@@ -979,17 +1018,15 @@ function bookHTML(idx){
       <video class="mem-video" playsinline controls preload="none" poster="assets/haru/thumb/117.jpg"><source src="assets/haru/haru-memorial.mp4" type="video/mp4"></video>
       <div class="mem-sub">조용히, 천천히 보셔도 괜찮아요.</div>
       <div class="mem-count2">📷 2025년 8월의 기록 · 7장 · 조용히 보관 중</div></div>`;
-  } else { // life chapter: 삶 → (해석/특징) → 증거 → 가족 → 사진(근거, 맨 아래)
+  } else {
     const traits=p.traits?`<div class="lb-traits">${p.traits.map(t=>`<div class="tr"><span>${t[0]}</span>${t[1]}</div>`).join('')}</div>`:'';
+    const pat=p.patterns?`<div class="lb-patterns">${p.patterns.map(t=>`<div class="pt"><span>${t[0]}</span>${t[1]}</div>`).join('')}</div>`:'';
     const ai=p.ai?`<div class="lb-ai">🤖 AI가 읽은 하루<br>${p.ai}<button class="lb-whybtn" onclick="lbToggle(this)">왜 이렇게 읽었나요? ›</button><div class="why-box">${p.why}<br>신뢰도 ${p.conf}% · 자료에 근거해 추정</div></div>`:'';
     const ev=p.ev?`<div class="lb-evtitle">증거</div><div class="lb-ev">${p.ev.map(e=>`<span>${e}</span>`).join('')}</div>`:'';
     const fam=(p.fam||[]).map(m=>`<div class="lb-fam"><div class="who">${m.who}의 기억</div><div class="txt">“${m.txt}”</div></div>`).join('');
     const photo=p.cov?`<div class="lb-evphoto"><span class="lb-evcap">📷 근거가 된 사진</span><img src="assets/haru/${p.cov}" alt="${p.title}"></div>`:'';
-    inner=`<div class="book-pg lb-life">
-      <div class="cnum">CHAPTER ${p.ch} · ${p.kicker}</div><h4>${p.title}</h4>
-      ${p.lead?`<div class="lb-lead">${p.lead}</div>`:''}
-      ${traits}${ai}${ev}${fam}${photo}
-    </div>`;
+    inner=`<div class="book-pg lb-life"><div class="cnum">CHAPTER ${p.ch} · ${p.kicker}</div><h4>${p.title}</h4>
+      ${p.lead?`<div class="lb-lead">${p.lead}</div>`:''}${traits}${pat}${ev}${ai}${fam}${photo}</div>`;
   }
   return `<div class="book${p.type==='signature'||p.type==='video'?' mem':''}">${inner}${lbNav(idx)}</div>`;
 }
