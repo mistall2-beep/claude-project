@@ -100,15 +100,31 @@
   .hero-infer{font-size:12.5px;color:#eafff9;margin:-6px 0 16px;opacity:.96}
   /* desktop emotional home */
   .d-up-btn{background:linear-gradient(135deg,var(--brand),#27b39c);color:#fff;border:none;border-radius:999px;padding:10px 18px;font-weight:800;font-size:13px;cursor:pointer}
-  .d-hero{position:relative;height:300px;border-radius:18px;overflow:hidden;box-shadow:var(--shadow);margin-bottom:22px}
-  .d-hero .d-hero-photo{position:absolute;inset:0;background-position:center 22%}
-  .d-hero .d-hero-grad{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.05) 25%,rgba(0,0,0,.66) 100%)}
-  .d-hero .d-hero-text{position:absolute;left:0;right:0;bottom:0;padding:26px 28px;color:#fff;max-width:580px}
-  .d-hero .d-hero-text h2{font-size:25px;font-weight:800;line-height:1.32;margin:10px 0 4px;text-shadow:0 2px 14px rgba(0,0,0,.45)}
+  /* desktop hero — split layout so the face never crops (contain) */
+  .d-hero{display:grid;grid-template-columns:1.05fr .95fr;height:340px;border-radius:18px;overflow:hidden;box-shadow:var(--shadow);margin-bottom:22px}
+  .d-hero .d-hero-text{background:linear-gradient(135deg,#173a34,#0f2a26);padding:34px;display:flex;flex-direction:column;justify-content:center;color:#fff}
+  .d-hero .d-hero-text h2{font-size:24px;font-weight:800;line-height:1.34;margin:10px 0 4px}
+  .d-hero .d-hero-photo{background:url('assets/haru/portrait.jpg') center/contain no-repeat #efe7d8}
   .d-find{display:grid;grid-template-columns:1fr 1fr;gap:12px}
   .d-recent{display:flex;gap:10px}
   .d-recent .m{flex:1;height:120px;border-radius:13px;position:relative;overflow:hidden;border:none;cursor:pointer;padding:0}
   .d-recent .m span{position:absolute;left:0;right:0;bottom:0;padding:8px 10px;font-size:12px;font-weight:800;color:#fff;background:linear-gradient(180deg,transparent,rgba(0,0,0,.6))}
+  .hero-ev{font-size:11.5px;color:#cfe9e2;font-weight:700;margin-bottom:14px}
+  .reveal .rpunch{font-size:15.5px;font-weight:800;color:#fff;line-height:1.5;margin:22px 0 14px}
+  .reveal.play .ritem:nth-child(8){animation-delay:3.6s}
+  /* mobile upload bottom sheet (memory creation) */
+  .sheet-overlay{position:absolute;inset:0;background:rgba(0,0,0,.42);opacity:0;pointer-events:none;transition:.25s;z-index:60;display:flex;align-items:flex-end}
+  .sheet-overlay.on{opacity:1;pointer-events:auto}
+  .sheet{width:100%;background:#fff;border-radius:24px 24px 0 0;padding:10px 20px 24px;transform:translateY(100%);transition:transform .3s cubic-bezier(.2,.8,.2,1)}
+  .sheet-overlay.on .sheet{transform:none}
+  .sheet-handle{width:42px;height:4px;border-radius:2px;background:#e0d6c2;margin:6px auto 16px}
+  .sheet h3{font-size:18px;font-weight:800;margin-bottom:4px}
+  .sheet .sh-sub{font-size:12.5px;color:var(--muted);margin-bottom:16px}
+  .sheet-opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .sheet-opts button{display:flex;align-items:center;gap:11px;background:var(--cream);border:1px solid var(--line);border-radius:14px;padding:15px;font-weight:800;font-size:14px;cursor:pointer;font-family:inherit;color:var(--ink)}
+  .sheet-opts button span{font-size:22px}
+  .sheet-note{margin-top:16px;text-align:center;font-size:13px;color:var(--muted);line-height:1.65}
+  .sheet-note b{color:var(--brand-deep)}
 
   .addrow{margin-top:16px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow)}
   .addrow .em{font-size:22px}
@@ -339,6 +355,7 @@
                 <div class="hero-date">2020년 봄 · AI가 발견</div>
                 <h2>비 오는 날 사진이<br/>유독 많이 남아 있었어요</h2>
                 <div class="hero-infer">🤖 AI는 하루가 산책을 기다렸다고 추정했어요</div>
+                <div class="hero-ev">📷 사진 18장 기반</div>
                 <button class="hero-cta" onclick="showM('story')">오늘의 이야기 보기 →</button>
               </div>
               <button class="play" onclick="toast('회상 영상을 재생합니다 ▶')">▶</button>
@@ -399,9 +416,9 @@
               <div class="sub" id="m-reading">하루의 삶을 읽고 있습니다…</div>
               <div class="dlive" id="m-dlive">
                 <div class="dline"><span class="ck">✓</span><span><b>2019.03.14</b> 첫 사진을 발견했어요</span></div>
-                <div class="dline"><span class="ck">✓</span><span><b>강남 ○○동물병원</b> 영수증을 찾았어요</span></div>
-                <div class="dline"><span class="ck">✓</span><span>2022 여름 사진 급증 <b>→ 여행으로 추정</b></span></div>
-                <div class="dline"><span class="ck">✓</span><span>비 오는 날 사진 비중 <b>21%</b> → 산책 습관 가능성</span></div>
+                <div class="dline"><span class="ck">✓</span><span>동물병원 기록 <b>14건</b>을 찾았어요</span></div>
+                <div class="dline"><span class="ck">✓</span><span>가족과 함께 찍은 사진 <b>83장</b> 발견</span></div>
+                <div class="dline"><span class="ck">✓</span><span>봄철 사진 급증 <b>→ 비 오는 날 산책 추정</b></span></div>
               </div>
             </div>
           </div>
@@ -420,6 +437,7 @@
               <div class="ritem rfind"><span class="e">🌸</span><div><div class="lbl">가장 많이 찍힌 계절</div><div class="v">봄</div><div class="rwhy">봄 촬영 38% · 신뢰도 80%</div></div></div>
               <div class="ritem rfind"><span class="e">📍</span><div><div class="lbl">가장 자주 기록된 장소</div><div class="v">북한산 둘레길</div><div class="rwhy">GPS 432회 · 신뢰도 88%</div></div></div>
               <div class="ritem rfind"><span class="e">🐾</span><div><div class="lbl">가장 자주 반복된 패턴</div><div class="v">비 오는 날 산책</div><div class="rwhy">비 오는 날 촬영 21% · 신뢰도 83%</div></div></div>
+              <div class="ritem rpunch">하루와 함께한 시간이<br/>한 권의 이야기로 엮였습니다.</div>
               <div class="ritem rcta">
                 <button class="p" onclick="showM('story')">삶의 이야기 보기</button>
                 <button class="g" onclick="showM('book')">라이프북 보기</button>
@@ -471,6 +489,22 @@
           <button id="tab-family" onclick="showM('family')"><span class="i">👨‍👩‍👧</span>함께 기억</button>
           <button id="tab-book" onclick="showM('book')"><span class="i">📖</span>라이프북</button>
         </div>
+
+        <!-- mobile upload bottom sheet -->
+        <div class="sheet-overlay" id="m-sheet" onclick="closeSheet()">
+          <div class="sheet" onclick="event.stopPropagation()">
+            <div class="sheet-handle"></div>
+            <h3>무엇을 올릴까요?</h3>
+            <div class="sh-sub">정리 안 하셔도 돼요. 그냥 올리면, AI가 하루의 삶을 읽어요.</div>
+            <div class="sheet-opts">
+              <button onclick="pickUpload()"><span>📷</span>사진·영상</button>
+              <button onclick="pickUpload()"><span>📄</span>병원기록</button>
+              <button onclick="pickUpload()"><span>🎙️</span>음성</button>
+              <button onclick="pickUpload()"><span>✍️</span>메모</button>
+            </div>
+            <div class="sheet-note">올리는 건 언제나 무료예요.<br/><b>흩어진 기억을 올리면, 삶의 이야기로 엮여요.</b></div>
+          </div>
+        </div>
       </div>
     </div>
     <p class="mcap">모바일 앱 — 설명이 아니라 감정으로. 열면 ‘오늘의 하루’가 먼저 반겨줍니다.</p>
@@ -500,14 +534,14 @@
             <div class="main-head"><div><h2>오늘의 하루</h2><p>하루와 함께한 삶을, 다시 발견하는 중이에요.</p></div>
               <button class="d-up-btn" onclick="showD('upload')">＋ 자료 올리기</button></div>
             <div class="d-hero">
-              <div class="d-hero-photo ph-home"></div>
-              <div class="d-hero-grad"></div>
               <div class="d-hero-text">
                 <span class="hero-tag">오늘의 하루 · 2020년 봄</span>
                 <h2>비 오는 날 사진이 유독 많이 남아 있었어요</h2>
                 <div class="hero-infer">🤖 AI는 하루가 산책을 기다렸다고 추정했어요</div>
-                <button class="hero-cta" onclick="showD('story')">오늘의 이야기 보기 →</button>
+                <div class="hero-ev">📷 사진 18장 기반 · AI 추정</div>
+                <button class="hero-cta" onclick="showD('story')" style="align-self:flex-start">오늘의 이야기 보기 →</button>
               </div>
+              <div class="d-hero-photo"></div>
             </div>
             <div class="secttl">🐾 하루가 자주 남긴 흔적</div>
             <div class="d-find">
@@ -571,6 +605,7 @@
               <div class="ritem rfind"><span class="e">🌸</span><div><div class="lbl">가장 많이 찍힌 계절</div><div class="v">봄</div><div class="rwhy">봄 촬영 38% · 신뢰도 80%</div></div></div>
               <div class="ritem rfind"><span class="e">📍</span><div><div class="lbl">가장 자주 기록된 장소</div><div class="v">북한산 둘레길</div><div class="rwhy">GPS 432회 · 신뢰도 88%</div></div></div>
               <div class="ritem rfind"><span class="e">🐾</span><div><div class="lbl">가장 자주 반복된 패턴</div><div class="v">비 오는 날 산책</div><div class="rwhy">비 오는 날 촬영 21% · 신뢰도 83%</div></div></div>
+              <div class="ritem rpunch">하루와 함께한 시간이<br/>한 권의 이야기로 엮였습니다.</div>
               <div class="ritem rcta">
                 <button class="p" onclick="showD('story')">하루의 이야기 보기</button>
                 <button class="g" onclick="showD('book')">라이프북 보기</button>
@@ -746,7 +781,9 @@ function showM(name){
   if(map[name])document.getElementById(map[name]).classList.add('on');
   document.getElementById('m-scroll').scrollTo({top:0,behavior:'smooth'});
 }
-function goUpload(){showM('upload');}
+function goUpload(){document.getElementById('m-sheet').classList.add('on');}
+function closeSheet(){document.getElementById('m-sheet').classList.remove('on');}
+function pickUpload(){closeSheet();runFlow('m');}
 
 /* ---------- desktop screens ---------- */
 const D_SCREENS=['home','upload','discover','reveal','story','book','family'];
