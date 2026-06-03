@@ -60,7 +60,7 @@
   .appbar .t span{font-size:11px;color:var(--muted)}
   .appbar .bell{margin-left:auto;font-size:17px}
 
-  .mscroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;position:relative}
+  .mscroll{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;position:relative}
   .mscreen{display:none;padding:6px 18px 26px}.mscreen.on{display:block;animation:fade .3s ease}
 
   /* --- HOME (오늘의 하루) --- */
@@ -266,7 +266,7 @@
   .tabbar button.center{transform:translateY(-10px)}
   .tabbar button.center .i{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--brand),var(--warm));color:#fff;display:flex;align-items:center;justify-content:center;font-size:26px;box-shadow:0 8px 20px rgba(31,158,138,.4);margin-bottom:2px}
 
-  .toast{position:absolute;left:50%;bottom:84px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;
+  .toast{position:absolute;left:50%;bottom:84px;pointer-events:none;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;
     font-size:13px;font-weight:600;padding:11px 18px;border-radius:999px;opacity:0;transition:.3s;z-index:40;white-space:nowrap;box-shadow:var(--shadow-lg)}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
