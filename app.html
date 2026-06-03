@@ -281,6 +281,20 @@
   .vq{background:#fff;border:1px solid var(--line);border-radius:13px;padding:13px 15px;font-size:15px;font-weight:700;color:#332e26;display:flex;align-items:center;gap:11px}
   .vq.big{font-size:18px;background:var(--brand-soft);border-color:#cfe9e2}
   .vq em{margin-left:auto;font-size:10.5px;font-weight:800;color:var(--brand-deep);font-style:normal}
+  .bark-row{display:flex;align-items:center;gap:9px;margin-top:12px}
+  .bark-btn{background:var(--brand-soft);border:1px solid #cfe9e2;color:var(--brand-deep);font-weight:800;font-size:13px;padding:9px 15px;border-radius:999px;cursor:pointer;font-family:inherit}
+  .bark-tag{font-size:11px;color:var(--muted);font-weight:700}
+  .keep-pg .keep-lead{font-size:15.5px;line-height:1.7;color:#2c281f;font-weight:600;margin-top:10px}
+  .keep-trigger{margin-top:14px;background:var(--warm-soft);border:1px solid #f0d8c4;border-radius:12px;padding:11px 13px;font-size:12.5px;font-weight:700;color:var(--warm-deep)}
+  .plans-lb{margin-top:14px;display:flex;flex-direction:column;gap:10px}
+  .plan-lb{position:relative;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px;display:flex;align-items:baseline;gap:10px;box-shadow:var(--shadow)}
+  .plan-lb.pick{border:2px solid var(--brand)}
+  .plan-lb .flag{position:absolute;top:-10px;right:14px;font-size:10.5px;font-weight:800;color:#fff;background:var(--brand);padding:3px 10px;border-radius:999px}
+  .plan-lb .pn{font-size:13px;font-weight:800;color:var(--muted);width:64px;flex:none}
+  .plan-lb .pp{font-size:19px;font-weight:800;color:var(--ink)}
+  .plan-lb .pd{font-size:11.5px;color:var(--muted);margin-left:auto;text-align:right;max-width:150px;line-height:1.4}
+  .keep-cta{margin-top:16px;width:100%;background:linear-gradient(135deg,var(--brand),#27b39c);color:#fff;border:none;border-radius:14px;padding:15px;font-weight:800;font-size:15px;cursor:pointer;font-family:inherit}
+  .keep-note{margin-top:10px;text-align:center;font-size:12px;color:var(--muted)}
   .wav{flex:none;color:var(--brand);line-height:0}
   .lb-patterns{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
   .lb-patterns .pt{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:9px 14px;font-size:13.5px;font-weight:700;color:#332e26}
@@ -918,6 +932,7 @@ const LB_PAGES=[
    why:'근거 · 비 오는 날 촬영 42장 / GPS 31회 / 음성·메모 반복'},
   {type:'signature'},
   {type:'video'},
+  {type:'keep'},
 ];
 
 function storyHTML(){
@@ -969,6 +984,7 @@ function bookHTML(idx){
         <div class="toc-row"><span class="n">05</span><div class="tx"><b>반복된 하루의 습관</b><span>패턴 분석</span></div></div>
         <div class="toc-row"><span class="n">06</span><div class="tx"><b>하루가 남긴 흔적</b><span>signature</span></div></div>
         <div class="toc-row"><span class="n">07</span><div class="tx"><b>하루의 회상 영상</b><span>27초</span></div></div>
+        <div class="toc-row"><span class="n">08</span><div class="tx"><b>한 권으로 남기기</b><span>라이프북 만들기</span></div></div>
       </div>
       <div class="lb-spine-note">사진·음성·GPS·진료기록을 함께 읽어, 한 권으로 엮었어요.</div></div>`;
   } else if(p.type==='read'){
@@ -1002,6 +1018,7 @@ function bookHTML(idx){
   } else if(p.type==='voice'){
     inner=`<div class="book-pg lb-life"><div class="cnum">CHAPTER 04 · 함께한 말들</div><h4>하루가 자주 들은 말</h4>
       <div class="lb-lead">음성·메모 기록에서, 하루에게 가장 자주 건넨 말을 찾았어요.</div>
+      <div class="bark-row"><button class="bark-btn" onclick="playBark(this)">🔊 하루 목소리 듣기</button><span class="bark-tag">음성 데모 샘플</span><audio preload="none"><source src="assets/haru/haru-bark.m4a" type="audio/mp4"></audio></div>
       <div class="voice-list">
         <div class="vq big"><span class="wav"><svg class="wavsvg" width="58" height="22" viewBox="0 0 58 22"><rect x="2" y="8" width="3" height="6" rx="1.5" fill="currentColor"/><rect x="7" y="5" width="3" height="12" rx="1.5" fill="currentColor"/><rect x="12" y="2" width="3" height="18" rx="1.5" fill="currentColor"/><rect x="17" y="6" width="3" height="10" rx="1.5" fill="currentColor"/><rect x="22" y="3" width="3" height="16" rx="1.5" fill="currentColor"/><rect x="27" y="7" width="3" height="8" rx="1.5" fill="currentColor"/><rect x="32" y="1" width="3" height="20" rx="1.5" fill="currentColor"/><rect x="37" y="4" width="3" height="14" rx="1.5" fill="currentColor"/><rect x="42" y="6" width="3" height="9" rx="1.5" fill="currentColor"/><rect x="47" y="2" width="3" height="17" rx="1.5" fill="currentColor"/><rect x="52" y="7" width="3" height="7" rx="1.5" fill="currentColor"/><rect x="57" y="4" width="3" height="13" rx="1.5" fill="currentColor"/></svg></span>“산책 갈까?”<em>가장 자주</em></div>
         <div class="vq">“간식 먹자”</div>
@@ -1022,6 +1039,17 @@ function bookHTML(idx){
       <video class="mem-video" playsinline controls preload="none" poster="assets/haru/thumb/117.jpg"><source src="assets/haru/haru-memorial.mp4" type="video/mp4"></video>
       <div class="mem-sub">조용히, 천천히 보셔도 괜찮아요.</div>
       <div class="mem-count2">📷 2025년 8월의 기록 · 7장 · 조용히 보관 중</div></div>`;
+  } else if(p.type==='keep'){
+    inner=`<div class="book-pg keep-pg"><div class="cnum">KEEP · 한 권으로</div><h4>이 이야기를 한 권으로 남기기</h4>
+      <div class="keep-lead">하루의 15년이 한 권으로 엮였어요.<br>사라지기 전에, 곁에 남겨두세요.</div>
+      <div class="keep-trigger">🎂 하루의 입양일(5월)이 다가와요 · 지금이 남기기 좋은 때예요</div>
+      <div class="plans-lb">
+        <div class="plan-lb"><div class="pn">무료</div><div class="pp">₩0</div><div class="pd">미리보기 · 워터마크</div></div>
+        <div class="plan-lb pick"><span class="flag">추천</span><div class="pn">라이프북</div><div class="pp">₩29,900</div><div class="pd">고화질 PDF · 전체 챕터 · 회상 영상 포함</div></div>
+        <div class="plan-lb"><div class="pn">프리미엄</div><div class="pp">₩79,000</div><div class="pd">실물 책 제작 · 가족 공유 · 영구 보관</div></div>
+      </div>
+      <button class="keep-cta" onclick="toast('주문 페이지로 이동합니다 🛒 (데모)')">한 권으로 남기기 →</button>
+      <div class="keep-note">올리는 건 언제나 무료예요. 한 권으로 남기고 싶을 때만 결제해요.</div></div>`;
   } else {
     const traits=p.traits?`<div class="lb-traits">${p.traits.map(t=>`<div class="tr"><span>${t[0]}</span>${t[1]}</div>`).join('')}</div>`:'';
     const pat=p.patterns?`<div class="lb-patterns">${p.patterns.map(t=>`<div class="pt"><span>${t[0]}</span>${t[1]}</div>`).join('')}</div>`:'';
@@ -1128,6 +1156,7 @@ function goUpload(){document.getElementById('m-sheet').classList.add('on');}
 function enterApp(){var i=document.getElementById("intro"); if(i) i.classList.add("gone");}
 function closeSheet(){document.getElementById('m-sheet').classList.remove('on');}
 function pickUpload(){closeSheet();runFlow('m');}
+function playBark(btn){var a=btn.parentElement.querySelector('audio');if(a){a.currentTime=0;a.play();}}
 
 /* ---------- desktop screens ---------- */
 const D_SCREENS=['home','upload','discover','reveal','story','book','family','famdetail'];
