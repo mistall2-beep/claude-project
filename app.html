@@ -41,12 +41,12 @@
   @keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 
   /* photo placeholders — real photo over gradient fallback (gradient shows if file missing) */
-  .ph-spring{background:url('assets/haru/sniff-spring.jpg') center/cover no-repeat,linear-gradient(135deg,#f7c4d8,#e88aa8)}
-  .ph-walk{background:url('assets/haru/flowers.jpg') center/cover no-repeat,linear-gradient(135deg,#7fd3c0,#1f9e8a)}
+  .ph-spring{background:url('assets/haru/sniff-spring.jpg') center 45%/cover no-repeat,linear-gradient(135deg,#f7c4d8,#e88aa8)}
+  .ph-walk{background:url('assets/haru/flowers.jpg') center 58%/cover no-repeat,linear-gradient(135deg,#7fd3c0,#1f9e8a)}
   .ph-hosp{background:linear-gradient(135deg,#a7b0bd,#6b7280)}
-  .ph-jeju{background:url('assets/haru/flowers.jpg') center/cover no-repeat,linear-gradient(135deg,#7ec0f0,#3a7bd5)}
-  .ph-senior{background:url('assets/haru/forest-walk.jpg') center/cover no-repeat,linear-gradient(135deg,#f0c98a,#d99a4e)}
-  .ph-home{background:url('assets/haru/portrait.jpg') center 30%/cover no-repeat,linear-gradient(135deg,#f6b88a,#e8804a)}
+  .ph-jeju{background:url('assets/haru/flowers.jpg') center 58%/cover no-repeat,linear-gradient(135deg,#7ec0f0,#3a7bd5)}
+  .ph-senior{background:url('assets/haru/forest-walk.jpg') center 60%/cover no-repeat,linear-gradient(135deg,#f0c98a,#d99a4e)}
+  .ph-home{background:url('assets/haru/portrait.jpg') center 24%/cover no-repeat,linear-gradient(135deg,#f6b88a,#e8804a)}
 
   /* ============================ MOBILE ============================ */
   .phone{width:392px;max-width:100%;background:#0c1614;border-radius:46px;padding:13px;box-shadow:var(--shadow-lg);margin:0 auto;position:relative}
@@ -97,6 +97,18 @@
   .add-nudge span{font-weight:600;color:var(--muted);font-size:11.5px}
   .page-top .sub b{color:var(--brand-deep)}
   .side .logo small{display:block;font-size:9.5px;font-weight:600;color:#7fa39a;letter-spacing:.02em;margin-top:1px}
+  .hero-infer{font-size:12.5px;color:#eafff9;margin:-6px 0 16px;opacity:.96}
+  /* desktop emotional home */
+  .d-up-btn{background:linear-gradient(135deg,var(--brand),#27b39c);color:#fff;border:none;border-radius:999px;padding:10px 18px;font-weight:800;font-size:13px;cursor:pointer}
+  .d-hero{position:relative;height:300px;border-radius:18px;overflow:hidden;box-shadow:var(--shadow);margin-bottom:22px}
+  .d-hero .d-hero-photo{position:absolute;inset:0;background-position:center 22%}
+  .d-hero .d-hero-grad{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.05) 25%,rgba(0,0,0,.66) 100%)}
+  .d-hero .d-hero-text{position:absolute;left:0;right:0;bottom:0;padding:26px 28px;color:#fff;max-width:580px}
+  .d-hero .d-hero-text h2{font-size:25px;font-weight:800;line-height:1.32;margin:10px 0 4px;text-shadow:0 2px 14px rgba(0,0,0,.45)}
+  .d-find{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .d-recent{display:flex;gap:10px}
+  .d-recent .m{flex:1;height:120px;border-radius:13px;position:relative;overflow:hidden;border:none;cursor:pointer;padding:0}
+  .d-recent .m span{position:absolute;left:0;right:0;bottom:0;padding:8px 10px;font-size:12px;font-weight:800;color:#fff;background:linear-gradient(180deg,transparent,rgba(0,0,0,.6))}
 
   .addrow{margin-top:16px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow)}
   .addrow .em{font-size:22px}
@@ -324,28 +336,34 @@
               <div class="hero-grad"></div>
               <div class="hero-text">
                 <span class="hero-tag">오늘의 하루</span>
-                <div class="hero-date">2023년 봄</div>
-                <h2>비 오는 날이면<br/>현관 앞에서<br/>먼저 기다리던 아이</h2>
-                <button class="hero-cta" onclick="showM('story')">이야기 보기 →</button>
+                <div class="hero-date">2020년 봄 · AI가 발견</div>
+                <h2>비 오는 날 사진이<br/>유독 많이 남아 있었어요</h2>
+                <div class="hero-infer">🤖 AI는 하루가 산책을 기다렸다고 추정했어요</div>
+                <button class="hero-cta" onclick="showM('story')">오늘의 이야기 보기 →</button>
               </div>
               <button class="play" onclick="toast('회상 영상을 재생합니다 ▶')">▶</button>
             </div>
 
-            <div class="secttl">✨ 오늘 AI가 발견한 기억</div>
+            <div class="secttl">🐾 하루가 자주 남긴 흔적</div>
             <div class="find-list">
               <button class="findcard" onclick="showM('story')">
                 <span class="fic">🌸</span>
-                <span class="fbody"><b>봄 산책 사진 18장 발견</b><span>2020~2024 · 봄철 산책 비중이 가장 높아요</span></span>
+                <span class="fbody"><b>가장 좋아한 계절 · 봄</b><span>봄철 산책 사진 비중 38% · 사진 83장 기반</span></span>
                 <span class="fgo">›</span>
               </button>
               <button class="findcard" onclick="showM('story')">
                 <span class="fic">📍</span>
-                <span class="fbody"><b>가장 오래 머문 장소 · 북한산 둘레길</b><span>위치 기록 432회 (AI 추정)</span></span>
+                <span class="fbody"><b>가장 오래 머문 장소 · 북한산 둘레길</b><span>위치 기록 432회</span></span>
                 <span class="fgo">›</span>
               </button>
               <button class="findcard" onclick="showM('story')">
                 <span class="fic">☔</span>
                 <span class="fbody"><b>반복된 습관 · 비 오는 날 산책</b><span>비 오는 날 사진 비율 21%</span></span>
+                <span class="fgo">›</span>
+              </button>
+              <button class="findcard" onclick="showM('book')">
+                <span class="fic">🎨</span>
+                <span class="fbody"><b>특별한 기억 · 하루 그림 발견</b><span>가족이 그린 그림 1점 → 라이프북 표지</span></span>
                 <span class="fgo">›</span>
               </button>
             </div>
@@ -473,12 +491,41 @@
           <button class="snav" id="dnav-story" onclick="showD('story',this)"><span class="i">📖</span>하루의 이야기</button>
           <button class="snav" id="dnav-book" onclick="showD('book',this)"><span class="i">📔</span>라이프북</button>
           <button class="snav" id="dnav-family" onclick="showD('family',this)"><span class="i">👨‍👩‍👧</span>함께 기억하기</button>
-          <button class="upcta" onclick="runFlow('d')">＋ 자료 올리기</button>
+          <button class="upcta" onclick="showD('upload')">＋ 자료 올리기</button>
         </div>
         <div class="main">
 
-          <!-- desktop home / upload -->
+          <!-- desktop home: emotional feed (not dashboard) -->
           <div class="dscreen on" id="d-home">
+            <div class="main-head"><div><h2>오늘의 하루</h2><p>하루와 함께한 삶을, 다시 발견하는 중이에요.</p></div>
+              <button class="d-up-btn" onclick="showD('upload')">＋ 자료 올리기</button></div>
+            <div class="d-hero">
+              <div class="d-hero-photo ph-home"></div>
+              <div class="d-hero-grad"></div>
+              <div class="d-hero-text">
+                <span class="hero-tag">오늘의 하루 · 2020년 봄</span>
+                <h2>비 오는 날 사진이 유독 많이 남아 있었어요</h2>
+                <div class="hero-infer">🤖 AI는 하루가 산책을 기다렸다고 추정했어요</div>
+                <button class="hero-cta" onclick="showD('story')">오늘의 이야기 보기 →</button>
+              </div>
+            </div>
+            <div class="secttl">🐾 하루가 자주 남긴 흔적</div>
+            <div class="d-find">
+              <button class="findcard" onclick="showD('story')"><span class="fic">🌸</span><span class="fbody"><b>가장 좋아한 계절 · 봄</b><span>봄철 산책 비중 38% · 사진 83장 기반</span></span><span class="fgo">›</span></button>
+              <button class="findcard" onclick="showD('story')"><span class="fic">📍</span><span class="fbody"><b>가장 오래 머문 장소 · 북한산 둘레길</b><span>위치 기록 432회</span></span><span class="fgo">›</span></button>
+              <button class="findcard" onclick="showD('story')"><span class="fic">☔</span><span class="fbody"><b>반복된 습관 · 비 오는 날 산책</b><span>비 오는 날 사진 비율 21%</span></span><span class="fgo">›</span></button>
+              <button class="findcard" onclick="showD('book')"><span class="fic">🎨</span><span class="fbody"><b>특별한 기억 · 하루 그림 발견</b><span>가족이 그린 그림 1점 → 라이프북 표지</span></span><span class="fgo">›</span></button>
+            </div>
+            <div class="secttl">🧡 최근 발견한 이야기</div>
+            <div class="d-recent">
+              <button class="m ph-spring" onclick="showD('story')"><span>2020 봄 · 산책</span></button>
+              <button class="m ph-jeju" onclick="showD('story')"><span>2023 여름 · 여행</span></button>
+              <button class="m ph-senior" onclick="showD('book')"><span>2025 · 노령기</span></button>
+            </div>
+          </div>
+
+          <!-- desktop upload (예전 자료 대량 업로드) -->
+          <div class="dscreen" id="d-upload">
             <div class="main-head"><div><h2>예전 자료까지 한번에 올리세요</h2>
               <p>PC에 쌓인 폴더째 사진·영상·병원 PDF를 드래그하면, AI가 시간순으로 정리해요.</p></div></div>
             <div class="d-drop" onclick="runFlow('d')">
@@ -702,7 +749,7 @@ function showM(name){
 function goUpload(){showM('upload');}
 
 /* ---------- desktop screens ---------- */
-const D_SCREENS=['home','discover','reveal','story','book','family'];
+const D_SCREENS=['home','upload','discover','reveal','story','book','family'];
 function showD(name,btn){
   D_SCREENS.forEach(s=>document.getElementById('d-'+s).classList.toggle('on',s===name));
   const map={home:'dnav-home',story:'dnav-story',book:'dnav-book',family:'dnav-family'};
