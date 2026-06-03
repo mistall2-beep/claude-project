@@ -246,6 +246,15 @@
   .lb-fam{margin-top:11px;background:#fbf3ea;border:1px solid #ece0cc;border-left:3px solid var(--warm);border-radius:0 11px 11px 0;padding:12px 14px}
   .lb-fam .who{font-size:11.5px;font-weight:800;color:var(--warm-deep)}
   .lb-fam .txt{font-size:14px;color:#3a3128;font-style:italic;margin-top:3px;line-height:1.6}
+  /* life-first chapter: 해석 60% / 사진(근거) 40% */
+  .lb-life h4{font-size:21px;line-height:1.35}
+  .lb-lead{font-size:15.5px;line-height:1.75;color:#2c281f;font-weight:600;margin-top:10px}
+  .lb-traits{margin-top:14px;display:flex;flex-direction:column;gap:9px}
+  .lb-traits .tr{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:13px 14px;font-size:15px;font-weight:700;color:#332e26}
+  .lb-traits .tr span{font-size:20px}
+  .lb-evphoto{margin-top:16px}
+  .lb-evphoto .lb-evcap{font-size:11px;font-weight:800;color:var(--muted);display:block;margin-bottom:6px;letter-spacing:.02em}
+  .lb-evphoto img{width:100%;height:150px;object-fit:cover;border-radius:12px;display:block;background:#eadfce;opacity:.96;filter:saturate(.97)}
   .lb-ins{padding:4px 0}
   .lb-ins .row{display:flex;align-items:center;gap:13px;background:#fff;border:1px solid var(--line);border-radius:13px;padding:13px 14px;margin-bottom:9px}
   .lb-ins .row .e{font-size:22px}
@@ -864,25 +873,33 @@ const LB_PAGES=[
   {type:'cover'},
   {type:'contents'},
   {type:'read'},
-  {type:'chapter',year:'2011',t:'처음 함께한 시절',cov:'thumb/037.jpg',conf:71,
-   scene:'가장 오래된 사진 속 하루는 아직 어렸다. 이 무렵부터 함께 찍은 사진이 남기 시작했다.',
-   ev:{photos:10,place:'우리 집',extra:'가장 오래된 기록'},
-   ai:'AI는 이 시기를 하루와 함께한 시작점으로 추정했어요.',
-   why:'근거 · 2010~2011 사진이 가장 오래됨 / 실내 촬영 다수 / 이전 사진 없음',
-   fam:[{who:'엄마',txt:'처음 우리 집에 온 날, 손바닥만 했어요.'}]},
-  {type:'chapter',year:'2013',t:'가장 빛나던 해',cov:'thumb/069.jpg',conf:86,
-   scene:'바깥 사진이 부쩍 늘었다. 사진 속 하루는 자주 입을 벌리고 웃고 있었다.',
-   ev:{photos:23,place:'동네 산책길',extra:'연도 최다'},
-   ai:'AI는 산책과 나들이가 가장 활발했던 해로 추정했어요.',
-   why:'근거 · 2013년 사진 23장(연도 최다) / 야외 촬영 비중 높음',
-   fam:[{who:'아빠',txt:'차 타고 나가는 걸 제일 좋아했죠.'},{who:'동생',txt:'주말마다 같이 공원 갔던 기억.'}]},
-  {type:'chapter',year:'2020 봄',t:'비 오는 날 산책',cov:'sniff-spring.jpg',conf:83,
-   scene:'비 오는 날·봄철 산책 사진이 유독 많았다. 젖은 길 위에서 코를 땅에 대고 천천히 걸었다.',
-   ev:{photos:13,video:3,place:'북한산 둘레길',memo:2},
-   ai:'AI는 하루가 비 오는 날 산책을 기다렸다고 추정했어요.',
-   why:'근거 · 봄철 산책 사진 다수 / 비 오는 날 촬영 비중 높음 / 가족 메모 “비 올 때 우산 꼭” 2건',
-   fam:[{who:'엄마',txt:'비 오는 날이면 산책 가자고 현관 앞에서 기다렸어요.'}]},
-  {type:'memorial',cov:'portrait.jpg'},
+  {type:'chapter',ch:'01',kicker:'정체성',title:'하루라는 아이',
+   lead:'흩어진 사진 속에서, 하루가 어떤 아이였는지를 먼저 읽었어요. 사진은 그 증거예요.',
+   traits:[['🐾','조심스러운 성격'],['🌳','산책을 좋아함'],['❤️','엄마 밀착형'],['🌸','봄에 가장 활발']],
+   ev:['📷 사진 149장 분석','📅 2010–2025'],cov:'portrait.jpg',conf:78,
+   why:'근거 · 정면 응시 사진 다수 / 야외 산책 사진 비중 / 보호자 동반 거리 분석'},
+  {type:'chapter',ch:'02',kicker:'시간',title:'함께한 계절',
+   lead:'하루의 시간은 계절을 따라 흘렀어요.',
+   ai:'봄에 사진이 가장 많았고 산책 기록이 늘었어요.<br>겨울에는 집 안에서 찍은 사진이 많아졌습니다.',
+   ev:['🌸 봄 비중 38%','📅 2010–2025'],cov:'flowers.jpg',conf:80,
+   why:'근거 · 계절별 촬영 분포 / 봄 야외·겨울 실내 비중'},
+  {type:'chapter',ch:'03',kicker:'반복된 습관',title:'비 오는 날이면 먼저 현관 앞에 앉던 아이',
+   ai:'2020~2023년 사이 비 오는 날 사진 비율이 유독 높았어요.<br>특히 봄철 북한산 둘레길 방문이 반복되었습니다.',
+   ev:['📷 사진 42장','📍 북한산 둘레길 31회','🎥 영상 3개'],
+   fam:[{who:'엄마',txt:'산책 가자고 먼저 현관 앞에서 기다리곤 했어요.'}],
+   cov:'sniff-spring.jpg',conf:83,
+   why:'근거 · 비 오는 날 촬영 42장 / 북한산 GPS 31회 / 가족 메모 2건'},
+  {type:'chapter',ch:'04',kicker:'관계',title:'늘 같은 사람 곁에',
+   ai:'사진 속 하루는 보호자와 가까운 거리에서 자주 찍혔어요.<br>특히 엄마와의 밀착도가 가장 높았습니다.',
+   ev:['❤️ proximity 0.84','👨‍👩‍👧 보호자 동반 사진 다수'],
+   fam:[{who:'아빠',txt:'차 타고 나가는 걸 제일 좋아했죠.'}],
+   cov:'thumb/098.jpg',conf:81,
+   why:'근거 · 보호자 동반 사진 빈도 / 촬영 거리(밀착) 분석'},
+  {type:'chapter',ch:'05',kicker:'변화',title:'천천히, 함께 나이 들기',
+   ai:'후반부 사진에서 산책 거리는 짧아지고, 집 안 사진이 늘었어요.<br>정기검진 기록도 함께 늘었습니다.',
+   ev:['🚶 산책 빈도 감소','🏥 정기검진 증가'],cov:'thumb/124.jpg',conf:74,
+   why:'근거 · 후반기 실내 촬영 비중↑ / 산책 GPS 빈도↓'},
+  {type:'signature'},
   {type:'video'},
 ];
 
@@ -923,54 +940,51 @@ function lbNav(idx){return `<div class="book-nav"><button onclick="flipBook(-1)"
 function bookHTML(idx){
   const p=LB_PAGES[idx]; let inner='';
   if(p.type==='cover'){
-    inner=`<div class="book-cover big"><div class="ttl">PET LIFEBOOK</div><h3>하루의 삶</h3><p>흩어진 기억이 모여, 한 권의 이야기로</p><div class="cv-meta">2010 – 2025 · 15년</div><div class="cv-photo"><img src="assets/haru/thumb/117.jpg" alt="하루"></div></div>`;
+    inner=`<div class="book-cover big"><div class="ttl">PET LIFEBOOK</div><h3>하루의 삶</h3><p>사진을 모은 책이 아니라, 삶을 읽은 책</p><div class="cv-meta">2010 – 2025 · 15년</div><div class="cv-photo"><img src="assets/haru/thumb/117.jpg" alt="하루"></div></div>`;
   } else if(p.type==='contents'){
     inner=`<div class="book-pg"><div class="cnum">CONTENTS · 목차</div><h4>하루의 생애, 한 권</h4>
       <div class="lb-toc">
-        <div class="toc-row"><span class="n">01</span><div class="tx"><b>AI가 읽은 하루</b><span>15년을 한눈에</span></div></div>
-        <div class="toc-row"><span class="n">02</span><div class="tx"><b>처음 함께한 시절</b><span>2010 – 2011</span></div></div>
-        <div class="toc-row"><span class="n">03</span><div class="tx"><b>가장 빛나던 해</b><span>2013</span></div></div>
-        <div class="toc-row"><span class="n">04</span><div class="tx"><b>비 오는 날 산책</b><span>2020 봄</span></div></div>
-        <div class="toc-row"><span class="n">05</span><div class="tx"><b>함께한 시간이 남긴 흔적</b><span>마지막 계절</span></div></div>
-        <div class="toc-row"><span class="n">06</span><div class="tx"><b>하루의 회상 영상</b><span>27초</span></div></div>
+        <div class="toc-row"><span class="n">00</span><div class="tx"><b>AI가 읽은 하루</b><span>15년을 한눈에</span></div></div>
+        <div class="toc-row"><span class="n">01</span><div class="tx"><b>하루라는 아이</b><span>정체성</span></div></div>
+        <div class="toc-row"><span class="n">02</span><div class="tx"><b>함께한 계절</b><span>시간의 흐름</span></div></div>
+        <div class="toc-row"><span class="n">03</span><div class="tx"><b>반복된 습관</b><span>비 오는 날 산책</span></div></div>
+        <div class="toc-row"><span class="n">04</span><div class="tx"><b>늘 같은 사람 곁에</b><span>관계</span></div></div>
+        <div class="toc-row"><span class="n">05</span><div class="tx"><b>천천히, 함께 나이 들기</b><span>변화</span></div></div>
+        <div class="toc-row"><span class="n">06</span><div class="tx"><b>하루가 남긴 흔적</b><span>signature</span></div></div>
+        <div class="toc-row"><span class="n">07</span><div class="tx"><b>하루의 회상 영상</b><span>27초</span></div></div>
       </div>
-      <div class="lb-spine-note">흩어진 사진이 시간 순서대로, 한 권으로 엮였어요.</div></div>`;
+      <div class="lb-spine-note">삶 → 장면 → 증거 순으로, 한 권으로 엮었어요.</div></div>`;
   } else if(p.type==='read'){
     inner=`<div class="book-pg"><div class="cnum">하루를 읽은 결과</div><h4>AI가 읽은 하루</h4>
-      <div class="lb-readsub">흩어진 사진 속에서, 하루가 남긴 결을 천천히 읽었어요.</div>
+      <div class="lb-readsub">사진이 아니라, 하루의 삶을 먼저 읽었어요. 사진은 그 근거예요.</div>
       <div class="lb-readstats"><div><b>15년</b><span>함께한 시간</span></div><div><b>149장</b><span>사진</span></div><div><b>12</b><span>연도의 기록</span></div><div><b>12</b><span>가족 기억</span></div></div>
       <div class="lb-readtitle">✨ AI가 발견한 하루</div>
       <div class="lb-ins"><div class="row"><span class="e">🌸</span><div><div class="k">가장 좋아했던 계절</div><div class="v">봄</div></div></div><div class="row"><span class="e">📍</span><div><div class="k">가장 오래 머문 장소</div><div class="v">북한산 둘레길</div></div></div><div class="row"><span class="e">☔</span><div><div class="k">반복된 습관</div><div class="v">비 오는 날 산책</div></div></div><div class="row"><span class="e">❤️</span><div><div class="k">가장 가까웠던 사람</div><div class="v">엄마</div></div></div></div>
       <div class="based">📎 사진·시간·관계 분석 기반 · <span class="grounded">자료에 근거해 추정</span></div></div>`;
-  } else if(p.type==='memorial'){
-    inner=`<div class="book-pg"><div class="cnum">마지막 장</div><h4>함께한 시간이 남긴 흔적</h4>
-      <div class="scene"><img src="assets/haru/${p.cov}" alt="하루"></div>
-      <div class="quote">2025년 여름, 마지막 사진들.\n함께한 시간은 사라지지 않고, 한 권의 이야기로 남았습니다.</div>
-      <div class="lb-sig"><div class="sig-title">🐾 하루가 남긴 흔적</div><div class="lb-ins"><div class="row"><span class="e">🌸</span><div><div class="k">좋아했던 계절</div><div class="v">봄</div></div></div><div class="row"><span class="e">🥾</span><div><div class="k">가장 오래 걸은 길</div><div class="v">북한산 둘레길</div></div></div><div class="row"><span class="e">😊</span><div><div class="k">가장 많이 찍힌 순간</div><div class="v">산책 직후</div></div></div><div class="row"><span class="e">❤️</span><div><div class="k">가장 가까웠던 사람</div><div class="v">엄마</div></div></div></div></div>
-      <div class="mem-next">🎞️ 다음 장에서 하루의 회상 영상을 볼 수 있어요</div></div>`;
+  } else if(p.type==='signature'){
+    inner=`<div class="book-pg"><div class="cnum">CHAPTER 06 · signature</div><h4>하루가 남긴 흔적</h4>
+      <div class="lb-lead">함께한 시간은 사라지지 않고, 이렇게 남았습니다.</div>
+      <div class="lb-sig"><div class="lb-ins"><div class="row"><span class="e">🌸</span><div><div class="k">좋아했던 계절</div><div class="v">봄</div></div></div><div class="row"><span class="e">🥾</span><div><div class="k">가장 오래 걸은 길</div><div class="v">북한산 둘레길</div></div></div><div class="row"><span class="e">😊</span><div><div class="k">가장 많이 남긴 순간</div><div class="v">산책 직후</div></div></div><div class="row"><span class="e">❤️</span><div><div class="k">가장 가까웠던 사람</div><div class="v">엄마</div></div></div></div></div>
+      <div class="lb-evphoto"><span class="lb-evcap">📷 근거가 된 사진</span><img src="assets/haru/portrait.jpg" alt="하루"></div></div>`;
   } else if(p.type==='video'){
     inner=`<div class="book-pg"><div class="cnum">회상 영상</div><h4>하루의 회상</h4>
       <div class="vsub">하루야, 고마웠어 · 함께한 15년</div>
       <video class="mem-video" playsinline controls preload="none" poster="assets/haru/thumb/117.jpg"><source src="assets/haru/haru-memorial.mp4" type="video/mp4"></video>
       <div class="mem-sub">조용히, 천천히 보셔도 괜찮아요.</div>
       <div class="mem-count2">📷 2025년 8월의 기록 · 7장 · 조용히 보관 중</div></div>`;
-  } else {
-    const ev=p.ev;
-    const chips=[`📷 사진 ${ev.photos}장`, ev.video?`🎥 영상 ${ev.video}개`:'', ev.place?`📍 ${ev.place}`:'', ev.memo?`👨‍👩‍👧 가족 메모 ${ev.memo}개`:'', ev.extra?`✨ ${ev.extra}`:''].filter(Boolean).map(t=>`<span>${t}</span>`).join('');
+  } else { // life chapter: 삶 → (해석/특징) → 증거 → 가족 → 사진(근거, 맨 아래)
+    const traits=p.traits?`<div class="lb-traits">${p.traits.map(t=>`<div class="tr"><span>${t[0]}</span>${t[1]}</div>`).join('')}</div>`:'';
+    const ai=p.ai?`<div class="lb-ai">🤖 AI가 읽은 하루<br>${p.ai}<button class="lb-whybtn" onclick="lbToggle(this)">왜 이렇게 읽었나요? ›</button><div class="why-box">${p.why}<br>신뢰도 ${p.conf}% · 자료에 근거해 추정</div></div>`:'';
+    const ev=p.ev?`<div class="lb-evtitle">증거</div><div class="lb-ev">${p.ev.map(e=>`<span>${e}</span>`).join('')}</div>`:'';
     const fam=(p.fam||[]).map(m=>`<div class="lb-fam"><div class="who">${m.who}의 기억</div><div class="txt">“${m.txt}”</div></div>`).join('');
-    inner=`<div class="book-pg">
-      <div class="cnum">${p.year}</div><h4>${p.t}</h4>
-      <div class="scene"><img src="assets/haru/${p.cov}" alt="${p.t}"></div>
-      <div class="quote">${p.scene}</div>
-      <div class="lb-evtitle">그때, 하루에게 남은 흔적</div>
-      <div class="lb-ev">${chips}</div>
-      <div class="lb-ai">🤖 ${p.ai}
-        <button class="lb-whybtn" onclick="lbToggle(this)">왜 이렇게 읽었나요? ›</button>
-        <div class="why-box">${p.why}<br/>신뢰도 ${p.conf}% · 자료에 근거해 추정</div>
-      </div>
-      ${fam}</div>`;
+    const photo=p.cov?`<div class="lb-evphoto"><span class="lb-evcap">📷 근거가 된 사진</span><img src="assets/haru/${p.cov}" alt="${p.title}"></div>`:'';
+    inner=`<div class="book-pg lb-life">
+      <div class="cnum">CHAPTER ${p.ch} · ${p.kicker}</div><h4>${p.title}</h4>
+      ${p.lead?`<div class="lb-lead">${p.lead}</div>`:''}
+      ${traits}${ai}${ev}${fam}${photo}
+    </div>`;
   }
-  return `<div class="book${p.type==='memorial'?' mem':''}">${inner}${lbNav(idx)}</div>`;
+  return `<div class="book${p.type==='signature'||p.type==='video'?' mem':''}">${inner}${lbNav(idx)}</div>`;
 }
 function lbToggle(btn){const b=btn.parentElement.querySelector('.why-box');const on=b.classList.toggle('on');btn.textContent=on?'근거 접기 ‹':'왜 이렇게 읽었나요? ›';}
 function flipBook(dir){
