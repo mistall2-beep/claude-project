@@ -100,11 +100,13 @@
   .hero-infer{font-size:12.5px;color:#eafff9;margin:-6px 0 16px;opacity:.96}
   /* desktop emotional home */
   .d-up-btn{background:linear-gradient(135deg,var(--brand),#27b39c);color:#fff;border:none;border-radius:999px;padding:10px 18px;font-weight:800;font-size:13px;cursor:pointer}
-  /* desktop hero — split layout so the face never crops (contain) */
-  .d-hero{display:grid;grid-template-columns:1.05fr .95fr;height:340px;border-radius:18px;overflow:hidden;box-shadow:var(--shadow);margin-bottom:22px}
-  .d-hero .d-hero-text{background:linear-gradient(135deg,#173a34,#0f2a26);padding:34px;display:flex;flex-direction:column;justify-content:center;color:#fff}
-  .d-hero .d-hero-text h2{font-size:24px;font-weight:800;line-height:1.34;margin:10px 0 4px}
-  .d-hero .d-hero-photo{background:url('assets/haru/portrait.jpg') center/contain no-repeat #efe7d8}
+  /* desktop hero — photo-first: full photo (contain) over blurred letterbox, face never crops */
+  .d-hero{position:relative;height:clamp(360px,52vh,560px);border-radius:18px;overflow:hidden;box-shadow:var(--shadow);margin-bottom:22px;background:#10201b}
+  .d-hero .dh-blur{position:absolute;inset:0;background:url('assets/haru/portrait.jpg') center/cover no-repeat;filter:blur(30px) brightness(.5);transform:scale(1.25)}
+  .d-hero .dh-photo{position:absolute;inset:0;background:url('assets/haru/portrait.jpg') center/contain no-repeat}
+  .d-hero .dh-grad{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.05) 38%,rgba(0,0,0,.72) 100%)}
+  .d-hero .d-hero-text{position:absolute;left:0;right:0;bottom:0;padding:26px 30px;color:#fff;z-index:2;max-width:640px}
+  .d-hero .d-hero-text h2{font-size:24px;font-weight:800;line-height:1.34;margin:10px 0 4px;text-shadow:0 2px 14px rgba(0,0,0,.55)}
   .d-find{display:grid;grid-template-columns:1fr 1fr;gap:12px}
   .d-recent{display:flex;gap:10px}
   .d-recent .m{flex:1;height:120px;border-radius:13px;position:relative;overflow:hidden;border:none;cursor:pointer;padding:0}
@@ -194,7 +196,7 @@
   /* --- STORY FEED (삶의 이야기) --- */
   .sfeed{display:flex;flex-direction:column;gap:18px}
   .scard{background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:var(--shadow)}
-  .scard .cover{height:150px;position:relative;display:flex;align-items:flex-start;padding:13px}
+  .scard .cover{height:188px;position:relative;display:flex;align-items:flex-start;padding:13px}
   .scard .cover .season{background:rgba(255,255,255,.85);backdrop-filter:blur(3px);padding:5px 12px;border-radius:999px;font-size:13px;font-weight:800;color:var(--ink)}
   .scard .cover .place{position:absolute;right:13px;bottom:13px;background:rgba(0,0,0,.34);color:#fff;padding:4px 11px;border-radius:999px;font-size:11.5px;font-weight:700;backdrop-filter:blur(3px)}
   .scard .body{padding:16px 17px 17px}
@@ -495,7 +497,7 @@
           <div class="sheet" onclick="event.stopPropagation()">
             <div class="sheet-handle"></div>
             <h3>무엇을 올릴까요?</h3>
-            <div class="sh-sub">정리 안 하셔도 돼요. 그냥 올리면, AI가 하루의 삶을 읽어요.</div>
+            <div class="sh-sub">정리 안 하셔도 돼요. 그냥 올리세요.<br/>AI가 하루의 삶을 읽어요.</div>
             <div class="sheet-opts">
               <button onclick="pickUpload()"><span>📷</span>사진·영상</button>
               <button onclick="pickUpload()"><span>📄</span>병원기록</button>
@@ -534,6 +536,9 @@
             <div class="main-head"><div><h2>오늘의 하루</h2><p>하루와 함께한 삶을, 다시 발견하는 중이에요.</p></div>
               <button class="d-up-btn" onclick="showD('upload')">＋ 자료 올리기</button></div>
             <div class="d-hero">
+              <div class="dh-blur"></div>
+              <div class="dh-photo"></div>
+              <div class="dh-grad"></div>
               <div class="d-hero-text">
                 <span class="hero-tag">오늘의 하루 · 2020년 봄</span>
                 <h2>비 오는 날 사진이 유독 많이 남아 있었어요</h2>
@@ -541,7 +546,6 @@
                 <div class="hero-ev">📷 사진 18장 기반 · AI 추정</div>
                 <button class="hero-cta" onclick="showD('story')" style="align-self:flex-start">오늘의 이야기 보기 →</button>
               </div>
-              <div class="d-hero-photo"></div>
             </div>
             <div class="secttl">🐾 하루가 자주 남긴 흔적</div>
             <div class="d-find">
@@ -714,7 +718,7 @@ function storyHTML(){
         <div class="files">${d.files}</div>
         <div class="infer">🤖 AI는 ${d.infer}
           <button class="why" onclick="toggleWhy(this)">근거 보기 ›</button>
-          <div class="why-box">${d.why}</div>
+          <div class="why-box">${d.why}<br/>신뢰도 ${d.conf}% · 자료에 근거해 추정</div>
         </div>
       </div>
     </div>`).join('');
