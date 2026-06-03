@@ -220,6 +220,16 @@
   .book-pg .based{margin-top:13px;font-size:11.5px;color:#9a8f78;line-height:1.55}
   .book-pg .based .grounded{color:var(--brand-deep);font-weight:700}
   .reveal .rwhy{font-size:10.5px;color:#9fc2ba;margin-top:3px}
+  /* real photo gallery (proof: AI가 실제로 읽은 사진) */
+  .galnote{font-size:12px;color:var(--muted);margin:-6px 0 12px}
+  .yearbar{display:flex;align-items:flex-end;gap:5px;height:66px;margin:0 0 16px;padding:0 2px}
+  .yearbar .yb{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}
+  .yearbar .yb i{width:100%;max-width:20px;min-height:3px;background:linear-gradient(180deg,#27b39c,#9ad9cc);border-radius:4px 4px 0 0;display:block}
+  .yearbar .yb b{font-size:8.5px;color:var(--muted);margin-top:4px;font-weight:700}
+  .gallery{display:grid;grid-template-columns:repeat(4,1fr);gap:4px}
+  .gallery.lg{grid-template-columns:repeat(6,1fr);gap:6px}
+  .gallery img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:6px;display:block;background:#eadfce}
+  .memnote{margin-top:14px;font-size:12px;color:var(--muted);text-align:center;background:var(--cream2);border-radius:11px;padding:11px 12px;line-height:1.55}
 
   /* --- LIFEBOOK (interactive) --- */
   .book{background:linear-gradient(180deg,#fffdf8,#f8f0e2);border:1px solid #ece0cc;border-radius:18px;box-shadow:var(--shadow);overflow:hidden}
@@ -413,13 +423,13 @@
           <!-- DISCOVERING -->
           <div class="mscreen" id="s-discover">
             <div class="discover">
-              <div class="found" id="m-found">5,421장</div>
+              <div class="found" id="m-found">149장</div>
               <div class="reading">발견됨</div>
               <div class="sub" id="m-reading">하루의 삶을 읽고 있습니다…</div>
               <div class="dlive" id="m-dlive">
-                <div class="dline"><span class="ck">✓</span><span><b>2019.03.14</b> 첫 사진을 발견했어요</span></div>
-                <div class="dline"><span class="ck">✓</span><span>동물병원 기록 <b>14건</b>을 찾았어요</span></div>
-                <div class="dline"><span class="ck">✓</span><span>가족과 함께 찍은 사진 <b>83장</b> 발견</span></div>
+                <div class="dline"><span class="ck">✓</span><span><b>2010년</b> 가장 오래된 사진을 발견했어요</span></div>
+                <div class="dline"><span class="ck">✓</span><span><b>2013년</b> 사진이 가장 많았어요 (23장)</span></div>
+                <div class="dline"><span class="ck">✓</span><span>가족과 함께 찍은 사진을 연결했어요</span></div>
                 <div class="dline"><span class="ck">✓</span><span>봄철 사진 급증 <b>→ 비 오는 날 산책 추정</b></span></div>
               </div>
             </div>
@@ -451,6 +461,11 @@
           <div class="mscreen" id="s-story">
             <div class="secttl" style="margin-top:8px">📍 하루의 삶의 이야기</div>
             <div class="sfeed" id="m-sfeed"></div>
+            <div class="secttl">📷 하루의 사진 보관함 · <b id="m-galcount">0</b>장</div>
+            <div class="galnote">AI가 실제로 읽어들인 사진이에요. 촬영 연도별로 정리했어요.</div>
+            <div class="yearbar" id="m-yearbar"></div>
+            <div class="gallery" id="m-gallery"></div>
+            <div class="memnote">🌈 2025년 8월의 마지막 사진들은 따로 정중히 보관하고 있어요.</div>
           </div>
 
           <!-- FAMILY: 함께 기억하기 -->
@@ -570,20 +585,20 @@
               <div class="ic">🗂️📷</div>
               <h3>폴더째 끌어다 놓으세요</h3>
               <p>사진 수천 장도 괜찮아요 — 중복·흔들린 사진은 자동으로 걸러내요</p>
-              <div class="chips"><span>📁 폴더 업로드</span><span>📷 사진 5,421</span><span>🎬 영상 38</span><span>📄 병원 PDF 17</span><span>💬 카톡 내보내기</span></div>
+              <div class="chips"><span>📁 폴더 업로드</span><span>📷 사진 149</span><span>🎬 영상 38</span><span>📄 병원 PDF 17</span><span>💬 카톡 내보내기</span></div>
             </div>
             <div class="d-cards3">
               <div class="c"><div style="font-size:20px">🧹</div><b>중복 자동 정리</b><p>유사·흔들린 사진은 대표 한 장만 남겨요.</p></div>
               <div class="c"><div style="font-size:20px">📅</div><b>날짜·장소 자동 인식</b><p>원본을 올리면 촬영일·장소를 자동으로 읽어요.</p></div>
               <div class="c"><div style="font-size:20px">🔒</div><b>원본은 선택 보관</b><p>기억만 남기고 원본 장기보관은 선택형이에요.</p></div>
             </div>
-            <p class="helper">▶︎ 업로드 영역을 클릭하면 하루의 5,421장을 ‘발견’하기 시작해요</p>
+            <p class="helper">▶︎ 업로드 영역을 클릭하면 하루의 149장을 ‘발견’하기 시작해요</p>
           </div>
 
           <!-- desktop discovering -->
           <div class="dscreen" id="d-discover">
             <div class="discover" style="max-width:520px;margin:30px auto 0">
-              <div class="found" id="d-found">5,421장</div>
+              <div class="found" id="d-found">149장</div>
               <div class="reading">발견됨</div>
               <div class="sub" id="d-reading">하루의 삶을 읽고 있습니다…</div>
               <div class="dlive" id="d-dlive">
@@ -619,9 +634,14 @@
 
           <!-- desktop story -->
           <div class="dscreen" id="d-story">
-            <div class="main-head"><div><h2>하루의 이야기</h2><p>흩어진 5,421장이 시간 위에 엮여, 한 편의 이야기가 되었어요.</p></div>
+            <div class="main-head"><div><h2>하루의 이야기</h2><p>흩어진 149장이 시간 위에 엮여, 한 편의 이야기가 되었어요.</p></div>
               <div class="seg-sm"><button class="on" id="dtab-st" onclick="desktopView('story')">📖 이야기</button><button id="dtab-bk" onclick="desktopView('book')">📔 라이프북</button></div></div>
             <div class="sfeed" id="d-sfeed" style="max-width:640px"></div>
+            <div class="secttl">📷 하루의 사진 보관함 · <b id="d-galcount">0</b>장</div>
+            <div class="galnote">AI가 실제로 읽어들인 사진이에요. 촬영 연도별로 정리했어요.</div>
+            <div class="yearbar" id="d-yearbar" style="max-width:640px"></div>
+            <div class="gallery lg" id="d-gallery"></div>
+            <div class="memnote" style="max-width:640px">🌈 2025년 8월의 마지막 사진들은 따로 정중히 보관하고 있어요.</div>
           </div>
 
           <!-- desktop book -->
@@ -662,6 +682,22 @@
 
 <script>
 /* ---------- data ---------- */
+const PHOTOS=[["thumb/034.jpg",2010,0],["thumb/036.jpg",2011,0],["thumb/037.jpg",2011,0],["thumb/038.jpg",2011,0],["thumb/039.jpg",2011,0],["thumb/040.jpg",2011,0],["thumb/041.jpg",2011,0],["thumb/042.jpg",2011,0],["thumb/043.jpg",2011,0],["thumb/044.jpg",2011,0],["thumb/045.jpg",2011,0],["thumb/046.jpg",2012,0],["thumb/047.jpg",2012,0],["thumb/048.jpg",2012,0],["thumb/049.jpg",2012,0],["thumb/050.jpg",2012,0],["thumb/051.jpg",2012,0],["thumb/052.jpg",2012,0],["thumb/053.jpg",2012,0],["thumb/054.jpg",2012,0],["thumb/055.jpg",2012,0],["thumb/056.jpg",2012,0],["thumb/057.jpg",2012,0],["thumb/001.jpg",2013,0],["thumb/058.jpg",2013,0],["thumb/059.jpg",2013,0],["thumb/060.jpg",2013,0],["thumb/061.jpg",2013,0],["thumb/062.jpg",2013,0],["thumb/063.jpg",2013,0],["thumb/064.jpg",2013,0],["thumb/065.jpg",2013,0],["thumb/066.jpg",2013,0],["thumb/067.jpg",2013,0],["thumb/068.jpg",2013,0],["thumb/069.jpg",2013,0],["thumb/070.jpg",2013,0],["thumb/071.jpg",2013,0],["thumb/072.jpg",2013,0],["thumb/073.jpg",2013,0],["thumb/074.jpg",2013,0],["thumb/075.jpg",2013,0],["thumb/076.jpg",2013,0],["thumb/077.jpg",2013,0],["thumb/078.jpg",2013,0],["thumb/079.jpg",2013,0],["thumb/080.jpg",2014,0],["thumb/081.jpg",2014,0],["thumb/082.jpg",2014,0],["thumb/083.jpg",2014,0],["thumb/084.jpg",2014,0],["thumb/085.jpg",2014,0],["thumb/086.jpg",2014,0],["thumb/087.jpg",2014,0],["thumb/088.jpg",2014,0],["thumb/089.jpg",2014,0],["thumb/090.jpg",2014,0],["thumb/091.jpg",2014,0],["thumb/092.jpg",2015,0],["thumb/093.jpg",2015,0],["thumb/094.jpg",2015,0],["thumb/095.jpg",2015,0],["thumb/096.jpg",2016,0],["thumb/097.jpg",2016,0],["thumb/098.jpg",2016,0],["thumb/099.jpg",2016,0],["thumb/100.jpg",2016,0],["thumb/101.jpg",2017,0],["thumb/102.jpg",2017,0],["thumb/103.jpg",2017,0],["thumb/104.jpg",2017,0],["thumb/105.jpg",2018,0],["thumb/106.jpg",2018,0],["thumb/107.jpg",2018,0],["thumb/108.jpg",2018,0],["thumb/109.jpg",2018,0],["thumb/110.jpg",2019,0],["thumb/111.jpg",2019,0],["thumb/112.jpg",2019,0],["thumb/113.jpg",2019,0],["thumb/114.jpg",2019,0],["thumb/115.jpg",2019,0],["thumb/116.jpg",2019,0],["thumb/117.jpg",2019,0],["thumb/118.jpg",2019,0],["thumb/119.jpg",2019,0],["thumb/120.jpg",2019,0],["thumb/121.jpg",2019,0],["thumb/122.jpg",2019,0],["thumb/123.jpg",2019,0],["thumb/124.jpg",2019,0],["thumb/125.jpg",2019,0],["thumb/126.jpg",2019,0],["thumb/127.jpg",2020,0],["thumb/128.jpg",2020,0],["thumb/129.jpg",2020,0],["thumb/130.jpg",2020,0],["thumb/131.jpg",2020,0],["thumb/132.jpg",2020,0],["thumb/133.jpg",2020,0],["thumb/134.jpg",2020,0],["thumb/135.jpg",2020,0],["thumb/136.jpg",2020,0],["thumb/137.jpg",2020,0],["thumb/138.jpg",2020,0],["thumb/139.jpg",2020,0],["thumb/140.jpg",2021,0],["thumb/002.jpg",0,0],["thumb/003.jpg",0,0],["thumb/004.jpg",0,0],["thumb/005.jpg",0,0],["thumb/006.jpg",0,0],["thumb/007.jpg",0,0],["thumb/008.jpg",0,0],["thumb/009.jpg",0,0],["thumb/010.jpg",0,0],["thumb/011.jpg",0,0],["thumb/012.jpg",0,0],["thumb/013.jpg",0,0],["thumb/014.jpg",0,0],["thumb/015.jpg",0,0],["thumb/016.jpg",0,0],["thumb/017.jpg",0,0],["thumb/018.jpg",0,0],["thumb/019.jpg",0,0],["thumb/020.jpg",0,0],["thumb/021.jpg",0,0],["thumb/022.jpg",0,0],["thumb/023.jpg",0,0],["thumb/024.jpg",0,0],["thumb/025.jpg",0,0],["thumb/026.jpg",0,0],["thumb/027.jpg",0,0],["thumb/028.jpg",0,0],["thumb/029.jpg",0,0],["thumb/030.jpg",0,0],["thumb/031.jpg",0,0],["thumb/032.jpg",0,0],["thumb/033.jpg",0,0],["thumb/035.jpg",0,0],["thumb/148.jpg",0,0],["thumb/149.jpg",0,0],["thumb/150.jpg",0,0],["thumb/151.jpg",0,0],["thumb/152.jpg",0,0],["thumb/153.jpg",0,0],["thumb/154.jpg",0,0],["thumb/155.jpg",0,0],["thumb/156.jpg",0,0],["thumb/141.jpg",2025,1],["thumb/142.jpg",2025,1],["thumb/143.jpg",2025,1],["thumb/144.jpg",2025,1],["thumb/145.jpg",2025,1],["thumb/146.jpg",2025,1],["thumb/147.jpg",2025,1]];
+function buildGallery(){
+  const g=PHOTOS.filter(p=>!p[2]);
+  const hist={}; g.forEach(p=>{if(p[1])hist[p[1]]=(hist[p[1]]||0)+1;});
+  const years=Object.keys(hist).map(Number).sort((a,b)=>a-b);
+  const max=Math.max(1,...years.map(y=>hist[y]));
+  const yb=years.map(y=>`<div class="yb" title="${y}년 ${hist[y]}장"><i style="height:${Math.round(hist[y]/max*100)}%"></i><b>'${String(y).slice(2)}</b></div>`).join('');
+  const imgs=g.map(p=>`<img loading="lazy" src="assets/haru/${p[0]}" alt="하루 ${p[1]||''}">`).join('');
+  ['m','d'].forEach(P=>{
+    const c=document.getElementById(P+'-galcount'); if(c)c.textContent=g.length;
+    const b=document.getElementById(P+'-yearbar'); if(b)b.innerHTML=yb;
+    const a=document.getElementById(P+'-gallery'); if(a)a.innerHTML=imgs;
+  });
+}
+buildGallery();
+
 const STORY=[
   {ph:'ph-home',season:'2019 겨울',emoji:'🏠',place:'우리 집',conf:71,
    obs:'2019년에 찍힌 가장 오래된 사진들. 대부분 집 안에서 찍은 사진이었어요.',
@@ -812,7 +848,7 @@ function runFlow(P){
   const readEl=document.getElementById(P+'-reading');
   const foundEl=document.getElementById(P+'-found');
   // count-up the "found"
-  let f=0;const fi=setInterval(()=>{f=Math.min(5421,f+213);foundEl.textContent=f.toLocaleString()+'장';if(f>=5421)clearInterval(fi);},40);
+  let f=0;const fi=setInterval(()=>{f=Math.min(149,f+6);foundEl.textContent=f.toLocaleString()+'장';if(f>=149)clearInterval(fi);},40);
   timers.push(setTimeout(()=>clearInterval(fi),1200));
   lines.forEach((l,i)=>timers.push(setTimeout(()=>{l.classList.add('show');if(reads[i])readEl.textContent=reads[i];},500+i*560)));
   const total=500+lines.length*560+500;
@@ -835,7 +871,7 @@ function playReveal(P){
   card.classList.remove('play');void card.offsetWidth;card.classList.add('play');
   const pre=P==='m'?'cn':'dcn';
   // stats appear ~delay .15s; count after slight delay
-  setTimeout(()=>{countUp(pre+'-yr',14,900);countUp(pre+'-ph',5421,1100);countUp(pre+'-hp',17,900);countUp(pre+'-wk',432,1100);},250);
+  setTimeout(()=>{countUp(pre+'-yr',15,900);countUp(pre+'-ph',149,1100);countUp(pre+'-hp',17,900);countUp(pre+'-wk',432,1100);},250);
 }
 
 /* ---------- toast ---------- */
