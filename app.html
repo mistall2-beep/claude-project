@@ -127,6 +127,21 @@
   .sheet-opts button span{font-size:22px}
   .sheet-note{margin-top:16px;text-align:center;font-size:13px;color:var(--muted);line-height:1.65}
   .sheet-note b{color:var(--brand-deep)}
+  /* onboarding intro */
+  .intro-screen{position:absolute;inset:0;z-index:25;background:linear-gradient(180deg,#fbf6ee,#f1e6d4);display:flex;flex-direction:column;transition:opacity .45s ease,transform .45s ease}
+  .intro-screen.gone{opacity:0;pointer-events:none;transform:translateY(-12px)}
+  .intro-skip{position:absolute;top:14px;right:16px;z-index:2;background:rgba(255,255,255,.72);border:1px solid var(--line);border-radius:999px;font-size:12px;font-weight:700;color:var(--muted);padding:6px 12px;cursor:pointer}
+  .intro-photo{height:46%;margin:14px 14px 0;border-radius:24px;overflow:hidden;box-shadow:var(--shadow)}
+  .intro-photo img{width:100%;height:100%;object-fit:cover;object-position:center 22%;display:block}
+  .intro-body{flex:1;padding:14px 26px 24px;display:flex;flex-direction:column;align-items:center;text-align:center}
+  .intro-brand{font-size:13px;font-weight:800;color:var(--brand-deep);margin-bottom:6px}
+  .intro-body h2{font-size:30px;font-weight:800}
+  .intro-sub{font-size:14px;color:var(--muted);margin-top:6px;font-weight:600}
+  .intro-tag{font-size:14px;color:#3a3128;margin-top:9px}
+  .intro-chips{display:flex;gap:8px;margin-top:15px}
+  .intro-chips span{font-size:12px;font-weight:700;color:#5a5346;background:#fff;border:1px solid var(--line);padding:7px 13px;border-radius:999px}
+  .intro-line{font-size:13.5px;color:var(--muted);margin-top:16px;line-height:1.6}
+  .intro-cta{margin-top:auto;width:100%;background:linear-gradient(135deg,var(--brand),#27b39c);color:#fff;border:none;border-radius:14px;padding:15px;font-weight:800;font-size:15px;cursor:pointer}
 
   .addrow{margin-top:16px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow)}
   .addrow .em{font-size:22px}
@@ -556,9 +571,24 @@
             <div class="sheet-note">올리는 건 언제나 무료예요.<br/><b>흩어진 기억을 올리면, 삶의 이야기로 엮여요.</b></div>
           </div>
         </div>
+
+        <!-- onboarding intro (감정 중심, 헬스 숫자 없음) -->
+        <div class="intro-screen" id="intro">
+          <button class="intro-skip" onclick="enterApp()">건너뛰기</button>
+          <div class="intro-photo"><img src="assets/haru/portrait.jpg" alt="하루"></div>
+          <div class="intro-body">
+            <div class="intro-brand">🐾 Pet Lifebook</div>
+            <h2>하루 🤍</h2>
+            <div class="intro-sub">말티즈 · 함께한 15년</div>
+            <div class="intro-tag">우리의 작은 행복 🐾</div>
+            <div class="intro-chips"><span>📷 사진 149장</span><span>🤍 함께한 15년</span></div>
+            <p class="intro-line">흩어진 기억을 올리면,<br/>AI가 삶의 이야기로 엮어줘요.</p>
+            <button class="intro-cta" onclick="enterApp()">하루의 이야기 열기 →</button>
+          </div>
+        </div>
       </div>
     </div>
-    <p class="mcap">모바일 앱 — 설명이 아니라 감정으로. 열면 ‘오늘의 하루’가 먼저 반겨줍니다.</p>
+    <p class="mcap">모바일 앱 — 인트로에서 하루를 만나고, ‘오늘의 하루’로 들어갑니다.</p>
   </div>
 
   <!-- ============================ DESKTOP ============================ -->
@@ -882,6 +912,7 @@ function showM(name){
   document.getElementById('m-scroll').scrollTo({top:0,behavior:'smooth'});
 }
 function goUpload(){document.getElementById('m-sheet').classList.add('on');}
+function enterApp(){var i=document.getElementById("intro"); if(i) i.classList.add("gone");}
 function closeSheet(){document.getElementById('m-sheet').classList.remove('on');}
 function pickUpload(){closeSheet();runFlow('m');}
 
@@ -946,6 +977,7 @@ function toast(msg){
 (function(){
   try{
     const q=new URLSearchParams(location.search);
+    if(q.toString()) enterApp();
     if(q.get('view')==='desktop') setDevice('desktop');
     const isDesk=()=>document.getElementById('view-desktop').classList.contains('on');
     const go=(n)=>{ isDesk()?showD(n):showM(n); };
