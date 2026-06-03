@@ -255,6 +255,36 @@
   .preserve-note{margin-top:9px;font-size:12px;color:var(--muted);line-height:1.55;background:#faf6ee;border:1px solid #ece0cc;border-radius:10px;padding:10px 12px}
   .preserve-note b{color:var(--brand-deep)}
   .map-hl{margin-top:10px;font-size:13.5px;font-weight:800;color:var(--brand-deep);background:var(--brand-soft);border:1px solid #cfe9e2;border-radius:11px;padding:10px 13px;text-align:center}
+  .walk-hero{margin:8px 0 12px}
+  .wh-period{font-size:12px;font-weight:800;color:var(--muted)}
+  .wh-big{font-size:18px;font-weight:800;margin-top:5px;line-height:1.4}
+  .wh-big b{color:var(--brand-deep)}
+  .wh-top{margin-top:10px;font-size:13px;font-weight:700;color:#4a4338;background:var(--cream2);border:1px solid var(--line);border-radius:11px;padding:10px 12px}
+  .wh-top b{color:var(--warm-deep)}
+  .heat-title{font-size:12px;font-weight:800;color:var(--muted);margin:16px 0 9px}
+  .heat-bars{display:flex;flex-direction:column;gap:8px}
+  .heatbar{display:flex;align-items:center;gap:10px;width:100%;background:#fff;border:1px solid var(--line);border-radius:11px;padding:10px 12px;cursor:pointer;font-family:inherit;transition:.14s}
+  .heatbar.on{border-color:var(--warm);background:#fff7f1}
+  .heatbar .hb-n{font-size:13px;font-weight:800;width:84px;flex:none;text-align:left;color:#332e26}
+  .heatbar .hb-track{flex:1;height:10px;border-radius:999px;background:#f0eadf;overflow:hidden}
+  .heatbar .hb-track i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,#e8804a,#e8542a)}
+  .heatbar .hb-v{font-size:11.5px;font-weight:800;color:var(--warm-deep);width:36px;flex:none;text-align:right}
+  .place-card{margin-top:14px;background:#faf6ee;border:1px solid #ece0cc;border-radius:14px;padding:15px}
+  .place-card .pc-head{font-size:15px;font-weight:800}
+  .place-card .pc-ev{display:flex;gap:7px;margin-top:9px}
+  .place-card .pc-ev span{font-size:11.5px;font-weight:700;color:#5a5346;background:#fff;border:1px solid var(--line);padding:4px 9px;border-radius:8px}
+  .place-card .pc-photo{width:100%;height:160px;object-fit:cover;border-radius:11px;margin-top:11px;display:block;background:#eadfce}
+  .walk-keep{margin-top:16px;background:linear-gradient(135deg,#173a34,#0f231f);border-radius:16px;padding:18px;color:#fff;text-align:center}
+  .walk-keep .wk-t{font-size:14.5px;font-weight:800}
+  .walk-keep .wk-list{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin:12px 0 14px}
+  .walk-keep .wk-list span{font-size:11px;font-weight:700;color:#bcd3cd}
+  .walk-keep .wk-cta{background:linear-gradient(135deg,#5fe3cc,#a9f0e2);color:#06231f;border:none;border-radius:999px;padding:12px 22px;font-weight:800;font-size:14px;cursor:pointer;font-family:inherit}
+  .last-walk{margin-top:16px;background:#f5f1fa;border:1px solid #e3d9f0;border-radius:14px;padding:15px;text-align:center}
+  .last-walk .lw-t{font-size:13px;font-weight:800;color:#5e3a9e}
+  .last-walk .lw-map{margin:11px 0;height:120px;border-radius:12px;overflow:hidden}
+  .last-walk .lw-map svg{width:100%;height:100%;display:block}
+  .last-walk .lw-meta{font-size:12px;color:var(--muted);font-weight:700}
+  .last-walk .lw-q{font-size:14px;color:#3a3128;font-style:italic;margin-top:8px}
   .vsub{font-size:13px;color:var(--muted);margin:2px 0 12px}
   .mem-count2{margin-top:12px;font-size:12px;color:var(--muted);text-align:center}
   .mem-next{margin-top:16px;font-size:12.5px;color:var(--brand-deep);font-weight:700;text-align:center;background:var(--brand-soft);border:1px solid #cfe9e2;border-radius:11px;padding:11px}
@@ -1037,15 +1067,14 @@ function bookHTML(idx){
       <div class="lb-ins"><div class="row"><span class="e">🌸</span><div><div class="k">가장 행복했던 계절</div><div class="v">봄</div></div></div><div class="row"><span class="e">☔</span><div><div class="k">반복된 습관</div><div class="v">비 오는 날 산책</div></div></div><div class="row"><span class="e">📍</span><div><div class="k">가장 오래 머문 장소</div><div class="v">봉산 둘레길</div></div></div><div class="row"><span class="e">🏥</span><div><div class="k">건강 변화</div><div class="v">11살 이후 병원 방문 증가</div></div></div><div class="row"><span class="e">❤️</span><div><div class="k">가장 가까웠던 사람</div><div class="v">엄마</div></div></div><div class="row"><span class="e">🎙️</span><div><div class="k">자주 들린 단어</div><div class="v">“산책 갈까?”</div></div></div></div>
       <div class="based">📎 멀티모달 분석 기반 · <span class="grounded">자료에 근거해 추정</span></div></div>`;
   } else if(p.type==='map'){
-    inner=`<div class="book-pg lb-life"><div class="cnum">CHAPTER 02 · 함께 걸은 길</div><h4>산책 경로 복원</h4>
-      <div class="lb-lead">GPS·사진 위치·시간 기록을 바탕으로, 하루가 자주 걸은 길을 복원했어요.</div>
-      <div class="lb-map"><span class="map-est">추정 경로</span><svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice"><rect width="320" height="180" fill="#e8f1ec"/><ellipse cx="68" cy="58" rx="56" ry="40" fill="#d4e8d6"/><ellipse cx="252" cy="120" rx="64" ry="46" fill="#cfe6da"/><ellipse cx="170" cy="150" rx="50" ry="30" fill="#dceee4"/><polyline points="30,150 80,120 130,134 190,82 245,108 292,68" fill="none" stroke="#1f9e8a" stroke-width="3.5" stroke-dasharray="7 5" stroke-linecap="round"/><g font-family="sans-serif" font-size="11" font-weight="700"><circle cx="30" cy="150" r="6" fill="#e8804a" stroke="#fff" stroke-width="2"/><text x="38" y="154" fill="#3a3128">집</text><circle cx="130" cy="134" r="6" fill="#e8804a" stroke="#fff" stroke-width="2"/><text x="138" y="138" fill="#3a3128">동네 공원</text><circle cx="292" cy="68" r="7" fill="#1f9e8a" stroke="#fff" stroke-width="2"/><text x="222" y="56" fill="#0f6f60" font-weight="800">봉산 둘레길</text></g></svg></div>
-      <div class="map-hl">⛰️ 봉산 둘레길 · 총 31회 방문</div>
-      <div class="map-note">📍 GPS·사진 위치·시간 기록 기반 추정 경로예요.</div>
-      <div class="map-stats"><div><b>37곳</b>산책 장소</div><div><b>봉산</b>가장 오래 걸은 길</div><div><b>128km</b>누적 거리</div></div>
-      <div class="lb-evtitle">증거</div>
-      <div class="lb-ev"><span>📍 산책 장소 37곳</span><span>🗺️ 반복 루트 3개</span><span>🚶 누적 128km</span></div>
-      <div class="lb-ai">🤖 AI가 읽은 하루<br>봉산 둘레길이 가장 자주 반복된 루트였어요. 봄철 산책 빈도가 특히 높았습니다.<button class="lb-whybtn" onclick="lbToggle(this)">왜 이렇게 읽었나요? ›</button><div class="why-box">근거 · GPS 포인트 군집 / 봉산 둘레길 31회 / 계절별 산책 빈도<br>신뢰도 82% · 자료에 근거해 추정</div></div></div>`;
+    inner=`<div class="book-pg lb-life"><div class="cnum">CHAPTER 02 · 함께 걸은 길</div><h4>함께 걸은 길</h4>
+      <div class="walk-hero"><div class="wh-period">2019 – 2025</div><div class="wh-big">하루는 총 <b>37개</b>의 장소를 남겼어요.</div><div class="wh-top">가장 오래 머문 길 · <b>봉산 둘레길</b> · 총 방문 31회</div></div>
+      <div class="lb-map"><span class="map-est">추정 경로</span><svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice"><defs><radialGradient id="heat"><stop offset="0%" stop-color="#e8542a" stop-opacity="0.9"/><stop offset="55%" stop-color="#e8804a" stop-opacity="0.42"/><stop offset="100%" stop-color="#e8804a" stop-opacity="0"/></radialGradient></defs><rect width="320" height="180" fill="#eef3ef"/><ellipse cx="60" cy="60" rx="50" ry="38" fill="#d8ead9"/><ellipse cx="250" cy="120" rx="60" ry="44" fill="#cfe6da"/><circle cx="255" cy="72" r="78" fill="url(#heat)"/><circle cx="110" cy="120" r="46" fill="url(#heat)" opacity="0.7"/><circle cx="58" cy="66" r="30" fill="url(#heat)" opacity="0.45"/><polyline points="30,150 80,120 130,134 195,82 248,104 292,68" fill="none" stroke="#1f9e8a" stroke-width="3" stroke-dasharray="7 5" stroke-linecap="round" opacity="0.8"/><g font-family="sans-serif" font-size="11" font-weight="800"><circle cx="255" cy="72" r="6" fill="#e8542a" stroke="#fff" stroke-width="2"/><text x="180" y="60" fill="#a8501f">봉산 둘레길</text><circle cx="110" cy="120" r="5" fill="#e8804a" stroke="#fff" stroke-width="2"/><text x="118" y="124" fill="#a8501f">한강공원</text><circle cx="58" cy="66" r="5" fill="#e8804a" stroke="#fff" stroke-width="2"/><text x="22" y="44" fill="#7a6a52">동네 공원</text></g></svg></div>
+      <div class="map-note">📍 GPS·사진 위치·시간 기록을 바탕으로 조용히 다시 이어본 추정 경로예요.</div>
+      <div class="heat-title">🔥 자주 간 곳일수록 진하게</div>
+      <div class="heat-bars">${PLACES.map((pl,i)=>`<button class="heatbar${i===0?' on':''}" onclick="selectPlace(this,${i})"><span class="hb-n">${pl.name}</span><span class="hb-track"><i style="width:${pl.bar}%"></i></span><span class="hb-v">${pl.visits}회</span></button>`).join('')}</div>
+      <div class="place-card">${placeCardHTML(0)}</div>
+      <div class="walk-keep"><div class="wk-t">하루와 함께 걸은 길을 라이프북에 담을까요?</div><div class="wk-list"><span>✓ 지도 포함</span><span>✓ 산책 경로 복원</span><span>✓ 대표 사진 자동 배치</span><span>✓ 가족 기억 포함</span></div><button class="wk-cta" onclick="openKeep()">라이프북 제작 →</button></div></div>`;
   } else if(p.type==='health'){
     inner=`<div class="book-pg lb-life"><div class="cnum">CHAPTER 03 · 건강과 변화</div><h4>천천히 달라진 하루</h4>
       <div class="lb-lead">업로드된 진료기록·약 영수증을 바탕으로 건강 흐름을 정리했어요.</div>
@@ -1077,7 +1106,7 @@ function bookHTML(idx){
     inner=`<div class="book-pg"><div class="cnum">CHAPTER 06 · signature</div><h4>하루가 남긴 흔적</h4>
       <div class="lb-lead">함께한 시간은 사라지지 않고, 이렇게 남았습니다.</div>
       <div class="lb-sig"><div class="lb-ins"><div class="row"><span class="e">🌸</span><div><div class="k">좋아했던 계절</div><div class="v">봄</div></div></div><div class="row"><span class="e">🥾</span><div><div class="k">가장 오래 걸은 길</div><div class="v">봉산 둘레길</div></div></div><div class="row"><span class="e">☔</span><div><div class="k">반복된 습관</div><div class="v">비 오는 날 산책</div></div></div><div class="row"><span class="e">😊</span><div><div class="k">가장 많이 남긴 순간</div><div class="v">산책 직후</div></div></div><div class="row"><span class="e">❤️</span><div><div class="k">가장 가까웠던 사람</div><div class="v">엄마</div></div></div></div></div>
-      <div class="lb-evphoto"><span class="lb-evcap">📷 근거가 된 사진</span><img src="assets/haru/portrait.jpg" alt="하루"></div></div>`;
+      <div class="last-walk"><div class="lw-t">🗺️ 마지막으로 함께 걸은 길</div><div class="lw-map"><svg viewBox="0 0 300 120" preserveAspectRatio="xMidYMid slice"><defs><radialGradient id="heat2"><stop offset="0%" stop-color="#8a5fd0" stop-opacity="0.8"/><stop offset="60%" stop-color="#a987d8" stop-opacity="0.35"/><stop offset="100%" stop-color="#a987d8" stop-opacity="0"/></radialGradient></defs><rect width="300" height="120" fill="#f1edf6"/><circle cx="210" cy="55" r="60" fill="url(#heat2)"/><polyline points="40,95 90,75 150,82 210,55" fill="none" stroke="#8a5fd0" stroke-width="2.5" stroke-dasharray="6 5" stroke-linecap="round"/><g font-family="sans-serif" font-size="11" font-weight="800"><circle cx="210" cy="55" r="5" fill="#8a5fd0" stroke="#fff" stroke-width="2"/><text x="140" y="44" fill="#5e3a9e">봉산 둘레길</text></g></svg></div><div class="lw-meta">2025년 8월 · 봉산 둘레길 · 사진 8장 · GPS 1회</div><div class="lw-q">함께 걸은 길은, 기록 속에 남았습니다.</div></div><div class="lb-evphoto"><span class="lb-evcap">📷 근거가 된 사진</span><img src="assets/haru/portrait.jpg" alt="하루"></div></div>`;
   } else if(p.type==='video'){
     inner=`<div class="book-pg"><div class="cnum">회상 영상</div><h4>하루의 회상</h4>
       <div class="vsub">하루야, 고마웠어 · 함께한 15년</div>
@@ -1113,6 +1142,17 @@ function bookHTML(idx){
   return `<div class="book${p.type==='signature'||p.type==='video'?' mem':''}">${inner}${lbNav(idx)}</div>`;
 }
 function lbToggle(btn){const b=btn.parentElement.querySelector('.why-box');const on=b.classList.toggle('on');btn.textContent=on?'근거 접기 ‹':'왜 이렇게 읽었나요? ›';}
+const PLACES=[
+  {name:'봉산 둘레길',visits:31,bar:100,photos:42,video:3,voice:2,cov:'sniff-spring.jpg',ai:'봄철 방문이 반복되었어요. GPS·사진 기록을 바탕으로, AI는 하루가 이 길을 좋아했다고 추정했어요.',famwho:'엄마',fam:'산책 가자고 하면 제일 좋아했어요.'},
+  {name:'한강공원',visits:14,bar:45,photos:23,video:1,voice:0,cov:'flowers.jpg',ai:'여름 저녁 방문이 많았어요. 물가를 오래 바라보는 사진이 자주 보였습니다.',famwho:'아빠',fam:'여기서 노을 보는 걸 좋아했지.'},
+  {name:'동네 공원',visits:9,bar:28,photos:12,video:0,voice:1,cov:'thumb/069.jpg',ai:'집 앞이라 자주 들렀어요. 비 오는 날에도 잠깐씩 다녀왔습니다.',famwho:'동생',fam:'집 앞이라 매일 갔어.'},
+];
+function placeCardHTML(i){const p=PLACES[i];return `<div class="pc-head">📍 ${p.name} · ${p.visits}회 방문</div>
+  <div class="pc-ev"><span>📷 사진 ${p.photos}</span><span>🎥 영상 ${p.video}</span><span>🎙️ 음성 ${p.voice}</span></div>
+  <img class="pc-photo" src="assets/haru/${p.cov}" alt="${p.name}">
+  <div class="lb-ai">🤖 AI가 읽은 하루<br>${p.ai}</div>
+  <div class="lb-fam"><div class="who">${p.famwho}의 기억</div><div class="txt">“${p.fam}”</div></div>`;}
+function selectPlace(btn,i){const pg=btn.closest('.book-pg');pg.querySelector('.place-card').innerHTML=placeCardHTML(i);pg.querySelectorAll('.heatbar').forEach((b,j)=>b.classList.toggle('on',j===i));}
 function flipBook(dir){
   bookPage=(bookPage+dir+LB_PAGES.length)%LB_PAGES.length;
   document.getElementById('m-book').innerHTML=bookHTML(bookPage);
