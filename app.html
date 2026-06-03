@@ -208,6 +208,29 @@
   .mem-portal{margin-top:16px;text-align:center;background:#faf7f0;border:1px solid #e7ddc9;border-radius:13px;padding:16px}
   .mem-portal .mem-count{font-size:13px;font-weight:700;color:#5a5346;margin-bottom:10px}
   .mem-portal button{background:#efe7da;border:1px solid #ddd2bf;border-radius:999px;padding:9px 20px;font-weight:700;font-size:13px;color:#4a4338;cursor:pointer;font-family:inherit}
+  .book-cover.big{padding:32px 24px}
+  .book-cover.big .cv-meta{font-size:12px;color:#cfe0db;margin-top:6px}
+  .book-cover.big .cv-photo{margin-top:18px;height:180px;border-radius:14px;overflow:hidden}
+  .book-cover.big .cv-photo img{width:100%;height:100%;object-fit:cover;display:block}
+  .lb-ov{padding:24px 6px 8px;text-align:center}
+  .lb-ov h3{font-size:28px;font-weight:800}
+  .lb-ov .ovstats{display:flex;justify-content:center;gap:10px;margin:18px 0}
+  .lb-ov .ovstats div{background:#faf6ee;border:1px solid #ece0cc;border-radius:13px;padding:14px 10px;min-width:78px}
+  .lb-ov .ovstats b{display:block;font-size:22px;font-weight:800;color:var(--warm-deep)}
+  .lb-ov .ovstats span{font-size:10.5px;color:var(--muted)}
+  .lb-ov .ovsub{font-size:13px;color:var(--muted);max-width:300px;margin:0 auto;line-height:1.6}
+  .lb-evtitle{font-size:11.5px;font-weight:800;color:var(--muted);margin-top:15px}
+  .lb-ev{display:flex;flex-wrap:wrap;gap:7px;margin-top:8px}
+  .lb-ev span{font-size:11.5px;font-weight:700;color:#5a5346;background:#f3eee3;border:1px solid var(--line);padding:4px 9px;border-radius:8px}
+  .lb-ai{margin-top:14px;background:var(--brand-soft);border-left:3px solid var(--brand);border-radius:0 11px 11px 0;padding:12px 14px;font-size:13.5px;color:#16332c;line-height:1.55}
+  .lb-fam{margin-top:11px;background:#fbf3ea;border:1px solid #ece0cc;border-left:3px solid var(--warm);border-radius:0 11px 11px 0;padding:12px 14px}
+  .lb-fam .who{font-size:11.5px;font-weight:800;color:var(--warm-deep)}
+  .lb-fam .txt{font-size:14px;color:#3a3128;font-style:italic;margin-top:3px;line-height:1.6}
+  .lb-ins{padding:4px 0}
+  .lb-ins .row{display:flex;align-items:center;gap:13px;background:#fff;border:1px solid var(--line);border-radius:13px;padding:13px 14px;margin-bottom:9px}
+  .lb-ins .row .e{font-size:22px}
+  .lb-ins .row .k{font-size:11.5px;color:var(--muted)}
+  .lb-ins .row .v{font-size:16px;font-weight:800;margin-top:1px}
   .scard .cover .season{background:rgba(255,255,255,.85);backdrop-filter:blur(3px);padding:5px 12px;border-radius:999px;font-size:13px;font-weight:800;color:var(--ink)}
   .scard .cover .place{position:absolute;right:13px;bottom:13px;background:rgba(0,0,0,.34);color:#fff;padding:4px 11px;border-radius:999px;font-size:11.5px;font-weight:700;backdrop-filter:blur(3px)}
   .scard .body{padding:16px 17px 17px}
@@ -731,22 +754,26 @@ const STORY=[
    infer:'‘비 오는 날 산책’을 하루의 <b>반복 습관</b>으로 추정했어요.',
    why:'근거 · 봄철 산책 사진 다수 / 비 오는 날 촬영 비중 높음 / 가족 메모 “비 올 때 우산 꼭”'},
 ];
-const CHAPTERS=[
-  {n:'Chapter 1',t:'처음 함께한 시절',cov:'thumb/037.jpg',
-   q:'가장 오래된 사진 속 하루는 아직 어렸다. 이 무렵부터 함께 찍은 사진이 남기 시작했다.',
-   evi:'2010~2011 · 가장 오래된 사진들'},
-  {n:'Chapter 4',t:'가장 빛나던 해',cov:'thumb/069.jpg',
-   q:'2013년, 바깥 사진이 부쩍 늘었다. 사진 속 하루는 자주 입을 벌리고 웃고 있었다.',
-   evi:'2013 · 사진 23장(연도 최다)'},
-  {n:'Chapter 6',t:'늘 곁에 있던 사이',cov:'thumb/098.jpg',
-   q:'보호자와 함께 찍힌 사진이 많았다. 하루는 늘 같은 사람 곁에 붙어 있었다.',
-   evi:'보호자 동반 사진 다수'},
-  {n:'Chapter 8',t:'다시 늘어난 웃음',cov:'thumb/117.jpg',
-   q:'2019년, 사진이 다시 늘었다. 정면을 보고 활짝 웃는 모습이 자주 담겼다.',
-   evi:'2019 · 사진 17장'},
-  {n:'마지막 장',t:'함께한 시간이 남긴 흔적',cov:'portrait.jpg',memorial:true,
-   q:'2025년 여름, 마지막 사진들. 함께한 시간은 여기서 끝난 것이 아니라, 한 권의 이야기로 남았습니다.',
-   evi:'2025년 8월의 기록 7장 · 조용히 보관'},
+const LB_PAGES=[
+  {type:'cover'},
+  {type:'overview'},
+  {type:'chapter',year:'2011',t:'처음 함께한 시절',cov:'thumb/037.jpg',
+   scene:'가장 오래된 사진 속 하루는 아직 어렸다. 이 무렵부터 함께 찍은 사진이 남기 시작했다.',
+   ev:{photos:10,place:'우리 집',extra:'가장 오래된 기록'},
+   ai:'AI는 이 시기를 하루와 함께한 시작점으로 추정했어요.',
+   fam:[{who:'엄마',txt:'처음 우리 집에 온 날, 손바닥만 했어요.'}]},
+  {type:'chapter',year:'2013',t:'가장 빛나던 해',cov:'thumb/069.jpg',
+   scene:'바깥 사진이 부쩍 늘었다. 사진 속 하루는 자주 입을 벌리고 웃고 있었다.',
+   ev:{photos:23,place:'동네 산책길',extra:'연도 최다'},
+   ai:'AI는 산책과 나들이가 가장 활발했던 해로 추정했어요.',
+   fam:[{who:'아빠',txt:'차 타고 나가는 걸 제일 좋아했죠.'}]},
+  {type:'chapter',year:'2020 봄',t:'비 오는 날 산책',cov:'sniff-spring.jpg',
+   scene:'비 오는 날·봄철 산책 사진이 유독 많았다. 젖은 길 위에서 코를 땅에 대고 천천히 걸었다.',
+   ev:{photos:13,video:3,place:'북한산 둘레길',memo:2},
+   ai:'AI는 하루가 비 오는 날 산책을 기다렸다고 추정했어요.',
+   fam:[{who:'엄마',txt:'비 오는 날이면 산책 가자고 현관 앞에서 기다렸어요.'}]},
+  {type:'insight'},
+  {type:'memorial',cov:'portrait.jpg'},
 ];
 
 function storyHTML(){
@@ -782,34 +809,47 @@ function toggleWhy(btn){
   btn.textContent=on?'근거 접기 ‹':'근거 보기 ›';
 }
 let bookPage=0;
+function lbNav(idx){return `<div class="book-nav"><button onclick="flipBook(-1)">‹</button><span>${idx+1} / ${LB_PAGES.length}</span><button onclick="flipBook(1)">›</button></div>`;}
 function bookHTML(idx){
-  const c=CHAPTERS[idx];
-  const portal = c.memorial
-    ? `<div class="mem-portal"><div class="mem-count">📷 2025년 8월의 기록 · 7장</div><button onclick="toast('그 여름의 기록을 조용히 엽니다 🌿')">조용히 보기</button></div>`
-    : `<div class="portal">
-        <button onclick="toast('그날의 회상 영상을 재생합니다 ▶')">▶ 영상 보기</button>
-        <button onclick="toast('이 장면의 사진 모음을 엽니다 🖼️')">🖼️ 그날 사진</button>
-        <button onclick="toast('가족에게 기억 추가를 요청했어요 ✏️')">✏️ 가족 기억 추가</button>
-        <button onclick="toast('이 장면을 저장했어요 🔖')">🔖 이 장면 저장</button>
-      </div>`;
-  return `<div class="book${c.memorial?' mem':''}">
-    <div class="book-cover"><div class="ttl">PET LIFEBOOK</div><h3>하루의 삶</h3><p>2010 – 2025 · 15년, 우리 가족이 함께 쓴 이야기</p></div>
-    <div class="book-pg">
-      <div class="cnum">${c.n}</div><h4>${c.t}</h4>
-      <div class="scene"><img src="assets/haru/${c.cov}" alt="${c.t}"></div>
-      <div class="quote">${c.q}</div>
-      <div class="based">📎 ${c.evi}<br/><span class="grounded">자료에 근거해 작성 · 창작·과장 없음</span></div>
-      ${portal}
-    </div>
-    <div class="book-nav">
-      <button onclick="flipBook(-1)">‹</button>
-      <span>${idx+1} / ${CHAPTERS.length}</span>
-      <button onclick="flipBook(1)">›</button>
-    </div>
-  </div>`;
+  const p=LB_PAGES[idx]; let inner='';
+  if(p.type==='cover'){
+    inner=`<div class="book-cover big"><div class="ttl">PET LIFEBOOK</div><h3>하루의 삶</h3><p>함께한 시간이 한 권의 이야기로</p><div class="cv-meta">2010 – 2025 · 15년</div><div class="cv-photo"><img src="assets/haru/thumb/117.jpg" alt="하루"></div></div>`;
+  } else if(p.type==='overview'){
+    inner=`<div class="book-pg"><div class="cnum">OVERVIEW</div><h4>AI가 읽은 하루</h4>
+      <div class="lb-ov"><h3>15년의 시간</h3>
+      <div class="ovstats"><div><b>149</b><span>장의 사진</span></div><div><b>4</b><span>개의 계절 이야기</span></div><div><b>12</b><span>가족 기억</span></div></div>
+      <div class="ovsub">흩어진 사진을 시간·관계·감정으로 읽어, 한 권으로 엮었어요.</div></div></div>`;
+  } else if(p.type==='insight'){
+    inner=`<div class="book-pg"><div class="cnum">LIFE INSIGHT</div><h4>하루의 삶 패턴</h4>
+      <div class="lb-ins">
+        <div class="row"><span class="e">🌸</span><div><div class="k">가장 행복했던 계절</div><div class="v">봄</div></div></div>
+        <div class="row"><span class="e">📍</span><div><div class="k">가장 오래 머문 장소</div><div class="v">북한산 둘레길</div></div></div>
+        <div class="row"><span class="e">🐾</span><div><div class="k">반복된 습관</div><div class="v">비 오는 날 산책</div></div></div>
+        <div class="row"><span class="e">❤️</span><div><div class="k">보호자 proximity</div><div class="v">엄마와 밀착형</div></div></div>
+      </div>
+      <div class="based">📎 사진·위치·관계 분석 기반 · <span class="grounded">자료에 근거해 추정</span></div></div>`;
+  } else if(p.type==='memorial'){
+    inner=`<div class="book-pg"><div class="cnum">마지막 장</div><h4>함께한 시간이 남긴 흔적</h4>
+      <div class="scene"><img src="assets/haru/${p.cov}" alt="하루"></div>
+      <div class="quote">2025년 여름, 마지막 사진들. 함께한 시간은 여기서 끝난 것이 아니라, 한 권의 이야기로 남았습니다.</div>
+      <div class="mem-portal"><div class="mem-count">📷 2025년 8월의 기록 · 7장</div><button onclick="toast('그 여름의 기록을 조용히 엽니다 🌿')">조용히 보기</button></div></div>`;
+  } else {
+    const ev=p.ev;
+    const chips=[`📷 사진 ${ev.photos}장`, ev.video?`🎥 영상 ${ev.video}개`:'', ev.place?`📍 ${ev.place}`:'', ev.memo?`👨‍👩‍👧 가족 메모 ${ev.memo}개`:'', ev.extra?`✨ ${ev.extra}`:''].filter(Boolean).map(t=>`<span>${t}</span>`).join('');
+    const fam=(p.fam||[]).map(m=>`<div class="lb-fam"><div class="who">${m.who}의 기억</div><div class="txt">“${m.txt}”</div></div>`).join('');
+    inner=`<div class="book-pg">
+      <div class="cnum">${p.year}</div><h4>${p.t}</h4>
+      <div class="scene"><img src="assets/haru/${p.cov}" alt="${p.t}"></div>
+      <div class="quote">${p.scene}</div>
+      <div class="lb-evtitle">그 시기 하루에게 남은 흔적</div>
+      <div class="lb-ev">${chips}</div>
+      <div class="lb-ai">🤖 ${p.ai}</div>
+      ${fam}</div>`;
+  }
+  return `<div class="book${p.type==='memorial'?' mem':''}">${inner}${lbNav(idx)}</div>`;
 }
 function flipBook(dir){
-  bookPage=(bookPage+dir+CHAPTERS.length)%CHAPTERS.length;
+  bookPage=(bookPage+dir+LB_PAGES.length)%LB_PAGES.length;
   document.getElementById('m-book').innerHTML=bookHTML(bookPage);
   document.getElementById('d-book-inner').innerHTML=bookHTML(bookPage);
 }
@@ -912,7 +952,7 @@ function toast(msg){
     const demo=q.get('demo'), screen=q.get('screen');
     if(demo==='memorial'){
       go('book');
-      bookPage=CHAPTERS.length-1;
+      bookPage=LB_PAGES.length-1;
       document.getElementById('m-book').innerHTML=bookHTML(bookPage);
       document.getElementById('d-book-inner').innerHTML=bookHTML(bookPage);
     } else if(screen){ go(screen); }
