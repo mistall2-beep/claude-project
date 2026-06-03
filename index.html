@@ -79,6 +79,10 @@
   .btn.ghost{color:#fff;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2)}
   .hero-meta{margin-top:34px;display:flex;flex-wrap:wrap;gap:10px 28px;color:#9fb6b0;font-size:12.5px}
   .hero-meta b{color:#d6e6e1;font-weight:600}
+  .hero-photos{margin-top:30px;display:flex;gap:10px;flex-wrap:wrap}
+  .hero-photos img{width:96px;height:96px;border-radius:14px;object-fit:cover;border:2px solid rgba(255,255,255,.2);box-shadow:0 10px 26px rgba(0,0,0,.32)}
+  .hero-cap{margin-top:12px;font-size:12px;color:#9fb6b0}
+  @media(max-width:600px){.hero-photos img{width:62px;height:62px}}
   .anti{margin-top:18px;display:flex;gap:8px;flex-wrap:wrap}
   .anti span{font-size:12px;font-weight:600;padding:5px 11px;border-radius:999px;border:1px solid rgba(255,255,255,.18)}
   .anti .no{color:#ffb4a0;text-decoration:line-through;opacity:.85}
@@ -344,6 +348,15 @@
       <span><b>Processing</b> Timeline · Event · Relationship · Memory Gap · Story</span>
       <span><b>Output</b> 살아있는 생애 타임라인 + 라이프북</span>
     </div>
+    <div class="hero-photos">
+      <img src="assets/haru/thumb/117.jpg" alt="하루"/>
+      <img src="assets/haru/portrait.jpg" alt="하루"/>
+      <img src="assets/haru/flowers.jpg" alt="하루"/>
+      <img src="assets/haru/thumb/069.jpg" alt="하루"/>
+      <img src="assets/haru/sniff-spring.jpg" alt="하루"/>
+      <img src="assets/haru/thumb/124.jpg" alt="하루"/>
+    </div>
+    <div class="hero-cap">실제 반려견 ‘하루’의 사진으로 구성한 데모입니다.</div>
   </div>
 </header>
 
@@ -716,21 +729,21 @@ function resetDemo(){
 
 /* ---------- STORY TIMELINE ---------- */
 const TL=[
-  {grad:'linear-gradient(135deg,#f6a36b,#e8804a)',loc:'우리 집',title:'입양 — 우리 처음 만난 날',
+  {img:'thumb/037.jpg',loc:'우리 집',title:'입양 — 우리 처음 만난 날',
    who:'하루 · 2019',ai:'작은 발로 처음 집을 디딘 날. 모든 이야기가 여기서 시작됩니다.',photos:120,memo:5,health:'첫 검진'},
-  {grad:'linear-gradient(135deg,#5fc9b3,#1f9e8a)',loc:'한강공원',title:'첫 산책',
-   who:'하루 · 2020 봄',ai:'“하루는 봄철 산책을 가장 좋아했습니다.” 이 시기부터 한강공원 방문이 반복됩니다.',photos:230,memo:8,health:'없음'},
-  {grad:'linear-gradient(135deg,#8a93a0,#5b6472)',loc:'동물병원',title:'슬개골 수술',
+  {img:'flowers.jpg',loc:'북한산 둘레길',title:'첫 산책',
+   who:'하루 · 2020 봄',ai:'“하루는 봄철 산책을 가장 좋아했습니다.” 이 시기부터 북한산 둘레길 방문이 반복됩니다.',photos:230,memo:8,health:'없음'},
+  {img:'thumb/001.jpg',loc:'동물병원',title:'슬개골 수술',
    who:'하루 · 2022',ai:'병원 방문이 잦아진 구간. AI가 ‘건강 변화가 컸던 시기’로 포착했습니다.',photos:64,memo:11,health:'슬개골 수술'},
-  {grad:'linear-gradient(135deg,#6fb1f0,#3a7bd5)',loc:'제주도',title:'제주도 여행',
+  {img:'thumb/069.jpg',loc:'제주도',title:'제주도 여행',
    who:'하루 · 2023 여름',ai:'“하루는 바닷가를 오래 바라보았습니다.” 사진 급증 + GPS 변화로 여행을 감지했습니다.',photos:142,memo:3,health:'없음'},
-  {grad:'linear-gradient(135deg,#c79bf0,#8a5fd0)',loc:'우리 집',title:'노령기',
+  {img:'portrait.jpg',loc:'우리 집',title:'노령기',
    who:'하루 · 2025',ai:'14살. AI가 Senior Lifebook·건강 회고를 추천하는 시점입니다.',photos:88,memo:14,health:'정기 관리'}
 ];
 function renderTL(i){
   const d=TL[i];
   document.getElementById('tl-detail').innerHTML=`
-    <div class="ph" style="background:${d.grad}"><span class="loc">📍 ${d.loc}</span></div>
+    <div class="ph" style="background-image:url(assets/haru/${d.img});background-size:cover;background-position:center"><span class="loc">📍 ${d.loc}</span></div>
     <h3>${d.title}</h3>
     <div style="font-size:13px;color:var(--muted);font-weight:600">${d.who}</div>
     <div class="ai">
