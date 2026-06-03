@@ -38,7 +38,7 @@
   .seg button.on{background:var(--ink);color:#fff}
   .switch-note{font-size:13px;color:var(--muted)}.switch-note b{color:var(--ink)}
 
-  .stage{max-width:1180px;margin:24px auto 70px;padding:0 24px;display:flex;justify-content:center}
+  .stage{max-width:1320px;margin:24px auto 70px;padding:0 24px;display:flex;justify-content:center}
   .view{display:none}.view.on{display:block;width:100%;animation:fade .35s ease}
   @keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 
@@ -100,7 +100,7 @@
   .page-top .sub b{color:var(--brand-deep)}
   .build-badge{font-size:10.5px;font-weight:800;color:#fff;background:var(--brand);padding:3px 9px;border-radius:999px;margin-left:6px}
   /* desktop lifebook: chapter rail + 2-col spread (사진 35 / 해석 65) */
-  .dbook-wrap{display:grid;grid-template-columns:178px 1fr;gap:22px;align-items:start}
+  .dbook-wrap{display:grid;grid-template-columns:168px 1fr 200px;gap:20px;align-items:start}
   .dbook-rail{position:sticky;top:8px;background:#fbf7ef;border:1px solid #ece0cc;border-radius:14px;padding:14px 10px;display:flex;flex-direction:column;gap:2px}
   .dbook-rail .dr-h{font-size:10px;font-weight:800;color:var(--muted);letter-spacing:.12em;padding:2px 9px 9px}
   .dbook-rail .dr-item{display:flex;align-items:center;gap:9px;text-align:left;background:none;border:none;font-family:inherit;font-size:12.5px;font-weight:700;color:#6b6253;padding:9px;border-radius:9px;cursor:pointer;width:100%}
@@ -108,11 +108,11 @@
   .dbook-rail .dr-item.on{background:var(--brand);color:#fff}
   .dbook-rail .dr-item .dr-n{font-size:10px;font-weight:800;opacity:.65;min-width:15px}
   #d-book-inner{min-width:0}
-  #d-book-inner .book-pg.lb-life:has(.lb-evphoto){display:grid;grid-template-columns:300px 1fr;column-gap:30px;align-items:start}
+  #d-book-inner .book-pg.lb-life:has(.lb-evphoto){display:grid;grid-template-columns:260px 1fr;column-gap:28px;align-items:start}
   #d-book-inner .book-pg.lb-life:has(.lb-evphoto) > *{grid-column:2;min-width:0}
   #d-book-inner .book-pg.lb-life:has(.lb-evphoto) > .cnum,#d-book-inner .book-pg.lb-life:has(.lb-evphoto) > h4{grid-column:2}
   #d-book-inner .book-pg.lb-life:has(.lb-evphoto) > .lb-evphoto{grid-column:1;grid-row:1 / span 99;align-self:start;margin-top:30px}
-  #d-book-inner .book-pg.lb-life:has(.lb-evphoto) > .lb-evphoto img{height:400px}
+  #d-book-inner .book-pg.lb-life:has(.lb-evphoto) > .lb-evphoto img{height:360px}
   #d-book-inner .lb-ev{gap:8px}
   /* desktop life-evidence panel emphasis */
   #d-book-inner .book-pg.lb-life:has(.lb-evphoto) .lb-evtitle{font-size:10px;letter-spacing:.1em;color:var(--brand-deep);background:var(--brand-soft);border:1px solid #cfe9e2;display:inline-block;padding:5px 11px;border-radius:8px;margin-top:18px}
@@ -130,6 +130,15 @@
   .d-tl-rail .tl-dot:hover .tip{opacity:1}
   .d-tl-rail .tl-dot .tip img{width:100%;height:84px;object-fit:cover;border-radius:7px;display:block}
   .d-tl-rail .tl-dot .tip span{display:block;font-size:11px;font-weight:700;color:#4a4338;margin-top:5px;text-align:center}
+  .place-card .pc-evtitle{font-size:11.5px;font-weight:800;color:var(--muted);margin-top:12px}
+  .d-insight{position:sticky;top:8px;align-self:start;background:linear-gradient(160deg,#173a34,#0f231f);color:#fff;border-radius:14px;padding:16px 14px}
+  .d-insight .di-h{font-size:10px;font-weight:800;letter-spacing:.12em;color:#9af0df;margin-bottom:13px}
+  .d-insight .di-row{display:flex;gap:10px;margin-bottom:13px}
+  .d-insight .di-row > span{font-size:18px;line-height:1.2}
+  .d-insight .di-row .k{font-size:10.5px;color:#bcd3cd}
+  .d-insight .di-row .v{font-size:14px;font-weight:800;margin-top:1px}
+  .d-insight .di-note{font-size:10px;color:#8aa39c;border-top:1px solid rgba(255,255,255,.12);padding-top:10px;margin-top:2px}
+  @media(max-width:1200px){.dbook-wrap{grid-template-columns:168px 1fr}.d-insight{display:none}}
   .clip-modal{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.84);display:none;align-items:center;justify-content:center;padding:20px}
   .clip-modal.on{display:flex}
   .clip-box{position:relative;max-width:400px;width:100%}
@@ -562,7 +571,7 @@
   .mcap{text-align:center;font-size:12.5px;color:var(--muted);margin-top:16px}
 
   /* ============================ DESKTOP ============================ */
-  .desktop{width:100%;max-width:1080px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:var(--shadow-lg);border:1px solid var(--line)}
+  .desktop{width:100%;max-width:1280px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:var(--shadow-lg);border:1px solid var(--line)}
   .browser{height:46px;background:#f1ece1;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:14px;padding:0 16px}
   .browser .dots{display:flex;gap:7px}.browser .dots i{width:12px;height:12px;border-radius:50%;display:block}
   .browser .dots i:nth-child(1){background:#ff5f57}.browser .dots i:nth-child(2){background:#febc2e}.browser .dots i:nth-child(3){background:#28c840}
@@ -607,7 +616,7 @@
 
 <div class="page-top">
   <span class="brandmark"><span class="paw">🐾</span>Pet Lifebook</span>
-  <span class="sub">powered by <b>LifeOS</b> · 하루와 다시 만나는 앱</span><span class="build-badge">빌드 06-03 · 타임라인 v13</span>
+  <span class="sub">powered by <b>LifeOS</b> · 하루와 다시 만나는 앱</span><span class="build-badge">빌드 06-03 · 인사이트 v14</span>
   <a class="back" href="index.html">← 제품 소개로</a>
 </div>
 
@@ -953,6 +962,12 @@
             <div class="dbook-wrap">
               <div class="dbook-rail" id="d-book-rail"></div>
               <div id="d-book-inner"></div>
+              <aside class="d-insight"><div class="di-h">LIFE INSIGHT</div>
+                <div class="di-row"><span>🌸</span><div><div class="k">가장 오래 남은 계절</div><div class="v">봄</div></div></div>
+                <div class="di-row"><span>📍</span><div><div class="k">가장 오래 걸은 길</div><div class="v">봉산 둘레길</div></div></div>
+                <div class="di-row"><span>🎙️</span><div><div class="k">가장 자주 들린 말</div><div class="v">“산책 갈까?”</div></div></div>
+                <div class="di-row"><span>❤️</span><div><div class="k">가장 가까웠던 사람</div><div class="v">엄마</div></div></div>
+                <div class="di-note">AI가 자료를 읽어 추정했어요</div></aside>
             </div>
             <div class="d-tl-rail" id="d-tl-rail"></div>
           </div>
@@ -1200,7 +1215,7 @@ const PLACES=[
   {name:'동네 공원',visits:9,bar:28,seasons:{'봄':2,'여름':2,'가을':2,'겨울':3},memo:1,photos:12,video:0,voice:1,cov:'thumb/069.jpg',ai:'집 앞이라 자주 들렀어요. 비 오는 날에도 잠깐씩 다녀왔습니다.',famwho:'동생',fam:'집 앞이라 매일 갔어.'},
 ];
 function placeCardHTML(i){const p=PLACES[i];return `<div class="pc-head">📍 ${p.name} · ${p.visits}회 방문</div>
-  <div class="pc-ev"><span>📷 사진 ${p.photos}</span><span>🎥 영상 ${p.video}</span><span>🎙️ 음성 ${p.voice}</span><span>📝 메모 ${p.memo}</span><span>🏥 병원기록 없음</span><span>💊 약 없음</span></div>
+  <div class="pc-evtitle">이 길에 남은 기록</div><div class="pc-ev"><span>📷 함께 찍은 장면 ${p.photos}개</span><span>🎙️ 남겨진 소리 ${p.voice}개</span><span>📝 ${p.famwho}의 기억 ${p.memo}개</span><span>📍 함께 걸은 기록 ${p.visits}회</span><span>🏥 병원기록 없음</span></div>
   <img class="pc-photo" src="assets/haru/${p.cov}" alt="${p.name}">
   <div class="lb-ai">🤖 AI가 읽은 하루<br>${p.ai}</div>
   <div class="lb-fam"><div class="who">${p.famwho}의 기억</div><div class="txt">“${p.fam}”</div></div>${p.walks?`<div class="pc-walks"><div class="pc-walks-t">📹 그날의 산책 영상</div><div class="pc-walks-row">${p.walks.map(function(w){return '<button class="pc-walk" onclick="openClip(\'assets/haru/'+w.src+'\',\'assets/haru/'+w.poster+'\',\'📹 '+p.name+' · '+w.label+' 산책\')"><img src="assets/haru/'+w.poster+'"><span>▶ '+w.label+'</span></button>';}).join('')}</div></div>`:''}`;}
