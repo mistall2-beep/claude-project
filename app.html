@@ -236,6 +236,15 @@
   .mem-portal button{background:#efe7da;border:1px solid #ddd2bf;border-radius:999px;padding:9px 20px;font-weight:700;font-size:13px;color:#4a4338;cursor:pointer;font-family:inherit}
   .mem-video{width:100%;max-height:420px;margin-top:10px;border-radius:13px;background:#000;display:block;object-fit:contain}
   .mem-sub{margin-top:9px;font-size:12px;color:var(--muted)}
+  .music-pick{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-top:12px}
+  .music-pick .mp-lbl{font-size:11.5px;font-weight:700;color:var(--muted)}
+  .mp-btn{background:#fff;border:1px solid var(--line);border-radius:999px;padding:7px 13px;font-size:12.5px;font-weight:700;color:#4a4338;cursor:pointer;font-family:inherit}
+  .mp-btn.on{background:var(--brand);color:#fff;border-color:var(--brand)}
+  .map-est{position:absolute;top:10px;right:10px;z-index:2;background:rgba(15,42,38,.78);color:#bdeee4;font-size:10.5px;font-weight:800;padding:4px 9px;border-radius:999px}
+  .lb-map{position:relative}
+  .map-note{font-size:11.5px;color:var(--muted);margin-top:8px}
+  .med-note{margin-top:10px;font-size:11.5px;font-weight:700;color:var(--warm-deep);background:var(--warm-soft);border:1px solid #f0d8c4;border-radius:10px;padding:9px 11px}
+  .keepcta-r{margin-top:4px;background:linear-gradient(135deg,#5fe3cc,#a9f0e2);color:#06231f;border:none;border-radius:999px;padding:13px;font-weight:800;font-size:14px;cursor:pointer;font-family:inherit;width:100%}
   .vsub{font-size:13px;color:var(--muted);margin:2px 0 12px}
   .mem-count2{margin-top:12px;font-size:12px;color:var(--muted);text-align:center}
   .mem-next{margin-top:16px;font-size:12.5px;color:var(--brand-deep);font-weight:700;text-align:center;background:var(--brand-soft);border:1px solid #cfe9e2;border-radius:11px;padding:11px}
@@ -635,6 +644,7 @@
               <div class="ritem rfind"><span class="e">📍</span><div><div class="lbl">가장 자주 기록된 장소</div><div class="v">북한산 둘레길</div><div class="rwhy">GPS 432회 · 신뢰도 88%</div></div></div>
               <div class="ritem rfind"><span class="e">🐾</span><div><div class="lbl">가장 자주 반복된 패턴</div><div class="v">비 오는 날 산책</div><div class="rwhy">비 오는 날 촬영 21% · 신뢰도 83%</div></div></div>
               <div class="ritem rpunch">하루와 함께한 시간이<br/>한 권의 이야기로 엮였습니다.</div>
+              <button class="ritem keepcta-r" onclick="openKeep()">📖 한 권으로 남기기</button>
               <div class="ritem rcta">
                 <button class="p" onclick="showM('story')">삶의 이야기 보기</button>
                 <button class="g" onclick="showM('book')">라이프북 보기</button>
@@ -826,6 +836,7 @@
               <div class="ritem rfind"><span class="e">📍</span><div><div class="lbl">가장 자주 기록된 장소</div><div class="v">북한산 둘레길</div><div class="rwhy">GPS 432회 · 신뢰도 88%</div></div></div>
               <div class="ritem rfind"><span class="e">🐾</span><div><div class="lbl">가장 자주 반복된 패턴</div><div class="v">비 오는 날 산책</div><div class="rwhy">비 오는 날 촬영 21% · 신뢰도 83%</div></div></div>
               <div class="ritem rpunch">하루와 함께한 시간이<br/>한 권의 이야기로 엮였습니다.</div>
+              <button class="ritem keepcta-r" onclick="openKeep()">📖 한 권으로 남기기</button>
               <div class="ritem rcta">
                 <button class="p" onclick="showD('story')">하루의 이야기 보기</button>
                 <button class="g" onclick="showD('book')">라이프북 보기</button>
@@ -1016,16 +1027,18 @@ function bookHTML(idx){
       <div class="lb-ins"><div class="row"><span class="e">🌸</span><div><div class="k">가장 행복했던 계절</div><div class="v">봄</div></div></div><div class="row"><span class="e">☔</span><div><div class="k">반복된 습관</div><div class="v">비 오는 날 산책</div></div></div><div class="row"><span class="e">📍</span><div><div class="k">가장 오래 머문 장소</div><div class="v">북한산 둘레길</div></div></div><div class="row"><span class="e">🏥</span><div><div class="k">건강 변화</div><div class="v">11살 이후 병원 방문 증가</div></div></div><div class="row"><span class="e">❤️</span><div><div class="k">가장 가까웠던 사람</div><div class="v">엄마</div></div></div><div class="row"><span class="e">🎙️</span><div><div class="k">자주 들린 단어</div><div class="v">“산책 갈까?”</div></div></div></div>
       <div class="based">📎 멀티모달 분석 기반 · <span class="grounded">자료에 근거해 추정</span></div></div>`;
   } else if(p.type==='map'){
-    inner=`<div class="book-pg lb-life"><div class="cnum">CHAPTER 02 · 함께 걸은 길</div><h4>하루와 함께 걸은 길</h4>
-      <div class="lb-lead">GPS·산책지도 기록에서, 하루가 자주 걸은 길을 복원했어요.</div>
-      <div class="lb-map"><svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice"><rect width="320" height="180" fill="#e8f1ec"/><ellipse cx="68" cy="58" rx="56" ry="40" fill="#d4e8d6"/><ellipse cx="252" cy="120" rx="64" ry="46" fill="#cfe6da"/><ellipse cx="170" cy="150" rx="50" ry="30" fill="#dceee4"/><polyline points="30,150 80,120 130,134 190,82 245,108 292,68" fill="none" stroke="#1f9e8a" stroke-width="3.5" stroke-dasharray="7 5" stroke-linecap="round"/><g font-family="sans-serif" font-size="11" font-weight="700"><circle cx="30" cy="150" r="6" fill="#e8804a" stroke="#fff" stroke-width="2"/><text x="38" y="154" fill="#3a3128">집</text><circle cx="130" cy="134" r="6" fill="#e8804a" stroke="#fff" stroke-width="2"/><text x="138" y="138" fill="#3a3128">동네 공원</text><circle cx="292" cy="68" r="7" fill="#1f9e8a" stroke="#fff" stroke-width="2"/><text x="222" y="56" fill="#0f6f60" font-weight="800">북한산 둘레길</text></g></svg></div>
+    inner=`<div class="book-pg lb-life"><div class="cnum">CHAPTER 02 · 함께 걸은 길</div><h4>산책 경로 복원</h4>
+      <div class="lb-lead">GPS·사진 위치·시간 기록을 바탕으로, 하루가 자주 걸은 길을 복원했어요.</div>
+      <div class="lb-map"><span class="map-est">추정 경로</span><svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice"><rect width="320" height="180" fill="#e8f1ec"/><ellipse cx="68" cy="58" rx="56" ry="40" fill="#d4e8d6"/><ellipse cx="252" cy="120" rx="64" ry="46" fill="#cfe6da"/><ellipse cx="170" cy="150" rx="50" ry="30" fill="#dceee4"/><polyline points="30,150 80,120 130,134 190,82 245,108 292,68" fill="none" stroke="#1f9e8a" stroke-width="3.5" stroke-dasharray="7 5" stroke-linecap="round"/><g font-family="sans-serif" font-size="11" font-weight="700"><circle cx="30" cy="150" r="6" fill="#e8804a" stroke="#fff" stroke-width="2"/><text x="38" y="154" fill="#3a3128">집</text><circle cx="130" cy="134" r="6" fill="#e8804a" stroke="#fff" stroke-width="2"/><text x="138" y="138" fill="#3a3128">동네 공원</text><circle cx="292" cy="68" r="7" fill="#1f9e8a" stroke="#fff" stroke-width="2"/><text x="222" y="56" fill="#0f6f60" font-weight="800">북한산 둘레길</text></g></svg></div>
+      <div class="map-note">📍 GPS·사진 위치·시간 기록 기반 추정 경로예요.</div>
       <div class="map-stats"><div><b>37곳</b>산책 장소</div><div><b>북한산</b>가장 오래 걸은 길</div><div><b>128km</b>누적 거리</div></div>
       <div class="lb-evtitle">증거</div>
       <div class="lb-ev"><span>📍 산책 장소 37곳</span><span>🗺️ 반복 루트 3개</span><span>🚶 누적 128km</span></div>
       <div class="lb-ai">🤖 AI가 읽은 하루<br>북한산 둘레길이 가장 자주 반복된 루트였어요. 봄철 산책 빈도가 특히 높았습니다.<button class="lb-whybtn" onclick="lbToggle(this)">왜 이렇게 읽었나요? ›</button><div class="why-box">근거 · GPS 포인트 군집 / 북한산 둘레길 31회 / 계절별 산책 빈도<br>신뢰도 82% · 자료에 근거해 추정</div></div></div>`;
   } else if(p.type==='health'){
     inner=`<div class="book-pg lb-life"><div class="cnum">CHAPTER 03 · 건강과 변화</div><h4>천천히 달라진 하루</h4>
-      <div class="lb-lead">진료기록·약 영수증에서 하루의 건강 흐름을 읽었어요.</div>
+      <div class="lb-lead">업로드된 진료기록·약 영수증을 바탕으로 건강 흐름을 정리했어요.</div>
+      <div class="med-note">📋 건강 기록 요약 · 의학적 판단이 아니에요</div>
       <div class="health-tl">
         <div class="hrow"><span class="hy">2016</span><span class="hd"><b>예방접종</b> · 종합백신</span></div>
         <div class="hrow"><span class="hy">2022</span><span class="hd"><b>슬개골 수술</b> · 회복 후 산책 재개</span></div>
@@ -1037,7 +1050,7 @@ function bookHTML(idx){
   } else if(p.type==='voice'){
     inner=`<div class="book-pg lb-life"><div class="cnum">CHAPTER 04 · 함께한 말들</div><h4>하루가 자주 들은 말</h4>
       <div class="lb-lead">음성·메모 기록에서, 하루에게 가장 자주 건넨 말을 찾았어요.</div>
-      <div class="bark-row"><button class="bark-btn" onclick="playBark(this)">🔊 하루 목소리 듣기</button><span class="bark-tag">음성 데모 샘플</span><audio preload="none"><source src="assets/haru/haru-bark.m4a" type="audio/mp4"></audio></div>
+      <div class="bark-row"><button class="bark-btn" onclick="playBark(this)">🔊 하루의 실제 음성 기록</button><span class="bark-tag">업로드된 영상에서 추출</span><audio preload="none"><source src="assets/haru/haru-voice.m4a" type="audio/mp4"></audio></div>
       <button class="clipbtn" onclick="openClip()">▶ 하루의 실제 영상 보기 · 2020.09.30</button>
       <div class="voice-list">
         <div class="vq big"><span class="wav"><svg class="wavsvg" width="58" height="22" viewBox="0 0 58 22"><rect x="2" y="8" width="3" height="6" rx="1.5" fill="currentColor"/><rect x="7" y="5" width="3" height="12" rx="1.5" fill="currentColor"/><rect x="12" y="2" width="3" height="18" rx="1.5" fill="currentColor"/><rect x="17" y="6" width="3" height="10" rx="1.5" fill="currentColor"/><rect x="22" y="3" width="3" height="16" rx="1.5" fill="currentColor"/><rect x="27" y="7" width="3" height="8" rx="1.5" fill="currentColor"/><rect x="32" y="1" width="3" height="20" rx="1.5" fill="currentColor"/><rect x="37" y="4" width="3" height="14" rx="1.5" fill="currentColor"/><rect x="42" y="6" width="3" height="9" rx="1.5" fill="currentColor"/><rect x="47" y="2" width="3" height="17" rx="1.5" fill="currentColor"/><rect x="52" y="7" width="3" height="7" rx="1.5" fill="currentColor"/><rect x="57" y="4" width="3" height="13" rx="1.5" fill="currentColor"/></svg></span>“산책 갈까?”<em>가장 자주</em></div>
@@ -1056,12 +1069,14 @@ function bookHTML(idx){
   } else if(p.type==='video'){
     inner=`<div class="book-pg"><div class="cnum">회상 영상</div><h4>하루의 회상</h4>
       <div class="vsub">하루야, 고마웠어 · 함께한 15년</div>
-      <video class="mem-video" playsinline controls preload="none" poster="assets/haru/thumb/117.jpg"><source src="assets/haru/haru-memorial.mp4" type="video/mp4"></video>
-      <div class="mem-sub">조용히, 천천히 보셔도 괜찮아요.</div>
+      <video id="mem-video" class="mem-video" playsinline controls preload="none" poster="assets/haru/thumb/117.jpg" onplay="memPlay(this)" onpause="memPause()" onended="memEnd()"><source src="assets/haru/haru-memorial.mp4" type="video/mp4"></video>
+      <audio id="mem-music" preload="none" loop></audio>
+      <div class="music-pick"><span class="mp-lbl">🎵 배경음악 선택</span><button class="mp-btn on" onclick="pickMusic(this,'')">🔇 무음</button><button class="mp-btn" onclick="pickMusic(this,'music-piano.m4a')">🎹 피아노</button><button class="mp-btn" onclick="pickMusic(this,'music-forest.m4a')">🌲 숲소리</button></div>
+      <div class="mem-sub">음악은 직접 고르세요 · 자동재생하지 않아요.</div>
       <div class="mem-count2">📷 2025년 8월의 기록 · 7장 · 조용히 보관 중</div></div>`;
   } else if(p.type==='keep'){
     inner=`<div class="book-pg keep-pg"><div class="cnum">KEEP · 한 권으로</div><h4>이 이야기를 한 권으로 남기기</h4>
-      <div class="keep-lead">하루의 15년이 한 권으로 엮였어요.<br>사라지기 전에, 곁에 남겨두세요.</div>
+      <div class="keep-lead">하루의 15년이 한 권으로 엮였습니다.<br>PDF 라이프북으로 남기시겠어요?</div>
       <div class="keep-trigger">🎂 하루의 입양일(5월)이 다가와요 · 지금이 남기기 좋은 때예요</div>
       <div class="plans-lb">
         <div class="plan-lb"><div class="pn">무료</div><div class="pp">₩0</div><div class="pd">미리보기 · 워터마크</div></div>
@@ -1179,6 +1194,12 @@ function pickUpload(){closeSheet();runFlow('m');}
 function playBark(btn){var a=btn.parentElement.querySelector('audio');if(a){a.currentTime=0;a.play();}}
 function openClip(){var m=document.getElementById('clip-modal');m.classList.add('on');var v=document.getElementById('clip-video');try{v.currentTime=0;v.play();}catch(e){}}
 function closeClip(){var m=document.getElementById('clip-modal');m.classList.remove('on');var v=document.getElementById('clip-video');if(v)v.pause();}
+var memTrack='';
+function pickMusic(btn,trk){memTrack=trk;document.querySelectorAll('.music-pick .mp-btn').forEach(function(b){b.classList.toggle('on',b===btn);});var a=document.getElementById('mem-music'),v=document.getElementById('mem-video');if(!a)return;if(!trk){a.pause();}else{a.src='assets/haru/'+trk;if(v&&!v.paused){a.currentTime=v.currentTime%27;a.play().catch(function(){});}}}
+function memPlay(v){if(memTrack){var a=document.getElementById('mem-music');a.src='assets/haru/'+memTrack;a.currentTime=v.currentTime%27;a.play().catch(function(){});}}
+function memPause(){var a=document.getElementById('mem-music');if(a)a.pause();}
+function memEnd(){var a=document.getElementById('mem-music');if(a){a.pause();a.currentTime=0;}}
+function openKeep(){goAny('book');var i=LB_PAGES.findIndex(function(x){return x.type==='keep';});bookPage=i>=0?i:LB_PAGES.length-1;document.getElementById('m-book').innerHTML=bookHTML(bookPage);document.getElementById('d-book-inner').innerHTML=bookHTML(bookPage);}
 
 /* ---------- desktop screens ---------- */
 const D_SCREENS=['home','upload','discover','reveal','story','book','family','famdetail'];
