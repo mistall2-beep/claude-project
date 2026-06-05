@@ -57,13 +57,29 @@
 
   /* generic list card */
   .listcard{ background:var(--surface-2); border:2px solid var(--line-soft); border-radius:14px;
-             padding:13px 15px; margin-bottom:10px; cursor:pointer; transition:border-color .12s, transform .06s; }
+             padding:13px 15px; margin-bottom:10px; cursor:pointer; transition:border-color .12s, transform .06s;
+             display:flex; gap:12px; align-items:center; }
   .listcard:hover{ border-color:var(--line); } .listcard:active{ transform:scale(.99); }
+  .listcard .thumb{ width:54px; height:54px; border-radius:12px; border:2px solid var(--line-soft);
+                    object-fit:cover; flex:0 0 auto; background:var(--green-tint); }
+  .listcard .cbody{ flex:1; min-width:0; }
   .listcard .t{ font-weight:800; color:var(--green-dd); font-size:15px; }
   .listcard .m{ font-size:12.5px; color:var(--ink-2); margin-top:4px; }
   .listcard .row2{ display:flex; align-items:center; justify-content:space-between; gap:8px; }
   .banner{ background:#F6E8C7; border:2px solid #e3c585; color:#8a6313; border-radius:12px;
            padding:10px 13px; font-size:12.5px; font-weight:700; margin-bottom:12px; text-align:center; }
+
+  /* photos + upload */
+  .photo-av{ position:relative; flex:0 0 auto; }
+  .photo-av img{ width:60px; height:60px; border-radius:16px; border:2px solid var(--line); object-fit:cover; display:block; background:var(--green-tint); }
+  .photo-edit{ position:absolute; right:-6px; bottom:-6px; width:26px; height:26px; border-radius:50%;
+               background:var(--green); color:#fff; border:2px solid #fff; display:flex; align-items:center;
+               justify-content:center; font-size:13px; cursor:pointer; }
+  .storephoto{ position:relative; border-radius:16px; overflow:hidden; border:2px solid var(--line); margin-bottom:14px; background:var(--green-tint); }
+  .storephoto img{ width:100%; height:150px; object-fit:cover; display:block; }
+  .storephoto .photo-edit{ right:10px; bottom:10px; width:auto; height:auto; padding:8px 12px; border-radius:11px; font-size:12.5px; font-weight:800; gap:5px; box-shadow:0 3px 10px rgba(47,93,50,.25); }
+  .detail-photo{ width:100%; height:160px; object-fit:cover; border-radius:16px; border:2px solid var(--line); margin-bottom:14px; background:var(--green-tint); }
+  .detail-av{ width:64px; height:64px; border-radius:14px; border:2px solid var(--line); object-fit:cover; flex:0 0 auto; background:var(--green-tint); }
 
   /* role segmented (auth) */
   .roleseg{ display:flex; gap:8px; margin-bottom:14px; }
@@ -218,7 +234,10 @@
   <!-- SEEKER MYPAGE (구직자 나의 페이지) -->
   <section class="screen" id="s-seeker">
     <div class="phead">
-      <div class="av"><img src="assets/ink.png" alt=""/></div>
+      <div class="photo-av">
+        <img id="seekerPhoto" src="assets/avatar.svg" alt="photo"/>
+        <label class="photo-edit" title="사진 업로드">📷<input type="file" accept="image/*" hidden onchange="previewPhoto(this,'seekerPhoto')"/></label>
+      </div>
       <div class="grow"><h2>Nguyen Mai</h2><div class="sub">🇻🇳 베트남 · 한양대학교 · D-2</div></div>
       <span class="badge ok" data-i18n="seeker.verified">✓ 인증완료</span>
     </div>
@@ -287,6 +306,10 @@
 
   <!-- EMPLOYER MYPAGE (구인자 나의 페이지) -->
   <section class="screen" id="s-employer">
+    <div class="storephoto">
+      <img id="empPhoto" src="assets/store.svg" alt="store"/>
+      <label class="photo-edit">📷 <span data-i18n="photo.store">매장 사진 업로드</span><input type="file" accept="image/*" hidden onchange="previewPhoto(this,'empPhoto')"/></label>
+    </div>
     <div class="phead">
       <div class="av" style="background:#E6E1CC">🏪</div>
       <div class="grow"><h2>메가커피 왕십리역점</h2><div class="sub" data-i18n="emp.sub">카페 · 프랜차이즈 제휴점</div></div>
@@ -420,6 +443,9 @@ const el=id=>document.getElementById(id);
 function t(k){ return (I18N[lang][k]!==undefined)?I18N[lang][k]:k; }
 /* mask identity before login (prevent direct matching/contact) */
 function maskName(n){ const p=n.trim().split(/\s+/); return /^[A-Za-z]/.test(n) ? p.map(w=>w[0]+".").join(" ") : (n[0]+"**"); }
+/* photo upload preview (client-side) */
+function previewPhoto(input, imgId){ const f=input.files&&input.files[0]; if(!f) return;
+  const r=new FileReader(); r.onload=ev=>{ const img=document.getElementById(imgId); if(img) img.src=ev.target.result; }; r.readAsDataURL(f); }
 
 /* ===================== data ===================== */
 const POSTINGS={
@@ -547,8 +573,10 @@ function renderHome(){
     const p=POSTINGS[id];
     const emp = loggedIn ? p.emp : `🔒 ${t("mask.emp")}`;
     return `<div class="listcard" onclick="openPosting('${id}')">
-      <div class="row2"><div class="t">${p.title[lang]}</div><span class="chev">›</span></div>
-      <div class="m">${emp} · ${p.pay[lang]} · ${p.when[lang]}</div></div>`;
+      <img class="thumb" src="assets/store.svg" alt=""/>
+      <div class="cbody">
+        <div class="row2"><div class="t">${p.title[lang]}</div><span class="chev">›</span></div>
+        <div class="m">${emp} · ${p.pay[lang]} · ${p.when[lang]}</div></div></div>`;
   }).join("");
   el("homeBody").innerHTML = card +
     `<div class="block"><div class="section-title">${t("home.popular")}</div>${preview}
@@ -563,9 +591,11 @@ function renderHireList(){
     const emp = loggedIn ? p.emp : `🔒 ${t("mask.emp")}`;
     const rightChip = loggedIn ? `<span class="badge ok">${t("hire.gate")}</span>` : `<span class="badge warn">${t("mask.reveal")}</span>`;
     return `<div class="listcard" onclick="openPosting('${id}')">
-      <div class="row2"><div class="t">${p.title[lang]}</div>${rightChip}</div>
-      <div class="m">${emp} · ${p.region[lang]}</div>
-      <div class="m">💰 ${p.pay[lang]} · 🕒 ${p.when[lang]} · ${p.field[lang]}</div></div>`;
+      <img class="thumb" src="assets/store.svg" alt=""/>
+      <div class="cbody">
+        <div class="row2"><div class="t">${p.title[lang]}</div>${rightChip}</div>
+        <div class="m">${emp} · ${p.region[lang]}</div>
+        <div class="m">💰 ${p.pay[lang]} · 🕒 ${p.when[lang]} · ${p.field[lang]}</div></div></div>`;
   }).join("");
   el("hireListBody").innerHTML = banner + cards;
 }
@@ -579,9 +609,11 @@ function renderSeekList(){
     const sch = loggedIn ? s.school : `🔒 ${t("mask.school")}`;
     const rightChip = loggedIn ? `<span class="chev">›</span>` : `<span class="badge warn">${t("mask.reveal")}</span>`;
     return `<div class="listcard" onclick="openSeekerProfile('${id}')">
-      <div class="row2"><div class="t">${s.flag} ${nm}</div>${rightChip}</div>
-      <div class="m">${sch} · ${s.visa} · ${s.major[lang]} · TOPIK ${s.topik}</div>
-      <div class="m">🎯 ${s.want[lang]}</div></div>`;
+      <img class="thumb" src="assets/avatar.svg" alt=""/>
+      <div class="cbody">
+        <div class="row2"><div class="t">${s.flag} ${nm}</div>${rightChip}</div>
+        <div class="m">${sch} · ${s.visa} · ${s.major[lang]} · TOPIK ${s.topik}</div>
+        <div class="m">🎯 ${s.want[lang]}</div></div></div>`;
   }).join("");
   el("seekListBody").innerHTML = banner + cards;
 }
@@ -615,6 +647,7 @@ function renderPosting(id){
   el("detailBody").innerHTML = `
     <div class="section-title">${t2(JL.postTitle)}</div>
     ${lockBanner}
+    <img class="detail-photo" src="assets/store.svg" alt=""/>
     <div class="card soft">
       <div class="between"><div class="t" style="font-size:17px">${j.title[lang]}</div><span class="badge ok">${t("hire.gate")}</span></div>
       <div class="m" style="margin-top:5px">🏪 ${emp} · 📍 ${j.region[lang]}</div>
@@ -644,8 +677,11 @@ function renderSeekerProfile(id){
   el("detailBody").innerHTML = `
     <div class="section-title">${t2(JL.seekerTitle)}</div>
     ${lockBanner}
-    <div class="card soft"><div class="between"><div class="t" style="font-size:17px">${s.flag} ${nm}</div><span class="badge ok">✓ ${t("seeker.verified")}</span></div>
-      <div class="m" style="margin-top:5px">${sch} · ${s.visa}</div></div>
+    <div class="card soft"><div class="row" style="gap:12px;align-items:center">
+        <img class="detail-av" src="assets/avatar.svg" alt=""/>
+        <div class="grow"><div class="between"><div class="t" style="font-size:17px">${s.flag} ${nm}</div><span class="badge ok">✓ ${t("seeker.verified")}</span></div>
+          <div class="m" style="margin-top:4px">${sch} · ${s.visa}</div></div>
+      </div></div>
     <div class="jd-facts" style="margin-top:14px">
       <div class="jd-fact"><div class="k">${t2(JL.school)}</div><div class="v" style="font-size:13px">${sch} · ${s.visa}</div></div>
       <div class="jd-fact"><div class="k">${t("f.major")}</div><div class="v" style="font-size:13px">${s.major[lang]}</div></div>
@@ -707,7 +743,7 @@ function punch(dir){ const e=el("punchState"); if(dir==="in"){ e.className="badg
 /* ===================== i18n ===================== */
 const I18N = {
   ko:{
-    "appbar.home":"홈페이지","tab.home":"홈","tab.hire":"구인","tab.seek":"구직","tab.settings":"설정",
+    "appbar.home":"홈페이지","photo.store":"매장 사진 업로드","tab.home":"홈","tab.hire":"구인","tab.seek":"구직","tab.settings":"설정",
     "home.tagline":"한국에서 나의 첫 기록 · 유학생 전용 합법 알바",
     "home.stat.seekers":"등록 구직자","home.stat.emps":"등록 구인자","home.stat.match":"누적 매칭",
     "home.guest.title":"로그인하고 시작하기","home.guest.msg":"학생은 일자리를, 사업자는 인력을 찾아보세요","home.guest.btn":"회원가입 / 로그인",
@@ -737,7 +773,7 @@ const I18N = {
     "set.account":"계정","set.login":"로그인 / 회원가입","set.logout":"로그아웃","set.terms":"이용약관","set.privacy":"개인정보처리방침"
   },
   en:{
-    "appbar.home":"Website","tab.home":"Home","tab.hire":"Hire","tab.seek":"Seek","tab.settings":"Settings",
+    "appbar.home":"Website","photo.store":"Upload store photo","tab.home":"Home","tab.hire":"Hire","tab.seek":"Seek","tab.settings":"Settings",
     "home.tagline":"My first record in Korea · legal part-time for students",
     "home.stat.seekers":"Students","home.stat.emps":"Employers","home.stat.match":"Matches",
     "home.guest.title":"Log in to get started","home.guest.msg":"Students find jobs; businesses find talent","home.guest.btn":"Sign up / Log in",

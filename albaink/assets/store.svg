@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160" role="img" aria-label="store photo placeholder">
+  <rect width="240" height="160" fill="#F4EFDC"/>
+  <!-- sky/wall -->
+  <rect x="28" y="52" width="184" height="108" fill="#EAE2C4" stroke="#2F5D32" stroke-width="4"/>
+  <!-- windows -->
+  <rect x="44" y="78" width="44" height="34" fill="#CFE0EF" stroke="#2F5D32" stroke-width="3"/>
+  <rect x="152" y="78" width="44" height="34" fill="#CFE0EF" stroke="#2F5D32" stroke-width="3"/>
+  <!-- door -->
+  <rect x="100" y="92" width="40" height="68" fill="#3C7C3F" stroke="#2F5D32" stroke-width="3"/>
+  <circle cx="133" cy="128" r="2.5" fill="#EADBA0"/>
+  <!-- awning -->
+  <path d="M18 52 L222 52 L206 26 L34 26 Z" fill="#5AA85A" stroke="#2F5D32" stroke-width="4" stroke-linejoin="round"/>
+  <path d="M70 52 L84 26 M110 52 L124 26 M150 52 L164 26 M190 52 L204 26 M30 52 L44 26"
+        stroke="#EAF6E6" stroke-width="7" opacity=".7"/>
+  <!-- sign -->
+  <text x="120" y="46" text-anchor="middle" font-family="Verdana,Arial,sans-serif" font-size="15" font-weight="700" fill="#fff">inK</text>
+</svg>

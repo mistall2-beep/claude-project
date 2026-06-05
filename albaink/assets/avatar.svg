@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="student photo placeholder">
+  <defs>
+    <linearGradient id="ab" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#EAF2E1"/><stop offset="1" stop-color="#D6E6C7"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" fill="url(#ab)"/>
+  <!-- shoulders -->
+  <path d="M36 200 C36 152 66 134 100 134 C134 134 164 152 164 200 Z" fill="#7FB97F" stroke="#2F5D32" stroke-width="4"/>
+  <!-- head -->
+  <circle cx="100" cy="94" r="33" fill="#8FC58F" stroke="#2F5D32" stroke-width="4"/>
+  <!-- graduation cap -->
+  <path d="M54 72 L100 54 L146 72 L100 90 Z" fill="#2F5D32"/>
+  <rect x="97" y="78" width="6" height="14" fill="#2F5D32"/>
+  <path d="M146 72 L148 96" stroke="#2F5D32" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="148" cy="98" r="3.5" fill="#E2A03A"/>
+</svg>
