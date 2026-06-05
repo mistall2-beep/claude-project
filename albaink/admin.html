@@ -17,13 +17,13 @@
   .side .brand b{ font-size:19px; font-weight:900; letter-spacing:-.3px; }
   .side .brand b .ink{ color:#bfe6ad; }
   .nav a{ display:flex; align-items:center; gap:11px; padding:11px 13px; border-radius:12px;
-          font-weight:700; font-size:14px; color:#cfe3c8; }
+          font-weight:700; font-size:14px; color:#cfe3c8; cursor:pointer; }
   .nav a .ic{ width:20px; text-align:center; }
   .nav a:hover{ background:rgba(255,255,255,.07); color:#fff; }
   .nav a.on{ background:#bfe6ad; color:#234c26; }
   .side .foot{ margin-top:auto; font-size:11.5px; color:#9bc093; padding:8px; }
   .langbtn{ margin-top:8px; background:rgba(255,255,255,.1); color:#eaf6e6; border:1.5px solid rgba(255,255,255,.2);
-            border-radius:10px; padding:9px; font-weight:800; font-size:12.5px; }
+            border-radius:10px; padding:9px; font-weight:800; font-size:12.5px; cursor:pointer; }
 
   /* ---------- main ---------- */
   .main{ padding:26px 30px 60px; max-width:1180px; }
@@ -71,7 +71,6 @@
           background:conic-gradient(#4FA04F 0 60%, #E2A03A 60% 82%, #4F86C6 82% 93%, #D9594C 93% 100%);
           display:flex; align-items:center; justify-content:center; }
   .donut::after{ content:""; width:84px; height:84px; border-radius:50%; background:var(--surface); }
-  .donut .lbl{ position:absolute; text-align:center; }
   .lg{ display:flex; flex-direction:column; gap:9px; font-size:13px; }
   .lg .r{ display:flex; align-items:center; gap:8px; }
   .lg .sw{ width:12px; height:12px; border-radius:3px; }
@@ -80,14 +79,16 @@
   table{ width:100%; border-collapse:collapse; font-size:13.5px; }
   th,td{ text-align:left; padding:11px 12px; border-bottom:1.5px solid var(--line-soft); }
   th{ font-size:12px; color:var(--ink-2); font-weight:800; text-transform:uppercase; letter-spacing:.3px; }
-  tbody tr:hover{ background:rgba(47,93,50,.04); }
+  tbody tr.click{ cursor:pointer; }
+  tbody tr.click:hover{ background:rgba(47,93,50,.06); }
   td .t{ font-weight:800; color:var(--green-dd); }
+  .chevcell{ text-align:right; color:var(--green-d); font-weight:900; }
   .filters{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px; }
   .chip{ padding:8px 13px; border-radius:999px; border:2px solid var(--line-soft); background:var(--surface-2);
-         font-size:12.5px; font-weight:700; color:var(--green-dd); }
+         font-size:12.5px; font-weight:700; color:var(--green-dd); cursor:pointer; }
   .chip.on{ background:var(--green); color:#fff; border-color:var(--green-d); }
 
-  /* attendance board mini calendar row */
+  /* attendance board mini bars */
   .attrow td .days{ display:flex; gap:3px; }
   .attrow td .days i{ width:15px; height:15px; border-radius:4px; display:inline-block; font-style:normal; }
   .a-w{ background:#8ecb85; } .a-l{ background:#e6c068; } .a-a{ background:#d98b80; } .a-o{ background:#d8d3ba; }
@@ -96,6 +97,57 @@
              border:2px solid var(--line-soft); background:var(--surface-2); margin-bottom:11px; }
   .gatecard .big{ font-size:22px; }
   .gatecard .grow b{ color:var(--green-dd); }
+
+  /* ---------- DETAIL PAGES ---------- */
+  .dback{ display:inline-flex; align-items:center; gap:6px; background:var(--surface-2); border:2px solid var(--line-soft);
+          border-radius:10px; padding:8px 13px; font-weight:800; color:var(--green-dd); font-size:13px; cursor:pointer; margin-bottom:16px; }
+  .dback:hover{ border-color:var(--line); }
+  .dhead{ display:flex; align-items:center; gap:16px; margin-bottom:18px; flex-wrap:wrap; }
+  .dhead .av{ width:62px; height:62px; border-radius:16px; border:2px solid var(--line); background:var(--green-tint);
+              display:flex; align-items:center; justify-content:center; font-size:30px; }
+  .dhead h2{ margin:0; font-size:22px; color:var(--green-dd); }
+  .dhead .sub{ color:var(--ink-2); font-size:13.5px; margin-top:3px; }
+  .dgrid{ display:grid; grid-template-columns:1fr 1fr; gap:16px; align-items:start; }
+  @media(max-width:900px){ .dgrid{ grid-template-columns:1fr; } }
+  .kv{ display:grid; grid-template-columns:repeat(2,1fr); gap:10px; }
+  .kv .c{ background:var(--surface-2); border:2px solid var(--line-soft); border-radius:12px; padding:11px 13px; }
+  .kv .c.full{ grid-column:1/-1; }
+  .kv .c .k{ font-size:11px; font-weight:700; color:var(--green-d); }
+  .kv .c .v{ font-weight:800; color:var(--green-dd); margin-top:3px; font-size:14px; }
+  .jobrow{ background:var(--surface-2); border:2px solid var(--line-soft); border-radius:13px; padding:12px 14px; margin-bottom:10px; }
+  .jobrow.click{ cursor:pointer; } .jobrow.click:hover{ border-color:var(--line); }
+  .jobrow .t{ font-weight:800; color:var(--green-dd); }
+  .jobrow .m{ font-size:12.5px; color:var(--ink-2); margin-top:3px; }
+  .note{ font-size:12px; color:var(--ink-3); margin-top:10px; }
+
+  /* weekly schedule grid */
+  .wk{ display:grid; grid-template-columns:repeat(7,1fr); gap:6px; }
+  .wk .d{ text-align:center; }
+  .wk .dn{ font-size:11px; font-weight:800; color:var(--ink-2); margin-bottom:5px; }
+  .wk .slot{ border-radius:9px; padding:7px 4px; font-size:10px; font-weight:700; margin-bottom:5px; line-height:1.3; }
+  .wk .empty{ background:var(--surface); border:1.5px dashed var(--line-soft); color:var(--ink-3); }
+  .slot-a{ background:#DCEFD7; color:#2c6b2f; border:1.5px solid #9fce9a; }
+  .slot-b{ background:#D9E6F4; color:#2f5a8c; border:1.5px solid #a7c2e2; }
+  .slot-c{ background:#F6E8C7; color:#8a6313; border:1.5px solid #e3c585; }
+
+  /* segmented status toggle */
+  .seg{ display:inline-flex; border:2px solid var(--line-soft); border-radius:10px; overflow:hidden; }
+  .seg button{ border:0; background:var(--surface-2); padding:7px 13px; font-weight:800; font-size:12.5px; color:var(--ink-2); cursor:pointer; }
+  .seg button + button{ border-left:2px solid var(--line-soft); }
+  .seg button.on{ background:var(--green); color:#fff; }
+
+  .actions{ display:flex; gap:10px; flex-wrap:wrap; margin-top:14px; }
+
+  /* mini calendar (attendance detail) */
+  .mcal .dow,.mcal .grid{ display:grid; grid-template-columns:repeat(7,1fr); }
+  .mcal .dow span{ text-align:center; font-size:11px; font-weight:700; color:var(--ink-2); padding-bottom:6px; }
+  .mcal .grid{ gap:6px; }
+  .mcal .cell{ aspect-ratio:1/1; border-radius:9px; border:1.5px solid var(--line-soft); background:var(--surface-2);
+               padding:5px 6px; font-size:11px; position:relative; color:var(--ink-2); }
+  .mcal .cell.out{ opacity:.3; } .mcal .cell .n{ font-weight:700; }
+  .mcal .cell .tag{ position:absolute; left:5px; right:5px; bottom:5px; height:6px; border-radius:3px; }
+  .legend{ display:flex; gap:14px; flex-wrap:wrap; font-size:12px; margin-top:12px; color:var(--ink-2); }
+  .legend i{ width:12px; height:12px; border-radius:3px; display:inline-block; margin-right:5px; vertical-align:-1px; }
 
   @media (max-width:980px){
     .app{ grid-template-columns:1fr; } .side{ position:static; height:auto; flex-direction:row; flex-wrap:wrap; }
@@ -142,7 +194,6 @@
         <div class="kpi"><div class="k" data-i18n="kpi.match">월 매칭 성사</div><div class="v">163</div><div class="d up">▲ 9.1%</div></div>
         <div class="kpi"><div class="k" data-i18n="kpi.block">위반 공고 차단율</div><div class="v">99.2%</div><div class="d up" data-i18n="kpi.target">목표 99%</div></div>
       </div>
-
       <div class="grid2">
         <div class="panel">
           <h3><span data-i18n="dash.trend">월별 매칭 성사 추이</span><span class="badge ok">2026 H1</span></h3>
@@ -168,7 +219,6 @@
           </div>
         </div>
       </div>
-
       <div class="grid2 even">
         <div class="panel">
           <h3><span data-i18n="dash.region">지역별 분포</span></h3>
@@ -195,14 +245,14 @@
 
     <!-- ===== MATCHING ===== -->
     <section class="view" id="v-match">
-      <div class="filters">
-        <span class="chip on" data-i18n="f.all">전체</span>
-        <span class="chip" data-i18n="f.current">현재</span>
-        <span class="chip" data-i18n="f.past">과거</span>
-        <span class="chip" data-i18n="f.seoul">서울</span>
-        <span class="chip" data-i18n="f.gyeonggi">경기</span>
-        <span class="chip" data-i18n="f.cafe">카페·F&B</span>
-        <span class="chip" data-i18n="f.retail">유통</span>
+      <div class="filters" id="matchFilters">
+        <span class="chip on" data-f="all" data-i18n="f.all">전체</span>
+        <span class="chip" data-f="current" data-i18n="f.current">현재</span>
+        <span class="chip" data-f="past" data-i18n="f.past">과거</span>
+        <span class="chip" data-f="seoul" data-i18n="f.seoul">서울</span>
+        <span class="chip" data-f="gyeonggi" data-i18n="f.gyeonggi">경기</span>
+        <span class="chip" data-f="cafe" data-i18n="f.cafe">카페·F&B</span>
+        <span class="chip" data-f="retail" data-i18n="f.retail">유통</span>
       </div>
       <div class="kpis" style="grid-template-columns:repeat(4,1fr)">
         <div class="kpi"><div class="k" data-i18n="m.kpi.req">매칭 요청</div><div class="v">214</div></div>
@@ -211,70 +261,55 @@
         <div class="kpi"><div class="k" data-i18n="m.kpi.fail">매칭 취소</div><div class="v">11</div></div>
       </div>
       <div class="panel">
-        <h3><span data-i18n="m.table">매칭 현황</span></h3>
+        <h3><span data-i18n="m.table">매칭 현황</span><span class="tiny muted" data-i18n="hint.click">행을 클릭하면 상세로 이동</span></h3>
         <table>
           <thead><tr>
             <th data-i18n="th.student">학생</th><th data-i18n="th.emp">수요처</th><th data-i18n="th.region">지역</th>
-            <th data-i18n="th.field">업종</th><th data-i18n="th.status">상태</th><th data-i18n="th.gate">준법</th>
+            <th data-i18n="th.field">업종</th><th data-i18n="th.status">상태</th><th data-i18n="th.gate">준법</th><th></th>
           </tr></thead>
-          <tbody>
-            <tr><td><span class="t">Nguyen Mai</span><div class="tiny muted">🇻🇳 한양대 · D-2</div></td><td>메가커피 왕십리역점</td><td>서울 성동</td><td>카페</td><td><span class="badge ok">매칭완료</span></td><td><span class="badge ok">통과</span></td></tr>
-            <tr><td><span class="t">Li Wei</span><div class="tiny muted">🇨🇳 경희대 · D-2</div></td><td>올리브영 성수점</td><td>서울 성동</td><td>유통</td><td><span class="badge info">인터뷰</span></td><td><span class="badge ok">통과</span></td></tr>
-            <tr><td><span class="t">Bat-Erdene</span><div class="tiny muted">🇲🇳 가천대 · D-2</div></td><td>서브웨이 가천대점</td><td>경기 성남</td><td>F&B</td><td><span class="badge info">검토중</span></td><td><span class="badge ok">통과</span></td></tr>
-            <tr><td><span class="t">Tran Hoa</span><div class="tiny muted">🇻🇳 세종대 · D-4</div></td><td>물류센터 (제한업종)</td><td>경기 광주</td><td>제조</td><td><span class="badge danger">차단됨</span></td><td><span class="badge danger">위반</span></td></tr>
-            <tr><td><span class="t">Chen Yu</span><div class="tiny muted">🇨🇳 중앙대 · D-2</div></td><td>투썸 흑석역점</td><td>서울 동작</td><td>카페</td><td><span class="badge">완료</span></td><td><span class="badge ok">통과</span></td></tr>
-          </tbody>
+          <tbody id="matchBody"></tbody>
         </table>
       </div>
     </section>
 
     <!-- ===== JOBS ===== -->
     <section class="view" id="v-jobs">
-      <div class="filters">
-        <span class="chip on" data-i18n="j.open">모집중</span>
-        <span class="chip" data-i18n="j.closing">마감임박</span>
-        <span class="chip" data-i18n="j.done">종료</span>
-        <span class="chip" data-i18n="j.fr">프랜차이즈 제휴</span>
+      <div class="filters" id="jobsFilters">
+        <span class="chip on" data-f="all" data-i18n="j.all">전체</span>
+        <span class="chip" data-f="open" data-i18n="j.open">모집중</span>
+        <span class="chip" data-f="closing" data-i18n="j.closing">마감임박</span>
+        <span class="chip" data-f="closed" data-i18n="j.done">종료</span>
+        <span class="chip" data-f="fr" data-i18n="j.fr">프랜차이즈 제휴</span>
       </div>
       <div class="panel">
-        <h3><span data-i18n="j.table">구인 공고</span><span class="badge ok">187 active</span></h3>
+        <h3><span data-i18n="j.table">구인 공고</span><span class="tiny muted" data-i18n="hint.clickemp">수요처를 클릭하면 상세로 이동</span></h3>
         <table>
           <thead><tr>
             <th data-i18n="th.post">공고</th><th data-i18n="th.emp">수요처</th><th data-i18n="th.period">기간</th>
-            <th data-i18n="th.apps">지원</th><th data-i18n="th.status">상태</th><th data-i18n="th.gate">준법</th>
+            <th data-i18n="th.apps">지원</th><th data-i18n="th.status">상태</th><th data-i18n="th.gate">준법</th><th></th>
           </tr></thead>
-          <tbody>
-            <tr><td><span class="t">평일 저녁 바리스타</span><div class="tiny muted">시급 10,030 · 주 18h</div></td><td>메가커피 왕십리역점</td><td>06.10~상시</td><td>7</td><td><span class="badge ok">모집중</span></td><td><span class="badge ok">통과</span></td></tr>
-            <tr><td><span class="t">주말 오전 마감조</span><div class="tiny muted">시급 10,500 · 주말</div></td><td>메가커피 왕십리역점</td><td>~06.15</td><td>3</td><td><span class="badge warn">마감임박</span></td><td><span class="badge ok">통과</span></td></tr>
-            <tr><td><span class="t">매장 응대 (다국어 우대)</span><div class="tiny muted">시급 11,000</div></td><td>올리브영 성수점</td><td>06.08~상시</td><td>12</td><td><span class="badge ok">모집중</span></td><td><span class="badge ok">통과</span></td></tr>
-            <tr><td><span class="t">택배 분류 야간</span><div class="tiny muted">특수형태근로</div></td><td>○○물류</td><td>—</td><td>0</td><td><span class="badge danger">게재거부</span></td><td><span class="badge danger">제한업종</span></td></tr>
-          </tbody>
+          <tbody id="jobsBody"></tbody>
         </table>
       </div>
     </section>
 
     <!-- ===== SEEKERS ===== -->
     <section class="view" id="v-seekers">
-      <div class="filters">
-        <span class="chip on" data-i18n="s.all">전체</span>
-        <span class="chip" data-i18n="s.d2">D-2 학위</span>
-        <span class="chip" data-i18n="s.d4">D-4 어학</span>
-        <span class="chip" data-i18n="s.verified">인증완료</span>
-        <span class="chip" data-i18n="s.pending">검증대기</span>
+      <div class="filters" id="seekersFilters">
+        <span class="chip on" data-f="all" data-i18n="s.all">전체</span>
+        <span class="chip" data-f="d2" data-i18n="s.d2">D-2 학위</span>
+        <span class="chip" data-f="d4" data-i18n="s.d4">D-4 어학</span>
+        <span class="chip" data-f="done" data-i18n="s.verified">인증완료</span>
+        <span class="chip" data-f="wait" data-i18n="s.pending">검증대기</span>
       </div>
       <div class="panel">
-        <h3><span data-i18n="s.table">구직 학생</span><span class="badge ok">2,418 등록</span></h3>
+        <h3><span data-i18n="s.table">구직 학생</span><span class="tiny muted" data-i18n="hint.click">행을 클릭하면 상세로 이동</span></h3>
         <table>
           <thead><tr>
             <th data-i18n="th.student">학생</th><th data-i18n="th.school">학교/비자</th><th data-i18n="th.topik">TOPIK</th>
-            <th data-i18n="th.hours">허용시간</th><th data-i18n="th.verify">검증</th><th data-i18n="th.match">매칭</th>
+            <th data-i18n="th.hours">허용시간</th><th data-i18n="th.verify">검증</th><th data-i18n="th.match">매칭</th><th></th>
           </tr></thead>
-          <tbody>
-            <tr><td><span class="t">Nguyen Mai</span><div class="tiny muted">🇻🇳 베트남 · 경영 3학년</div></td><td>한양대 · D-2</td><td>4급</td><td>주 20h</td><td><span class="badge ok">완료</span></td><td><span class="badge ok">매칭중</span></td></tr>
-            <tr><td><span class="t">Li Wei</span><div class="tiny muted">🇨🇳 중국 · 컴퓨터 2학년</div></td><td>경희대 · D-2</td><td>5급</td><td>주 20h</td><td><span class="badge ok">완료</span></td><td><span class="badge info">지원중</span></td></tr>
-            <tr><td><span class="t">Tran Hoa</span><div class="tiny muted">🇻🇳 베트남 · 어학연수</div></td><td>세종대 · D-4</td><td>2급</td><td><span class="badge warn">6개월 미경과</span></td><td><span class="badge warn">대기</span></td><td><span class="badge">불가</span></td></tr>
-            <tr><td><span class="t">Bat-Erdene</span><div class="tiny muted">🇲🇳 몽골 · 기계 4학년</div></td><td>가천대 · D-2</td><td>3급</td><td>주 10h</td><td><span class="badge ok">완료</span></td><td><span class="badge info">검토중</span></td></tr>
-          </tbody>
+          <tbody id="seekersBody"></tbody>
         </table>
       </div>
     </section>
@@ -284,28 +319,18 @@
       <div class="panel">
         <h3><span data-i18n="att.board">출결 현황판 · 2026년 6월</span>
           <span class="row tiny" style="font-weight:700;color:var(--ink-2)">
-            <i class="a-w" style="width:13px;height:13px;border-radius:4px"></i>근무
-            <i class="a-l" style="width:13px;height:13px;border-radius:4px;margin-left:8px"></i>지각
-            <i class="a-a" style="width:13px;height:13px;border-radius:4px;margin-left:8px"></i>결근
-            <i class="a-o" style="width:13px;height:13px;border-radius:4px;margin-left:8px"></i>휴무
+            <i class="a-w" style="width:13px;height:13px;border-radius:4px"></i><span data-i18n="att.work">근무</span>
+            <i class="a-l" style="width:13px;height:13px;border-radius:4px;margin-left:8px"></i><span data-i18n="att.late">지각</span>
+            <i class="a-a" style="width:13px;height:13px;border-radius:4px;margin-left:8px"></i><span data-i18n="att.absent">결근</span>
+            <i class="a-o" style="width:13px;height:13px;border-radius:4px;margin-left:8px"></i><span data-i18n="att.off">휴무</span>
           </span>
         </h3>
         <table>
           <thead><tr>
             <th data-i18n="th.student">학생</th><th data-i18n="th.emp">수요처</th>
-            <th data-i18n="att.week">1주차 (1–7)</th><th data-i18n="att.rate">출근율</th><th data-i18n="att.flag">누락</th><th data-i18n="att.proof">증빙</th>
+            <th data-i18n="att.week">1주차 (1–7)</th><th data-i18n="att.rate">출근율</th><th data-i18n="att.flag">누락</th><th data-i18n="att.proof">증빙</th><th></th>
           </tr></thead>
-          <tbody>
-            <tr class="attrow"><td><span class="t">Nguyen Mai</span></td><td>메가커피 왕십리역점</td>
-              <td><div class="days"><i class="a-w"></i><i class="a-o"></i><i class="a-w"></i><i class="a-w"></i><i class="a-l"></i><i class="a-w"></i><i class="a-o"></i></div></td>
-              <td><b style="color:#2c8a3a">96%</b></td><td>—</td><td>📎 4</td></tr>
-            <tr class="attrow"><td><span class="t">Li Wei</span></td><td>올리브영 성수점</td>
-              <td><div class="days"><i class="a-w"></i><i class="a-w"></i><i class="a-o"></i><i class="a-w"></i><i class="a-w"></i><i class="a-o"></i><i class="a-w"></i></div></td>
-              <td><b style="color:#2c8a3a">100%</b></td><td>—</td><td>📎 5</td></tr>
-            <tr class="attrow"><td><span class="t">Chen Yu</span></td><td>투썸 흑석역점</td>
-              <td><div class="days"><i class="a-w"></i><i class="a-a"></i><i class="a-w"></i><i class="a-o"></i><i class="a-w"></i><i class="a-w"></i><i class="a-o"></i></div></td>
-              <td><b style="color:#8a6313">88%</b></td><td><span class="badge danger">결근 1</span></td><td>📎 3</td></tr>
-          </tbody>
+          <tbody id="attendBody"></tbody>
         </table>
         <p class="tiny muted" style="margin-top:12px" data-i18n="att.permnote">※ 출결 데이터는 학생 본인 → 수요처 → 관리자 순으로 열람 권한이 분리됩니다. 주 15h/월 60h 초과 시 자동 알림.</p>
       </div>
@@ -341,33 +366,433 @@
       </div>
     </section>
 
+    <!-- ===== DETAIL (rendered by JS) ===== -->
+    <section class="view" id="v-detail"><div id="detailBody"></div></section>
+
   </main>
 </div>
 
 <script>
-/* ---------- view switching ---------- */
+/* =========================================================
+   data model — 수요처(여러 공고) · 학생(여러 알바 동시) · 출결
+   ========================================================= */
+const EMP = {
+  mega:   { name:"메가커피 왕십리역점", short:"메가커피", type:{ko:"카페·프랜차이즈",en:"Café·Franchise"}, field:"cafe", region:"seoul", regionTxt:{ko:"서울 성동구",en:"Seongdong, Seoul"}, bizno:"123-45-67890", contact:"02-123-4567", verified:true, franchise:true,
+    postings:[
+      {id:"barista",  title:{ko:"평일 저녁 바리스타",en:"Weekday Evening Barista"}, status:"open",    pay:"10,030", when:{ko:"평일 18:00–22:00",en:"Weekdays 18:00–22:00"}, period:"06.10~", head:2, apps:7, gate:"ok", students:[["mai","matched"],["li","interview"]] },
+      {id:"weekend",  title:{ko:"주말 오전 마감조",en:"Weekend Morning Shift"},    status:"closing", pay:"10,500", when:{ko:"주말 09:00–14:00",en:"Weekends 09:00–14:00"}, period:"~06.15", head:1, apps:3, gate:"ok", students:[["bat","review"]] }
+    ]},
+  olive:  { name:"올리브영 성수점", short:"올리브영", type:{ko:"유통·헬스&뷰티",en:"Retail·H&B"}, field:"retail", region:"seoul", regionTxt:{ko:"서울 성동구",en:"Seongdong, Seoul"}, bizno:"214-88-12345", contact:"02-555-7788", verified:true, franchise:false,
+    postings:[
+      {id:"greet",    title:{ko:"매장 응대 (다국어 우대)",en:"Store Service (multilingual)"}, status:"open", pay:"11,000", when:{ko:"화·목 13:00–18:00 / 주말",en:"Tue·Thu 13–18 / weekend"}, period:"06.08~", head:1, apps:12, gate:"ok", students:[["li","matched"],["mai","interview"]] }
+    ]},
+  subway: { name:"서브웨이 가천대점", short:"서브웨이", type:{ko:"F&B·프랜차이즈",en:"F&B·Franchise"}, field:"cafe", region:"gyeonggi", regionTxt:{ko:"경기 성남시",en:"Seongnam, Gyeonggi"}, bizno:"316-22-90011", contact:"031-222-3344", verified:true, franchise:true,
+    postings:[
+      {id:"crew",     title:{ko:"주말 샌드위치 크루",en:"Weekend Sandwich Crew"}, status:"open", pay:"10,200", when:{ko:"토·일 10:00–16:00",en:"Sat·Sun 10:00–16:00"}, period:"06.12~", head:2, apps:5, gate:"ok", students:[["bat","matched"],["chen","review"]] }
+    ]},
+  twosome:{ name:"투썸플레이스 흑석역점", short:"투썸", type:{ko:"카페·프랜차이즈",en:"Café·Franchise"}, field:"cafe", region:"seoul", regionTxt:{ko:"서울 동작구",en:"Dongjak, Seoul"}, bizno:"108-31-55667", contact:"02-811-2200", verified:true, franchise:true,
+    postings:[
+      {id:"barista2", title:{ko:"디저트·바리스타",en:"Dessert·Barista"}, status:"closed", pay:"10,300", when:{ko:"평일 14:00–18:00",en:"Weekdays 14:00–18:00"}, period:"2025.09~2026.02", head:2, apps:9, gate:"ok", students:[["chen","done"],["li","done"]] }
+    ]},
+  logis:  { name:"○○물류센터", short:"○○물류", type:{ko:"물류·제조",en:"Logistics·Manuf."}, field:"manuf", region:"gyeonggi", regionTxt:{ko:"경기 광주시",en:"Gwangju, Gyeonggi"}, bizno:"—", contact:"—", verified:false, franchise:false,
+    postings:[
+      {id:"night",    title:{ko:"택배 분류 야간",en:"Night Parcel Sorting"}, status:"rejected", pay:"—", when:{ko:"야간",en:"Night"}, period:"—", head:0, apps:0, gate:"bad", students:[["hoa","blocked"]] }
+    ]}
+};
+
+const STU = {
+  mai: { name:"Nguyen Mai", flag:"🇻🇳", nat:{ko:"베트남",en:"Vietnam"}, school:"한양대학교", visa:"D-2", major:{ko:"경영학과 3학년",en:"Business, Yr.3"}, topik:"4급", limitH:20, verify:"done",
+    jobs:[ {emp:"mega", post:"barista", role:{ko:"평일 저녁 바리스타",en:"Weekday Barista"}, days:[0,1,3,4], time:"18:00–22:00", h:4, color:"a", status:"matched"},
+           {emp:"olive",post:"greet",   role:{ko:"주말 매장 응대",en:"Weekend Service"},     days:[5,6],     time:"11:00–17:00", h:6, color:"b", status:"interview"} ]},
+  li:  { name:"Li Wei", flag:"🇨🇳", nat:{ko:"중국",en:"China"}, school:"경희대학교", visa:"D-2", major:{ko:"컴퓨터공학 2학년",en:"CS, Yr.2"}, topik:"5급", limitH:20, verify:"done",
+    jobs:[ {emp:"olive",post:"greet",   role:{ko:"매장 응대",en:"Store Service"},   days:[1,3], time:"13:00–18:00", h:5, color:"a", status:"matched"},
+           {emp:"mega", post:"barista", role:{ko:"평일 저녁 바리스타",en:"Weekday Barista"}, days:[2], time:"18:00–22:00", h:4, color:"b", status:"interview"},
+           {emp:"twosome",post:"barista2", role:{ko:"디저트·바리스타",en:"Dessert·Barista"}, days:[], time:"2025.09~2026.02", h:0, color:"c", status:"done", past:true} ]},
+  bat: { name:"Bat-Erdene", flag:"🇲🇳", nat:{ko:"몽골",en:"Mongolia"}, school:"가천대학교", visa:"D-2", major:{ko:"기계공학 4학년",en:"Mech Eng, Yr.4"}, topik:"3급", limitH:10, verify:"done",
+    jobs:[ {emp:"subway",post:"crew",   role:{ko:"주말 샌드위치 크루",en:"Weekend Crew"}, days:[5,6], time:"10:00–16:00", h:6, color:"a", status:"matched"},
+           {emp:"mega", post:"weekend", role:{ko:"주말 오전 마감조",en:"Weekend Morning"}, days:[6], time:"09:00–14:00", h:5, color:"b", status:"review"} ]},
+  chen:{ name:"Chen Yu", flag:"🇨🇳", nat:{ko:"중국",en:"China"}, school:"중앙대학교", visa:"D-2", major:{ko:"디자인학과 4학년",en:"Design, Yr.4"}, topik:"4급", limitH:20, verify:"done",
+    jobs:[ {emp:"subway",post:"crew",   role:{ko:"주말 샌드위치 크루",en:"Weekend Crew"}, days:[5], time:"10:00–16:00", h:6, color:"a", status:"review"},
+           {emp:"twosome",post:"barista2", role:{ko:"디저트·바리스타",en:"Dessert·Barista"}, days:[], time:"2025.09~2026.02", h:0, color:"c", status:"done", past:true} ]},
+  hoa: { name:"Tran Hoa", flag:"🇻🇳", nat:{ko:"베트남",en:"Vietnam"}, school:"세종대학교", visa:"D-4", major:{ko:"어학연수",en:"Language course"}, topik:"2급", limitH:10, verify:"wait",
+    jobs:[ {emp:"logis",post:"night", role:{ko:"택배 분류 야간",en:"Night Sorting"}, days:[], time:"—", h:0, color:"c", status:"blocked"} ]}
+};
+
+const MATCHES = [
+  {stu:"mai", emp:"mega",    post:"barista", status:"matched"},
+  {stu:"li",  emp:"olive",   post:"greet",   status:"matched"},
+  {stu:"mai", emp:"olive",   post:"greet",   status:"interview"},
+  {stu:"bat", emp:"subway",  post:"crew",    status:"matched"},
+  {stu:"chen",emp:"subway",  post:"crew",    status:"review"},
+  {stu:"chen",emp:"twosome", post:"barista2",status:"done"},
+  {stu:"hoa", emp:"logis",   post:"night",   status:"blocked"}
+];
+
+/* attendance per (student, employer) — June 2026 */
+const ATT = {
+  "mai_mega":   {role:{ko:"평일 저녁 바리스타",en:"Weekday Barista"}, time:"18:00–22:00", rate:"96%", marks:{1:"work",2:"off",3:"work",4:"work",5:"late",6:"work",8:"work",9:"work",10:"work",11:"off",12:"work",15:"work",16:"work"}},
+  "li_olive":   {role:{ko:"매장 응대",en:"Store Service"}, time:"13:00–18:00", rate:"100%", marks:{2:"work",4:"work",6:"off",9:"work",11:"work",13:"off",16:"work",18:"work"}},
+  "bat_subway": {role:{ko:"주말 크루",en:"Weekend Crew"}, time:"10:00–16:00", rate:"92%", marks:{6:"work",7:"work",13:"work",14:"absent",20:"work",21:"work"}},
+  "chen_twosome":{role:{ko:"디저트·바리스타",en:"Dessert·Barista"}, time:"14:00–18:00", rate:"88%", marks:{1:"work",2:"absent",3:"work",4:"off",5:"work",8:"work",9:"work"}}
+};
+/* current attendance rows shown on the board */
+const ATT_ROWS = [["mai","mega"],["li","olive"],["bat","subway"]];
+
+/* =========================================================
+   status helpers + i18n
+   ========================================================= */
+const ST = {
+  matched:{c:"ok",ko:"매칭완료",en:"Matched"}, interview:{c:"info",ko:"인터뷰",en:"Interview"},
+  review:{c:"info",ko:"검토중",en:"In review"}, blocked:{c:"danger",ko:"차단됨",en:"Blocked"},
+  done:{c:"",ko:"완료",en:"Done"}, open:{c:"ok",ko:"모집중",en:"Open"},
+  closing:{c:"warn",ko:"마감임박",en:"Closing"}, closed:{c:"",ko:"종료",en:"Closed"},
+  rejected:{c:"danger",ko:"게재거부",en:"Rejected"}
+};
+const VS = { done:{c:"ok",ko:"인증완료",en:"Verified"}, wait:{c:"warn",ko:"검증대기",en:"Pending"} };
+const GATE = { ok:{c:"ok",ko:"통과",en:"Pass"}, bad:{c:"danger",ko:"위반",en:"Violation"} };
+const DOW = { ko:["월","화","수","목","금","토","일"], en:["Mon","Tue","Wed","Thu","Fri","Sat","Sun"] };
+const CAL_COL = {work:"#8ecb85",late:"#e6c068",absent:"#d98b80",off:"#d8d3ba"};
+
+function badge(map,code){ const s=map[code]; return s?`<span class="badge ${s.c}">${s[lang]}</span>`:""; }
+function empName(id){ return EMP[id].short; }
+function posting(empId,postId){ return EMP[empId].postings.find(p=>p.id===postId); }
+
+/* =========================================================
+   list renderers (filter-aware)
+   ========================================================= */
+let matchFilter="all", jobsFilter="all", seekersFilter="all";
+
+function renderMatch(){
+  const rows = MATCHES.filter(m=>{
+    const e=EMP[m.emp];
+    if(matchFilter==="current") return ["matched","interview","review"].includes(m.status);
+    if(matchFilter==="past")    return ["done","blocked"].includes(m.status);
+    if(matchFilter==="seoul")   return e.region==="seoul";
+    if(matchFilter==="gyeonggi")return e.region==="gyeonggi";
+    if(matchFilter==="cafe")    return e.field==="cafe";
+    if(matchFilter==="retail")  return e.field==="retail";
+    return true;
+  });
+  document.getElementById("matchBody").innerHTML = rows.map(m=>{
+    const s=STU[m.stu], e=EMP[m.emp];
+    return `<tr class="click" onclick="openMatch('${m.stu}','${m.emp}','${m.post}')">
+      <td><span class="t">${s.name}</span><div class="tiny muted">${s.flag} ${s.school} · ${s.visa}</div></td>
+      <td>${e.name}</td><td>${e.regionTxt[lang]}</td><td>${e.type[lang]}</td>
+      <td>${badge(ST,m.status)}</td><td>${badge(GATE,e.postings.find(p=>p.id===m.post).gate)}</td>
+      <td class="chevcell">›</td></tr>`;
+  }).join("") || emptyRow(7);
+}
+
+function flatPostings(){
+  const list=[];
+  for(const id in EMP) EMP[id].postings.forEach(p=>list.push({empId:id, p}));
+  return list;
+}
+function renderJobs(){
+  const rows = flatPostings().filter(({empId,p})=>{
+    if(jobsFilter==="fr") return EMP[empId].franchise;
+    if(jobsFilter==="open") return p.status==="open";
+    if(jobsFilter==="closing") return p.status==="closing";
+    if(jobsFilter==="closed") return p.status==="closed"||p.status==="rejected";
+    return true;
+  });
+  document.getElementById("jobsBody").innerHTML = rows.map(({empId,p})=>{
+    const e=EMP[empId];
+    return `<tr class="click" onclick="openEmployer('${empId}')">
+      <td><span class="t">${p.title[lang]}</span><div class="tiny muted">${L("pay")} ${p.pay} · ${p.when[lang]}</div></td>
+      <td>${e.name}</td><td>${p.period}</td><td>${p.apps}</td>
+      <td>${p.status==="rejected"?badge(ST,"rejected"):badge(ST,p.status)}</td>
+      <td>${badge(GATE,p.gate)}</td><td class="chevcell">›</td></tr>`;
+  }).join("") || emptyRow(7);
+}
+
+function renderSeekers(){
+  const rows = Object.keys(STU).filter(id=>{
+    const s=STU[id];
+    if(seekersFilter==="d2") return s.visa==="D-2";
+    if(seekersFilter==="d4") return s.visa==="D-4";
+    if(seekersFilter==="done") return s.verify==="done";
+    if(seekersFilter==="wait") return s.verify==="wait";
+    return true;
+  });
+  document.getElementById("seekersBody").innerHTML = rows.map(id=>{
+    const s=STU[id];
+    const active=s.jobs.filter(j=>!j.past&&j.status!=="blocked");
+    const matchBadge = s.jobs.some(j=>j.status==="matched") ? `<span class="badge ok">${L("matching")}</span>`
+      : s.jobs.some(j=>j.status==="interview"||j.status==="review") ? `<span class="badge info">${L("applying")}</span>`
+      : `<span class="badge">${L("none")}</span>`;
+    const hoursTxt = s.verify==="wait" ? `<span class="badge warn">${L("hwait")}</span>` : `${L("week")} ${s.limitH}h`;
+    return `<tr class="click" onclick="openStudent('${id}')">
+      <td><span class="t">${s.name}</span><div class="tiny muted">${s.flag} ${s.nat[lang]} · ${s.major[lang]}</div></td>
+      <td>${s.school} · ${s.visa}</td><td>${s.topik}</td><td>${hoursTxt}</td>
+      <td>${badge(VS,s.verify)}</td><td>${matchBadge}</td><td class="chevcell">›</td></tr>`;
+  }).join("") || emptyRow(7);
+}
+
+function renderAttend(){
+  document.getElementById("attendBody").innerHTML = ATT_ROWS.map(([stu,emp])=>{
+    const a=ATT[stu+"_"+emp]; const s=STU[stu]; const e=EMP[emp];
+    let days=""; for(let d=1; d<=7; d++){ const t=a.marks[d]||"off"; const cls={work:"a-w",late:"a-l",absent:"a-a",off:"a-o"}[t]; days+=`<i class="${cls}"></i>`; }
+    const miss = Object.values(a.marks).includes("absent") ? `<span class="badge danger">${L("absent1")}</span>` : "—";
+    const proofs = Object.values(a.marks).filter(x=>x==="work"||x==="late").length;
+    return `<tr class="click attrow" onclick="openAttend('${stu}','${emp}')">
+      <td><span class="t">${s.name}</span></td><td>${e.name}</td>
+      <td><div class="days">${days}</div></td>
+      <td><b style="color:${a.rate==='100%'?'#2c8a3a':a.rate>='90%'?'#2c8a3a':'#8a6313'}">${a.rate}</b></td>
+      <td>${miss}</td><td>📎 ${proofs}</td><td class="chevcell">›</td></tr>`;
+  }).join("");
+}
+function emptyRow(cols){ return `<tr><td colspan="${cols}" class="tiny muted" style="text-align:center;padding:24px">${L("empty")}</td></tr>`; }
+
+/* =========================================================
+   DETAIL pages
+   ========================================================= */
+let originView = "match";
+function openDetail(html, title){
+  document.getElementById("detailBody").innerHTML = html;
+  navLinks.forEach(x=>x.classList.remove("on"));
+  document.querySelectorAll(".view").forEach(s=>s.classList.toggle("on", s.id==="v-detail"));
+  document.getElementById("viewTitle").textContent = title;
+  window.scrollTo(0,0);
+}
+function backToList(){ showMain(originView); }
+
+/* ---- match detail ---- */
+function openMatch(stuId, empId, postId){
+  originView = currentMain; lastDetail = ()=>openMatch(stuId,empId,postId);
+  const s=STU[stuId], e=EMP[empId], p=posting(empId,postId);
+  const m=MATCHES.find(x=>x.stu===stuId&&x.emp===empId&&x.post===postId);
+  const html = `
+    <div class="dback" onclick="backToList()">‹ ${L("back")}</div>
+    <div class="dhead">
+      <div class="av">🔗</div>
+      <div class="grow"><h2>${s.name} <span style="color:var(--ink-3)">×</span> ${e.short}</h2>
+        <div class="sub">${L("matchdetail")} · ${p.title[lang]}</div></div>
+      ${badge(ST,m.status)}
+    </div>
+    <div class="dgrid">
+      <div class="panel">
+        <h3>🎓 ${L("student")}</h3>
+        <div class="kv">
+          <div class="c"><div class="k">${L("name")}</div><div class="v">${s.name} ${s.flag}</div></div>
+          <div class="c"><div class="k">${L("school")}</div><div class="v">${s.school}·${s.visa}</div></div>
+          <div class="c"><div class="k">TOPIK</div><div class="v">${s.topik}</div></div>
+          <div class="c"><div class="k">${L("verify")}</div><div class="v">${badge(VS,s.verify)}</div></div>
+        </div>
+        <div class="actions"><button class="btn sm" onclick="openStudent('${stuId}')">${L("viewStudent")} →</button></div>
+      </div>
+      <div class="panel">
+        <h3>🏪 ${L("employer")}</h3>
+        <div class="kv">
+          <div class="c"><div class="k">${L("emp")}</div><div class="v">${e.short}</div></div>
+          <div class="c"><div class="k">${L("region")}</div><div class="v">${e.regionTxt[lang]}</div></div>
+          <div class="c full"><div class="k">${L("post")}</div><div class="v">${p.title[lang]}</div></div>
+        </div>
+        <div class="actions"><button class="btn sm" onclick="openEmployer('${empId}')">${L("viewEmp")} →</button></div>
+      </div>
+    </div>
+    <div class="panel">
+      <h3>🗓 ${L("schedule")}</h3>
+      <div class="kv">
+        <div class="c"><div class="k">${L("when")}</div><div class="v">${p.when[lang]}</div></div>
+        <div class="c"><div class="k">${L("pay")}</div><div class="v">${p.pay}${L("won")}</div></div>
+        <div class="c"><div class="k">${L("gate")}</div><div class="v">${badge(GATE,p.gate)} ${L("gatepass")}</div></div>
+        <div class="c"><div class="k">${L("status")}</div><div class="v">${badge(ST,m.status)}</div></div>
+      </div>
+      <div class="actions">
+        <button class="btn sm" onclick="setMatch('${stuId}','${empId}','${postId}','interview')">${L("actInterview")}</button>
+        <button class="btn primary sm" onclick="setMatch('${stuId}','${empId}','${postId}','matched')">${L("actMatch")}</button>
+        <button class="btn sm" onclick="openAttend('${stuId}','${empId}')">${L("viewCal")} →</button>
+      </div>
+    </div>`;
+  openDetail(html, L("matchdetail"));
+}
+function setMatch(stu,emp,post,status){
+  const m=MATCHES.find(x=>x.stu===stu&&x.emp===emp&&x.post===post); if(m) m.status=status;
+  const ps=posting(emp,post).students.find(x=>x[0]===stu); if(ps) ps[1]=status;
+  openMatch(stu,emp,post);
+}
+
+/* ---- employer detail (여러 공고) ---- */
+function openEmployer(empId){
+  originView = currentMain; lastDetail = ()=>openEmployer(empId);
+  const e=EMP[empId];
+  const posts = e.postings.map(p=>{
+    const seg = `<div class="seg">${["open","closing","closed"].map(st=>
+      `<button class="${p.status===st?'on':''}" onclick="setPosting('${empId}','${p.id}','${st}')">${ST[st][lang]}</button>`).join("")}</div>`;
+    const studs = p.students.map(([sid,stt])=>
+      `<div class="jobrow click" onclick="openStudent('${sid}')"><div class="between"><div><span class="t">${STU[sid].name}</span> <span class="tiny muted">${STU[sid].flag} ${STU[sid].school}·${STU[sid].visa} · TOPIK ${STU[sid].topik}</span></div>${badge(ST,stt)}</div></div>`).join("");
+    return `<div class="panel">
+      <h3><span>${p.title[lang]}</span>${p.status==="rejected"?badge(ST,"rejected"):seg}</h3>
+      <div class="kv" style="margin-bottom:12px">
+        <div class="c"><div class="k">${L("pay")}</div><div class="v">${p.pay}${L("won")}</div></div>
+        <div class="c"><div class="k">${L("when")}</div><div class="v" style="font-size:13px">${p.when[lang]}</div></div>
+        <div class="c"><div class="k">${L("head")}</div><div class="v">${p.head}${L("ppl")} · ${L("apps")} ${p.apps}</div></div>
+        <div class="c"><div class="k">${L("gate")}</div><div class="v">${badge(GATE,p.gate)}</div></div>
+      </div>
+      <div class="tiny muted" style="margin-bottom:8px">${L("applicants")}</div>
+      ${studs}
+    </div>`;
+  }).join("");
+  const html = `
+    <div class="dback" onclick="backToList()">‹ ${L("back")}</div>
+    <div class="dhead">
+      <div class="av">🏪</div>
+      <div class="grow"><h2>${e.name}</h2><div class="sub">${e.type[lang]} · ${e.regionTxt[lang]}</div></div>
+      ${e.verified?`<span class="badge ok">✓ ${L("bizverified")}</span>`:`<span class="badge warn">${L("bizwait")}</span>`}
+    </div>
+    <div class="panel">
+      <h3>${L("bizinfo")}</h3>
+      <div class="kv">
+        <div class="c"><div class="k">${L("bizno")}</div><div class="v">${e.bizno}</div></div>
+        <div class="c"><div class="k">${L("contact")}</div><div class="v">${e.contact}</div></div>
+        <div class="c"><div class="k">${L("field")}</div><div class="v">${e.type[lang]}</div></div>
+        <div class="c"><div class="k">${L("franchise")}</div><div class="v">${e.franchise?L("yes"):L("no")}</div></div>
+      </div>
+    </div>
+    <div class="between" style="margin:4px 2px 10px"><div class="section-title" style="margin:0;color:var(--green-dd);font-weight:800">${L("postings")}</div><span class="tiny muted">${e.postings.length}${L("postcnt")}</span></div>
+    ${posts}
+    <p class="note">${L("empMultiNote")}</p>`;
+  openDetail(html, e.short);
+}
+function setPosting(empId,postId,status){ posting(empId,postId).status=status; openEmployer(empId); }
+
+/* ---- student detail (여러 알바 동시 + 검증 프로세스) ---- */
+function openStudent(stuId){
+  originView = currentMain; lastDetail = ()=>openStudent(stuId);
+  const s=STU[stuId];
+  /* verification process card */
+  let verifyCard;
+  if(s.verify==="wait"){
+    verifyCard = `<div class="panel">
+      <h3>🪪 ${L("verifyTitle")} ${badge(VS,"wait")}</h3>
+      <div class="tiny muted" style="margin-bottom:10px">${L("verifyWaitMsg")}</div>
+      <div class="jobrow"><div class="between"><span>📎 ${L("docPassport")}</span><span class="badge ok">${L("uploaded")}</span></div></div>
+      <div class="jobrow"><div class="between"><span>📎 ${L("docArc")}</span><span class="badge ok">${L("uploaded")}</span></div></div>
+      <div class="jobrow"><div class="between"><span>📎 ${L("docEnroll")}</span><span class="badge warn">${L("checking")}</span></div></div>
+      <div class="actions">
+        <button class="btn primary" onclick="setVerify('${stuId}','done')">✓ ${L("approve")}</button>
+        <button class="btn" onclick="alert('${L("rejected2")}')">${L("reject")}</button>
+      </div></div>`;
+  } else {
+    verifyCard = `<div class="panel">
+      <h3>🪪 ${L("verifyTitle")} ${badge(VS,"done")}</h3>
+      <div class="tiny muted" style="margin-bottom:10px">${L("verifyDoneMsg")}</div>
+      <div class="actions"><button class="btn" onclick="setVerify('${stuId}','wait')">${L("revoke")}</button></div></div>`;
+  }
+  /* weekly schedule + hours */
+  const cur = s.jobs.filter(j=>!j.past && j.status!=="blocked");
+  let term=0, wknd=0; cur.forEach(j=>j.days.forEach(d=>{ if(d<5) term+=j.h; else wknd+=j.h; }));
+  let wk=""; for(let d=0; d<7; d++){
+    let slots=""; cur.forEach(j=>{ if(j.days.includes(d)) slots+=`<div class="slot slot-${j.color}">${empName(j.emp)}<br>${j.time}</div>`; });
+    if(!slots) slots=`<div class="slot empty">–</div>`;
+    wk+=`<div class="d"><div class="dn">${DOW[lang][d]}</div>${slots}</div>`;
+  }
+  const overLimit = term>s.limitH;
+  /* concurrent jobs list */
+  const jobsList = s.jobs.map(j=>{
+    const e=EMP[j.emp];
+    return `<div class="jobrow click" onclick="openMatch('${stuId}','${j.emp}','${j.post}')">
+      <div class="between"><div><span class="t">${e.short} · ${j.role[lang]}</span>
+        <div class="m">${j.past?L("pastjob"):(DOW[lang].filter((_,i)=>j.days.includes(i)).join("·")||"—")} ${j.time}</div></div>
+        ${badge(ST,j.status)}</div></div>`;
+  }).join("");
+
+  const html = `
+    <div class="dback" onclick="backToList()">‹ ${L("back")}</div>
+    <div class="dhead">
+      <div class="av">${s.flag}</div>
+      <div class="grow"><h2>${s.name}</h2><div class="sub">${s.school} · ${s.visa} · ${s.major[lang]}</div></div>
+      ${badge(VS,s.verify)}
+    </div>
+    ${verifyCard}
+    <div class="panel">
+      <h3>${L("profile")}</h3>
+      <div class="kv">
+        <div class="c"><div class="k">${L("nat")}</div><div class="v">${s.flag} ${s.nat[lang]}</div></div>
+        <div class="c"><div class="k">TOPIK</div><div class="v">${s.topik}</div></div>
+        <div class="c"><div class="k">${L("major")}</div><div class="v" style="font-size:13px">${s.major[lang]}</div></div>
+        <div class="c"><div class="k">${L("limit")}</div><div class="v">${L("week")} ${s.limitH}h</div></div>
+      </div>
+    </div>
+    <div class="panel">
+      <h3><span>🗓 ${L("weekly")}</span>
+        <span class="badge ${overLimit?'danger':'ok'}">${L("termh")} ${term}h / ${s.limitH}h${overLimit?' ⚠':''}</span></h3>
+      <div class="wk">${wk}</div>
+      <p class="note">${L("weekendNote")} ${wknd}h · ${L("studMultiNote")}</p>
+    </div>
+    <div class="panel">
+      <h3><span>💼 ${L("concJobs")}</span><span class="tiny muted">${s.jobs.length}${L("jobcnt")}</span></h3>
+      ${jobsList}
+    </div>`;
+  openDetail(html, s.name);
+}
+function setVerify(stuId,state){ STU[stuId].verify=state; openStudent(stuId); }
+
+/* ---- attendance detail (calendar) ---- */
+function openAttend(stuId, empId){
+  originView = currentMain; lastDetail = ()=>openAttend(stuId,empId);
+  const s=STU[stuId], e=EMP[empId], a=ATT[stuId+"_"+empId];
+  let cells = `<div class="cell out"></div>`; // May 31 (Sun)
+  for(let d=1; d<=30; d++){ const t=a?a.marks[d]:null; const tag=t?`<span class="tag" style="background:${CAL_COL[t]}"></span>`:""; cells+=`<div class="cell"><span class="n">${d}</span>${tag}</div>`; }
+  const html = `
+    <div class="dback" onclick="backToList()">‹ ${L("back")}</div>
+    <div class="dhead">
+      <div class="av">🗓</div>
+      <div class="grow"><h2>${s.name} <span style="color:var(--ink-3)">@</span> ${e.short}</h2>
+        <div class="sub">${a?a.role[lang]:""} · ${a?a.time:""}</div></div>
+      <span class="badge ok">${L("rate")} ${a?a.rate:"—"}</span>
+    </div>
+    <div class="panel">
+      <h3>${L("attendance")} · 2026.06</h3>
+      <div class="mcal">
+        <div class="dow"><span>일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span></div>
+        <div class="grid">${cells}</div>
+      </div>
+      <div class="legend">
+        <span><i class="a-w"></i>${L("work")}</span><span><i class="a-l"></i>${L("late")}</span>
+        <span><i class="a-a"></i>${L("absent")}</span><span><i class="a-o"></i>${L("off")}</span>
+      </div>
+      <p class="note">${L("attNote")}</p>
+    </div>`;
+  openDetail(html, L("attendance"));
+}
+
+/* =========================================================
+   navigation (main views)
+   ========================================================= */
+const navLinks = document.querySelectorAll("#nav a");
 const titles = {
   dash:["대시보드","Dashboard"], match:["매칭 현황","Matching"], jobs:["구인 리스트","Job posts"],
   seekers:["구직 리스트","Students"], attend:["출결 현황판","Attendance board"], gate:["준법 모니터링","Compliance"]
 };
-const navLinks = document.querySelectorAll("#nav a");
-navLinks.forEach(a=>a.onclick=(e)=>{
-  e.preventDefault();
-  const v=a.dataset.v;
-  navLinks.forEach(x=>x.classList.toggle("on",x===a));
+let currentMain="dash", lastDetail=null;
+function renderFor(v){ if(v==="match")renderMatch(); else if(v==="jobs")renderJobs(); else if(v==="seekers")renderSeekers(); else if(v==="attend")renderAttend(); }
+function showMain(v){
+  currentMain=v; lastDetail=null;
+  navLinks.forEach(x=>x.classList.toggle("on", x.dataset.v===v));
   document.querySelectorAll(".view").forEach(s=>s.classList.toggle("on", s.id==="v-"+v));
   document.getElementById("viewTitle").textContent = titles[v][lang==="ko"?0:1];
+  renderFor(v);
   window.scrollTo(0,0);
-});
+}
+navLinks.forEach(a=>a.onclick=(e)=>{ e.preventDefault(); showMain(a.dataset.v); });
 
-/* chips toggle (visual only) */
-document.querySelectorAll(".filters").forEach(f=>{
-  f.querySelectorAll(".chip").forEach(c=>c.onclick=()=>{
-    f.querySelectorAll(".chip").forEach(x=>x.classList.remove("on")); c.classList.add("on");
+/* filter chips (functional) */
+function wireFilters(id, setter){
+  const box=document.getElementById(id);
+  box.querySelectorAll(".chip").forEach(c=>c.onclick=()=>{
+    box.querySelectorAll(".chip").forEach(x=>x.classList.remove("on")); c.classList.add("on");
+    setter(c.dataset.f);
   });
-});
+}
+wireFilters("matchFilters",  f=>{ matchFilter=f;  renderMatch();  });
+wireFilters("jobsFilters",   f=>{ jobsFilter=f;   renderJobs();   });
+wireFilters("seekersFilters",f=>{ seekersFilter=f;renderSeekers();});
 
-/* ---------- i18n (labels that change) ---------- */
+/* =========================================================
+   i18n
+   ========================================================= */
 const T = {
   ko:{
     "nav.dash":"대시보드","nav.match":"매칭 현황","nav.jobs":"구인 리스트","nav.seekers":"구직 리스트",
@@ -381,10 +806,12 @@ const T = {
     "th.student":"학생","th.emp":"수요처","th.region":"지역","th.field":"업종","th.status":"상태","th.gate":"준법",
     "th.post":"공고","th.period":"기간","th.apps":"지원","th.school":"학교/비자","th.topik":"TOPIK","th.hours":"허용시간",
     "th.verify":"검증","th.match":"매칭",
-    "j.open":"모집중","j.closing":"마감임박","j.done":"종료","j.fr":"프랜차이즈 제휴","j.table":"구인 공고",
+    "j.all":"전체","j.open":"모집중","j.closing":"마감임박","j.done":"종료","j.fr":"프랜차이즈 제휴","j.table":"구인 공고",
     "s.all":"전체","s.d2":"D-2 학위","s.d4":"D-4 어학","s.verified":"인증완료","s.pending":"검증대기","s.table":"구직 학생",
     "att.board":"출결 현황판 · 2026년 6월","att.week":"1주차 (1–7)","att.rate":"출근율","att.flag":"누락","att.proof":"증빙",
+    "att.work":"근무","att.late":"지각","att.absent":"결근","att.off":"휴무",
     "att.permnote":"※ 출결 데이터는 학생 본인 → 수요처 → 관리자 순으로 열람 권한이 분리됩니다. 주 15h/월 60h 초과 시 자동 알림.",
+    "hint.click":"행을 클릭하면 상세로 이동","hint.clickemp":"수요처를 클릭하면 상세로 이동",
     "g.scan":"자동 심사 공고","g.blocked":"차단된 위반 공고","g.rate":"차단율","g.contract":"표준계약 작성률",
     "g.recent":"최근 자동 차단 내역","g.case1":"제한업종 — 제조·건설","g.case2":"특수형태근로 — 배달",
     "g.case3":"허용시간 초과","g.case4":"원거리 근무","g.block":"자동차단","g.warn":"시간 조정 요청",
@@ -392,7 +819,25 @@ const T = {
     "g.th.we":"주말·공휴일·방학","g.th.note":"비고","g.unlim":"무제한","g.d4note":"입국 6개월 경과 필요",
     "g.d2note":"한국어능력 충족 시","g.phdnote":"논문준비 등 예외","g.lowkr":"한국어 미충족","g.half":"절반 이하 적용",
     "g.legalnote":"※ 위반 시 강제퇴거·출국 권고 / 3년 이하 징역 또는 3천만원 이하 벌금. 룰 엔진이 공고 단계에서 사전 차단.",
-    "search.ph":"🔎 학생·수요처·공고 검색"
+    "search.ph":"🔎 학생·수요처·공고 검색",
+    /* detail */
+    "back":"뒤로","empty":"해당 조건의 항목이 없습니다",
+    "matching":"매칭중","applying":"지원중","none":"대기","week":"주","hwait":"검증 대기","absent1":"결근 1",
+    "matchdetail":"매칭 상세","student":"학생","employer":"수요처","name":"이름","school":"학교/비자",
+    "verify":"검증","emp":"수요처","region":"지역","post":"공고","schedule":"근무 일정","when":"근무 시간",
+    "pay":"급여","won":"원","gate":"준법","gatepass":"통과","status":"상태","viewStudent":"학생 상세","viewEmp":"수요처 상세","viewCal":"출결 캘린더",
+    "actInterview":"인터뷰 일정","actMatch":"매칭 확정",
+    "bizverified":"사업자 인증","bizwait":"인증 대기","bizinfo":"사업자 정보","bizno":"사업자등록번호","contact":"연락처",
+    "field":"업종","franchise":"프랜차이즈","yes":"제휴","no":"일반","postings":"운영 공고 (여러 알바)","postcnt":"건",
+    "head":"모집 인원","ppl":"명","apps":"지원","applicants":"지원·매칭 학생","empMultiNote":"※ 한 수요처가 여러 공고(알바)를 동시에 운영할 수 있습니다. 공고별 상태를 토글로 관리하세요.",
+    "verifyTitle":"검증 프로세스","verifyWaitMsg":"제출 서류 확인 후 인증을 승인하세요. 승인 시 매칭이 활성화됩니다.",
+    "verifyDoneMsg":"신원·서류 검증이 완료된 학생입니다. 매칭 가능 상태입니다.",
+    "docPassport":"여권 스캔","docArc":"외국인등록증","docEnroll":"재학증명서","uploaded":"제출됨","checking":"확인중",
+    "approve":"인증 승인","reject":"반려","revoke":"인증 취소","rejected2":"반려 처리되었습니다 (데모)",
+    "profile":"프로필","nat":"국적","major":"전공/학년","limit":"비자 허용",
+    "weekly":"주간 스케줄","termh":"주중","weekendNote":"※ 주말·방학 근로(시간 제한 없음):","studMultiNote":"학생은 요일·시간대별로 여러 알바를 동시에 진행할 수 있습니다.",
+    "concJobs":"동시 진행 알바","jobcnt":"건","pastjob":"과거","attendance":"출결 캘린더","rate":"출근율","work":"근무","late":"지각","absent":"결근","off":"휴무",
+    "attNote":"※ 주 15시간 / 월 60시간 초과 시 자동 알림. 증빙은 출퇴근 기록 기반."
   },
   en:{
     "nav.dash":"Dashboard","nav.match":"Matching","nav.jobs":"Job posts","nav.seekers":"Students",
@@ -406,10 +851,12 @@ const T = {
     "th.student":"Student","th.emp":"Employer","th.region":"Region","th.field":"Field","th.status":"Status","th.gate":"Gate",
     "th.post":"Post","th.period":"Period","th.apps":"Apps","th.school":"School/Visa","th.topik":"TOPIK","th.hours":"Hours",
     "th.verify":"Verify","th.match":"Match",
-    "j.open":"Open","j.closing":"Closing","j.done":"Closed","j.fr":"Franchise","j.table":"Job posts",
+    "j.all":"All","j.open":"Open","j.closing":"Closing","j.done":"Closed","j.fr":"Franchise","j.table":"Job posts",
     "s.all":"All","s.d2":"D-2 Degree","s.d4":"D-4 Language","s.verified":"Verified","s.pending":"Pending","s.table":"Students",
     "att.board":"Attendance board · June 2026","att.week":"Week 1 (1–7)","att.rate":"Rate","att.flag":"Flag","att.proof":"Proof",
+    "att.work":"Work","att.late":"Late","att.absent":"Absent","att.off":"Off",
     "att.permnote":"※ Attendance view permissions cascade: student → employer → admin. Auto-alert when over 15h/wk or 60h/mo.",
+    "hint.click":"Click a row to open detail","hint.clickemp":"Click an employer to open detail",
     "g.scan":"Posts screened","g.blocked":"Violations blocked","g.rate":"Block rate","g.contract":"Std-contract rate",
     "g.recent":"Recent auto-blocks","g.case1":"Restricted — manufacturing","g.case2":"Special labor — delivery",
     "g.case3":"Over hour-limit","g.case4":"Remote workplace","g.block":"Auto-blocked","g.warn":"Adjust hours",
@@ -417,23 +864,40 @@ const T = {
     "g.th.we":"Weekend·holiday·vacation","g.th.note":"Note","g.unlim":"Unlimited","g.d4note":"6 months after entry",
     "g.d2note":"If Korean level met","g.phdnote":"Thesis exceptions","g.lowkr":"Korean not met","g.half":"≤ half applied",
     "g.legalnote":"※ Violations risk deportation / up to 3y prison or ₩30M fine. The engine blocks at posting time.",
-    "search.ph":"🔎 Search students·employers·posts"
+    "search.ph":"🔎 Search students·employers·posts",
+    "back":"Back","empty":"No items match this filter",
+    "matching":"Matching","applying":"Applying","none":"Idle","week":"≤","hwait":"Pending","absent1":"1 absent",
+    "matchdetail":"Match detail","student":"Student","employer":"Employer","name":"Name","school":"School/Visa",
+    "verify":"Verify","emp":"Employer","region":"Region","post":"Posting","schedule":"Schedule","when":"Hours",
+    "pay":"Pay","won":" KRW","gate":"Gate","gatepass":"Passed","status":"Status","viewStudent":"Student detail","viewEmp":"Employer detail","viewCal":"Attendance",
+    "actInterview":"Schedule interview","actMatch":"Confirm match",
+    "bizverified":"Business verified","bizwait":"Pending","bizinfo":"Business info","bizno":"Business reg. no.","contact":"Contact",
+    "field":"Field","franchise":"Franchise","yes":"Partner","no":"Standard","postings":"Postings (multiple roles)","postcnt":"",
+    "head":"Openings","ppl":"","apps":"Apps","applicants":"Applicants / matched","empMultiNote":"※ One employer can run multiple postings (jobs) at once. Toggle each posting's status to manage.",
+    "verifyTitle":"Verification","verifyWaitMsg":"Review documents and approve. Approval activates matching.",
+    "verifyDoneMsg":"Identity & documents verified. Eligible for matching.",
+    "docPassport":"Passport scan","docArc":"ARC","docEnroll":"Enrollment cert.","uploaded":"Uploaded","checking":"Checking",
+    "approve":"Approve","reject":"Reject","revoke":"Revoke","rejected2":"Rejected (demo)",
+    "profile":"Profile","nat":"Nationality","major":"Major/Year","limit":"Visa limit",
+    "weekly":"Weekly schedule","termh":"Weekday","weekendNote":"※ Weekend/vacation work (no limit):","studMultiNote":"A student can hold multiple jobs across different days & time slots.",
+    "concJobs":"Concurrent jobs","jobcnt":"","pastjob":"Past","attendance":"Attendance","rate":"Rate","work":"Work","late":"Late","absent":"Absent","off":"Off",
+    "attNote":"※ Auto-alert when over 15h/week or 60h/month. Proof based on clock-in records."
   }
 };
 let lang="ko";
+function L(k){ return (T[lang][k]!==undefined)?T[lang][k]:k; }
 function applyLang(){
   document.documentElement.lang=lang;
-  document.querySelectorAll("[data-i18n]").forEach(el=>{
-    const k=el.getAttribute("data-i18n"); if(T[lang][k]!==undefined) el.textContent=T[lang][k];
-  });
-  document.querySelectorAll("[data-i18n-ph]").forEach(el=>{
-    const k=el.getAttribute("data-i18n-ph"); if(T[lang][k]!==undefined) el.placeholder=T[lang][k];
-  });
-  const cur=[...navLinks].find(a=>a.classList.contains("on")).dataset.v;
-  document.getElementById("viewTitle").textContent=titles[cur][lang==="ko"?0:1];
-  document.getElementById("langBtn").textContent= lang==="ko"?"KO / EN":"EN / KO";
+  document.querySelectorAll("[data-i18n]").forEach(el=>{ const k=el.getAttribute("data-i18n"); if(T[lang][k]!==undefined) el.textContent=T[lang][k]; });
+  document.querySelectorAll("[data-i18n-ph]").forEach(el=>{ const k=el.getAttribute("data-i18n-ph"); if(T[lang][k]!==undefined) el.placeholder=T[lang][k]; });
+  const onDetail = document.getElementById("v-detail").classList.contains("on");
+  document.getElementById("viewTitle").textContent = onDetail ? document.getElementById("viewTitle").textContent : titles[currentMain][lang==="ko"?0:1];
+  document.getElementById("langBtn").textContent = lang==="ko"?"KO / EN":"EN / KO";
+  if(onDetail && lastDetail) lastDetail(); else renderFor(currentMain);
 }
 document.getElementById("langBtn").onclick=()=>{ lang=lang==="ko"?"en":"ko"; applyLang(); };
+
+/* init */
 applyLang();
 </script>
 </body>
