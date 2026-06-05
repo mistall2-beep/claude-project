@@ -6,22 +6,18 @@
 <title>ALBA inK · 모바일앱 프로토타입</title>
 <link rel="stylesheet" href="styles.css"/>
 <style>
-  /* ---------- app shell ---------- */
   body{ background:radial-gradient(120% 120% at 50% 0%, #F7F2E1 0%, #ECE4C8 100%); min-height:100vh;
         display:flex; flex-direction:column; align-items:center; padding:26px 14px 50px; }
   .stage-top{ text-align:center; margin-bottom:18px; }
   .stage-top .logo{ font-size:26px; }
   .stage-top p{ margin:6px 0 0; color:var(--ink-2); font-size:13px; }
 
-  .phone{
-    position:relative; width:392px; max-width:96vw; height:812px; max-height:86vh;
+  .phone{ position:relative; width:392px; max-width:96vw; height:812px; max-height:86vh;
     background:var(--bg); border:10px solid #20331f; border-radius:46px;
-    box-shadow:0 30px 70px rgba(31,51,30,.35); overflow:hidden; display:flex; flex-direction:column;
-  }
+    box-shadow:0 30px 70px rgba(31,51,30,.35); overflow:hidden; display:flex; flex-direction:column; }
   .notch{ position:absolute; top:0; left:50%; transform:translateX(-50%); z-index:60;
           width:140px; height:26px; background:#20331f; border-radius:0 0 16px 16px; }
 
-  /* app header */
   .appbar{ flex:0 0 auto; padding:34px 18px 12px; display:flex; align-items:center; gap:10px;
            background:var(--bg); border-bottom:1.5px solid var(--line-soft); }
   .appbar .brand{ font-weight:900; color:var(--green-dd); font-size:18px; letter-spacing:-.3px; }
@@ -29,31 +25,64 @@
   .iconbtn{ width:38px; height:38px; border-radius:11px; border:2px solid var(--line-soft);
             background:var(--surface-2); display:flex; align-items:center; justify-content:center;
             color:var(--green-dd); font-size:16px; }
-  .lang{ width:auto; min-width:auto; white-space:nowrap; font-weight:800; font-size:12.5px; padding:0 12px; }
 
-  /* tabs (intro + role) */
-  .roletabs{ display:flex; gap:8px; padding:14px 18px 0; }
-  .roletab{ flex:1; padding:12px; border-radius:14px; border:2px solid var(--line);
-            background:var(--surface-2); font-weight:800; color:var(--green-dd); font-size:15px; text-align:center; }
-  .roletab.on{ background:var(--green); color:#fff; border-color:var(--green-d); }
-
-  .screen{ flex:1; overflow-y:auto; padding:16px 18px 90px; display:none; }
+  .screen{ flex:1; overflow-y:auto; padding:16px 18px 84px; display:none; }
   .screen.on{ display:block; }
   .screen::-webkit-scrollbar{ width:8px; } .screen::-webkit-scrollbar-thumb{ background:var(--line-soft); border-radius:8px; }
 
-  /* intro */
-  .intro{ display:flex; flex-direction:column; align-items:center; text-align:center; }
-  .intro .hero-ink{ width:172px; margin:8px 0 4px; }
-  .intro h1{ font-size:40px; margin:4px 0 0; }
-  .intro .tagline{ color:var(--ink-2); font-size:14px; margin:8px 0 22px; }
-  .intro .chips{ display:flex; gap:7px; justify-content:center; flex-wrap:wrap; margin-bottom:26px; }
-  .intro-hint{ font-size:14px; color:var(--ink-2); background:var(--surface-2); border:2px dashed var(--line-soft);
-               border-radius:14px; padding:14px 16px; width:100%; text-align:center; }
-  .intro-hint b{ color:var(--green-dd); }
-  .terms{ margin-top:auto; padding-top:22px; font-size:11.5px; color:var(--ink-3); }
-  .terms a{ text-decoration:underline; }
+  /* bottom tab bar */
+  .bottombar{ position:absolute; left:0; right:0; bottom:0; height:66px; background:var(--white);
+              border-top:2px solid var(--line-soft); display:flex; z-index:50; }
+  .bottombar.hide{ display:none; }
+  .tabbtn{ flex:1; border:0; background:transparent; display:flex; flex-direction:column; align-items:center;
+           justify-content:center; gap:3px; font-size:11px; font-weight:800; color:var(--ink-3); cursor:pointer; }
+  .tabbtn .ic{ font-size:21px; line-height:1; }
+  .tabbtn.on{ color:var(--green-d); }
+  .tabbtn.on .ic{ transform:translateY(-1px); }
 
-  /* profile header inside mypage */
+  /* home */
+  .home-hero{ text-align:center; padding:6px 0 14px; }
+  .home-hero img{ width:104px; margin:0 auto 2px; }
+  .home-hero .tagline{ color:var(--ink-2); font-size:13px; margin-top:6px; }
+  .stat3{ display:grid; grid-template-columns:repeat(3,1fr); gap:9px; margin-bottom:16px; }
+  .statc{ background:var(--surface); border:2px solid var(--line); border-radius:16px; padding:13px 8px; text-align:center; }
+  .statc .v{ font-size:20px; font-weight:900; color:var(--green-dd); letter-spacing:-.5px; }
+  .statc .k{ font-size:11px; color:var(--ink-2); font-weight:700; margin-top:3px; }
+  .authcard{ background:linear-gradient(180deg,#E7F1DF,#DCEACF); border:2.5px solid var(--green-d);
+             border-radius:18px; padding:18px; margin-bottom:16px; text-align:center; }
+  .authcard h3{ margin:0 0 6px; color:var(--green-dd); font-size:17px; }
+  .authcard p{ margin:0 0 14px; color:var(--green-d); font-size:13px; }
+
+  /* generic list card */
+  .listcard{ background:var(--surface-2); border:2px solid var(--line-soft); border-radius:14px;
+             padding:13px 15px; margin-bottom:10px; cursor:pointer; transition:border-color .12s, transform .06s; }
+  .listcard:hover{ border-color:var(--line); } .listcard:active{ transform:scale(.99); }
+  .listcard .t{ font-weight:800; color:var(--green-dd); font-size:15px; }
+  .listcard .m{ font-size:12.5px; color:var(--ink-2); margin-top:4px; }
+  .listcard .row2{ display:flex; align-items:center; justify-content:space-between; gap:8px; }
+  .banner{ background:#F6E8C7; border:2px solid #e3c585; color:#8a6313; border-radius:12px;
+           padding:10px 13px; font-size:12.5px; font-weight:700; margin-bottom:12px; text-align:center; }
+
+  /* role segmented (auth) */
+  .roleseg{ display:flex; gap:8px; margin-bottom:14px; }
+  .roleseg button{ flex:1; padding:13px; border-radius:13px; border:2px solid var(--line); background:var(--surface-2);
+                   font-weight:800; color:var(--green-dd); font-size:14px; cursor:pointer; }
+  .roleseg button.on{ background:var(--green); color:#fff; border-color:var(--green-d); }
+
+  /* settings */
+  .setrow{ display:flex; align-items:center; justify-content:space-between; gap:10px;
+           background:var(--surface-2); border:2px solid var(--line-soft); border-radius:12px; padding:13px 15px; margin-bottom:9px; }
+  .setrow .lab{ font-weight:700; color:var(--ink); font-size:14px; }
+  .langpills{ display:flex; gap:7px; flex-wrap:wrap; }
+  .langpill{ padding:8px 13px; border-radius:999px; border:2px solid var(--line-soft); background:var(--surface-2);
+             font-size:12.5px; font-weight:800; color:var(--green-dd); cursor:pointer; }
+  .langpill.on{ background:var(--green); color:#fff; border-color:var(--green-d); }
+  .langpill.soon{ opacity:.5; cursor:default; }
+  .ctable{ width:100%; border-collapse:collapse; font-size:12.5px; margin-top:4px; }
+  .ctable th,.ctable td{ border:1.5px solid var(--line-soft); padding:8px 9px; text-align:center; }
+  .ctable th{ background:var(--green-tint); color:var(--green-dd); font-weight:800; }
+  .ctable td:first-child{ text-align:left; font-weight:700; color:var(--green-dd); }
+
   .phead{ display:flex; gap:12px; align-items:center; margin-bottom:6px; }
   .phead .av{ width:60px; height:60px; border-radius:16px; border:2px solid var(--line);
               background:var(--green-tint); display:flex; align-items:center; justify-content:center; }
@@ -65,14 +94,18 @@
   .attach{ display:flex; align-items:center; gap:8px; font-size:13px; color:var(--green-d);
            border:2px dashed var(--line-soft); border-radius:12px; padding:11px; background:var(--surface-2); }
 
-  /* compliance gate card */
   .gate{ background:linear-gradient(180deg,#E7F1DF,#DCEACF); border:2.5px solid var(--green-d);
          border-radius:18px; padding:14px 16px; margin-bottom:16px; }
   .gate h3{ margin:0 0 8px; font-size:14px; color:var(--green-dd); display:flex; align-items:center; gap:7px; }
   .gate .bar{ height:9px; border-radius:6px; background:#cdddc2; overflow:hidden; margin:8px 0 6px; }
   .gate .bar > i{ display:block; height:100%; background:var(--green); border-radius:6px; }
 
-  /* calendar */
+  .li{ background:var(--surface-2); border:2px solid var(--line-soft); border-radius:13px; padding:13px 14px; margin-bottom:10px; }
+  .li.click{ cursor:pointer; transition:transform .06s ease, border-color .15s; }
+  .li.click:hover{ border-color:var(--line); } .li.click:active{ transform:scale(.99); }
+  .li .t{ font-weight:800; color:var(--green-dd); } .li .m{ font-size:12.5px; color:var(--ink-2); margin-top:3px; }
+  .chev{ color:var(--green-d); font-weight:900; font-size:19px; line-height:1; }
+
   .cal-head{ display:flex; align-items:center; justify-content:space-between; margin:4px 0 12px; }
   .cal-head .mo{ font-weight:800; color:var(--green-dd); font-size:17px; }
   .dow,.grid{ display:grid; grid-template-columns:repeat(7,1fr); }
@@ -80,30 +113,16 @@
   .grid{ gap:6px; }
   .cell{ aspect-ratio:1/1.05; border-radius:11px; border:1.5px solid var(--line-soft);
          background:var(--surface-2); padding:5px 6px; font-size:11.5px; position:relative; color:var(--ink-2); }
-  .cell.out{ opacity:.35; }
-  .cell .n{ font-weight:700; }
+  .cell.out{ opacity:.35; } .cell .n{ font-weight:700; }
   .cell .tag{ position:absolute; left:5px; right:5px; bottom:5px; font-size:9px; font-weight:800;
               border-radius:6px; padding:2px 0; text-align:center; }
-  .t-work{ background:#DCEFD7; color:#2c6b2f; }
-  .t-late{ background:#F6E8C7; color:#8a6313; }
-  .t-absent{ background:#F6D9D4; color:#9c352a; }
-  .t-off{ background:#E6E1CC; color:#7c7a63; }
+  .t-work{ background:#DCEFD7; color:#2c6b2f; } .t-late{ background:#F6E8C7; color:#8a6313; }
+  .t-absent{ background:#F6D9D4; color:#9c352a; } .t-off{ background:#E6E1CC; color:#7c7a63; }
   .legend{ display:flex; gap:12px; flex-wrap:wrap; font-size:11.5px; margin-top:12px; color:var(--ink-2); }
   .legend i{ width:11px; height:11px; border-radius:3px; display:inline-block; margin-right:4px; vertical-align:-1px; }
-
-  .punch{ display:flex; gap:10px; margin-top:14px; }
-  .punch button{ flex:1; }
-
-  /* simple inline note */
+  .punch{ display:flex; gap:10px; margin-top:14px; } .punch button{ flex:1; }
   .note{ font-size:12px; color:var(--ink-3); margin-top:8px; }
 
-  /* clickable list + chevron */
-  .li.click{ cursor:pointer; transition:transform .06s ease, border-color .15s; }
-  .li.click:hover{ border-color:var(--line); }
-  .li.click:active{ transform:scale(.99); }
-  .chev{ color:var(--green-d); font-weight:900; font-size:19px; line-height:1; }
-
-  /* job detail facts */
   .jd-facts{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
   .jd-fact{ background:var(--surface-2); border:2px solid var(--line-soft); border-radius:12px; padding:11px 13px; }
   .jd-fact .k{ font-size:11px; font-weight:700; color:var(--green-d); }
@@ -111,6 +130,11 @@
   .jd-task{ background:var(--surface-2); border:2px solid var(--line-soft); border-radius:12px;
             padding:11px 14px; font-size:14px; color:var(--ink); margin-bottom:8px; }
 
+  .fab{ position:absolute; right:18px; bottom:84px; z-index:40; width:56px; height:56px; border-radius:50%;
+        background:var(--green); color:#fff; border:3px solid #fff; box-shadow:0 8px 20px rgba(47,93,50,.30);
+        font-size:28px; display:flex; align-items:center; justify-content:center; cursor:pointer; }
+  .section-title{ font-size:16px; font-weight:800; color:var(--green-dd); margin:2px 0 12px; display:flex; align-items:center; gap:8px; }
+  .section-title::before{ content:""; width:6px; height:18px; border-radius:3px; background:var(--green); }
   .hide{ display:none !important; }
 </style>
 </head>
@@ -118,98 +142,91 @@
 
 <div class="stage-top">
   <div class="logo">ALBA <span class="ink">inK</span></div>
-  <p>모바일앱 프로토타입 · 구직자 / 구인자 / 출결 · <a href="admin.html" style="text-decoration:underline;color:#3C7C3F">관리자 웹 →</a></p>
+  <p>모바일앱 프로토타입 · 홈·구인·구직·설정 · <a href="admin.html" style="text-decoration:underline;color:#3C7C3F">관리자 웹 →</a></p>
 </div>
 
 <div class="phone">
   <div class="notch"></div>
 
-  <!-- ===== APP BAR ===== -->
+  <!-- APP BAR -->
   <div class="appbar" id="appbar">
-    <button class="iconbtn" id="backBtn" title="back" style="display:none">‹</button>
+    <button class="iconbtn" id="backBtn" title="back" style="display:none" onclick="back()">‹</button>
     <div class="brand grow">ALBA <span class="ink">inK</span></div>
-    <button class="iconbtn lang" id="langBtn" title="언어 전환">KO / EN</button>
-  </div>
-
-  <!-- role tabs: shown on intro / auth / mypage -->
-  <div class="roletabs" id="roletabs">
-    <button class="roletab on" data-role="seeker" data-i18n="tab.seeker">구직</button>
-    <button class="roletab" data-role="employer" data-i18n="tab.employer">구인</button>
   </div>
 
   <!-- ===================== SCREENS ===================== -->
 
-  <!-- INTRO -->
-  <section class="screen on intro" id="s-intro">
-    <img class="hero-ink" src="assets/ink.png" alt="ink mascot"/>
-    <h1 class="logo">ALBA <span class="ink">inK</span></h1>
-    <div class="tagline" data-i18n="intro.tagline">한국에서 나의 첫 기록 · 유학생 전용 합법 알바</div>
-    <div class="chips">
-      <span class="badge" data-i18n="chip.legal">⚖ 준법</span>
-      <span class="badge" data-i18n="chip.safe">🛡 안전</span>
-      <span class="badge" data-i18n="chip.multi">🌏 다국어</span>
+  <!-- HOME -->
+  <section class="screen on" id="s-home">
+    <div class="home-hero">
+      <img src="assets/ink.png" alt="ink"/>
+      <div class="logo" style="font-size:30px">ALBA <span class="ink">inK</span></div>
+      <div class="tagline" data-i18n="home.tagline">한국에서 나의 첫 기록 · 유학생 전용 합법 알바</div>
     </div>
-
-    <div class="intro-hint" data-i18n="intro.choose">상단에서 <b>구직</b> 또는 <b>구인</b>을 선택해 시작하세요</div>
-
-    <div class="terms">
-      <span data-i18n="intro.terms">가입 시 </span>
-      <a href="#">이용약관</a> · <a href="#">개인정보처리방침</a>
-      <span data-i18n="intro.terms2"> 에 동의합니다</span>
+    <div class="stat3">
+      <div class="statc"><div class="v">12,480</div><div class="k" data-i18n="home.stat.seekers">등록 구직자</div></div>
+      <div class="statc"><div class="v">1,240</div><div class="k" data-i18n="home.stat.emps">등록 구인자</div></div>
+      <div class="statc"><div class="v">3,920</div><div class="k" data-i18n="home.stat.match">누적 매칭</div></div>
     </div>
+    <div id="homeBody"></div>
   </section>
 
-  <!-- AUTH -->
+  <!-- AUTH (login / signup) -->
   <section class="screen" id="s-auth">
-    <div class="section-title" id="authTitle" data-i18n="auth.title">휴대폰 번호로 시작하기</div>
+    <div class="section-title" data-i18n="auth.title">회원가입 / 로그인</div>
     <p class="muted tiny" style="margin-top:-6px" data-i18n="auth.sub">간편 가입 — 휴대폰 번호와 비밀번호만 있으면 됩니다.</p>
 
     <div class="card soft" style="margin-top:6px;">
+      <div class="tiny" style="font-weight:800;color:var(--green-d);margin-bottom:8px" data-i18n="auth.role">가입/로그인 유형</div>
+      <div class="roleseg" id="roleSeg">
+        <button class="on" data-role="student" onclick="setAuthRole('student')" data-i18n="auth.role.student">🎓 학생 (구직)</button>
+        <button data-role="employer" onclick="setAuthRole('employer')" data-i18n="auth.role.employer">🏪 업체 (구인)</button>
+      </div>
       <div class="field-grid">
         <div class="field"><label data-i18n="auth.phone">휴대폰 번호</label>
           <div class="row">
-            <input id="phone" placeholder="010-1234-5678" value="010-2025-0605"/>
+            <input placeholder="010-1234-5678" value="010-2025-0605"/>
             <button class="btn sm" onclick="document.getElementById('otpRow').classList.remove('hide')" data-i18n="auth.send">인증</button>
           </div>
         </div>
-        <div class="field hide" id="otpRow"><label data-i18n="auth.code">인증번호 (SMS)</label>
-          <input placeholder="6자리" value="••••••"/>
-        </div>
-        <div class="field"><label data-i18n="auth.pw">비밀번호</label>
-          <input type="password" placeholder="********" value="albaink2026"/>
-        </div>
+        <div class="field hide" id="otpRow"><label data-i18n="auth.code">인증번호 (SMS)</label><input placeholder="6자리" value="••••••"/></div>
+        <div class="field"><label data-i18n="auth.pw">비밀번호</label><input type="password" placeholder="********" value="albaink2026"/></div>
       </div>
       <label class="row tiny" style="margin-top:12px; color:var(--ink-2)">
         <input type="checkbox" checked/> <span data-i18n="auth.agree">이용약관 · 개인정보처리방침 동의</span>
       </label>
-      <button class="btn primary block" style="margin-top:14px" onclick="enter()" data-i18n="auth.start">시작하기</button>
+      <button class="btn primary block" style="margin-top:14px" onclick="login()" data-i18n="auth.start">시작하기</button>
     </div>
     <p class="note" data-i18n="auth.note">※ 여권번호·외국인등록번호 등 민감정보는 암호화·접근통제로 보호됩니다.</p>
   </section>
 
-  <!-- SEEKER MYPAGE (구직자) -->
+  <!-- HIRE LIST (구인 공고 browse) -->
+  <section class="screen" id="s-hirelist">
+    <div class="section-title" data-i18n="hire.title">구인 공고</div>
+    <div id="hireListBody"></div>
+  </section>
+
+  <!-- SEEK LIST (구직자 browse) -->
+  <section class="screen" id="s-seeklist">
+    <div class="section-title" data-i18n="seek.title">구직자 리스트</div>
+    <div id="seekListBody"></div>
+  </section>
+
+  <!-- SEEKER MYPAGE (구직자 나의 페이지) -->
   <section class="screen" id="s-seeker">
     <div class="phead">
       <div class="av"><img src="assets/ink.png" alt=""/></div>
-      <div class="grow">
-        <h2>Nguyen Mai</h2>
-        <div class="sub">🇻🇳 베트남 · 한양대학교 · D-2</div>
-      </div>
+      <div class="grow"><h2>Nguyen Mai</h2><div class="sub">🇻🇳 베트남 · 한양대학교 · D-2</div></div>
       <span class="badge ok" data-i18n="seeker.verified">✓ 인증완료</span>
     </div>
-
-    <!-- compliance gate -->
     <div class="gate">
       <h3>⚖ <span data-i18n="seeker.gate.title">비자 허용 근로시간</span></h3>
       <div class="between tiny" style="color:var(--green-dd); font-weight:700">
-        <span data-i18n="seeker.gate.used">이번 주 12h / 20h</span>
-        <span>D-2 · 학기 중</span>
+        <span data-i18n="seeker.gate.used">이번 주 12h / 20h</span><span>D-2 · 학기 중</span>
       </div>
       <div class="bar"><i style="width:60%"></i></div>
       <div class="tiny" style="color:var(--green-d)" data-i18n="seeker.gate.msg">주말·공휴일·방학은 시간 제한 없음 · 제한업종 공고는 자동 차단됩니다.</div>
     </div>
-
-    <!-- 기본정보 -->
     <div class="block">
       <div class="section-title" data-i18n="seeker.basic">기본정보</div>
       <div class="field-grid two">
@@ -218,12 +235,10 @@
         <div class="field"><label data-i18n="f.birth">생년월일</label><input value="2002-03-14"/></div>
         <div class="field"><label data-i18n="f.phone">연락처</label><input value="010-2025-0605"/></div>
         <div class="field" style="grid-column:1/-1"><label data-i18n="f.addr">주소</label><input value="서울시 성동구 왕십리로"/></div>
-        <div class="field" style="grid-column:1/-1"><label data-i18n="f.passport">여권번호</label><input value="M●●●●●●23" /></div>
+        <div class="field" style="grid-column:1/-1"><label data-i18n="f.passport">여권번호</label><input value="M●●●●●●23"/></div>
       </div>
       <div class="attach" style="margin-top:10px">📎 <span data-i18n="seeker.passport.file">여권 스캔 첨부됨 · passport_mai.jpg</span></div>
     </div>
-
-    <!-- 추가정보 -->
     <div class="block">
       <div class="section-title" data-i18n="seeker.extra">추가정보</div>
       <div class="field-grid two">
@@ -233,8 +248,6 @@
         <div class="field"><label data-i18n="f.topik">한국어(TOPIK)</label><input value="4급"/></div>
       </div>
     </div>
-
-    <!-- 구직정보 -->
     <div class="block">
       <div class="section-title" data-i18n="seeker.want">구직정보</div>
       <div class="field-grid two">
@@ -247,24 +260,18 @@
         <button class="btn sm grow" data-i18n="seeker.avail">가용 시간표 편집</button>
       </div>
     </div>
-
-    <!-- 구직 리스트 -->
     <div class="block">
       <div class="section-title" data-i18n="seeker.list">구직 리스트</div>
       <p class="tiny muted" style="margin:-6px 0 8px" data-i18n="seeker.list.cur">현재 구직</p>
       <div class="li click" onclick="openSeekerJob('mega')">
-        <div class="between">
-          <div class="t">메가커피 왕십리역점</div>
-          <div class="row" style="gap:7px"><span class="badge ok" data-i18n="status.matched">매칭완료</span><span class="chev">›</span></div>
-        </div>
+        <div class="between"><div class="t">메가커피 왕십리역점</div>
+          <div class="row" style="gap:7px"><span class="badge ok" data-i18n="status.matched">매칭완료</span><span class="chev">›</span></div></div>
         <div class="m">평일 18:00–22:00 · 시급 10,030원 · <span data-i18n="seeker.list.start">2026.06.10 시작</span></div>
-        <button class="btn sm" style="margin-top:9px" onclick="event.stopPropagation();go('attend')">📅 <span data-i18n="seeker.list.cal">출결 캘린더</span></button>
+        <button class="btn sm" style="margin-top:9px" onclick="event.stopPropagation();openAttend()">📅 <span data-i18n="seeker.list.cal">출결 캘린더</span></button>
       </div>
       <div class="li click" onclick="openSeekerJob('olive')">
-        <div class="between">
-          <div class="t">올리브영 성수점</div>
-          <div class="row" style="gap:7px"><span class="badge info" data-i18n="status.review">검토중</span><span class="chev">›</span></div>
-        </div>
+        <div class="between"><div class="t">올리브영 성수점</div>
+          <div class="row" style="gap:7px"><span class="badge info" data-i18n="status.review">검토중</span><span class="chev">›</span></div></div>
         <div class="m">주말 11:00–17:00 · <span data-i18n="seeker.list.applied">지원함 · 인터뷰 예정</span></div>
       </div>
       <p class="tiny muted" style="margin:14px 0 8px" data-i18n="seeker.list.past">기존 구직</p>
@@ -275,18 +282,13 @@
     </div>
   </section>
 
-  <!-- EMPLOYER MYPAGE (구인자) -->
+  <!-- EMPLOYER MYPAGE (구인자 나의 페이지) -->
   <section class="screen" id="s-employer">
     <div class="phead">
       <div class="av" style="background:#E6E1CC">🏪</div>
-      <div class="grow">
-        <h2>메가커피 왕십리역점</h2>
-        <div class="sub" data-i18n="emp.sub">카페 · 프랜차이즈 제휴점</div>
-      </div>
+      <div class="grow"><h2>메가커피 왕십리역점</h2><div class="sub" data-i18n="emp.sub">카페 · 프랜차이즈 제휴점</div></div>
       <span class="badge ok" data-i18n="emp.verified">✓ 사업자 인증</span>
     </div>
-
-    <!-- 기본정보 -->
     <div class="block">
       <div class="section-title" data-i18n="emp.basic">기본정보</div>
       <div class="field-grid">
@@ -297,8 +299,6 @@
       </div>
       <div class="attach" style="margin-top:10px">📎 <span data-i18n="emp.bizfile">사업자등록증 첨부됨 · biz_license.pdf</span></div>
     </div>
-
-    <!-- 수요정보 -->
     <div class="block">
       <div class="section-title" data-i18n="emp.demand">수요정보</div>
       <div class="field-grid two">
@@ -310,41 +310,27 @@
         <div class="field" style="grid-column:1/-1"><label data-i18n="emp.cond">근무조건</label><input value="근무지 매장 · 파트타임 · 평일 저녁/주말 · 유니폼 제공"/></div>
       </div>
     </div>
-
-    <!-- 구인정보 -->
     <div class="block">
       <div class="section-title" data-i18n="emp.posting">구인정보</div>
       <p class="tiny muted" style="margin:-6px 0 8px" data-i18n="emp.cur">현재 구인 리스트</p>
       <div class="li click" onclick="openJob('barista')">
-        <div class="between">
-          <div class="t">평일 저녁 바리스타 (유학생 환영)</div>
-          <div class="row" style="gap:7px"><span class="badge ok" data-i18n="status.open">모집중</span><span class="chev">›</span></div>
-        </div>
+        <div class="between"><div class="t">평일 저녁 바리스타 (유학생 환영)</div>
+          <div class="row" style="gap:7px"><span class="badge ok" data-i18n="status.open">모집중</span><span class="chev">›</span></div></div>
         <div class="m"><span data-i18n="emp.head">모집 2명</span> · <span data-i18n="emp.apps">지원 7명</span> · <span data-i18n="emp.gatepass">준법 통과 ✓</span></div>
       </div>
       <div class="li click" onclick="openJob('weekend')">
-        <div class="between">
-          <div class="t">주말 오전 마감조</div>
-          <div class="row" style="gap:7px"><span class="badge warn" data-i18n="status.closing">마감임박</span><span class="chev">›</span></div>
-        </div>
+        <div class="between"><div class="t">주말 오전 마감조</div>
+          <div class="row" style="gap:7px"><span class="badge warn" data-i18n="status.closing">마감임박</span><span class="chev">›</span></div></div>
         <div class="m"><span data-i18n="emp.head">모집 1명</span> · <span data-i18n="emp.apps">지원 3명</span></div>
       </div>
       <p class="tiny muted" style="margin:14px 0 8px" data-i18n="emp.past">기존 구인 리스트</p>
-      <div class="li">
-        <div class="between"><div class="t">겨울방학 풀타임</div><span class="badge" data-i18n="status.done">종료</span></div>
-        <div class="m">메가커피 왕십리역점 · 2025.12.20 ~ 2026.02.28</div>
-      </div>
+      <div class="li"><div class="between"><div class="t">겨울방학 풀타임</div><span class="badge" data-i18n="status.done">종료</span></div>
+        <div class="m">메가커피 왕십리역점 · 2025.12.20 ~ 2026.02.28</div></div>
     </div>
-
-    <button class="fab" title="새 공고" onclick="alert('새 구인 공고 등록 — 준법 게이트가 비자·시간·업종을 자동 검증합니다.')">＋</button>
+    <button class="fab" title="새 공고" onclick="alert(t('emp.fabmsg'))">＋</button>
   </section>
 
-  <!-- JOB DETAIL (구인 공고 상세) -->
-  <section class="screen" id="s-jobdetail">
-    <div id="jobDetailBody"></div>
-  </section>
-
-  <!-- ATTENDANCE (출결 캘린더) -->
+  <!-- ATTENDANCE -->
   <section class="screen" id="s-attend">
     <div class="section-title" data-i18n="att.title">출결 캘린더</div>
     <div class="card soft">
@@ -362,13 +348,10 @@
         <span><i class="t-off"></i><span data-i18n="att.off">휴무</span></span>
       </div>
     </div>
-
     <div class="card soft" style="margin-top:14px">
       <div class="between">
-        <div>
-          <div style="font-weight:800;color:var(--green-dd)" data-i18n="att.today">오늘 · 6월 9일</div>
-          <div class="tiny muted">메가커피 왕십리역점 · 18:00–22:00</div>
-        </div>
+        <div><div style="font-weight:800;color:var(--green-dd)" data-i18n="att.today">오늘 · 6월 9일</div>
+          <div class="tiny muted">메가커피 왕십리역점 · 18:00–22:00</div></div>
         <span class="badge info" id="punchState" data-i18n="att.notyet">출근 전</span>
       </div>
       <div class="punch">
@@ -379,338 +362,403 @@
     </div>
   </section>
 
+  <!-- DETAIL (rendered by JS) -->
+  <section class="screen" id="s-detail"><div id="detailBody"></div></section>
+
+  <!-- SETTINGS -->
+  <section class="screen" id="s-settings">
+    <div class="section-title" data-i18n="set.language">언어</div>
+    <div class="card soft" style="margin-bottom:16px">
+      <div class="langpills">
+        <button class="langpill on" id="lp-ko" onclick="setLang('ko')">한국어</button>
+        <button class="langpill" id="lp-en" onclick="setLang('en')">English</button>
+        <button class="langpill soon">中文 <span data-i18n="set.soon">(준비중)</span></button>
+        <button class="langpill soon">Tiếng Việt</button>
+        <button class="langpill soon">Монгол</button>
+      </div>
+      <p class="note" data-i18n="set.lang.note">한국어·영어 기본 제공 · 중국어·베트남어·몽골어 순차 확장 예정</p>
+    </div>
+
+    <div class="section-title" data-i18n="set.compliance">준법사항</div>
+    <div class="card soft" style="margin-bottom:16px">
+      <p class="tiny" style="color:var(--ink-2);margin:0 0 10px" data-i18n="set.comp.msg">유학생(D-2·D-4)은 체류자격 외 활동허가 후 시간제 취업이 가능합니다. 알바잉크는 공고 단계에서 비자·시간·업종을 자동 검증합니다.</p>
+      <div class="tiny" style="font-weight:800;color:var(--green-d);margin-bottom:6px" data-i18n="set.comp.hours">비자 허용 근로시간</div>
+      <table class="ctable">
+        <thead><tr><th data-i18n="set.comp.th1">구분</th><th data-i18n="set.comp.th2">학기 중 주중</th><th data-i18n="set.comp.th3">주말·방학</th></tr></thead>
+        <tbody>
+          <tr><td data-i18n="set.comp.d4">어학연수 (D-4)</td><td>10h</td><td data-i18n="set.comp.unlim">무제한</td></tr>
+          <tr><td data-i18n="set.comp.d2">학사 (D-2)</td><td>20h</td><td data-i18n="set.comp.unlim">무제한</td></tr>
+          <tr><td data-i18n="set.comp.phd">석·박사 (D-2)</td><td>30h</td><td data-i18n="set.comp.unlim">무제한</td></tr>
+        </tbody>
+      </table>
+      <div class="tiny" style="font-weight:800;color:var(--green-d);margin:12px 0 4px" data-i18n="set.comp.restrict">제한 업종</div>
+      <p class="tiny" style="color:var(--ink-2);margin:0" data-i18n="set.comp.restrictv">제조·건설 · 배달(특수형태근로) · 파견·도급 · 원거리(통근 1시간↑) 근무는 원칙적으로 제한됩니다.</p>
+    </div>
+
+    <div class="section-title" data-i18n="set.account">계정</div>
+    <div id="setAccount"></div>
+  </section>
+
+  <!-- BOTTOM TAB BAR -->
+  <nav class="bottombar" id="bottombar">
+    <button class="tabbtn on" data-tab="home" onclick="selectTab('home')"><span class="ic">🏠</span><span data-i18n="tab.home">홈</span></button>
+    <button class="tabbtn" data-tab="hire" onclick="selectTab('hire')"><span class="ic">🏪</span><span data-i18n="tab.hire">구인</span></button>
+    <button class="tabbtn" data-tab="seek" onclick="selectTab('seek')"><span class="ic">🎓</span><span data-i18n="tab.seek">구직</span></button>
+    <button class="tabbtn" data-tab="settings" onclick="selectTab('settings')"><span class="ic">⚙️</span><span data-i18n="tab.settings">설정</span></button>
+  </nav>
 </div>
 
 <script>
-/* =========================================================
-   i18n — KO / EN
-   ========================================================= */
+/* ===================== state ===================== */
+let lang="ko", loggedIn=false, userRole=null, authRole="student";
+let cur="home", stack=[], lastDetail=null;
+const SUB=["auth","attend","detail"];
+const el=id=>document.getElementById(id);
+function t(k){ return (I18N[lang][k]!==undefined)?I18N[lang][k]:k; }
+
+/* ===================== data ===================== */
+const POSTINGS={
+  p1:{emp:"메가커피 왕십리역점",type:{ko:"카페·프랜차이즈",en:"Café·Franchise"},region:{ko:"서울 성동구",en:"Seongdong, Seoul"},
+      title:{ko:"평일 저녁 바리스타 (유학생 환영)",en:"Weekday Evening Barista"},pay:{ko:"시급 10,030원",en:"₩10,030/hr"},
+      when:{ko:"평일 18:00–22:00",en:"Weekdays 18:00–22:00"},field:{ko:"카페",en:"Café"},
+      tasks:{ko:["음료 제조","매장 응대","마감 정리"],en:["Drink prep","Service","Closing"]},welfare:{ko:"식사 제공·음료 무료·4대보험",en:"Meals·free drinks·insurance"}},
+  p2:{emp:"올리브영 성수점",type:{ko:"유통·H&B",en:"Retail·H&B"},region:{ko:"서울 성동구",en:"Seongdong, Seoul"},
+      title:{ko:"주말 매장 응대 (다국어 우대)",en:"Weekend Store Service"},pay:{ko:"시급 11,000원",en:"₩11,000/hr"},
+      when:{ko:"주말 11:00–17:00",en:"Weekends 11:00–17:00"},field:{ko:"유통",en:"Retail"},
+      tasks:{ko:["고객 응대","상품 정리","다국어 안내"],en:["Service","Stocking","Multilingual help"]},welfare:{ko:"직원 할인·교통비",en:"Staff discount·transport"}},
+  p3:{emp:"서브웨이 가천대점",type:{ko:"F&B·프랜차이즈",en:"F&B·Franchise"},region:{ko:"경기 성남시",en:"Seongnam, Gyeonggi"},
+      title:{ko:"주말 샌드위치 크루",en:"Weekend Sandwich Crew"},pay:{ko:"시급 10,200원",en:"₩10,200/hr"},
+      when:{ko:"토·일 10:00–16:00",en:"Sat·Sun 10:00–16:00"},field:{ko:"F&B",en:"F&B"},
+      tasks:{ko:["샌드위치 제조","주문 응대","청결 관리"],en:["Sandwich prep","Orders","Cleaning"]},welfare:{ko:"식사 제공",en:"Meals provided"}},
+  p4:{emp:"투썸플레이스 흑석역점",type:{ko:"카페·프랜차이즈",en:"Café·Franchise"},region:{ko:"서울 동작구",en:"Dongjak, Seoul"},
+      title:{ko:"디저트·바리스타",en:"Dessert·Barista"},pay:{ko:"시급 10,300원",en:"₩10,300/hr"},
+      when:{ko:"평일 14:00–18:00",en:"Weekdays 14:00–18:00"},field:{ko:"카페",en:"Café"},
+      tasks:{ko:["디저트 제조","음료 제조","마감"],en:["Dessert","Drinks","Closing"]},welfare:{ko:"음료 무료·재고용 우대",en:"Free drinks·rehire priority"}}
+};
+const STUDENTS={
+  s1:{name:"Nguyen Mai",flag:"🇻🇳",school:"한양대학교",visa:"D-2",major:{ko:"경영학과 3학년",en:"Business, Yr.3"},topik:"4급",
+      want:{ko:"카페·F&B · 평일 저녁/주말 · 주 18h",en:"Café·F&B · eve/weekend · 18h/wk"}},
+  s2:{name:"Li Wei",flag:"🇨🇳",school:"경희대학교",visa:"D-2",major:{ko:"컴퓨터공학 2학년",en:"CS, Yr.2"},topik:"5급",
+      want:{ko:"유통·사무 보조 · 화·목/주말",en:"Retail·office · Tue·Thu/weekend"}},
+  s3:{name:"Bat-Erdene",flag:"🇲🇳",school:"가천대학교",visa:"D-2",major:{ko:"기계공학 4학년",en:"Mech Eng, Yr.4"},topik:"3급",
+      want:{ko:"주말 위주 · 물류 보조 가능",en:"Weekend · logistics ok"}},
+  s4:{name:"Chen Yu",flag:"🇨🇳",school:"중앙대학교",visa:"D-2",major:{ko:"디자인학과 4학년",en:"Design, Yr.4"},topik:"4급",
+      want:{ko:"카페·디저트 · 평일 오후",en:"Café·dessert · weekday afternoon"}}
+};
+/* employer's own postings (for employer mypage detail) */
+const JOBS = {
+  barista:{ title:{ko:"평일 저녁 바리스타 (유학생 환영)",en:"Weekday Evening Barista"}, status:{cls:"ok",ko:"모집중",en:"Open"},
+    place:{ko:"메가커피 왕십리역점 · 서울 성동구",en:"Mega Coffee Wangsimni · Seoul"}, pay:{ko:"시급 10,030원",en:"₩10,030/hr"},
+    when:{ko:"평일 18:00–22:00",en:"Weekdays 18:00–22:00"}, head:{ko:"2",en:"2"}, apps:{ko:"7",en:"7"},
+    tasks:{ko:["음료 제조 (에스프레소 머신)","매장 응대·주문","마감 청소·정리"],en:["Drink prep","Service & orders","Closing"]},
+    cond:{ko:"파트타임 · 주 18시간 이내 · 유니폼 제공",en:"Part-time · ≤18h/wk · uniform"}, welfare:{ko:"식사 제공 · 음료 무료 · 4대보험",en:"Meals · free drinks · insurance"},
+    applicants:[ {name:"Nguyen Mai", info:{ko:"🇻🇳 한양대 · D-2 · 경영 3학년",en:"🇻🇳 Hanyang · D-2"}, topik:{ko:"TOPIK 4급",en:"TOPIK Lv.4"}, st:{cls:"ok",ko:"인터뷰 예정",en:"Interview"}},
+                 {name:"Li Wei", info:{ko:"🇨🇳 경희대 · D-2 · 컴퓨터 2학년",en:"🇨🇳 Kyunghee · D-2"}, topik:{ko:"TOPIK 5급",en:"TOPIK Lv.5"}, st:{cls:"info",ko:"검토중",en:"Review"}} ]},
+  weekend:{ title:{ko:"주말 오전 마감조",en:"Weekend Morning Shift"}, status:{cls:"warn",ko:"마감임박",en:"Closing"},
+    place:{ko:"메가커피 왕십리역점 · 서울 성동구",en:"Mega Coffee Wangsimni · Seoul"}, pay:{ko:"시급 10,500원",en:"₩10,500/hr"},
+    when:{ko:"주말 09:00–14:00",en:"Weekends 09:00–14:00"}, head:{ko:"1",en:"1"}, apps:{ko:"3",en:"3"},
+    tasks:{ko:["오픈 준비·세팅","음료 제조","주말 매장 응대"],en:["Open & setup","Drinks","Weekend service"]},
+    cond:{ko:"파트타임 · 주말만 · 방학 무제한",en:"Part-time · weekends"}, welfare:{ko:"식사 제공 · 음료 무료",en:"Meals · free drinks"},
+    applicants:[ {name:"Bat-Erdene", info:{ko:"🇲🇳 가천대 · D-2 · 기계 4학년",en:"🇲🇳 Gachon · D-2"}, topik:{ko:"TOPIK 3급",en:"TOPIK Lv.3"}, st:{cls:"info",ko:"검토중",en:"Review"}} ]}
+};
+/* seeker's matched jobs (for seeker mypage detail) */
+const SEEKER_JOBS = {
+  mega:{ emp:{ko:"메가커피 왕십리역점",en:"Mega Coffee Wangsimni"}, type:{ko:"카페 · 프랜차이즈 제휴",en:"Café · Franchise"}, region:{ko:"서울 성동구 왕십리로 410",en:"Wangsimni, Seoul"},
+    role:{ko:"평일 저녁 바리스타",en:"Weekday Evening Barista"}, status:{cls:"ok",ko:"매칭완료",en:"Matched"}, pay:{ko:"시급 10,030원",en:"₩10,030/hr"},
+    when:{ko:"평일(월·화·목·금) 18:00–22:00",en:"Weekdays 18:00–22:00"}, start:{ko:"2026.06.10",en:"2026.06.10"},
+    tasks:{ko:["음료 제조","매장 응대","마감 정리"],en:["Drink prep","Service","Closing"]}, welfare:{ko:"식사 제공 · 음료 무료 · 4대보험",en:"Meals · free drinks · insurance"}, contract:true, attend:true },
+  olive:{ emp:{ko:"올리브영 성수점",en:"Olive Young Seongsu"}, type:{ko:"유통 · 헬스&뷰티",en:"Retail · H&B"}, region:{ko:"서울 성동구 성수동",en:"Seongsu, Seoul"},
+    role:{ko:"주말 매장 응대 (다국어 우대)",en:"Weekend Store Service"}, status:{cls:"info",ko:"검토중",en:"In review"}, pay:{ko:"시급 11,000원",en:"₩11,000/hr"},
+    when:{ko:"주말 11:00–17:00",en:"Weekends 11:00–17:00"}, start:{ko:"미정",en:"TBD"},
+    tasks:{ko:["고객 응대","상품 정리","다국어 안내"],en:["Service","Stocking","Multilingual help"]}, welfare:{ko:"직원 할인 · 교통비",en:"Staff discount"}, contract:false, attend:false, review:true },
+  twosome:{ emp:{ko:"투썸플레이스 건대점",en:"A Twosome Place Konkuk"}, type:{ko:"카페 · 프랜차이즈",en:"Café · Franchise"}, region:{ko:"서울 광진구 화양동",en:"Hwayang, Seoul"},
+    role:{ko:"디저트·바리스타",en:"Dessert·Barista"}, status:{cls:"",ko:"완료",en:"Done"}, pay:{ko:"시급 9,860원",en:"₩9,860/hr"},
+    when:{ko:"2025.09 ~ 2026.02",en:"2025.09 ~ 2026.02"}, start:{ko:"종료",en:"Ended"},
+    tasks:{ko:["디저트 제조","음료 제조","마감"],en:["Dessert","Drinks","Closing"]}, welfare:{ko:"평점 ★4.8 · 재고용 우대",en:"Rating ★4.8 · rehire"}, contract:false, attend:false, past:true }
+};
+const JL = {
+  detail:{ko:"구인 공고 상세",en:"Job posting detail"}, pay:{ko:"급여",en:"Pay"}, when:{ko:"근무 시간",en:"Hours"}, head:{ko:"모집 인원",en:"Openings"}, apps:{ko:"지원자",en:"Applicants"},
+  gate:{ko:"준법 게이트 통과",en:"Compliance gate passed"}, gateDesc:{ko:"비자 · 허용시간 · 업종 자동 검증 완료 · 유학생 합법 근무 가능",en:"Visa · hours · industry auto-verified"},
+  tasks:{ko:"업무 내용",en:"Tasks"}, cond:{ko:"근무조건",en:"Conditions"}, welfare:{ko:"복지",en:"Benefits"}, applicantsT:{ko:"지원자",en:"Applicants"}, ppl:{ko:"명",en:""},
+  edit:{ko:"공고 수정",en:"Edit posting"}, viewAll:{ko:"지원자 전체보기",en:"View all applicants"},
+  myjobTitle:{ko:"내 알바 상세",en:"My job detail"}, empinfo:{ko:"수요처 정보",en:"Employer"}, myjob:{ko:"내 근무",en:"My shift"}, type:{ko:"업종",en:"Field"}, region:{ko:"위치",en:"Location"},
+  role:{ko:"담당",en:"Role"}, start:{ko:"시작",en:"Start"}, status:{ko:"상태",en:"Status"}, contract:{ko:"전자 근로계약 보기",en:"View e-contract"}, interview:{ko:"인터뷰 일정 확인",en:"Interview schedule"},
+  calBtn:{ko:"출결 캘린더",en:"Attendance"},
+  postTitle:{ko:"구인 공고 상세",en:"Job posting"}, seekerTitle:{ko:"구직자 상세",en:"Student profile"}, apply:{ko:"지원하기",en:"Apply"}, propose:{ko:"채용 제안",en:"Send offer"},
+  loginFirst:{ko:"로그인 후 이용 가능합니다",en:"Log in to continue"}, want:{ko:"희망 조건",en:"Preferences"}, school:{ko:"학교/비자",en:"School/Visa"}, applyDemo:{ko:"지원 완료 (데모)",en:"Applied (demo)"}, proposeDemo:{ko:"채용 제안 전송 (데모)",en:"Offer sent (demo)"}
+};
+
+/* ===================== navigation ===================== */
+function show(id){
+  document.querySelectorAll(".screen").forEach(s=>s.classList.toggle("on", s.id==="s-"+id));
+  cur=id; chrome();
+  const sc=document.querySelector(".screen.on"); if(sc) sc.scrollTop=0;
+}
+function chrome(){
+  const isSub=SUB.includes(cur);
+  el("bottombar").classList.toggle("hide", isSub);
+  el("backBtn").style.display=isSub?"flex":"none";
+  const tabOf={home:"home",hirelist:"hire",employer:"hire",seeklist:"seek",seeker:"seek",settings:"settings"}[cur];
+  document.querySelectorAll(".tabbtn").forEach(b=>b.classList.toggle("on", b.dataset.tab===tabOf));
+}
+function renderFor(id){ if(id==="home")renderHome(); else if(id==="hirelist")renderHireList(); else if(id==="seeklist")renderSeekList(); else if(id==="settings")renderSettings(); }
+function openMain(id){ stack=[]; lastDetail=null; show(id); renderFor(id); }
+function openSub(id){ stack.push(cur); show(id); }
+function back(){ const p=stack.pop()||"home"; lastDetail=(p==="detail")?lastDetail:null; show(p); renderFor(p); }
+function selectTab(tab){
+  const id = tab==="hire" ? (loggedIn&&userRole==="employer"?"employer":"hirelist")
+           : tab==="seek" ? (loggedIn&&userRole==="student"?"seeker":"seeklist")
+           : tab==="settings" ? "settings" : "home";
+  openMain(id);
+}
+
+/* ===================== auth ===================== */
+function setAuthRole(r){ authRole=r; document.querySelectorAll("#roleSeg button").forEach(b=>b.classList.toggle("on", b.dataset.role===r)); }
+function gotoAuth(){ openSub("auth"); }
+function login(){ loggedIn=true; userRole=authRole; selectTab(userRole==="employer"?"hire":"seek"); }
+function logout(){ loggedIn=false; userRole=null; selectTab("home"); }
+
+/* ===================== home ===================== */
+function renderHome(){
+  let card;
+  if(!loggedIn){
+    card = `<div class="authcard">
+      <h3>${t("home.guest.title")}</h3>
+      <p>${t("home.guest.msg")}</p>
+      <button class="btn primary block" onclick="gotoAuth()">${t("home.guest.btn")}</button>
+    </div>`;
+  } else {
+    const roleTxt = userRole==="employer"?t("home.acc.employer"):t("home.acc.student");
+    card = `<div class="authcard">
+      <h3>${t("home.hi")} 👋</h3>
+      <p>${roleTxt}</p>
+      <div class="row" style="gap:10px">
+        <button class="btn primary grow" onclick="selectTab('${userRole==="employer"?"hire":"seek"}')">${t("home.mypageBtn")}</button>
+        <button class="btn grow" onclick="logout()">${t("home.logout")}</button>
+      </div>
+    </div>`;
+  }
+  const preview = Object.keys(POSTINGS).slice(0,3).map(id=>{
+    const p=POSTINGS[id];
+    return `<div class="listcard" onclick="openPosting('${id}')">
+      <div class="row2"><div class="t">${p.title[lang]}</div><span class="chev">›</span></div>
+      <div class="m">${p.emp} · ${p.pay[lang]} · ${p.when[lang]}</div></div>`;
+  }).join("");
+  el("homeBody").innerHTML = card +
+    `<div class="block"><div class="section-title">${t("home.popular")}</div>${preview}
+       <button class="btn block" onclick="selectTab('hire')">${t("home.viewall")}</button></div>`;
+}
+
+/* ===================== hire list (구인 공고) ===================== */
+function renderHireList(){
+  const banner = (!loggedIn||userRole!=="student") ? `<div class="banner">${t("hire.loginbanner")}</div>` : "";
+  const cards = Object.keys(POSTINGS).map(id=>{
+    const p=POSTINGS[id];
+    return `<div class="listcard" onclick="openPosting('${id}')">
+      <div class="row2"><div class="t">${p.title[lang]}</div><span class="badge ok">${t("hire.gate")}</span></div>
+      <div class="m">${p.emp} · ${p.region[lang]}</div>
+      <div class="m">💰 ${p.pay[lang]} · 🕒 ${p.when[lang]} · ${p.field[lang]}</div></div>`;
+  }).join("");
+  el("hireListBody").innerHTML = banner + cards;
+}
+
+/* ===================== seek list (구직자) ===================== */
+function renderSeekList(){
+  const banner = (!loggedIn||userRole!=="employer") ? `<div class="banner">${t("seek.loginbanner")}</div>` : "";
+  const cards = Object.keys(STUDENTS).map(id=>{
+    const s=STUDENTS[id];
+    return `<div class="listcard" onclick="openSeekerProfile('${id}')">
+      <div class="row2"><div class="t">${s.flag} ${s.name}</div><span class="chev">›</span></div>
+      <div class="m">${s.school} · ${s.visa} · ${s.major[lang]} · TOPIK ${s.topik}</div>
+      <div class="m">🎯 ${s.want[lang]}</div></div>`;
+  }).join("");
+  el("seekListBody").innerHTML = banner + cards;
+}
+
+/* ===================== settings (account part) ===================== */
+function renderSettings(){
+  el("lp-ko").classList.toggle("on", lang==="ko");
+  el("lp-en").classList.toggle("on", lang==="en");
+  let acc;
+  if(!loggedIn){
+    acc = `<button class="btn primary block" onclick="gotoAuth()">${t("set.login")}</button>`;
+  } else {
+    const roleTxt = userRole==="employer"?t("home.acc.employer"):t("home.acc.student");
+    acc = `<div class="setrow"><span class="lab">${roleTxt}</span><span class="badge ok">✓</span></div>
+           <button class="btn block" onclick="logout()">${t("set.logout")}</button>`;
+  }
+  acc += `<div class="setrow" style="margin-top:9px"><span class="lab">${t("set.terms")}</span><span class="chev">›</span></div>
+          <div class="setrow"><span class="lab">${t("set.privacy")}</span><span class="chev">›</span></div>`;
+  el("setAccount").innerHTML = acc;
+}
+
+/* ===================== detail renders ===================== */
+function openPosting(id){
+  const j=POSTINGS[id]; if(!j) return;
+  lastDetail=()=>renderPosting(id); renderPosting(id); openSub("detail");
+}
+function renderPosting(id){
+  const j=POSTINGS[id]; const canApply = loggedIn && userRole==="student";
+  el("detailBody").innerHTML = `
+    <div class="section-title">${t2(JL.postTitle)}</div>
+    <div class="card soft">
+      <div class="between"><div class="t" style="font-size:17px">${j.title[lang]}</div><span class="badge ok">${t("hire.gate")}</span></div>
+      <div class="m" style="margin-top:5px">🏪 ${j.emp} · 📍 ${j.region[lang]}</div>
+    </div>
+    <div class="jd-facts" style="margin-top:14px">
+      <div class="jd-fact"><div class="k">${t2(JL.pay)}</div><div class="v">${j.pay[lang]}</div></div>
+      <div class="jd-fact"><div class="k">${t2(JL.when)}</div><div class="v" style="font-size:13px">${j.when[lang]}</div></div>
+      <div class="jd-fact"><div class="k">${t2(JL.type)}</div><div class="v">${j.field[lang]}</div></div>
+      <div class="jd-fact"><div class="k">${t2(JL.region)}</div><div class="v" style="font-size:13px">${j.region[lang]}</div></div>
+    </div>
+    <div class="gate" style="margin-top:14px"><h3>⚖ ${t2(JL.gate)}</h3><div class="tiny" style="color:var(--green-d)">${t2(JL.gateDesc)}</div></div>
+    <div class="block"><div class="section-title">${t2(JL.tasks)}</div>${j.tasks[lang].map(x=>`<div class="jd-task">• ${x}</div>`).join("")}</div>
+    <div class="jd-facts" style="margin-bottom:8px"><div class="jd-fact" style="grid-column:1/-1"><div class="k">${t2(JL.welfare)}</div><div class="v" style="font-weight:600;font-size:13px;color:var(--ink)">${j.welfare[lang]}</div></div></div>
+    ${ canApply
+       ? `<button class="btn primary block" onclick="alert(t2(JL.applyDemo))">✅ ${t2(JL.apply)}</button>`
+       : `<button class="btn block" onclick="gotoAuth()">🔒 ${t2(JL.loginFirst)}</button>` }`;
+}
+function openSeekerProfile(id){
+  const s=STUDENTS[id]; if(!s) return;
+  lastDetail=()=>renderSeekerProfile(id); renderSeekerProfile(id); openSub("detail");
+}
+function renderSeekerProfile(id){
+  const s=STUDENTS[id]; const canPropose = loggedIn && userRole==="employer";
+  el("detailBody").innerHTML = `
+    <div class="section-title">${t2(JL.seekerTitle)}</div>
+    <div class="card soft"><div class="between"><div class="t" style="font-size:17px">${s.flag} ${s.name}</div><span class="badge ok">✓ ${t("seeker.verified")}</span></div>
+      <div class="m" style="margin-top:5px">${s.school} · ${s.visa}</div></div>
+    <div class="jd-facts" style="margin-top:14px">
+      <div class="jd-fact"><div class="k">${t2(JL.school)}</div><div class="v" style="font-size:13px">${s.school} · ${s.visa}</div></div>
+      <div class="jd-fact"><div class="k">${t("f.major")}</div><div class="v" style="font-size:13px">${s.major[lang]}</div></div>
+      <div class="jd-fact"><div class="k">TOPIK</div><div class="v">${s.topik}</div></div>
+      <div class="jd-fact"><div class="k">${t2(JL.want)}</div><div class="v" style="font-size:12.5px">${s.want[lang]}</div></div>
+    </div>
+    <div class="gate" style="margin-top:14px"><h3>⚖ ${t2(JL.gate)}</h3><div class="tiny" style="color:var(--green-d)">${t2(JL.gateDesc)}</div></div>
+    ${ canPropose
+       ? `<button class="btn primary block" onclick="alert(t2(JL.proposeDemo))">📨 ${t2(JL.propose)}</button>`
+       : `<button class="btn block" onclick="gotoAuth()">🔒 ${t2(JL.loginFirst)}</button>` }`;
+}
+function openJob(id){ lastDetail=()=>renderJob(id); renderJob(id); openSub("detail"); }
+function renderJob(id){
+  const j=JOBS[id]; if(!j) return; const T=t2;
+  const facts=[["pay",j.pay],["when",j.when],["head",j.head],["apps",j.apps]];
+  const applicants=j.applicants.map(a=>`<div class="li"><div class="between"><div><div class="t">${a.name}</div><div class="m">${a.info[lang]} · ${a.topik[lang]}</div></div><span class="badge ${a.st.cls}">${a.st[lang]}</span></div></div>`).join("");
+  el("detailBody").innerHTML=`
+    <div class="section-title">${T(JL.detail)}</div>
+    <div class="card soft"><div class="between"><div class="t" style="font-size:17px">${j.title[lang]}</div><span class="badge ${j.status.cls}">${j.status[lang]}</span></div><div class="m" style="margin-top:5px">📍 ${j.place[lang]}</div></div>
+    <div class="jd-facts" style="margin-top:14px">${facts.map(([k,v])=>`<div class="jd-fact"><div class="k">${T(JL[k])}</div><div class="v">${v[lang]}${(k==="head"||k==="apps")?T(JL.ppl):""}</div></div>`).join("")}</div>
+    <div class="gate" style="margin-top:14px"><h3>⚖ ${T(JL.gate)}</h3><div class="tiny" style="color:var(--green-d)">${T(JL.gateDesc)}</div></div>
+    <div class="block" style="margin-top:14px"><div class="section-title">${T(JL.tasks)}</div>${j.tasks[lang].map(x=>`<div class="jd-task">• ${x}</div>`).join("")}</div>
+    <div class="jd-facts"><div class="jd-fact"><div class="k">${T(JL.cond)}</div><div class="v" style="font-weight:600;font-size:13px;color:var(--ink)">${j.cond[lang]}</div></div><div class="jd-fact"><div class="k">${T(JL.welfare)}</div><div class="v" style="font-weight:600;font-size:13px;color:var(--ink)">${j.welfare[lang]}</div></div></div>
+    <div class="block" style="margin-top:14px"><div class="section-title">${T(JL.applicantsT)} · ${j.apps[lang]}${T(JL.ppl)}</div>${applicants}</div>
+    <div class="row" style="gap:10px;margin-top:6px"><button class="btn grow" onclick="alert(t2(JL.edit))">${T(JL.edit)}</button><button class="btn primary grow" onclick="alert(t2(JL.viewAll))">${T(JL.viewAll)}</button></div>`;
+}
+function openSeekerJob(id){ lastDetail=()=>renderSeekerJob(id); renderSeekerJob(id); openSub("detail"); }
+function renderSeekerJob(id){
+  const j=SEEKER_JOBS[id]; if(!j) return; const T=t2;
+  const facts=[["role",j.role],["when",j.when],["pay",j.pay],["start",j.start]];
+  const actions=[];
+  if(j.attend) actions.push(`<button class="btn primary grow" onclick="openAttend()">📅 ${T(JL.calBtn)}</button>`);
+  if(j.contract) actions.push(`<button class="btn grow" onclick="alert(t2(JL.contract))">📝 ${T(JL.contract)}</button>`);
+  if(j.review) actions.push(`<button class="btn grow" onclick="alert(t2(JL.interview))">🗣 ${T(JL.interview)}</button>`);
+  el("detailBody").innerHTML=`
+    <div class="section-title">${T(JL.myjobTitle)}</div>
+    <div class="card soft"><div class="between"><div class="t" style="font-size:17px">${j.emp[lang]}</div><span class="badge ${j.status.cls}">${j.status[lang]}</span></div><div class="m" style="margin-top:5px">🏪 ${j.type[lang]} · 📍 ${j.region[lang]}</div></div>
+    <div class="block" style="margin-top:14px"><div class="section-title">${T(JL.myjob)}</div><div class="jd-facts">${facts.map(([k,v])=>`<div class="jd-fact"><div class="k">${T(JL[k])}</div><div class="v" style="font-size:13.5px">${v[lang]}</div></div>`).join("")}</div></div>
+    ${ j.past?"":`<div class="gate" style="margin-bottom:14px"><h3>⚖ ${T(JL.gate)}</h3><div class="tiny" style="color:var(--green-d)">${T(JL.gateDesc)}</div></div>`}
+    <div class="block"><div class="section-title">${T(JL.tasks)}</div>${j.tasks[lang].map(x=>`<div class="jd-task">• ${x}</div>`).join("")}</div>
+    <div class="jd-facts" style="margin-bottom:6px"><div class="jd-fact" style="grid-column:1/-1"><div class="k">${T(JL.welfare)}</div><div class="v" style="font-weight:600;font-size:13px;color:var(--ink)">${j.welfare[lang]}</div></div></div>
+    ${ actions.length?`<div class="row" style="gap:10px;margin-top:8px">${actions.join("")}</div>`:"" }`;
+}
+function t2(o){ return o[lang]; }   /* helper for {ko,en} objects */
+
+function openAttend(){ openSub("attend"); }
+
+/* ===================== calendar ===================== */
+function buildCal(){
+  const grid=el("calGrid");
+  const marks={1:"work",2:"off",3:"work",4:"work",5:"late",6:"work",7:"off",8:"work",9:"work",10:"work",11:"off",12:"work",13:"work",14:"off",15:"absent",16:"work",17:"work",18:"work",19:"off",20:"work"};
+  let html=`<div class="cell out"><span class="n">31</span></div>`;
+  for(let d=1; d<=30; d++){ const tt=marks[d]; const tag=tt?`<span class="tag t-${tt}">${calLabel(tt)}</span>`:""; const ring=d===9?"box-shadow:0 0 0 2px var(--green) inset;":""; html+=`<div class="cell" style="${ring}"><span class="n">${d}</span>${tag}</div>`; }
+  grid.innerHTML=html;
+}
+function calLabel(x){ const ko={work:"근무",late:"지각",absent:"결근",off:"휴무"}, en={work:"W",late:"L",absent:"A",off:"Off"}; return (lang==="ko"?ko:en)[x]; }
+function punch(dir){ const e=el("punchState"); if(dir==="in"){ e.className="badge ok"; e.textContent=lang==="ko"?"출근 완료 · 18:02":"Clocked in · 18:02"; } else { e.className="badge"; e.textContent=lang==="ko"?"퇴근 완료 · 22:01":"Clocked out · 22:01"; } }
+
+/* ===================== i18n ===================== */
 const I18N = {
   ko:{
-    "tab.seeker":"구직","tab.employer":"구인",
-    "intro.tagline":"한국에서 나의 첫 기록 · 유학생 전용 합법 알바",
-    "chip.legal":"⚖ 준법","chip.safe":"🛡 안전","chip.multi":"🌏 다국어",
-    "intro.cta.seeker":"구직 — 일자리 찾기","intro.cta.employer":"구인 — 인력 구하기",
-    "intro.choose":"상단에서 <b>구직</b> 또는 <b>구인</b>을 선택해 시작하세요",
-    "intro.terms":"가입 시 ","intro.terms2":" 에 동의합니다",
-    "auth.title":"휴대폰 번호로 시작하기","auth.sub":"간편 가입 — 휴대폰 번호와 비밀번호만 있으면 됩니다.",
-    "auth.phone":"휴대폰 번호","auth.send":"인증","auth.code":"인증번호 (SMS)","auth.pw":"비밀번호",
-    "auth.agree":"이용약관 · 개인정보처리방침 동의","auth.start":"시작하기",
+    "tab.home":"홈","tab.hire":"구인","tab.seek":"구직","tab.settings":"설정",
+    "home.tagline":"한국에서 나의 첫 기록 · 유학생 전용 합법 알바",
+    "home.stat.seekers":"등록 구직자","home.stat.emps":"등록 구인자","home.stat.match":"누적 매칭",
+    "home.guest.title":"로그인하고 시작하기","home.guest.msg":"학생은 일자리를, 사업자는 인력을 찾아보세요","home.guest.btn":"회원가입 / 로그인",
+    "home.hi":"환영합니다","home.acc.student":"학생 (구직) 계정으로 로그인됨","home.acc.employer":"업체 (구인) 계정으로 로그인됨",
+    "home.mypageBtn":"나의 페이지","home.logout":"로그아웃","home.popular":"인기 구인 공고","home.viewall":"전체 구인 보기",
+    "auth.title":"회원가입 / 로그인","auth.sub":"간편 가입 — 휴대폰 번호와 비밀번호만 있으면 됩니다.",
+    "auth.role":"가입/로그인 유형","auth.role.student":"🎓 학생 (구직)","auth.role.employer":"🏪 업체 (구인)",
+    "auth.phone":"휴대폰 번호","auth.send":"인증","auth.code":"인증번호 (SMS)","auth.pw":"비밀번호","auth.agree":"이용약관 · 개인정보처리방침 동의","auth.start":"시작하기",
     "auth.note":"※ 여권번호·외국인등록번호 등 민감정보는 암호화·접근통제로 보호됩니다.",
-    "seeker.verified":"✓ 인증완료","seeker.gate.title":"비자 허용 근로시간","seeker.gate.used":"이번 주 12h / 20h",
+    "hire.title":"구인 공고","hire.loginbanner":"🔒 로그인(학생)하면 바로 지원할 수 있어요","hire.gate":"준법 통과",
+    "seek.title":"구직자 리스트","seek.loginbanner":"🔒 로그인(업체)하면 채용 제안을 보낼 수 있어요",
+    "seeker.verified":"인증완료","seeker.gate.title":"비자 허용 근로시간","seeker.gate.used":"이번 주 12h / 20h",
     "seeker.gate.msg":"주말·공휴일·방학은 시간 제한 없음 · 제한업종 공고는 자동 차단됩니다.",
     "seeker.basic":"기본정보","seeker.extra":"추가정보","seeker.want":"구직정보","seeker.list":"구직 리스트",
     "seeker.passport.file":"여권 스캔 첨부됨 · passport_mai.jpg","seeker.public":"공개중","seeker.avail":"가용 시간표 편집",
-    "seeker.list.cur":"현재 구직","seeker.list.past":"기존 구직","seeker.list.start":"2026.06.10 시작",
-    "seeker.list.cal":"출결 캘린더","seeker.list.applied":"지원함 · 인터뷰 예정","seeker.list.review":"평점 ★4.8",
-    "f.name":"이름","f.nat":"국적","f.birth":"생년월일","f.phone":"연락처","f.addr":"주소","f.passport":"여권번호",
-    "f.school":"학교","f.major":"전공","f.grade":"학년","f.topik":"한국어(TOPIK)",
-    "f.region":"희망 지역","f.jobtype":"희망 업종","f.cond":"근무조건",
-    "emp.sub":"카페 · 프랜차이즈 제휴점","emp.verified":"✓ 사업자 인증","emp.basic":"기본정보",
-    "emp.name":"수요처 명칭","emp.bizno":"사업자등록번호","emp.addr":"주소","emp.contact":"연락처",
-    "emp.bizfile":"사업자등록증 첨부됨 · biz_license.pdf","emp.demand":"수요정보","emp.task":"할 일 (업무내용)",
-    "emp.headcount":"필요 인원","emp.pay":"급여","emp.ins":"4대보험","emp.welfare":"기타 복지","emp.cond":"근무조건",
-    "emp.posting":"구인정보","emp.cur":"현재 구인 리스트","emp.past":"기존 구인 리스트",
-    "emp.head":"모집","emp.apps":"지원","emp.gatepass":"준법 통과 ✓",
+    "seeker.list.cur":"현재 구직","seeker.list.past":"기존 구직","seeker.list.start":"2026.06.10 시작","seeker.list.cal":"출결 캘린더","seeker.list.applied":"지원함 · 인터뷰 예정","seeker.list.review":"평점 ★4.8",
+    "f.name":"이름","f.nat":"국적","f.birth":"생년월일","f.phone":"연락처","f.addr":"주소","f.passport":"여권번호","f.school":"학교","f.major":"전공","f.grade":"학년","f.topik":"한국어(TOPIK)","f.region":"희망 지역","f.jobtype":"희망 업종","f.cond":"근무조건",
+    "emp.sub":"카페 · 프랜차이즈 제휴점","emp.verified":"사업자 인증","emp.basic":"기본정보","emp.name":"수요처 명칭","emp.bizno":"사업자등록번호","emp.addr":"주소","emp.contact":"연락처","emp.bizfile":"사업자등록증 첨부됨 · biz_license.pdf",
+    "emp.demand":"수요정보","emp.task":"할 일 (업무내용)","emp.headcount":"필요 인원","emp.pay":"급여","emp.ins":"4대보험","emp.welfare":"기타 복지","emp.cond":"근무조건","emp.posting":"구인정보","emp.cur":"현재 구인 리스트","emp.past":"기존 구인 리스트","emp.head":"모집 2명","emp.apps":"지원 7명","emp.gatepass":"준법 통과 ✓","emp.fabmsg":"새 구인 공고 등록 — 준법 게이트가 비자·시간·업종을 자동 검증합니다.",
     "status.matched":"매칭완료","status.review":"검토중","status.open":"모집중","status.closing":"마감임박","status.done":"종료",
-    "att.title":"출결 캘린더","att.work":"근무","att.late":"지각","att.absent":"결근","att.off":"휴무",
-    "att.today":"오늘 · 6월 9일","att.notyet":"출근 전","att.in":"출근 체크","att.out":"퇴근 체크",
-    "att.note":"※ 출퇴근 기록은 수요처·관리자 출결 현황판에 반영됩니다 (열람 권한 분리)."
+    "att.title":"출결 캘린더","att.work":"근무","att.late":"지각","att.absent":"결근","att.off":"휴무","att.today":"오늘 · 6월 9일","att.notyet":"출근 전","att.in":"출근 체크","att.out":"퇴근 체크","att.note":"※ 출퇴근 기록은 수요처·관리자 출결 현황판에 반영됩니다 (열람 권한 분리).",
+    "set.language":"언어","set.lang.note":"한국어·영어 기본 제공 · 중국어·베트남어·몽골어 순차 확장 예정","set.soon":"(준비중)",
+    "set.compliance":"준법사항","set.comp.msg":"유학생(D-2·D-4)은 체류자격 외 활동허가 후 시간제 취업이 가능합니다. 알바잉크는 공고 단계에서 비자·시간·업종을 자동 검증합니다.",
+    "set.comp.hours":"비자 허용 근로시간","set.comp.th1":"구분","set.comp.th2":"학기 중 주중","set.comp.th3":"주말·방학","set.comp.unlim":"무제한","set.comp.d4":"어학연수 (D-4)","set.comp.d2":"학사 (D-2)","set.comp.phd":"석·박사 (D-2)",
+    "set.comp.restrict":"제한 업종","set.comp.restrictv":"제조·건설 · 배달(특수형태근로) · 파견·도급 · 원거리(통근 1시간↑) 근무는 원칙적으로 제한됩니다.",
+    "set.account":"계정","set.login":"로그인 / 회원가입","set.logout":"로그아웃","set.terms":"이용약관","set.privacy":"개인정보처리방침"
   },
   en:{
-    "tab.seeker":"Seek","tab.employer":"Hire",
-    "intro.tagline":"My first record in Korea · Legal part-time, for students",
-    "chip.legal":"⚖ Legal","chip.safe":"🛡 Safe","chip.multi":"🌏 Multilingual",
-    "intro.cta.seeker":"Find a job (Student)","intro.cta.employer":"Hire staff (Employer)",
-    "intro.choose":"Choose <b>Seek</b> or <b>Hire</b> above to start",
-    "intro.terms":"By joining you agree to ","intro.terms2":"",
-    "auth.title":"Start with your phone number","auth.sub":"Quick sign-up — just a phone number and password.",
-    "auth.phone":"Phone number","auth.send":"Verify","auth.code":"SMS code","auth.pw":"Password",
-    "auth.agree":"Agree to Terms & Privacy Policy","auth.start":"Get started",
+    "tab.home":"Home","tab.hire":"Hire","tab.seek":"Seek","tab.settings":"Settings",
+    "home.tagline":"My first record in Korea · legal part-time for students",
+    "home.stat.seekers":"Students","home.stat.emps":"Employers","home.stat.match":"Matches",
+    "home.guest.title":"Log in to get started","home.guest.msg":"Students find jobs; businesses find talent","home.guest.btn":"Sign up / Log in",
+    "home.hi":"Welcome","home.acc.student":"Logged in as a Student account","home.acc.employer":"Logged in as a Business account",
+    "home.mypageBtn":"My page","home.logout":"Log out","home.popular":"Featured jobs","home.viewall":"View all jobs",
+    "auth.title":"Sign up / Log in","auth.sub":"Quick sign-up — just a phone number and password.",
+    "auth.role":"Account type","auth.role.student":"🎓 Student (Seek)","auth.role.employer":"🏪 Business (Hire)",
+    "auth.phone":"Phone number","auth.send":"Verify","auth.code":"SMS code","auth.pw":"Password","auth.agree":"Agree to Terms & Privacy Policy","auth.start":"Get started",
     "auth.note":"※ Passport / ARC numbers are protected with encryption & access control.",
-    "seeker.verified":"✓ Verified","seeker.gate.title":"Visa work-hour limit","seeker.gate.used":"This week 12h / 20h",
-    "seeker.gate.msg":"No limit on weekends, holidays & vacation · restricted-industry posts are auto-blocked.",
+    "hire.title":"Job posts","hire.loginbanner":"🔒 Log in as a student to apply instantly","hire.gate":"Compliant",
+    "seek.title":"Students","seek.loginbanner":"🔒 Log in as a business to send offers",
+    "seeker.verified":"Verified","seeker.gate.title":"Visa work-hour limit","seeker.gate.used":"This week 12h / 20h",
+    "seeker.gate.msg":"No limit on weekends, holidays & vacation · restricted-industry posts auto-blocked.",
     "seeker.basic":"Basic info","seeker.extra":"Additional info","seeker.want":"Job preferences","seeker.list":"My applications",
     "seeker.passport.file":"Passport scan attached · passport_mai.jpg","seeker.public":"Public","seeker.avail":"Edit availability",
-    "seeker.list.cur":"Active","seeker.list.past":"Past","seeker.list.start":"Starts 2026.06.10",
-    "seeker.list.cal":"Attendance","seeker.list.applied":"Applied · interview scheduled","seeker.list.review":"Rating ★4.8",
-    "f.name":"Name","f.nat":"Nationality","f.birth":"Date of birth","f.phone":"Contact","f.addr":"Address","f.passport":"Passport no.",
-    "f.school":"School","f.major":"Major","f.grade":"Year","f.topik":"Korean (TOPIK)",
-    "f.region":"Preferred area","f.jobtype":"Preferred field","f.cond":"Conditions",
-    "emp.sub":"Café · Franchise partner","emp.verified":"✓ Business verified","emp.basic":"Basic info",
-    "emp.name":"Business name","emp.bizno":"Business reg. no.","emp.addr":"Address","emp.contact":"Contact",
-    "emp.bizfile":"Business license attached · biz_license.pdf","emp.demand":"Job details","emp.task":"Tasks",
-    "emp.headcount":"Headcount","emp.pay":"Pay","emp.ins":"Insurance","emp.welfare":"Benefits","emp.cond":"Conditions",
-    "emp.posting":"Job posts","emp.cur":"Active posts","emp.past":"Past posts",
-    "emp.head":"Need","emp.apps":"Applicants","emp.gatepass":"Compliance OK ✓",
+    "seeker.list.cur":"Active","seeker.list.past":"Past","seeker.list.start":"Starts 2026.06.10","seeker.list.cal":"Attendance","seeker.list.applied":"Applied · interview scheduled","seeker.list.review":"Rating ★4.8",
+    "f.name":"Name","f.nat":"Nationality","f.birth":"Date of birth","f.phone":"Contact","f.addr":"Address","f.passport":"Passport no.","f.school":"School","f.major":"Major","f.grade":"Year","f.topik":"Korean (TOPIK)","f.region":"Preferred area","f.jobtype":"Preferred field","f.cond":"Conditions",
+    "emp.sub":"Café · Franchise partner","emp.verified":"Business verified","emp.basic":"Basic info","emp.name":"Business name","emp.bizno":"Business reg. no.","emp.addr":"Address","emp.contact":"Contact","emp.bizfile":"Business license attached · biz_license.pdf",
+    "emp.demand":"Job details","emp.task":"Tasks","emp.headcount":"Headcount","emp.pay":"Pay","emp.ins":"Insurance","emp.welfare":"Benefits","emp.cond":"Conditions","emp.posting":"Job posts","emp.cur":"Active posts","emp.past":"Past posts","emp.head":"Need 2","emp.apps":"7 applicants","emp.gatepass":"Compliant ✓","emp.fabmsg":"New posting — the gate auto-checks visa, hours and industry.",
     "status.matched":"Matched","status.review":"In review","status.open":"Open","status.closing":"Closing","status.done":"Closed",
-    "att.title":"Attendance","att.work":"Worked","att.late":"Late","att.absent":"Absent","att.off":"Off",
-    "att.today":"Today · Jun 9","att.notyet":"Not clocked in","att.in":"Clock in","att.out":"Clock out",
-    "att.note":"※ Records sync to the employer & admin attendance board (separate view permissions)."
+    "att.title":"Attendance","att.work":"Work","att.late":"Late","att.absent":"Absent","att.off":"Off","att.today":"Today · Jun 9","att.notyet":"Not clocked in","att.in":"Clock in","att.out":"Clock out","att.note":"※ Records sync to the employer & admin attendance board (separate view permissions).",
+    "set.language":"Language","set.lang.note":"Korean & English now · Chinese, Vietnamese, Mongolian coming soon","set.soon":"(soon)",
+    "set.compliance":"Compliance","set.comp.msg":"Students (D-2·D-4) may work part-time after an activity permit. ALBA inK auto-verifies visa, hours and industry at posting time.",
+    "set.comp.hours":"Visa work-hour limit","set.comp.th1":"Type","set.comp.th2":"Term weekday","set.comp.th3":"Weekend·vacation","set.comp.unlim":"Unlimited","set.comp.d4":"Language (D-4)","set.comp.d2":"Bachelor (D-2)","set.comp.phd":"Master·PhD (D-2)",
+    "set.comp.restrict":"Restricted industries","set.comp.restrictv":"Manufacturing·construction · delivery · dispatch · remote (1h+ commute) work are restricted in principle.",
+    "set.account":"Account","set.login":"Log in / Sign up","set.logout":"Log out","set.terms":"Terms of Service","set.privacy":"Privacy Policy"
   }
 };
-let lang = "ko";
 function applyLang(){
-  document.documentElement.lang = lang;
-  document.querySelectorAll("[data-i18n]").forEach(el=>{
-    const k = el.getAttribute("data-i18n");
-    const v = I18N[lang][k];
-    if(v!==undefined){ if(v.indexOf("<")>-1) el.innerHTML = v; else el.textContent = v; }
-  });
-  document.getElementById("langBtn").textContent = lang==="ko" ? "KO / EN" : "EN / KO";
+  document.documentElement.lang=lang;
+  document.querySelectorAll("[data-i18n]").forEach(e=>{ const k=e.getAttribute("data-i18n"); const v=I18N[lang][k]; if(v!==undefined){ if(v.indexOf("<")>-1) e.innerHTML=v; else e.textContent=v; } });
 }
-document.getElementById("langBtn").onclick = ()=>{
-  lang = lang==="ko"?"en":"ko"; applyLang();
-  if(document.getElementById("s-jobdetail").classList.contains("on")){ detailMode==="seeker" ? renderSeekerJob() : renderJob(); }
-};
-
-/* =========================================================
-   navigation
-   ========================================================= */
-let role = "seeker";
-const screens = ["intro","auth","seeker","employer","attend","jobdetail"];
-function show(id){ screens.forEach(s=>document.getElementById("s-"+s).classList.toggle("on", s===id)); }
-function setRoleTabs(visible){ document.getElementById("roletabs").classList.toggle("hide", !visible); }
-
-function go(screen, r){
-  if(r){ role=r; }
-  if(screen==="auth"){
-    setRoleTabs(true); syncTabs();
-    document.getElementById("authTitle").textContent =
-      lang==="ko" ? "휴대폰 번호로 시작하기" : "Start with your phone number";
-    show("auth");
-  } else if(screen==="mypage"){
-    setRoleTabs(true); syncTabs();
-    show(role);
-  } else if(screen==="attend"){
-    setRoleTabs(false); show("attend");
-  } else if(screen==="intro"){
-    setRoleTabs(true); syncTabs(); show("intro");
-  } else {
-    setRoleTabs(false); show(screen);
-  }
-  document.getElementById("backBtn").style.display = screen==="intro" ? "none":"flex";
-  document.querySelector(".screen.on").scrollTop = 0;
-}
-function enter(){ go("mypage"); }
-
-function syncTabs(){
-  document.querySelectorAll(".roletab").forEach(t=>t.classList.toggle("on", t.dataset.role===role));
-}
-document.querySelectorAll(".roletab").forEach(t=>{
-  t.onclick = ()=>{ role=t.dataset.role; syncTabs();
-    const cur = screens.find(s=>document.getElementById("s-"+s).classList.contains("on"));
-    if(cur==="intro"){ go("auth", role); }      // from intro → proceed to sign-up
-    else if(cur==="auth"){ /* stay on auth, just switch role */ }
-    else { show(role); }                         // on mypage → switch page
-  };
-});
-
-document.getElementById("backBtn").onclick = ()=>{
-  const cur = screens.find(s=>document.getElementById("s-"+s).classList.contains("on"));
-  if(cur==="attend"){ go("mypage"); }
-  else if(cur==="jobdetail"){ go("mypage"); }
-  else if(cur===role){ go("auth"); }
-  else { go("intro"); }
-};
-
-/* =========================================================
-   job posting detail
-   ========================================================= */
-const JOBS = {
-  barista:{
-    title:{ko:"평일 저녁 바리스타 (유학생 환영)",en:"Weekday Evening Barista (students welcome)"},
-    status:{cls:"ok",ko:"모집중",en:"Open"},
-    place:{ko:"메가커피 왕십리역점 · 서울 성동구",en:"Mega Coffee Wangsimni · Seongdong, Seoul"},
-    pay:{ko:"시급 10,030원",en:"₩10,030 / hr"},
-    when:{ko:"평일 18:00–22:00",en:"Weekdays 18:00–22:00"},
-    head:{ko:"2",en:"2"},
-    apps:{ko:"7",en:"7"},
-    tasks:{ko:["음료 제조 (에스프레소 머신)","매장 응대·주문","마감 청소·정리"],
-           en:["Drink prep (espresso machine)","Customer service & orders","Closing & cleanup"]},
-    cond:{ko:"파트타임 · 주 18시간 이내 · 유니폼 제공",en:"Part-time · ≤18h/wk · uniform provided"},
-    welfare:{ko:"식사 제공 · 음료 무료 · 4대보험",en:"Meals · free drinks · insurance"},
-    applicants:[
-      {name:"Nguyen Mai", info:{ko:"🇻🇳 한양대 · D-2 · 경영 3학년",en:"🇻🇳 Hanyang · D-2 · Biz Yr.3"}, topik:{ko:"TOPIK 4급",en:"TOPIK Lv.4"}, st:{cls:"ok",ko:"인터뷰 예정",en:"Interview"}},
-      {name:"Li Wei",     info:{ko:"🇨🇳 경희대 · D-2 · 컴퓨터 2학년",en:"🇨🇳 Kyunghee · D-2 · CS Yr.2"}, topik:{ko:"TOPIK 5급",en:"TOPIK Lv.5"}, st:{cls:"info",ko:"검토중",en:"In review"}},
-      {name:"Chen Yu",    info:{ko:"🇨🇳 중앙대 · D-2 · 디자인 4학년",en:"🇨🇳 Chungang · D-2 · Design Yr.4"}, topik:{ko:"TOPIK 4급",en:"TOPIK Lv.4"}, st:{cls:"info",ko:"검토중",en:"In review"}}
-    ]
-  },
-  weekend:{
-    title:{ko:"주말 오전 마감조",en:"Weekend Morning Shift"},
-    status:{cls:"warn",ko:"마감임박",en:"Closing soon"},
-    place:{ko:"메가커피 왕십리역점 · 서울 성동구",en:"Mega Coffee Wangsimni · Seongdong, Seoul"},
-    pay:{ko:"시급 10,500원",en:"₩10,500 / hr"},
-    when:{ko:"주말 09:00–14:00",en:"Weekends 09:00–14:00"},
-    head:{ko:"1",en:"1"},
-    apps:{ko:"3",en:"3"},
-    tasks:{ko:["오픈 준비·세팅","음료 제조","주말 매장 응대"],
-           en:["Open & setup","Drink prep","Weekend service"]},
-    cond:{ko:"파트타임 · 주말만 · 방학 무제한",en:"Part-time · weekends · no limit on vacation"},
-    welfare:{ko:"식사 제공 · 음료 무료",en:"Meals · free drinks"},
-    applicants:[
-      {name:"Bat-Erdene", info:{ko:"🇲🇳 가천대 · D-2 · 기계 4학년",en:"🇲🇳 Gachon · D-2 · Mech Yr.4"}, topik:{ko:"TOPIK 3급",en:"TOPIK Lv.3"}, st:{cls:"info",ko:"검토중",en:"In review"}},
-      {name:"Tran Hoa",   info:{ko:"🇻🇳 세종대 · D-2 · 호텔경영 2학년",en:"🇻🇳 Sejong · D-2 · Hotel Yr.2"}, topik:{ko:"TOPIK 4급",en:"TOPIK Lv.4"}, st:{cls:"ok",ko:"인터뷰 예정",en:"Interview"}}
-    ]
-  }
-};
-const JL = {
-  detail:{ko:"구인 공고 상세",en:"Job posting detail"},
-  pay:{ko:"급여",en:"Pay"}, when:{ko:"근무 시간",en:"Hours"}, head:{ko:"모집 인원",en:"Openings"}, apps:{ko:"지원자",en:"Applicants"},
-  gate:{ko:"준법 게이트 통과",en:"Compliance gate passed"},
-  gateDesc:{ko:"비자 · 허용시간 · 업종 자동 검증 완료 · 유학생 합법 근무 가능",en:"Visa · hours · industry auto-verified · legal for students"},
-  tasks:{ko:"업무 내용",en:"Tasks"}, cond:{ko:"근무조건",en:"Conditions"}, welfare:{ko:"복지",en:"Benefits"},
-  applicantsT:{ko:"지원자",en:"Applicants"}, ppl:{ko:"명",en:""},
-  edit:{ko:"공고 수정",en:"Edit posting"}, viewAll:{ko:"지원자 전체보기",en:"View all applicants"},
-  /* seeker-facing labels */
-  myjobTitle:{ko:"내 알바 상세",en:"My job detail"}, empinfo:{ko:"수요처 정보",en:"Employer"},
-  myjob:{ko:"내 근무",en:"My shift"}, type:{ko:"업종",en:"Field"}, region:{ko:"위치",en:"Location"},
-  role:{ko:"담당",en:"Role"}, start:{ko:"시작",en:"Start"}, status:{ko:"상태",en:"Status"},
-  contract:{ko:"전자 근로계약 보기",en:"View e-contract"}, interview:{ko:"인터뷰 일정 확인",en:"Interview schedule"},
-  calBtn:{ko:"출결 캘린더",en:"Attendance"}, rating:{ko:"평점",en:"Rating"}, appliedNote:{ko:"지원 완료 · 인터뷰 예정",en:"Applied · interview scheduled"}
-};
-let currentJob = null, currentSeekerJob = null, detailMode = null;
-function openJob(id){ detailMode="emp"; currentJob = id; renderJob(); go("jobdetail"); }
-
-/* ----- seeker-facing job / employer detail ----- */
-const SEEKER_JOBS = {
-  mega:{ emp:{ko:"메가커피 왕십리역점",en:"Mega Coffee Wangsimni"}, type:{ko:"카페 · 프랜차이즈 제휴",en:"Café · Franchise"},
-    region:{ko:"서울 성동구 왕십리로 410",en:"Wangsimni, Seongdong, Seoul"},
-    role:{ko:"평일 저녁 바리스타",en:"Weekday Evening Barista"}, status:{cls:"ok",ko:"매칭완료",en:"Matched"},
-    pay:{ko:"시급 10,030원",en:"₩10,030 / hr"}, when:{ko:"평일(월·화·목·금) 18:00–22:00",en:"Weekdays 18:00–22:00"}, start:{ko:"2026.06.10",en:"2026.06.10"},
-    tasks:{ko:["음료 제조","매장 응대","마감 정리"],en:["Drink prep","Customer service","Closing"]},
-    welfare:{ko:"식사 제공 · 음료 무료 · 4대보험",en:"Meals · free drinks · insurance"}, contract:true, attend:true },
-  olive:{ emp:{ko:"올리브영 성수점",en:"Olive Young Seongsu"}, type:{ko:"유통 · 헬스&뷰티",en:"Retail · H&B"},
-    region:{ko:"서울 성동구 성수동",en:"Seongsu, Seongdong, Seoul"},
-    role:{ko:"주말 매장 응대 (다국어 우대)",en:"Weekend Store Service"}, status:{cls:"info",ko:"검토중",en:"In review"},
-    pay:{ko:"시급 11,000원",en:"₩11,000 / hr"}, when:{ko:"주말 11:00–17:00",en:"Weekends 11:00–17:00"}, start:{ko:"미정",en:"TBD"},
-    tasks:{ko:["고객 응대","상품 정리","다국어 안내"],en:["Customer service","Stocking","Multilingual help"]},
-    welfare:{ko:"직원 할인 · 교통비",en:"Staff discount · transport"}, contract:false, attend:false, review:true },
-  twosome:{ emp:{ko:"투썸플레이스 건대점",en:"A Twosome Place Konkuk"}, type:{ko:"카페 · 프랜차이즈",en:"Café · Franchise"},
-    region:{ko:"서울 광진구 화양동",en:"Hwayang, Gwangjin, Seoul"},
-    role:{ko:"디저트·바리스타",en:"Dessert·Barista"}, status:{cls:"",ko:"완료",en:"Done"},
-    pay:{ko:"시급 9,860원",en:"₩9,860 / hr"}, when:{ko:"2025.09 ~ 2026.02",en:"2025.09 ~ 2026.02"}, start:{ko:"종료",en:"Ended"},
-    tasks:{ko:["디저트 제조","음료 제조","마감"],en:["Dessert","Drinks","Closing"]},
-    welfare:{ko:"평점 ★4.8 · 재고용 우대",en:"Rating ★4.8 · rehire priority"}, contract:false, attend:false, past:true }
-};
-function openSeekerJob(id){ detailMode="seeker"; currentSeekerJob = id; renderSeekerJob(); go("jobdetail"); }
-function renderSeekerJob(){
-  const j = SEEKER_JOBS[currentSeekerJob]; if(!j) return;
-  const T = o => o[lang];
-  const facts = [["role",j.role],["when",j.when],["pay",j.pay],["start",j.start]];
-  const actions = [];
-  if(j.attend) actions.push(`<button class="btn primary grow" onclick="go('attend')">📅 ${T(JL.calBtn)}</button>`);
-  if(j.contract) actions.push(`<button class="btn grow" onclick="alert('${T(JL.contract)}')">📝 ${T(JL.contract)}</button>`);
-  if(j.review) actions.push(`<button class="btn grow" onclick="alert('${T(JL.interview)}')">🗣 ${T(JL.interview)}</button>`);
-  document.getElementById("jobDetailBody").innerHTML = `
-    <div class="section-title">${T(JL.myjobTitle)}</div>
-    <div class="card soft">
-      <div class="between">
-        <div class="t" style="font-size:17px">${T(j.emp)}</div>
-        <span class="badge ${j.status.cls}">${T(j.status)}</span>
-      </div>
-      <div class="m" style="margin-top:5px">🏪 ${T(j.type)} · 📍 ${T(j.region)}</div>
-    </div>
-    <div class="block" style="margin-top:14px">
-      <div class="section-title">${T(JL.myjob)}</div>
-      <div class="jd-facts">
-        ${facts.map(([k,v])=>`<div class="jd-fact"><div class="k">${T(JL[k])}</div><div class="v" style="font-size:13.5px">${T(v)}</div></div>`).join("")}
-      </div>
-    </div>
-    ${ j.past ? "" : `<div class="gate" style="margin-bottom:14px">
-      <h3>⚖ ${T(JL.gate)}</h3>
-      <div class="tiny" style="color:var(--green-d)">${T(JL.gateDesc)}</div>
-    </div>`}
-    <div class="block">
-      <div class="section-title">${T(JL.tasks)}</div>
-      ${j.tasks[lang].map(x=>`<div class="jd-task">• ${x}</div>`).join("")}
-    </div>
-    <div class="jd-facts" style="margin-bottom:6px">
-      <div class="jd-fact" style="grid-column:1/-1"><div class="k">${T(JL.welfare)}</div><div class="v" style="font-weight:600;font-size:13px;color:var(--ink)">${T(j.welfare)}</div></div>
-    </div>
-    ${ actions.length ? `<div class="row" style="gap:10px;margin-top:8px">${actions.join("")}</div>` : "" }`;
-}
-function renderJob(){
-  const j = JOBS[currentJob]; if(!j) return;
-  const T = o => o[lang];
-  const facts = [["pay",j.pay],["when",j.when],["head",j.head],["apps",j.apps]];
-  const applicants = j.applicants.map(a=>`
-    <div class="li">
-      <div class="between">
-        <div><div class="t">${a.name}</div><div class="m">${T(a.info)} · ${T(a.topik)}</div></div>
-        <span class="badge ${a.st.cls}">${T(a.st)}</span>
-      </div>
-    </div>`).join("");
-  document.getElementById("jobDetailBody").innerHTML = `
-    <div class="section-title">${T(JL.detail)}</div>
-    <div class="card soft">
-      <div class="between">
-        <div class="t" style="font-size:17px">${T(j.title)}</div>
-        <span class="badge ${j.status.cls}">${T(j.status)}</span>
-      </div>
-      <div class="m" style="margin-top:5px">📍 ${T(j.place)}</div>
-    </div>
-    <div class="jd-facts" style="margin-top:14px">
-      ${facts.map(([k,v])=>`<div class="jd-fact"><div class="k">${T(JL[k])}</div><div class="v">${T(v)}${(k==="head"||k==="apps")?T(JL.ppl):""}</div></div>`).join("")}
-    </div>
-    <div class="gate" style="margin-top:14px">
-      <h3>⚖ ${T(JL.gate)}</h3>
-      <div class="tiny" style="color:var(--green-d)">${T(JL.gateDesc)}</div>
-    </div>
-    <div class="block" style="margin-top:14px">
-      <div class="section-title">${T(JL.tasks)}</div>
-      ${j.tasks[lang].map(x=>`<div class="jd-task">• ${x}</div>`).join("")}
-    </div>
-    <div class="jd-facts">
-      <div class="jd-fact"><div class="k">${T(JL.cond)}</div><div class="v" style="font-weight:600;font-size:13px;color:var(--ink)">${T(j.cond)}</div></div>
-      <div class="jd-fact"><div class="k">${T(JL.welfare)}</div><div class="v" style="font-weight:600;font-size:13px;color:var(--ink)">${T(j.welfare)}</div></div>
-    </div>
-    <div class="block" style="margin-top:14px">
-      <div class="section-title">${T(JL.applicantsT)} · ${T(j.apps)}${T(JL.ppl)}</div>
-      ${applicants}
-    </div>
-    <div class="row" style="gap:10px;margin-top:6px">
-      <button class="btn grow" onclick="alert('${T(JL.edit)}')">${T(JL.edit)}</button>
-      <button class="btn primary grow" onclick="alert('${T(JL.viewAll)}')">${T(JL.viewAll)}</button>
-    </div>`;
+function setLang(l){
+  lang=l; applyLang(); buildCal();
+  if(cur==="detail" && lastDetail) lastDetail(); else renderFor(cur);
+  el("lp-ko")&&el("lp-ko").classList.toggle("on", lang==="ko"); el("lp-en")&&el("lp-en").classList.toggle("on", lang==="en");
 }
 
-/* =========================================================
-   calendar (June 2026: starts on Monday)
-   ========================================================= */
-function buildCal(){
-  const grid = document.getElementById("calGrid");
-  // June 1 2026 = Monday. Pad 1 leading (Sunday) cell from May.
-  const marks = { // day -> type
-    1:"work",2:"off",3:"work",4:"work",5:"late",6:"work",7:"off",
-    8:"work",9:"work",10:"work",11:"off",12:"work",13:"work",14:"off",
-    15:"absent",16:"work",17:"work",18:"work",19:"off",20:"work"
-  };
-  let html = "";
-  // leading: Sun May31
-  html += `<div class="cell out"><span class="n">31</span></div>`;
-  for(let d=1; d<=30; d++){
-    const t = marks[d];
-    const tag = t ? `<span class="tag t-${t}">${labelFor(t)}</span>` : "";
-    const todayRing = d===9 ? "box-shadow:0 0 0 2px var(--green) inset;" : "";
-    html += `<div class="cell" style="${todayRing}"><span class="n">${d}</span>${tag}</div>`;
-  }
-  grid.innerHTML = html;
-}
-function labelFor(t){
-  const ko={work:"근무",late:"지각",absent:"결근",off:"휴무"};
-  const en={work:"W",late:"L",absent:"A",off:"Off"};
-  return (lang==="ko"?ko:en)[t];
-}
-function punch(dir){
-  const el = document.getElementById("punchState");
-  if(dir==="in"){ el.className="badge ok"; el.textContent = lang==="ko"?"출근 완료 · 18:02":"Clocked in · 18:02"; }
-  else { el.className="badge"; el.textContent = lang==="ko"?"퇴근 완료 · 22:01":"Clocked out · 22:01"; }
-}
-
-/* init */
-applyLang();
-buildCal();
+/* ===================== init ===================== */
+applyLang(); buildCal(); renderHome(); chrome();
 </script>
 </body>
 </html>
