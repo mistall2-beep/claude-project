@@ -1,0 +1,159 @@
+/* ============================================================
+   ALBA inK — Shared Design System
+   외국인 유학생 아르바이트 매칭 플랫폼 (프로토타입)
+   Brand: ink drop mascot, cream + green, rounded outlined cards
+   ============================================================ */
+
+:root{
+  /* surfaces */
+  --bg:        #F4EFDC;   /* page cream */
+  --bg-2:      #EFE8CE;
+  --surface:   #EAE2C4;   /* card cream */
+  --surface-2: #F7F2E2;   /* lighter card / inputs */
+  --white:     #FBF8EE;
+
+  /* brand greens */
+  --green:     #5AA85A;   /* primary ink green */
+  --green-d:   #3C7C3F;   /* deep green */
+  --green-dd:  #2F5D32;   /* outline / heading text */
+  --green-soft:#8FBF8B;
+  --green-tint:#DCE9CF;
+
+  /* semantic */
+  --ok:    #4FA04F;
+  --warn:  #E2A03A;
+  --danger:#D9594C;
+  --info:  #4F86C6;
+
+  /* text */
+  --ink:     #284B2A;
+  --ink-2:   #5C6E54;
+  --ink-3:   #8a917f;
+
+  --line:    #2F5D32;
+  --line-soft: rgba(47,93,50,.28);
+
+  --radius:  22px;
+  --radius-s:14px;
+  --shadow:  0 10px 30px rgba(47,93,50,.10);
+  --shadow-s:0 4px 14px rgba(47,93,50,.08);
+
+  --font: "Pretendard","Apple SD Gothic Neo","Noto Sans KR","Segoe UI",system-ui,
+          -apple-system,Roboto,sans-serif;
+}
+
+*{ box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html,body{ margin:0; padding:0; }
+body{
+  font-family:var(--font);
+  color:var(--ink);
+  background:var(--bg);
+  -webkit-font-smoothing:antialiased;
+  line-height:1.5;
+}
+a{ color:inherit; text-decoration:none; }
+button{ font-family:inherit; cursor:pointer; }
+img,svg{ display:block; }
+
+/* ---- generic helpers ---- */
+.muted{ color:var(--ink-2); }
+.tiny{ font-size:12px; }
+.center{ text-align:center; }
+.row{ display:flex; gap:10px; align-items:center; }
+.between{ display:flex; align-items:center; justify-content:space-between; gap:10px; }
+.grow{ flex:1; }
+.wrap{ flex-wrap:wrap; }
+
+/* ---- pills / badges ---- */
+.badge{
+  display:inline-flex; align-items:center; gap:6px;
+  font-size:12px; font-weight:700; line-height:1;
+  padding:6px 11px; border-radius:999px;
+  background:var(--green-tint); color:var(--green-dd);
+  border:1.5px solid var(--line-soft);
+}
+.badge.ok{    background:#DCEFD7; color:#2c6b2f; border-color:#9fce9a; }
+.badge.warn{  background:#F6E8C7; color:#8a6313; border-color:#e3c585; }
+.badge.danger{background:#F6D9D4; color:#9c352a; border-color:#e3a79e; }
+.badge.info{  background:#D9E6F4; color:#2f5a8c; border-color:#a7c2e2; }
+.badge.solid{ background:var(--green); color:#fff; border-color:transparent; }
+
+/* dot status */
+.dot{ width:8px; height:8px; border-radius:50%; display:inline-block; }
+.dot.ok{background:var(--ok);} .dot.warn{background:var(--warn);}
+.dot.danger{background:var(--danger);} .dot.info{background:var(--info);}
+
+/* ---- buttons ---- */
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:8px;
+  font-size:15px; font-weight:700;
+  padding:13px 18px; border-radius:14px; border:2px solid var(--line);
+  background:var(--surface-2); color:var(--green-dd);
+  transition:transform .06s ease, box-shadow .15s ease, background .15s;
+}
+.btn:active{ transform:translateY(1px); }
+.btn.primary{ background:var(--green); color:#fff; border-color:var(--green-d); box-shadow:var(--shadow-s); }
+.btn.primary:hover{ background:var(--green-d); }
+.btn.ghost{ background:transparent; }
+.btn.block{ width:100%; }
+.btn.sm{ padding:8px 13px; font-size:13px; border-radius:11px; }
+
+/* fab */
+.fab{
+  position:absolute; right:18px; bottom:24px; z-index:40;
+  width:58px; height:58px; border-radius:50%;
+  background:var(--green); color:#fff; border:3px solid #fff;
+  box-shadow:0 8px 20px rgba(47,93,50,.30);
+  font-size:28px; display:flex; align-items:center; justify-content:center;
+}
+
+/* ---- cards ---- */
+.card{
+  background:var(--surface);
+  border:2.5px solid var(--line);
+  border-radius:var(--radius);
+  padding:18px;
+}
+.card.soft{ border-width:2px; border-color:var(--line-soft); }
+
+/* form fields styled as the mock (label inside outlined pill row) */
+.field{
+  background:var(--surface-2);
+  border:2px solid var(--line-soft);
+  border-radius:13px;
+  padding:11px 14px;
+  display:flex; flex-direction:column; gap:3px;
+}
+.field label{ font-size:11px; font-weight:700; color:var(--green-d); letter-spacing:.2px; }
+.field input, .field select, .field textarea{
+  border:0; background:transparent; outline:none;
+  font-family:inherit; font-size:14.5px; color:var(--ink); width:100%; padding:0;
+}
+.field input::placeholder{ color:var(--ink-3); }
+.field.line{ /* underline-only variant like the mock */
+  background:transparent; border:0; border-bottom:2px solid var(--line-soft);
+  border-radius:0; padding:9px 2px;
+}
+.field-grid{ display:grid; gap:10px; }
+.field-grid.two{ grid-template-columns:1fr 1fr; }
+
+.section-title{
+  font-size:16px; font-weight:800; color:var(--green-dd);
+  margin:2px 0 12px; display:flex; align-items:center; gap:8px;
+}
+.section-title::before{
+  content:""; width:6px; height:18px; border-radius:3px; background:var(--green);
+}
+
+/* list item */
+.li{
+  background:var(--surface-2); border:2px solid var(--line-soft);
+  border-radius:13px; padding:13px 14px; margin-bottom:10px;
+}
+.li:last-child{ margin-bottom:0; }
+.li .t{ font-weight:800; color:var(--green-dd); }
+.li .m{ font-size:12.5px; color:var(--ink-2); margin-top:3px; }
+
+/* logo lockup */
+.logo{ font-weight:900; letter-spacing:-.5px; color:var(--green-dd); line-height:.96; }
+.logo .ink{ color:var(--green); }

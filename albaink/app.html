@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<title>ALBA inK · 모바일앱 프로토타입</title>
+<link rel="stylesheet" href="styles.css"/>
+<style>
+  /* ---------- app shell ---------- */
+  body{ background:radial-gradient(120% 120% at 50% 0%, #F7F2E1 0%, #ECE4C8 100%); min-height:100vh;
+        display:flex; flex-direction:column; align-items:center; padding:26px 14px 50px; }
+  .stage-top{ text-align:center; margin-bottom:18px; }
+  .stage-top .logo{ font-size:26px; }
+  .stage-top p{ margin:6px 0 0; color:var(--ink-2); font-size:13px; }
+
+  .phone{
+    position:relative; width:392px; max-width:96vw; height:812px; max-height:86vh;
+    background:var(--bg); border:10px solid #20331f; border-radius:46px;
+    box-shadow:0 30px 70px rgba(31,51,30,.35); overflow:hidden; display:flex; flex-direction:column;
+  }
+  .notch{ position:absolute; top:0; left:50%; transform:translateX(-50%); z-index:60;
+          width:140px; height:26px; background:#20331f; border-radius:0 0 16px 16px; }
+
+  /* app header */
+  .appbar{ flex:0 0 auto; padding:34px 18px 12px; display:flex; align-items:center; gap:10px;
+           background:var(--bg); border-bottom:1.5px solid var(--line-soft); }
+  .appbar .brand{ font-weight:900; color:var(--green-dd); font-size:18px; letter-spacing:-.3px; }
+  .appbar .brand .ink{ color:var(--green); }
+  .iconbtn{ width:38px; height:38px; border-radius:11px; border:2px solid var(--line-soft);
+            background:var(--surface-2); display:flex; align-items:center; justify-content:center;
+            color:var(--green-dd); font-size:16px; }
+  .lang{ font-weight:800; font-size:12.5px; padding:8px 11px; }
+
+  /* tabs (intro + role) */
+  .roletabs{ display:flex; gap:8px; padding:14px 18px 0; }
+  .roletab{ flex:1; padding:12px; border-radius:14px; border:2px solid var(--line);
+            background:var(--surface-2); font-weight:800; color:var(--green-dd); font-size:15px; text-align:center; }
+  .roletab.on{ background:var(--green); color:#fff; border-color:var(--green-d); }
+
+  .screen{ flex:1; overflow-y:auto; padding:16px 18px 90px; display:none; }
+  .screen.on{ display:block; }
+  .screen::-webkit-scrollbar{ width:8px; } .screen::-webkit-scrollbar-thumb{ background:var(--line-soft); border-radius:8px; }
+
+  /* intro */
+  .intro{ display:flex; flex-direction:column; align-items:center; text-align:center; }
+  .intro .hero-ink{ width:172px; margin:8px 0 4px; }
+  .intro h1{ font-size:40px; margin:4px 0 0; }
+  .intro .tagline{ color:var(--ink-2); font-size:14px; margin:8px 0 22px; }
+  .intro .chips{ display:flex; gap:7px; justify-content:center; flex-wrap:wrap; margin-bottom:26px; }
+  .terms{ margin-top:auto; padding-top:22px; font-size:11.5px; color:var(--ink-3); }
+  .terms a{ text-decoration:underline; }
+
+  /* profile header inside mypage */
+  .phead{ display:flex; gap:12px; align-items:center; margin-bottom:6px; }
+  .phead .av{ width:60px; height:60px; border-radius:16px; border:2px solid var(--line);
+              background:var(--green-tint); display:flex; align-items:center; justify-content:center; }
+  .phead .av img{ width:46px; }
+  .phead h2{ margin:0; font-size:19px; color:var(--green-dd); }
+  .phead .sub{ font-size:12.5px; color:var(--ink-2); }
+
+  .block{ margin-bottom:16px; }
+  .attach{ display:flex; align-items:center; gap:8px; font-size:13px; color:var(--green-d);
+           border:2px dashed var(--line-soft); border-radius:12px; padding:11px; background:var(--surface-2); }
+
+  /* compliance gate card */
+  .gate{ background:linear-gradient(180deg,#E7F1DF,#DCEACF); border:2.5px solid var(--green-d);
+         border-radius:18px; padding:14px 16px; margin-bottom:16px; }
+  .gate h3{ margin:0 0 8px; font-size:14px; color:var(--green-dd); display:flex; align-items:center; gap:7px; }
+  .gate .bar{ height:9px; border-radius:6px; background:#cdddc2; overflow:hidden; margin:8px 0 6px; }
+  .gate .bar > i{ display:block; height:100%; background:var(--green); border-radius:6px; }
+
+  /* calendar */
+  .cal-head{ display:flex; align-items:center; justify-content:space-between; margin:4px 0 12px; }
+  .cal-head .mo{ font-weight:800; color:var(--green-dd); font-size:17px; }
+  .dow,.grid{ display:grid; grid-template-columns:repeat(7,1fr); }
+  .dow span{ text-align:center; font-size:11px; font-weight:700; color:var(--ink-2); padding-bottom:6px; }
+  .grid{ gap:6px; }
+  .cell{ aspect-ratio:1/1.05; border-radius:11px; border:1.5px solid var(--line-soft);
+         background:var(--surface-2); padding:5px 6px; font-size:11.5px; position:relative; color:var(--ink-2); }
+  .cell.out{ opacity:.35; }
+  .cell .n{ font-weight:700; }
+  .cell .tag{ position:absolute; left:5px; right:5px; bottom:5px; font-size:9px; font-weight:800;
+              border-radius:6px; padding:2px 0; text-align:center; }
+  .t-work{ background:#DCEFD7; color:#2c6b2f; }
+  .t-late{ background:#F6E8C7; color:#8a6313; }
+  .t-absent{ background:#F6D9D4; color:#9c352a; }
+  .t-off{ background:#E6E1CC; color:#7c7a63; }
+  .legend{ display:flex; gap:12px; flex-wrap:wrap; font-size:11.5px; margin-top:12px; color:var(--ink-2); }
+  .legend i{ width:11px; height:11px; border-radius:3px; display:inline-block; margin-right:4px; vertical-align:-1px; }
+
+  .punch{ display:flex; gap:10px; margin-top:14px; }
+  .punch button{ flex:1; }
+
+  /* simple inline note */
+  .note{ font-size:12px; color:var(--ink-3); margin-top:8px; }
+
+  .hide{ display:none !important; }
+</style>
+</head>
+<body>
+
+<div class="stage-top">
+  <div class="logo">ALBA <span class="ink">inK</span></div>
+  <p>모바일앱 프로토타입 · 구직자 / 구인자 / 출결 · <a href="admin.html" style="text-decoration:underline;color:#3C7C3F">관리자 웹 →</a></p>
+</div>
+
+<div class="phone">
+  <div class="notch"></div>
+
+  <!-- ===== APP BAR ===== -->
+  <div class="appbar" id="appbar">
+    <button class="iconbtn" id="backBtn" title="back" style="display:none">‹</button>
+    <div class="brand grow">ALBA <span class="ink">inK</span></div>
+    <button class="iconbtn lang" id="langBtn" title="언어 전환">KO / EN</button>
+  </div>
+
+  <!-- role tabs only shown on auth/mypage context -->
+  <div class="roletabs hide" id="roletabs">
+    <button class="roletab on" data-role="seeker" data-i18n="tab.seeker">구직</button>
+    <button class="roletab" data-role="employer" data-i18n="tab.employer">구인</button>
+  </div>
+
+  <!-- ===================== SCREENS ===================== -->
+
+  <!-- INTRO -->
+  <section class="screen on intro" id="s-intro">
+    <img class="hero-ink" src="assets/ink.svg" alt="ink mascot"/>
+    <h1 class="logo">ALBA <span class="ink">inK</span></h1>
+    <div class="tagline" data-i18n="intro.tagline">한국에서 나의 첫 기록 · 유학생 전용 합법 알바</div>
+    <div class="chips">
+      <span class="badge" data-i18n="chip.legal">⚖ 준법</span>
+      <span class="badge" data-i18n="chip.safe">🛡 안전</span>
+      <span class="badge" data-i18n="chip.multi">🌏 다국어</span>
+    </div>
+
+    <div style="width:100%; display:flex; flex-direction:column; gap:12px;">
+      <button class="btn primary block" onclick="go('auth','seeker')">
+        🎓 <span data-i18n="intro.cta.seeker">구직 — 일자리 찾기</span>
+      </button>
+      <button class="btn block" onclick="go('auth','employer')">
+        🏪 <span data-i18n="intro.cta.employer">구인 — 인력 구하기</span>
+      </button>
+    </div>
+
+    <div class="terms">
+      <span data-i18n="intro.terms">가입 시 </span>
+      <a href="#">이용약관</a> · <a href="#">개인정보처리방침</a>
+      <span data-i18n="intro.terms2"> 에 동의합니다</span>
+    </div>
+  </section>
+
+  <!-- AUTH -->
+  <section class="screen" id="s-auth">
+    <div class="section-title" id="authTitle" data-i18n="auth.title">휴대폰 번호로 시작하기</div>
+    <p class="muted tiny" style="margin-top:-6px" data-i18n="auth.sub">간편 가입 — 휴대폰 번호와 비밀번호만 있으면 됩니다.</p>
+
+    <div class="card soft" style="margin-top:6px;">
+      <div class="field-grid">
+        <div class="field"><label data-i18n="auth.phone">휴대폰 번호</label>
+          <div class="row">
+            <input id="phone" placeholder="010-1234-5678" value="010-2025-0605"/>
+            <button class="btn sm" onclick="document.getElementById('otpRow').classList.remove('hide')" data-i18n="auth.send">인증</button>
+          </div>
+        </div>
+        <div class="field hide" id="otpRow"><label data-i18n="auth.code">인증번호 (SMS)</label>
+          <input placeholder="6자리" value="••••••"/>
+        </div>
+        <div class="field"><label data-i18n="auth.pw">비밀번호</label>
+          <input type="password" placeholder="********" value="albaink2026"/>
+        </div>
+      </div>
+      <label class="row tiny" style="margin-top:12px; color:var(--ink-2)">
+        <input type="checkbox" checked/> <span data-i18n="auth.agree">이용약관 · 개인정보처리방침 동의</span>
+      </label>
+      <button class="btn primary block" style="margin-top:14px" onclick="enter()" data-i18n="auth.start">시작하기</button>
+    </div>
+    <p class="note" data-i18n="auth.note">※ 여권번호·외국인등록번호 등 민감정보는 암호화·접근통제로 보호됩니다.</p>
+  </section>
+
+  <!-- SEEKER MYPAGE (구직자) -->
+  <section class="screen" id="s-seeker">
+    <div class="phead">
+      <div class="av"><img src="assets/ink.svg" alt=""/></div>
+      <div class="grow">
+        <h2>Nguyen Mai</h2>
+        <div class="sub">🇻🇳 베트남 · 한양대학교 · D-2</div>
+      </div>
+      <span class="badge ok" data-i18n="seeker.verified">✓ 인증완료</span>
+    </div>
+
+    <!-- compliance gate -->
+    <div class="gate">
+      <h3>⚖ <span data-i18n="seeker.gate.title">비자 허용 근로시간</span></h3>
+      <div class="between tiny" style="color:var(--green-dd); font-weight:700">
+        <span data-i18n="seeker.gate.used">이번 주 12h / 20h</span>
+        <span>D-2 · 학기 중</span>
+      </div>
+      <div class="bar"><i style="width:60%"></i></div>
+      <div class="tiny" style="color:var(--green-d)" data-i18n="seeker.gate.msg">주말·공휴일·방학은 시간 제한 없음 · 제한업종 공고는 자동 차단됩니다.</div>
+    </div>
+
+    <!-- 기본정보 -->
+    <div class="block">
+      <div class="section-title" data-i18n="seeker.basic">기본정보</div>
+      <div class="field-grid two">
+        <div class="field"><label data-i18n="f.name">이름</label><input value="Nguyen Mai"/></div>
+        <div class="field"><label data-i18n="f.nat">국적</label><input value="베트남"/></div>
+        <div class="field"><label data-i18n="f.birth">생년월일</label><input value="2002-03-14"/></div>
+        <div class="field"><label data-i18n="f.phone">연락처</label><input value="010-2025-0605"/></div>
+        <div class="field" style="grid-column:1/-1"><label data-i18n="f.addr">주소</label><input value="서울시 성동구 왕십리로"/></div>
+        <div class="field" style="grid-column:1/-1"><label data-i18n="f.passport">여권번호</label><input value="M●●●●●●23" /></div>
+      </div>
+      <div class="attach" style="margin-top:10px">📎 <span data-i18n="seeker.passport.file">여권 스캔 첨부됨 · passport_mai.jpg</span></div>
+    </div>
+
+    <!-- 추가정보 -->
+    <div class="block">
+      <div class="section-title" data-i18n="seeker.extra">추가정보</div>
+      <div class="field-grid two">
+        <div class="field"><label data-i18n="f.school">학교</label><input value="한양대학교"/></div>
+        <div class="field"><label data-i18n="f.major">전공</label><input value="경영학과"/></div>
+        <div class="field"><label data-i18n="f.grade">학년</label><input value="3학년"/></div>
+        <div class="field"><label data-i18n="f.topik">한국어(TOPIK)</label><input value="4급"/></div>
+      </div>
+    </div>
+
+    <!-- 구직정보 -->
+    <div class="block">
+      <div class="section-title" data-i18n="seeker.want">구직정보</div>
+      <div class="field-grid two">
+        <div class="field"><label data-i18n="f.region">희망 지역</label><input value="성동·광진"/></div>
+        <div class="field"><label data-i18n="f.jobtype">희망 업종</label><input value="카페·F&B"/></div>
+        <div class="field" style="grid-column:1/-1"><label data-i18n="f.cond">근무조건</label><input value="평일 저녁 · 주말 · 주 18h 이내 · 숙소 불필요"/></div>
+      </div>
+      <div class="row" style="margin-top:10px">
+        <span class="badge solid" data-i18n="seeker.public">공개중</span>
+        <button class="btn sm grow" data-i18n="seeker.avail">가용 시간표 편집</button>
+      </div>
+    </div>
+
+    <!-- 구직 리스트 -->
+    <div class="block">
+      <div class="section-title" data-i18n="seeker.list">구직 리스트</div>
+      <p class="tiny muted" style="margin:-6px 0 8px" data-i18n="seeker.list.cur">현재 구직</p>
+      <div class="li">
+        <div class="between">
+          <div class="t">메가커피 왕십리역점</div>
+          <span class="badge ok" data-i18n="status.matched">매칭완료</span>
+        </div>
+        <div class="m">평일 18:00–22:00 · 시급 10,030원 · <span data-i18n="seeker.list.start">2026.06.10 시작</span></div>
+        <button class="btn sm" style="margin-top:9px" onclick="go('attend')">📅 <span data-i18n="seeker.list.cal">출결 캘린더</span></button>
+      </div>
+      <div class="li">
+        <div class="between">
+          <div class="t">올리브영 성수점</div>
+          <span class="badge info" data-i18n="status.review">검토중</span>
+        </div>
+        <div class="m">주말 11:00–17:00 · <span data-i18n="seeker.list.applied">지원함 · 인터뷰 예정</span></div>
+      </div>
+      <p class="tiny muted" style="margin:14px 0 8px" data-i18n="seeker.list.past">기존 구직</p>
+      <div class="li">
+        <div class="between"><div class="t">투썸플레이스 건대점</div><span class="badge">완료</span></div>
+        <div class="m">2025.09 ~ 2026.02 · <span data-i18n="seeker.list.review">평점 ★4.8</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EMPLOYER MYPAGE (구인자) -->
+  <section class="screen" id="s-employer">
+    <div class="phead">
+      <div class="av" style="background:#E6E1CC">🏪</div>
+      <div class="grow">
+        <h2>메가커피 왕십리역점</h2>
+        <div class="sub" data-i18n="emp.sub">카페 · 프랜차이즈 제휴점</div>
+      </div>
+      <span class="badge ok" data-i18n="emp.verified">✓ 사업자 인증</span>
+    </div>
+
+    <!-- 기본정보 -->
+    <div class="block">
+      <div class="section-title" data-i18n="emp.basic">기본정보</div>
+      <div class="field-grid">
+        <div class="field"><label data-i18n="emp.name">수요처 명칭</label><input value="메가커피 왕십리역점"/></div>
+        <div class="field"><label data-i18n="emp.bizno">사업자등록번호</label><input value="123-45-67890"/></div>
+        <div class="field"><label data-i18n="emp.addr">주소</label><input value="서울 성동구 왕십리로 410"/></div>
+        <div class="field"><label data-i18n="emp.contact">연락처</label><input value="02-123-4567"/></div>
+      </div>
+      <div class="attach" style="margin-top:10px">📎 <span data-i18n="emp.bizfile">사업자등록증 첨부됨 · biz_license.pdf</span></div>
+    </div>
+
+    <!-- 수요정보 -->
+    <div class="block">
+      <div class="section-title" data-i18n="emp.demand">수요정보</div>
+      <div class="field-grid two">
+        <div class="field" style="grid-column:1/-1"><label data-i18n="emp.task">할 일 (업무내용)</label><input value="음료 제조 · 매장 응대 · 마감 정리"/></div>
+        <div class="field"><label data-i18n="emp.headcount">필요 인원</label><input value="2명"/></div>
+        <div class="field"><label data-i18n="emp.pay">급여</label><input value="시급 10,030원"/></div>
+        <div class="field"><label data-i18n="emp.ins">4대보험</label><input value="주 15h↑ 가입"/></div>
+        <div class="field"><label data-i18n="emp.welfare">기타 복지</label><input value="식사 제공 · 음료 무료"/></div>
+        <div class="field" style="grid-column:1/-1"><label data-i18n="emp.cond">근무조건</label><input value="근무지 매장 · 파트타임 · 평일 저녁/주말 · 유니폼 제공"/></div>
+      </div>
+    </div>
+
+    <!-- 구인정보 -->
+    <div class="block">
+      <div class="section-title" data-i18n="emp.posting">구인정보</div>
+      <p class="tiny muted" style="margin:-6px 0 8px" data-i18n="emp.cur">현재 구인 리스트</p>
+      <div class="li">
+        <div class="between">
+          <div class="t">평일 저녁 바리스타 (유학생 환영)</div>
+          <span class="badge ok" data-i18n="status.open">모집중</span>
+        </div>
+        <div class="m"><span data-i18n="emp.head">모집 2명</span> · <span data-i18n="emp.apps">지원 7명</span> · <span data-i18n="emp.gatepass">준법 통과 ✓</span></div>
+      </div>
+      <div class="li">
+        <div class="between">
+          <div class="t">주말 오전 마감조</div>
+          <span class="badge warn" data-i18n="status.closing">마감임박</span>
+        </div>
+        <div class="m"><span data-i18n="emp.head">모집 1명</span> · <span data-i18n="emp.apps">지원 3명</span></div>
+      </div>
+      <p class="tiny muted" style="margin:14px 0 8px" data-i18n="emp.past">기존 구인 리스트</p>
+      <div class="li">
+        <div class="between"><div class="t">겨울방학 풀타임</div><span class="badge" data-i18n="status.done">종료</span></div>
+        <div class="m">메가커피 왕십리역점 · 2025.12.20 ~ 2026.02.28</div>
+      </div>
+    </div>
+
+    <button class="fab" title="새 공고" onclick="alert('새 구인 공고 등록 — 준법 게이트가 비자·시간·업종을 자동 검증합니다.')">＋</button>
+  </section>
+
+  <!-- ATTENDANCE (출결 캘린더) -->
+  <section class="screen" id="s-attend">
+    <div class="section-title" data-i18n="att.title">출결 캘린더</div>
+    <div class="card soft">
+      <div class="cal-head">
+        <button class="iconbtn" onclick="event.preventDefault()">‹</button>
+        <div class="mo">2026 · June</div>
+        <button class="iconbtn" onclick="event.preventDefault()">›</button>
+      </div>
+      <div class="dow"><span>일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span></div>
+      <div class="grid" id="calGrid"></div>
+      <div class="legend">
+        <span><i class="t-work"></i><span data-i18n="att.work">근무</span></span>
+        <span><i class="t-late"></i><span data-i18n="att.late">지각</span></span>
+        <span><i class="t-absent"></i><span data-i18n="att.absent">결근</span></span>
+        <span><i class="t-off"></i><span data-i18n="att.off">휴무</span></span>
+      </div>
+    </div>
+
+    <div class="card soft" style="margin-top:14px">
+      <div class="between">
+        <div>
+          <div style="font-weight:800;color:var(--green-dd)" data-i18n="att.today">오늘 · 6월 9일</div>
+          <div class="tiny muted">메가커피 왕십리역점 · 18:00–22:00</div>
+        </div>
+        <span class="badge info" id="punchState" data-i18n="att.notyet">출근 전</span>
+      </div>
+      <div class="punch">
+        <button class="btn primary" onclick="punch('in')" data-i18n="att.in">출근 체크</button>
+        <button class="btn" onclick="punch('out')" data-i18n="att.out">퇴근 체크</button>
+      </div>
+      <p class="note" data-i18n="att.note">※ 출퇴근 기록은 수요처·관리자 출결 현황판에 반영됩니다 (열람 권한 분리).</p>
+    </div>
+  </section>
+
+</div>
+
+<script>
+/* =========================================================
+   i18n — KO / EN
+   ========================================================= */
+const I18N = {
+  ko:{
+    "tab.seeker":"구직","tab.employer":"구인",
+    "intro.tagline":"한국에서 나의 첫 기록 · 유학생 전용 합법 알바",
+    "chip.legal":"⚖ 준법","chip.safe":"🛡 안전","chip.multi":"🌏 다국어",
+    "intro.cta.seeker":"구직 — 일자리 찾기","intro.cta.employer":"구인 — 인력 구하기",
+    "intro.terms":"가입 시 ","intro.terms2":" 에 동의합니다",
+    "auth.title":"휴대폰 번호로 시작하기","auth.sub":"간편 가입 — 휴대폰 번호와 비밀번호만 있으면 됩니다.",
+    "auth.phone":"휴대폰 번호","auth.send":"인증","auth.code":"인증번호 (SMS)","auth.pw":"비밀번호",
+    "auth.agree":"이용약관 · 개인정보처리방침 동의","auth.start":"시작하기",
+    "auth.note":"※ 여권번호·외국인등록번호 등 민감정보는 암호화·접근통제로 보호됩니다.",
+    "seeker.verified":"✓ 인증완료","seeker.gate.title":"비자 허용 근로시간","seeker.gate.used":"이번 주 12h / 20h",
+    "seeker.gate.msg":"주말·공휴일·방학은 시간 제한 없음 · 제한업종 공고는 자동 차단됩니다.",
+    "seeker.basic":"기본정보","seeker.extra":"추가정보","seeker.want":"구직정보","seeker.list":"구직 리스트",
+    "seeker.passport.file":"여권 스캔 첨부됨 · passport_mai.jpg","seeker.public":"공개중","seeker.avail":"가용 시간표 편집",
+    "seeker.list.cur":"현재 구직","seeker.list.past":"기존 구직","seeker.list.start":"2026.06.10 시작",
+    "seeker.list.cal":"출결 캘린더","seeker.list.applied":"지원함 · 인터뷰 예정","seeker.list.review":"평점 ★4.8",
+    "f.name":"이름","f.nat":"국적","f.birth":"생년월일","f.phone":"연락처","f.addr":"주소","f.passport":"여권번호",
+    "f.school":"학교","f.major":"전공","f.grade":"학년","f.topik":"한국어(TOPIK)",
+    "f.region":"희망 지역","f.jobtype":"희망 업종","f.cond":"근무조건",
+    "emp.sub":"카페 · 프랜차이즈 제휴점","emp.verified":"✓ 사업자 인증","emp.basic":"기본정보",
+    "emp.name":"수요처 명칭","emp.bizno":"사업자등록번호","emp.addr":"주소","emp.contact":"연락처",
+    "emp.bizfile":"사업자등록증 첨부됨 · biz_license.pdf","emp.demand":"수요정보","emp.task":"할 일 (업무내용)",
+    "emp.headcount":"필요 인원","emp.pay":"급여","emp.ins":"4대보험","emp.welfare":"기타 복지","emp.cond":"근무조건",
+    "emp.posting":"구인정보","emp.cur":"현재 구인 리스트","emp.past":"기존 구인 리스트",
+    "emp.head":"모집","emp.apps":"지원","emp.gatepass":"준법 통과 ✓",
+    "status.matched":"매칭완료","status.review":"검토중","status.open":"모집중","status.closing":"마감임박","status.done":"종료",
+    "att.title":"출결 캘린더","att.work":"근무","att.late":"지각","att.absent":"결근","att.off":"휴무",
+    "att.today":"오늘 · 6월 9일","att.notyet":"출근 전","att.in":"출근 체크","att.out":"퇴근 체크",
+    "att.note":"※ 출퇴근 기록은 수요처·관리자 출결 현황판에 반영됩니다 (열람 권한 분리)."
+  },
+  en:{
+    "tab.seeker":"Seek","tab.employer":"Hire",
+    "intro.tagline":"My first record in Korea · Legal part-time, for students",
+    "chip.legal":"⚖ Legal","chip.safe":"🛡 Safe","chip.multi":"🌏 Multilingual",
+    "intro.cta.seeker":"Find a job (Student)","intro.cta.employer":"Hire staff (Employer)",
+    "intro.terms":"By joining you agree to ","intro.terms2":"",
+    "auth.title":"Start with your phone number","auth.sub":"Quick sign-up — just a phone number and password.",
+    "auth.phone":"Phone number","auth.send":"Verify","auth.code":"SMS code","auth.pw":"Password",
+    "auth.agree":"Agree to Terms & Privacy Policy","auth.start":"Get started",
+    "auth.note":"※ Passport / ARC numbers are protected with encryption & access control.",
+    "seeker.verified":"✓ Verified","seeker.gate.title":"Visa work-hour limit","seeker.gate.used":"This week 12h / 20h",
+    "seeker.gate.msg":"No limit on weekends, holidays & vacation · restricted-industry posts are auto-blocked.",
+    "seeker.basic":"Basic info","seeker.extra":"Additional info","seeker.want":"Job preferences","seeker.list":"My applications",
+    "seeker.passport.file":"Passport scan attached · passport_mai.jpg","seeker.public":"Public","seeker.avail":"Edit availability",
+    "seeker.list.cur":"Active","seeker.list.past":"Past","seeker.list.start":"Starts 2026.06.10",
+    "seeker.list.cal":"Attendance","seeker.list.applied":"Applied · interview scheduled","seeker.list.review":"Rating ★4.8",
+    "f.name":"Name","f.nat":"Nationality","f.birth":"Date of birth","f.phone":"Contact","f.addr":"Address","f.passport":"Passport no.",
+    "f.school":"School","f.major":"Major","f.grade":"Year","f.topik":"Korean (TOPIK)",
+    "f.region":"Preferred area","f.jobtype":"Preferred field","f.cond":"Conditions",
+    "emp.sub":"Café · Franchise partner","emp.verified":"✓ Business verified","emp.basic":"Basic info",
+    "emp.name":"Business name","emp.bizno":"Business reg. no.","emp.addr":"Address","emp.contact":"Contact",
+    "emp.bizfile":"Business license attached · biz_license.pdf","emp.demand":"Job details","emp.task":"Tasks",
+    "emp.headcount":"Headcount","emp.pay":"Pay","emp.ins":"Insurance","emp.welfare":"Benefits","emp.cond":"Conditions",
+    "emp.posting":"Job posts","emp.cur":"Active posts","emp.past":"Past posts",
+    "emp.head":"Need","emp.apps":"Applicants","emp.gatepass":"Compliance OK ✓",
+    "status.matched":"Matched","status.review":"In review","status.open":"Open","status.closing":"Closing","status.done":"Closed",
+    "att.title":"Attendance","att.work":"Worked","att.late":"Late","att.absent":"Absent","att.off":"Off",
+    "att.today":"Today · Jun 9","att.notyet":"Not clocked in","att.in":"Clock in","att.out":"Clock out",
+    "att.note":"※ Records sync to the employer & admin attendance board (separate view permissions)."
+  }
+};
+let lang = "ko";
+function applyLang(){
+  document.documentElement.lang = lang;
+  document.querySelectorAll("[data-i18n]").forEach(el=>{
+    const k = el.getAttribute("data-i18n");
+    if(I18N[lang][k]!==undefined) el.textContent = I18N[lang][k];
+  });
+  document.getElementById("langBtn").textContent = lang==="ko" ? "KO / EN" : "EN / KO";
+}
+document.getElementById("langBtn").onclick = ()=>{ lang = lang==="ko"?"en":"ko"; applyLang(); };
+
+/* =========================================================
+   navigation
+   ========================================================= */
+let role = "seeker";
+const screens = ["intro","auth","seeker","employer","attend"];
+function show(id){ screens.forEach(s=>document.getElementById("s-"+s).classList.toggle("on", s===id)); }
+function setRoleTabs(visible){ document.getElementById("roletabs").classList.toggle("hide", !visible); }
+
+function go(screen, r){
+  if(r){ role=r; }
+  if(screen==="auth"){
+    setRoleTabs(true); syncTabs();
+    document.getElementById("authTitle").textContent =
+      lang==="ko" ? "휴대폰 번호로 시작하기" : "Start with your phone number";
+    show("auth");
+  } else if(screen==="mypage"){
+    setRoleTabs(true); syncTabs();
+    show(role);
+  } else if(screen==="attend"){
+    setRoleTabs(false); show("attend");
+  } else {
+    setRoleTabs(false); show(screen);
+  }
+  document.getElementById("backBtn").style.display = screen==="intro" ? "none":"flex";
+  document.querySelector(".screen.on").scrollTop = 0;
+}
+function enter(){ go("mypage"); }
+
+function syncTabs(){
+  document.querySelectorAll(".roletab").forEach(t=>t.classList.toggle("on", t.dataset.role===role));
+}
+document.querySelectorAll(".roletab").forEach(t=>{
+  t.onclick = ()=>{ role=t.dataset.role; syncTabs();
+    // on mypage, switch the page; on auth keep auth
+    if(document.getElementById("s-auth").classList.contains("on")) return;
+    show(role);
+  };
+});
+
+document.getElementById("backBtn").onclick = ()=>{
+  const cur = screens.find(s=>document.getElementById("s-"+s).classList.contains("on"));
+  if(cur==="attend"){ go("mypage"); }
+  else if(cur===role){ go("auth"); }
+  else { go("intro"); }
+};
+
+/* =========================================================
+   calendar (June 2026: starts on Monday)
+   ========================================================= */
+function buildCal(){
+  const grid = document.getElementById("calGrid");
+  // June 1 2026 = Monday. Pad 1 leading (Sunday) cell from May.
+  const marks = { // day -> type
+    1:"work",2:"off",3:"work",4:"work",5:"late",6:"work",7:"off",
+    8:"work",9:"work",10:"work",11:"off",12:"work",13:"work",14:"off",
+    15:"absent",16:"work",17:"work",18:"work",19:"off",20:"work"
+  };
+  let html = "";
+  // leading: Sun May31
+  html += `<div class="cell out"><span class="n">31</span></div>`;
+  for(let d=1; d<=30; d++){
+    const t = marks[d];
+    const tag = t ? `<span class="tag t-${t}">${labelFor(t)}</span>` : "";
+    const todayRing = d===9 ? "box-shadow:0 0 0 2px var(--green) inset;" : "";
+    html += `<div class="cell" style="${todayRing}"><span class="n">${d}</span>${tag}</div>`;
+  }
+  grid.innerHTML = html;
+}
+function labelFor(t){
+  const ko={work:"근무",late:"지각",absent:"결근",off:"휴무"};
+  const en={work:"W",late:"L",absent:"A",off:"Off"};
+  return (lang==="ko"?ko:en)[t];
+}
+function punch(dir){
+  const el = document.getElementById("punchState");
+  if(dir==="in"){ el.className="badge ok"; el.textContent = lang==="ko"?"출근 완료 · 18:02":"Clocked in · 18:02"; }
+  else { el.className="badge"; el.textContent = lang==="ko"?"퇴근 완료 · 22:01":"Clocked out · 22:01"; }
+}
+
+/* init */
+applyLang();
+buildCal();
+</script>
+</body>
+</html>

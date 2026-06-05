@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>ALBA inK · 관리자 콘솔</title>
+<link rel="stylesheet" href="styles.css"/>
+<style>
+  body{ background:var(--bg); }
+  .app{ display:grid; grid-template-columns:248px 1fr; min-height:100vh; }
+
+  /* ---------- sidebar ---------- */
+  .side{ background:#2F5D32; color:#e9f3e5; padding:22px 16px; position:sticky; top:0; height:100vh;
+         display:flex; flex-direction:column; gap:6px; }
+  .side .brand{ display:flex; align-items:center; gap:10px; padding:4px 8px 18px; }
+  .side .brand img{ width:34px; }
+  .side .brand b{ font-size:19px; font-weight:900; letter-spacing:-.3px; }
+  .side .brand b .ink{ color:#bfe6ad; }
+  .nav a{ display:flex; align-items:center; gap:11px; padding:11px 13px; border-radius:12px;
+          font-weight:700; font-size:14px; color:#cfe3c8; }
+  .nav a .ic{ width:20px; text-align:center; }
+  .nav a:hover{ background:rgba(255,255,255,.07); color:#fff; }
+  .nav a.on{ background:#bfe6ad; color:#234c26; }
+  .side .foot{ margin-top:auto; font-size:11.5px; color:#9bc093; padding:8px; }
+  .langbtn{ margin-top:8px; background:rgba(255,255,255,.1); color:#eaf6e6; border:1.5px solid rgba(255,255,255,.2);
+            border-radius:10px; padding:9px; font-weight:800; font-size:12.5px; }
+
+  /* ---------- main ---------- */
+  .main{ padding:26px 30px 60px; max-width:1180px; }
+  .topbar{ display:flex; align-items:center; justify-content:space-between; margin-bottom:22px; flex-wrap:wrap; gap:12px; }
+  .topbar h1{ font-size:23px; margin:0; color:var(--green-dd); font-weight:900; }
+  .topbar .sub{ font-size:13px; color:var(--ink-2); margin-top:3px; }
+  .search{ background:var(--surface-2); border:2px solid var(--line-soft); border-radius:12px; padding:10px 14px;
+           font-size:13.5px; min-width:230px; outline:none; }
+
+  .view{ display:none; }
+  .view.on{ display:block; }
+
+  /* KPI cards */
+  .kpis{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:22px; }
+  .kpi{ background:var(--surface); border:2.5px solid var(--line); border-radius:18px; padding:16px 18px; }
+  .kpi .k{ font-size:12.5px; color:var(--ink-2); font-weight:700; }
+  .kpi .v{ font-size:28px; font-weight:900; color:var(--green-dd); margin-top:4px; letter-spacing:-.5px; }
+  .kpi .d{ font-size:12px; font-weight:800; margin-top:4px; }
+  .kpi .d.up{ color:#2c8a3a; } .kpi .d.down{ color:var(--danger); }
+
+  .grid2{ display:grid; grid-template-columns:1.3fr 1fr; gap:16px; }
+  .grid2.even{ grid-template-columns:1fr 1fr; }
+  .panel{ background:var(--surface); border:2.5px solid var(--line); border-radius:18px; padding:18px; margin-bottom:16px; }
+  .panel h3{ margin:0 0 14px; font-size:15px; color:var(--green-dd); display:flex; align-items:center; gap:8px; justify-content:space-between; }
+  .panel h3 .badge{ font-weight:700; }
+
+  /* bar chart */
+  .bars{ display:flex; align-items:flex-end; gap:14px; height:170px; padding-top:8px; }
+  .bars .b{ flex:1; display:flex; flex-direction:column; align-items:center; gap:7px; height:100%; justify-content:flex-end; }
+  .bars .b .col{ width:60%; background:linear-gradient(180deg,#74C074,#4FA04F); border-radius:8px 8px 4px 4px;
+                 border:2px solid var(--green-d); position:relative; }
+  .bars .b .col span{ position:absolute; top:-19px; left:50%; transform:translateX(-50%); font-size:11px; font-weight:800; color:var(--green-dd); }
+  .bars .b small{ font-size:11.5px; color:var(--ink-2); font-weight:700; }
+
+  /* horizontal distribution */
+  .dist{ display:flex; flex-direction:column; gap:11px; }
+  .dist .r{ display:grid; grid-template-columns:78px 1fr 44px; align-items:center; gap:10px; font-size:13px; }
+  .dist .r .track{ height:13px; background:#dfd9bd; border-radius:7px; overflow:hidden; }
+  .dist .r .track > i{ display:block; height:100%; background:var(--green); border-radius:7px; }
+  .dist .r b{ text-align:right; color:var(--green-dd); font-size:12.5px; }
+
+  /* donut via conic-gradient */
+  .donut-wrap{ display:flex; align-items:center; gap:20px; }
+  .donut{ width:140px; height:140px; border-radius:50%; flex:0 0 auto;
+          background:conic-gradient(#4FA04F 0 60%, #E2A03A 60% 82%, #4F86C6 82% 93%, #D9594C 93% 100%);
+          display:flex; align-items:center; justify-content:center; }
+  .donut::after{ content:""; width:84px; height:84px; border-radius:50%; background:var(--surface); }
+  .donut .lbl{ position:absolute; text-align:center; }
+  .lg{ display:flex; flex-direction:column; gap:9px; font-size:13px; }
+  .lg .r{ display:flex; align-items:center; gap:8px; }
+  .lg .sw{ width:12px; height:12px; border-radius:3px; }
+
+  /* tables */
+  table{ width:100%; border-collapse:collapse; font-size:13.5px; }
+  th,td{ text-align:left; padding:11px 12px; border-bottom:1.5px solid var(--line-soft); }
+  th{ font-size:12px; color:var(--ink-2); font-weight:800; text-transform:uppercase; letter-spacing:.3px; }
+  tbody tr:hover{ background:rgba(47,93,50,.04); }
+  td .t{ font-weight:800; color:var(--green-dd); }
+  .filters{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px; }
+  .chip{ padding:8px 13px; border-radius:999px; border:2px solid var(--line-soft); background:var(--surface-2);
+         font-size:12.5px; font-weight:700; color:var(--green-dd); }
+  .chip.on{ background:var(--green); color:#fff; border-color:var(--green-d); }
+
+  /* attendance board mini calendar row */
+  .attrow td .days{ display:flex; gap:3px; }
+  .attrow td .days i{ width:15px; height:15px; border-radius:4px; display:inline-block; font-style:normal; }
+  .a-w{ background:#8ecb85; } .a-l{ background:#e6c068; } .a-a{ background:#d98b80; } .a-o{ background:#d8d3ba; }
+
+  .gatecard{ display:flex; align-items:center; gap:14px; padding:14px 16px; border-radius:14px;
+             border:2px solid var(--line-soft); background:var(--surface-2); margin-bottom:11px; }
+  .gatecard .big{ font-size:22px; }
+  .gatecard .grow b{ color:var(--green-dd); }
+
+  @media (max-width:980px){
+    .app{ grid-template-columns:1fr; } .side{ position:static; height:auto; flex-direction:row; flex-wrap:wrap; }
+    .side .foot{ display:none; } .kpis{ grid-template-columns:1fr 1fr; } .grid2,.grid2.even{ grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="side">
+    <div class="brand">
+      <img src="assets/ink.svg" alt=""/>
+      <b>ALBA <span class="ink">inK</span></b>
+    </div>
+    <nav class="nav" id="nav">
+      <a class="on" data-v="dash"><span class="ic">📊</span><span data-i18n="nav.dash">대시보드</span></a>
+      <a data-v="match"><span class="ic">🔗</span><span data-i18n="nav.match">매칭 현황</span></a>
+      <a data-v="jobs"><span class="ic">🏪</span><span data-i18n="nav.jobs">구인 리스트</span></a>
+      <a data-v="seekers"><span class="ic">🎓</span><span data-i18n="nav.seekers">구직 리스트</span></a>
+      <a data-v="attend"><span class="ic">🗓</span><span data-i18n="nav.attend">출결 현황판</span></a>
+      <a data-v="gate"><span class="ic">⚖</span><span data-i18n="nav.gate">준법 모니터링</span></a>
+    </nav>
+    <button class="langbtn" id="langBtn">KO / EN</button>
+    <div class="foot">ALBA inK Admin · v0.1 prototype<br/>합법 · 안전 · 다국어</div>
+  </aside>
+
+  <!-- ============ MAIN ============ -->
+  <main class="main">
+    <div class="topbar">
+      <div>
+        <h1 id="viewTitle" data-i18n="nav.dash">대시보드</h1>
+        <div class="sub" data-i18n="dash.sub">2026년 6월 · 수도권 캠퍼스 파일럿</div>
+      </div>
+      <input class="search" placeholder="🔎 학생·수요처·공고 검색" data-i18n-ph="search.ph"/>
+    </div>
+
+    <!-- ===== DASHBOARD ===== -->
+    <section class="view on" id="v-dash">
+      <div class="kpis">
+        <div class="kpi"><div class="k" data-i18n="kpi.newuser">신규 가입 (학생)</div><div class="v">2,418</div><div class="d up">▲ 12.4% <span data-i18n="kpi.wow">전주比</span></div></div>
+        <div class="kpi"><div class="k" data-i18n="kpi.emp">등록 수요처</div><div class="v">287</div><div class="d up">▲ 8 <span data-i18n="kpi.new">신규</span></div></div>
+        <div class="kpi"><div class="k" data-i18n="kpi.match">월 매칭 성사</div><div class="v">163</div><div class="d up">▲ 9.1%</div></div>
+        <div class="kpi"><div class="k" data-i18n="kpi.block">위반 공고 차단율</div><div class="v">99.2%</div><div class="d up" data-i18n="kpi.target">목표 99%</div></div>
+      </div>
+
+      <div class="grid2">
+        <div class="panel">
+          <h3><span data-i18n="dash.trend">월별 매칭 성사 추이</span><span class="badge ok">2026 H1</span></h3>
+          <div class="bars">
+            <div class="b"><div class="col" style="height:38%"><span>61</span></div><small>1月</small></div>
+            <div class="b"><div class="col" style="height:48%"><span>82</span></div><small>2月</small></div>
+            <div class="b"><div class="col" style="height:60%"><span>104</span></div><small>3月</small></div>
+            <div class="b"><div class="col" style="height:72%"><span>121</span></div><small>4月</small></div>
+            <div class="b"><div class="col" style="height:84%"><span>142</span></div><small>5月</small></div>
+            <div class="b"><div class="col" style="height:96%"><span>163</span></div><small>6月</small></div>
+          </div>
+        </div>
+        <div class="panel">
+          <h3><span data-i18n="dash.nat">국적별 학생 분포</span></h3>
+          <div class="donut-wrap">
+            <div class="donut"></div>
+            <div class="lg">
+              <div class="r"><span class="sw" style="background:#4FA04F"></span>중국 / China · 60%</div>
+              <div class="r"><span class="sw" style="background:#E2A03A"></span>베트남 / Vietnam · 22%</div>
+              <div class="r"><span class="sw" style="background:#4F86C6"></span>몽골 / Mongolia · 11%</div>
+              <div class="r"><span class="sw" style="background:#D9594C"></span>기타 / Others · 7%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid2 even">
+        <div class="panel">
+          <h3><span data-i18n="dash.region">지역별 분포</span></h3>
+          <div class="dist">
+            <div class="r"><span>서울</span><div class="track"><i style="width:78%"></i></div><b>38.9%</b></div>
+            <div class="r"><span>경기</span><div class="track"><i style="width:31%"></i></div><b>15.3%</b></div>
+            <div class="r"><span>부산</span><div class="track"><i style="width:15%"></i></div><b>7.2%</b></div>
+            <div class="r"><span>충남</span><div class="track"><i style="width:12%"></i></div><b>6.1%</b></div>
+            <div class="r"><span>대전</span><div class="track"><i style="width:11%"></i></div><b>5.7%</b></div>
+          </div>
+        </div>
+        <div class="panel">
+          <h3><span data-i18n="dash.ops">운영 지표</span></h3>
+          <div class="dist">
+            <div class="r"><span data-i18n="dash.active">활성도</span><div class="track"><i style="width:68%"></i></div><b>68%</b></div>
+            <div class="r"><span data-i18n="dash.matchrate">매칭률</span><div class="track"><i style="width:54%"></i></div><b>54%</b></div>
+            <div class="r"><span data-i18n="dash.rematch">재매칭률</span><div class="track"><i style="width:42%"></i></div><b>42%</b></div>
+            <div class="r"><span data-i18n="dash.contract">계약서 작성률</span><div class="track"><i style="width:81%"></i></div><b>81%</b></div>
+            <div class="r"><span data-i18n="dash.churn">이탈률</span><div class="track"><i style="width:14%;background:#D9594C"></i></div><b>14%</b></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== MATCHING ===== -->
+    <section class="view" id="v-match">
+      <div class="filters">
+        <span class="chip on" data-i18n="f.all">전체</span>
+        <span class="chip" data-i18n="f.current">현재</span>
+        <span class="chip" data-i18n="f.past">과거</span>
+        <span class="chip" data-i18n="f.seoul">서울</span>
+        <span class="chip" data-i18n="f.gyeonggi">경기</span>
+        <span class="chip" data-i18n="f.cafe">카페·F&B</span>
+        <span class="chip" data-i18n="f.retail">유통</span>
+      </div>
+      <div class="kpis" style="grid-template-columns:repeat(4,1fr)">
+        <div class="kpi"><div class="k" data-i18n="m.kpi.req">매칭 요청</div><div class="v">214</div></div>
+        <div class="kpi"><div class="k" data-i18n="m.kpi.itv">인터뷰 진행</div><div class="v">96</div></div>
+        <div class="kpi"><div class="k" data-i18n="m.kpi.done">매칭 완료</div><div class="v">163</div></div>
+        <div class="kpi"><div class="k" data-i18n="m.kpi.fail">매칭 취소</div><div class="v">11</div></div>
+      </div>
+      <div class="panel">
+        <h3><span data-i18n="m.table">매칭 현황</span></h3>
+        <table>
+          <thead><tr>
+            <th data-i18n="th.student">학생</th><th data-i18n="th.emp">수요처</th><th data-i18n="th.region">지역</th>
+            <th data-i18n="th.field">업종</th><th data-i18n="th.status">상태</th><th data-i18n="th.gate">준법</th>
+          </tr></thead>
+          <tbody>
+            <tr><td><span class="t">Nguyen Mai</span><div class="tiny muted">🇻🇳 한양대 · D-2</div></td><td>메가커피 왕십리역점</td><td>서울 성동</td><td>카페</td><td><span class="badge ok">매칭완료</span></td><td><span class="badge ok">통과</span></td></tr>
+            <tr><td><span class="t">Li Wei</span><div class="tiny muted">🇨🇳 경희대 · D-2</div></td><td>올리브영 성수점</td><td>서울 성동</td><td>유통</td><td><span class="badge info">인터뷰</span></td><td><span class="badge ok">통과</span></td></tr>
+            <tr><td><span class="t">Bat-Erdene</span><div class="tiny muted">🇲🇳 가천대 · D-2</div></td><td>서브웨이 가천대점</td><td>경기 성남</td><td>F&B</td><td><span class="badge info">검토중</span></td><td><span class="badge ok">통과</span></td></tr>
+            <tr><td><span class="t">Tran Hoa</span><div class="tiny muted">🇻🇳 세종대 · D-4</div></td><td>물류센터 (제한업종)</td><td>경기 광주</td><td>제조</td><td><span class="badge danger">차단됨</span></td><td><span class="badge danger">위반</span></td></tr>
+            <tr><td><span class="t">Chen Yu</span><div class="tiny muted">🇨🇳 중앙대 · D-2</div></td><td>투썸 흑석역점</td><td>서울 동작</td><td>카페</td><td><span class="badge">완료</span></td><td><span class="badge ok">통과</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ===== JOBS ===== -->
+    <section class="view" id="v-jobs">
+      <div class="filters">
+        <span class="chip on" data-i18n="j.open">모집중</span>
+        <span class="chip" data-i18n="j.closing">마감임박</span>
+        <span class="chip" data-i18n="j.done">종료</span>
+        <span class="chip" data-i18n="j.fr">프랜차이즈 제휴</span>
+      </div>
+      <div class="panel">
+        <h3><span data-i18n="j.table">구인 공고</span><span class="badge ok">187 active</span></h3>
+        <table>
+          <thead><tr>
+            <th data-i18n="th.post">공고</th><th data-i18n="th.emp">수요처</th><th data-i18n="th.period">기간</th>
+            <th data-i18n="th.apps">지원</th><th data-i18n="th.status">상태</th><th data-i18n="th.gate">준법</th>
+          </tr></thead>
+          <tbody>
+            <tr><td><span class="t">평일 저녁 바리스타</span><div class="tiny muted">시급 10,030 · 주 18h</div></td><td>메가커피 왕십리역점</td><td>06.10~상시</td><td>7</td><td><span class="badge ok">모집중</span></td><td><span class="badge ok">통과</span></td></tr>
+            <tr><td><span class="t">주말 오전 마감조</span><div class="tiny muted">시급 10,500 · 주말</div></td><td>메가커피 왕십리역점</td><td>~06.15</td><td>3</td><td><span class="badge warn">마감임박</span></td><td><span class="badge ok">통과</span></td></tr>
+            <tr><td><span class="t">매장 응대 (다국어 우대)</span><div class="tiny muted">시급 11,000</div></td><td>올리브영 성수점</td><td>06.08~상시</td><td>12</td><td><span class="badge ok">모집중</span></td><td><span class="badge ok">통과</span></td></tr>
+            <tr><td><span class="t">택배 분류 야간</span><div class="tiny muted">특수형태근로</div></td><td>○○물류</td><td>—</td><td>0</td><td><span class="badge danger">게재거부</span></td><td><span class="badge danger">제한업종</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ===== SEEKERS ===== -->
+    <section class="view" id="v-seekers">
+      <div class="filters">
+        <span class="chip on" data-i18n="s.all">전체</span>
+        <span class="chip" data-i18n="s.d2">D-2 학위</span>
+        <span class="chip" data-i18n="s.d4">D-4 어학</span>
+        <span class="chip" data-i18n="s.verified">인증완료</span>
+        <span class="chip" data-i18n="s.pending">검증대기</span>
+      </div>
+      <div class="panel">
+        <h3><span data-i18n="s.table">구직 학생</span><span class="badge ok">2,418 등록</span></h3>
+        <table>
+          <thead><tr>
+            <th data-i18n="th.student">학생</th><th data-i18n="th.school">학교/비자</th><th data-i18n="th.topik">TOPIK</th>
+            <th data-i18n="th.hours">허용시간</th><th data-i18n="th.verify">검증</th><th data-i18n="th.match">매칭</th>
+          </tr></thead>
+          <tbody>
+            <tr><td><span class="t">Nguyen Mai</span><div class="tiny muted">🇻🇳 베트남 · 경영 3학년</div></td><td>한양대 · D-2</td><td>4급</td><td>주 20h</td><td><span class="badge ok">완료</span></td><td><span class="badge ok">매칭중</span></td></tr>
+            <tr><td><span class="t">Li Wei</span><div class="tiny muted">🇨🇳 중국 · 컴퓨터 2학년</div></td><td>경희대 · D-2</td><td>5급</td><td>주 20h</td><td><span class="badge ok">완료</span></td><td><span class="badge info">지원중</span></td></tr>
+            <tr><td><span class="t">Tran Hoa</span><div class="tiny muted">🇻🇳 베트남 · 어학연수</div></td><td>세종대 · D-4</td><td>2급</td><td><span class="badge warn">6개월 미경과</span></td><td><span class="badge warn">대기</span></td><td><span class="badge">불가</span></td></tr>
+            <tr><td><span class="t">Bat-Erdene</span><div class="tiny muted">🇲🇳 몽골 · 기계 4학년</div></td><td>가천대 · D-2</td><td>3급</td><td>주 10h</td><td><span class="badge ok">완료</span></td><td><span class="badge info">검토중</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ===== ATTENDANCE BOARD ===== -->
+    <section class="view" id="v-attend">
+      <div class="panel">
+        <h3><span data-i18n="att.board">출결 현황판 · 2026년 6월</span>
+          <span class="row tiny" style="font-weight:700;color:var(--ink-2)">
+            <i class="a-w" style="width:13px;height:13px;border-radius:4px"></i>근무
+            <i class="a-l" style="width:13px;height:13px;border-radius:4px;margin-left:8px"></i>지각
+            <i class="a-a" style="width:13px;height:13px;border-radius:4px;margin-left:8px"></i>결근
+            <i class="a-o" style="width:13px;height:13px;border-radius:4px;margin-left:8px"></i>휴무
+          </span>
+        </h3>
+        <table>
+          <thead><tr>
+            <th data-i18n="th.student">학생</th><th data-i18n="th.emp">수요처</th>
+            <th data-i18n="att.week">1주차 (1–7)</th><th data-i18n="att.rate">출근율</th><th data-i18n="att.flag">누락</th><th data-i18n="att.proof">증빙</th>
+          </tr></thead>
+          <tbody>
+            <tr class="attrow"><td><span class="t">Nguyen Mai</span></td><td>메가커피 왕십리역점</td>
+              <td><div class="days"><i class="a-w"></i><i class="a-o"></i><i class="a-w"></i><i class="a-w"></i><i class="a-l"></i><i class="a-w"></i><i class="a-o"></i></div></td>
+              <td><b style="color:#2c8a3a">96%</b></td><td>—</td><td>📎 4</td></tr>
+            <tr class="attrow"><td><span class="t">Li Wei</span></td><td>올리브영 성수점</td>
+              <td><div class="days"><i class="a-w"></i><i class="a-w"></i><i class="a-o"></i><i class="a-w"></i><i class="a-w"></i><i class="a-o"></i><i class="a-w"></i></div></td>
+              <td><b style="color:#2c8a3a">100%</b></td><td>—</td><td>📎 5</td></tr>
+            <tr class="attrow"><td><span class="t">Chen Yu</span></td><td>투썸 흑석역점</td>
+              <td><div class="days"><i class="a-w"></i><i class="a-a"></i><i class="a-w"></i><i class="a-o"></i><i class="a-w"></i><i class="a-w"></i><i class="a-o"></i></div></td>
+              <td><b style="color:#8a6313">88%</b></td><td><span class="badge danger">결근 1</span></td><td>📎 3</td></tr>
+          </tbody>
+        </table>
+        <p class="tiny muted" style="margin-top:12px" data-i18n="att.permnote">※ 출결 데이터는 학생 본인 → 수요처 → 관리자 순으로 열람 권한이 분리됩니다. 주 15h/월 60h 초과 시 자동 알림.</p>
+      </div>
+    </section>
+
+    <!-- ===== COMPLIANCE GATE ===== -->
+    <section class="view" id="v-gate">
+      <div class="kpis">
+        <div class="kpi"><div class="k" data-i18n="g.scan">자동 심사 공고</div><div class="v">1,204</div></div>
+        <div class="kpi"><div class="k" data-i18n="g.blocked">차단된 위반 공고</div><div class="v" style="color:var(--danger)">98</div></div>
+        <div class="kpi"><div class="k" data-i18n="g.rate">차단율</div><div class="v">99.2%</div></div>
+        <div class="kpi"><div class="k" data-i18n="g.contract">표준계약 작성률</div><div class="v">81%</div></div>
+      </div>
+      <div class="panel">
+        <h3><span data-i18n="g.recent">최근 자동 차단 내역</span></h3>
+        <div class="gatecard"><div class="big">🏭</div><div class="grow"><b data-i18n="g.case1">제한업종 — 제조·건설</b><div class="tiny muted">○○물류 야간 분류 / 사유: E-9 업종 · TOPIK 4급 미만</div></div><span class="badge danger" data-i18n="g.block">자동차단</span></div>
+        <div class="gatecard"><div class="big">🛵</div><div class="grow"><b data-i18n="g.case2">특수형태근로 — 배달</b><div class="tiny muted">○○라이더스 / 사유: 유학생 허용 외 직종</div></div><span class="badge danger" data-i18n="g.block">자동차단</span></div>
+        <div class="gatecard"><div class="big">⏱</div><div class="grow"><b data-i18n="g.case3">허용시간 초과</b><div class="tiny muted">주 26h 공고 / 사유: D-2 학기 중 20h 초과</div></div><span class="badge warn" data-i18n="g.warn">시간 조정 요청</span></div>
+        <div class="gatecard"><div class="big">📍</div><div class="grow"><b data-i18n="g.case4">원거리 근무</b><div class="tiny muted">통근 1시간 30분 / 사유: 원거리 근무 제한</div></div><span class="badge warn" data-i18n="g.warn">시간 조정 요청</span></div>
+      </div>
+      <div class="panel">
+        <h3><span data-i18n="g.rule">준법 룰 엔진 기준 (유학생 시간제 취업)</span></h3>
+        <table>
+          <thead><tr><th data-i18n="g.th.div">구분</th><th data-i18n="g.th.term">학기 중 주중</th><th data-i18n="g.th.we">주말·공휴일·방학</th><th data-i18n="g.th.note">비고</th></tr></thead>
+          <tbody>
+            <tr><td>어학연수 (D-4)</td><td>10h 이내</td><td data-i18n="g.unlim">무제한</td><td data-i18n="g.d4note">입국 6개월 경과 필요</td></tr>
+            <tr><td>학사·전문학사 (D-2)</td><td>20h 이내</td><td data-i18n="g.unlim">무제한</td><td data-i18n="g.d2note">한국어능력 충족 시</td></tr>
+            <tr><td>석·박사 (D-2)</td><td>30h 이내</td><td data-i18n="g.unlim">무제한</td><td data-i18n="g.phdnote">논문준비 등 예외</td></tr>
+            <tr><td data-i18n="g.lowkr">한국어 미충족</td><td data-i18n="g.half">절반 이하 적용</td><td>—</td><td>TOPIK 미취득</td></tr>
+          </tbody>
+        </table>
+        <p class="tiny muted" style="margin-top:10px" data-i18n="g.legalnote">※ 위반 시 강제퇴거·출국 권고 / 3년 이하 징역 또는 3천만원 이하 벌금. 룰 엔진이 공고 단계에서 사전 차단.</p>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+/* ---------- view switching ---------- */
+const titles = {
+  dash:["대시보드","Dashboard"], match:["매칭 현황","Matching"], jobs:["구인 리스트","Job posts"],
+  seekers:["구직 리스트","Students"], attend:["출결 현황판","Attendance board"], gate:["준법 모니터링","Compliance"]
+};
+const navLinks = document.querySelectorAll("#nav a");
+navLinks.forEach(a=>a.onclick=(e)=>{
+  e.preventDefault();
+  const v=a.dataset.v;
+  navLinks.forEach(x=>x.classList.toggle("on",x===a));
+  document.querySelectorAll(".view").forEach(s=>s.classList.toggle("on", s.id==="v-"+v));
+  document.getElementById("viewTitle").textContent = titles[v][lang==="ko"?0:1];
+  window.scrollTo(0,0);
+});
+
+/* chips toggle (visual only) */
+document.querySelectorAll(".filters").forEach(f=>{
+  f.querySelectorAll(".chip").forEach(c=>c.onclick=()=>{
+    f.querySelectorAll(".chip").forEach(x=>x.classList.remove("on")); c.classList.add("on");
+  });
+});
+
+/* ---------- i18n (labels that change) ---------- */
+const T = {
+  ko:{
+    "nav.dash":"대시보드","nav.match":"매칭 현황","nav.jobs":"구인 리스트","nav.seekers":"구직 리스트",
+    "nav.attend":"출결 현황판","nav.gate":"준법 모니터링","dash.sub":"2026년 6월 · 수도권 캠퍼스 파일럿",
+    "kpi.newuser":"신규 가입 (학생)","kpi.emp":"등록 수요처","kpi.match":"월 매칭 성사","kpi.block":"위반 공고 차단율",
+    "kpi.wow":"전주比","kpi.new":"신규","kpi.target":"목표 99%",
+    "dash.trend":"월별 매칭 성사 추이","dash.nat":"국적별 학생 분포","dash.region":"지역별 분포","dash.ops":"운영 지표",
+    "dash.active":"활성도","dash.matchrate":"매칭률","dash.rematch":"재매칭률","dash.contract":"계약서 작성률","dash.churn":"이탈률",
+    "f.all":"전체","f.current":"현재","f.past":"과거","f.seoul":"서울","f.gyeonggi":"경기","f.cafe":"카페·F&B","f.retail":"유통",
+    "m.kpi.req":"매칭 요청","m.kpi.itv":"인터뷰 진행","m.kpi.done":"매칭 완료","m.kpi.fail":"매칭 취소","m.table":"매칭 현황",
+    "th.student":"학생","th.emp":"수요처","th.region":"지역","th.field":"업종","th.status":"상태","th.gate":"준법",
+    "th.post":"공고","th.period":"기간","th.apps":"지원","th.school":"학교/비자","th.topik":"TOPIK","th.hours":"허용시간",
+    "th.verify":"검증","th.match":"매칭",
+    "j.open":"모집중","j.closing":"마감임박","j.done":"종료","j.fr":"프랜차이즈 제휴","j.table":"구인 공고",
+    "s.all":"전체","s.d2":"D-2 학위","s.d4":"D-4 어학","s.verified":"인증완료","s.pending":"검증대기","s.table":"구직 학생",
+    "att.board":"출결 현황판 · 2026년 6월","att.week":"1주차 (1–7)","att.rate":"출근율","att.flag":"누락","att.proof":"증빙",
+    "att.permnote":"※ 출결 데이터는 학생 본인 → 수요처 → 관리자 순으로 열람 권한이 분리됩니다. 주 15h/월 60h 초과 시 자동 알림.",
+    "g.scan":"자동 심사 공고","g.blocked":"차단된 위반 공고","g.rate":"차단율","g.contract":"표준계약 작성률",
+    "g.recent":"최근 자동 차단 내역","g.case1":"제한업종 — 제조·건설","g.case2":"특수형태근로 — 배달",
+    "g.case3":"허용시간 초과","g.case4":"원거리 근무","g.block":"자동차단","g.warn":"시간 조정 요청",
+    "g.rule":"준법 룰 엔진 기준 (유학생 시간제 취업)","g.th.div":"구분","g.th.term":"학기 중 주중",
+    "g.th.we":"주말·공휴일·방학","g.th.note":"비고","g.unlim":"무제한","g.d4note":"입국 6개월 경과 필요",
+    "g.d2note":"한국어능력 충족 시","g.phdnote":"논문준비 등 예외","g.lowkr":"한국어 미충족","g.half":"절반 이하 적용",
+    "g.legalnote":"※ 위반 시 강제퇴거·출국 권고 / 3년 이하 징역 또는 3천만원 이하 벌금. 룰 엔진이 공고 단계에서 사전 차단.",
+    "search.ph":"🔎 학생·수요처·공고 검색"
+  },
+  en:{
+    "nav.dash":"Dashboard","nav.match":"Matching","nav.jobs":"Job posts","nav.seekers":"Students",
+    "nav.attend":"Attendance","nav.gate":"Compliance","dash.sub":"June 2026 · Capital-area campus pilot",
+    "kpi.newuser":"New students","kpi.emp":"Employers","kpi.match":"Monthly matches","kpi.block":"Violation block rate",
+    "kpi.wow":"WoW","kpi.new":"new","kpi.target":"target 99%",
+    "dash.trend":"Monthly matches trend","dash.nat":"Students by nationality","dash.region":"By region","dash.ops":"Ops metrics",
+    "dash.active":"Active","dash.matchrate":"Match rate","dash.rematch":"Re-match","dash.contract":"Contract rate","dash.churn":"Churn",
+    "f.all":"All","f.current":"Current","f.past":"Past","f.seoul":"Seoul","f.gyeonggi":"Gyeonggi","f.cafe":"Café·F&B","f.retail":"Retail",
+    "m.kpi.req":"Requests","m.kpi.itv":"Interviews","m.kpi.done":"Matched","m.kpi.fail":"Cancelled","m.table":"Matching status",
+    "th.student":"Student","th.emp":"Employer","th.region":"Region","th.field":"Field","th.status":"Status","th.gate":"Gate",
+    "th.post":"Post","th.period":"Period","th.apps":"Apps","th.school":"School/Visa","th.topik":"TOPIK","th.hours":"Hours",
+    "th.verify":"Verify","th.match":"Match",
+    "j.open":"Open","j.closing":"Closing","j.done":"Closed","j.fr":"Franchise","j.table":"Job posts",
+    "s.all":"All","s.d2":"D-2 Degree","s.d4":"D-4 Language","s.verified":"Verified","s.pending":"Pending","s.table":"Students",
+    "att.board":"Attendance board · June 2026","att.week":"Week 1 (1–7)","att.rate":"Rate","att.flag":"Flag","att.proof":"Proof",
+    "att.permnote":"※ Attendance view permissions cascade: student → employer → admin. Auto-alert when over 15h/wk or 60h/mo.",
+    "g.scan":"Posts screened","g.blocked":"Violations blocked","g.rate":"Block rate","g.contract":"Std-contract rate",
+    "g.recent":"Recent auto-blocks","g.case1":"Restricted — manufacturing","g.case2":"Special labor — delivery",
+    "g.case3":"Over hour-limit","g.case4":"Remote workplace","g.block":"Auto-blocked","g.warn":"Adjust hours",
+    "g.rule":"Compliance rule engine (student part-time)","g.th.div":"Type","g.th.term":"Term weekday",
+    "g.th.we":"Weekend·holiday·vacation","g.th.note":"Note","g.unlim":"Unlimited","g.d4note":"6 months after entry",
+    "g.d2note":"If Korean level met","g.phdnote":"Thesis exceptions","g.lowkr":"Korean not met","g.half":"≤ half applied",
+    "g.legalnote":"※ Violations risk deportation / up to 3y prison or ₩30M fine. The engine blocks at posting time.",
+    "search.ph":"🔎 Search students·employers·posts"
+  }
+};
+let lang="ko";
+function applyLang(){
+  document.documentElement.lang=lang;
+  document.querySelectorAll("[data-i18n]").forEach(el=>{
+    const k=el.getAttribute("data-i18n"); if(T[lang][k]!==undefined) el.textContent=T[lang][k];
+  });
+  document.querySelectorAll("[data-i18n-ph]").forEach(el=>{
+    const k=el.getAttribute("data-i18n-ph"); if(T[lang][k]!==undefined) el.placeholder=T[lang][k];
+  });
+  const cur=[...navLinks].find(a=>a.classList.contains("on")).dataset.v;
+  document.getElementById("viewTitle").textContent=titles[cur][lang==="ko"?0:1];
+  document.getElementById("langBtn").textContent= lang==="ko"?"KO / EN":"EN / KO";
+}
+document.getElementById("langBtn").onclick=()=>{ lang=lang==="ko"?"en":"ko"; applyLang(); };
+applyLang();
+</script>
+</body>
+</html>
