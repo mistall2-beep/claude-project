@@ -22,7 +22,10 @@ albaink/index.html   # 시작 페이지 (모바일앱 / 관리자 콘솔 진입)
 | `admin.html` | **관리자 웹/앱** — 대시보드 · 매칭 현황 · 구인/구직 리스트 · 출결 현황판 · 준법 모니터링 |
 | `start.html` | 간단 진입 런처(모바일앱/관리자 바로가기) |
 | `styles.css` | 공유 디자인 시스템 (브랜드 컬러·컴포넌트) |
-| `assets/ink.svg` | 캐릭터 ink(인코) |
+| `assets/ink.png` | 캐릭터 ink(인코) — 바리스타 포즈(메인) |
+| `assets/ink-painter.png` · `ink-delivery.png` · `ink-server.png` | 캐릭터 추가 포즈(매장·배달·서빙) |
+
+> 캐릭터 이미지는 기획 PPTX에 포함된 공식 일러스트(2048×2048 시트)에서 포즈별로 추출·배경 투명 처리·웹 최적화한 PNG입니다.
 
 ## 홍보용 홈페이지 (index.html)
 

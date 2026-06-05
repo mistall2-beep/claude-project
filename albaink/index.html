@@ -143,6 +143,12 @@
   .story p{ color:var(--ink-2); font-size:15px; line-height:1.8; margin:0 0 12px; }
   .story .quote{ font-size:17px; font-weight:800; color:var(--green-dd); border-left:4px solid var(--green); padding-left:14px; }
   @media(max-width:820px){ .story{ grid-template-columns:1fr; } }
+  .poses{ display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-top:22px; }
+  .poses figure{ margin:0; background:var(--surface-2); border:2px solid var(--line-soft); border-radius:14px;
+                 padding:12px 6px 8px; text-align:center; }
+  .poses img{ height:74px; margin:0 auto; object-fit:contain; }
+  .poses figcaption{ margin-top:6px; font-size:12px; font-weight:800; color:var(--green-dd); }
+  @media(max-width:480px){ .poses img{ height:58px; } }
 
   /* pricing */
   .price{ display:grid; grid-template-columns:1fr 1fr; gap:20px; align-items:stretch; }
@@ -180,7 +186,7 @@
 <!-- ============ NAV ============ -->
 <nav class="nav">
   <div class="container">
-    <a class="logo" href="#top"><img src="assets/ink.svg" alt=""/><span class="logo" style="font-size:21px">ALBA <span class="ink">inK</span></span></a>
+    <a class="logo" href="#top"><img src="assets/ink.png" alt=""/><span class="logo" style="font-size:21px">ALBA <span class="ink">inK</span></span></a>
     <div class="menu">
       <a href="#problem" data-i18n="nav.problem">왜 알바잉크</a>
       <a href="#features" data-i18n="nav.features">핵심 기능</a>
@@ -216,7 +222,7 @@
     <div class="mock">
       <div class="nb"></div>
       <div class="scr">
-        <div class="mhead"><img src="assets/ink.svg" style="width:26px" alt=""/><b>ALBA <span class="ink">inK</span></b></div>
+        <div class="mhead"><img src="assets/ink.png" style="width:26px" alt=""/><b>ALBA <span class="ink">inK</span></b></div>
         <div class="mtabs"><span class="on" data-i18n="tab.seek">구직</span><span data-i18n="tab.hire">구인</span></div>
         <div class="gate">
           <div style="font-size:11.5px;font-weight:800;color:var(--green-dd)">⚖ <span data-i18n="mock.gate">비자 허용 근로시간</span></div>
@@ -227,7 +233,7 @@
         <div class="mcard"><div class="ti">🛍 올리브영 성수점</div><div class="me"><span data-i18n="mock.j2">주말 · 다국어 우대 · 매칭중</span></div></div>
         <div class="mcard"><div class="ti">🥪 서브웨이 가천대점</div><div class="me"><span data-i18n="mock.j3">방학 풀타임 · 식사 제공</span></div></div>
       </div>
-      <img class="floatchar" src="assets/ink.svg" alt=""/>
+      <img class="floatchar" src="assets/ink.png" alt=""/>
     </div>
   </div>
 </header>
@@ -379,7 +385,7 @@
   <div class="container">
     <div class="story">
       <div class="charbox">
-        <img src="assets/ink.svg" alt="ink 캐릭터"/>
+        <img src="assets/ink.png" alt="ink 캐릭터"/>
         <div style="margin-top:14px;font-weight:900;color:var(--green-dd);font-size:18px">ink · 인코</div>
         <div style="color:var(--ink-2);font-size:13px;margin-top:4px" data-i18n="story.charsub">한국에 와서 첫 기록을 남기기 시작한 작은 잉크방울</div>
       </div>
@@ -389,6 +395,12 @@
         <p data-i18n="story.p1">잉크방울 캐릭터 <b>ink(인코)</b>는 “inK = in Korea”를 시각적으로 표현합니다. 동시에 만년필 잉크의 은유를 담아, 단순한 아이콘이 아니라 <b>‘한국에서 유학생의 삶을 새롭게 기록한다’</b>는 의미를 가집니다.</p>
         <p data-i18n="story.p2">유학생과 사업자를 이어주는 다리이자, 한국 생활의 동반자.</p>
         <div class="quote" data-i18n="story.q">“ALBA inK, 한국에서 나의 첫 기록.”</div>
+        <div class="poses">
+          <figure><img src="assets/ink.png" alt=""/><figcaption data-i18n="pose.cafe">카페</figcaption></figure>
+          <figure><img src="assets/ink-painter.png" alt=""/><figcaption data-i18n="pose.store">매장</figcaption></figure>
+          <figure><img src="assets/ink-delivery.png" alt=""/><figcaption data-i18n="pose.deliv">배달</figcaption></figure>
+          <figure><img src="assets/ink-server.png" alt=""/><figcaption data-i18n="pose.serve">서빙</figcaption></figure>
+        </div>
       </div>
     </div>
   </div>
@@ -441,7 +453,7 @@
 <footer>
   <div class="container">
     <div>
-      <div class="logo"><img src="assets/ink.svg" alt=""/><span class="logo" style="font-size:20px">ALBA <span class="ink">inK</span></span></div>
+      <div class="logo"><img src="assets/ink.png" alt=""/><span class="logo" style="font-size:20px">ALBA <span class="ink">inK</span></span></div>
       <p style="color:var(--ink-2);font-size:13px;max-width:280px;margin:12px 0 0" data-i18n="foot.desc">외국인 유학생 아르바이트 매칭 플랫폼 · 합법 · 안전 · 다국어</p>
     </div>
     <div class="fcol">
@@ -508,6 +520,7 @@ const T={
   "story.tag":"브랜드 스토리","story.h":"inK = in Korea","story.charsub":"한국에 와서 첫 기록을 남기기 시작한 작은 잉크방울",
   "story.p1":"잉크방울 캐릭터 <b>ink(인코)</b>는 “inK = in Korea”를 시각적으로 표현합니다. 동시에 만년필 잉크의 은유를 담아, 단순한 아이콘이 아니라 <b>‘한국에서 유학생의 삶을 새롭게 기록한다’</b>는 의미를 가집니다.",
   "story.p2":"유학생과 사업자를 이어주는 다리이자, 한국 생활의 동반자.","story.q":"“ALBA inK, 한국에서 나의 첫 기록.”",
+  "pose.cafe":"카페","pose.store":"매장","pose.deliv":"배달","pose.serve":"서빙",
   "price.tag":"요금·제휴","price.h":"구직자 무료 · 사업자 구독","price.p":"구직자에게 수수료를 부과하지 않아 착취·불법중개 논란을 차단합니다. 수익은 B2B 구독·SaaS에서 발생합니다.",
   "price.free.h":"구직자 (유학생)","price.free.v":"무료","price.free.1":"가입·프로필·비자 등록","price.free.2":"공고 탐색·사전 인터뷰","price.free.3":"전자 근로계약·출결","price.free.4":"고충 신고·졸업 비자 가이드",
   "price.b2b.h":"구인자 (사업자)","price.b2b.v":"구독 SaaS","price.b2b.1":"공고 1개·다국어 요약·검증 배지","price.b2b.2":"무제한 공고·우선노출·인터뷰 리뷰","price.b2b.3":"근태·급여·계약 통합","price.b2b.4":"본사 계약·전 지점 인력 공급","price.b2b.5":"별도 협의",
@@ -556,6 +569,7 @@ const T={
   "story.tag":"Brand story","story.h":"inK = in Korea","story.charsub":"A little ink drop starting its first record in Korea",
   "story.p1":"The ink-drop mascot <b>ink (Inko)</b> visualizes “inK = in Korea”. With a fountain-pen-ink metaphor, it isn’t just an icon — it means <b>‘recording a student’s new life in Korea’</b>.",
   "story.p2":"A bridge between students and employers, and a companion for life in Korea.","story.q":"“ALBA inK — my first record in Korea.”",
+  "pose.cafe":"Café","pose.store":"Store","pose.deliv":"Delivery","pose.serve":"Serving",
   "price.tag":"Pricing","price.h":"Free for students · subscription for employers","price.p":"No fees for job seekers — avoiding exploitation & illegal-brokerage issues. Revenue comes from B2B subscription·SaaS.",
   "price.free.h":"Job seeker (student)","price.free.v":"Free","price.free.1":"Sign-up·profile·visa registration","price.free.2":"Browse posts·pre-interview","price.free.3":"e-Contract·attendance","price.free.4":"Grievance report·grad visa guide",
   "price.b2b.h":"Employer","price.b2b.v":"Subscription SaaS","price.b2b.1":"1 post·multilingual summary·badge","price.b2b.2":"Unlimited posts·priority·interview review","price.b2b.3":"Attendance·payroll·contract suite","price.b2b.4":"HQ deal·staffing across branches","price.b2b.5":"Custom",
