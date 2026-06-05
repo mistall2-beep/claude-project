@@ -415,6 +415,8 @@ let cur="home", stack=[], lastDetail=null;
 const SUB=["auth","attend","detail"];
 const el=id=>document.getElementById(id);
 function t(k){ return (I18N[lang][k]!==undefined)?I18N[lang][k]:k; }
+/* mask identity before login (prevent direct matching/contact) */
+function maskName(n){ const p=n.trim().split(/\s+/); return /^[A-Za-z]/.test(n) ? p.map(w=>w[0]+".").join(" ") : (n[0]+"**"); }
 
 /* ===================== data ===================== */
 const POSTINGS={
@@ -540,9 +542,10 @@ function renderHome(){
   }
   const preview = Object.keys(POSTINGS).slice(0,3).map(id=>{
     const p=POSTINGS[id];
+    const emp = loggedIn ? p.emp : `🔒 ${t("mask.emp")}`;
     return `<div class="listcard" onclick="openPosting('${id}')">
       <div class="row2"><div class="t">${p.title[lang]}</div><span class="chev">›</span></div>
-      <div class="m">${p.emp} · ${p.pay[lang]} · ${p.when[lang]}</div></div>`;
+      <div class="m">${emp} · ${p.pay[lang]} · ${p.when[lang]}</div></div>`;
   }).join("");
   el("homeBody").innerHTML = card +
     `<div class="block"><div class="section-title">${t("home.popular")}</div>${preview}
@@ -554,9 +557,11 @@ function renderHireList(){
   const banner = (!loggedIn||userRole!=="student") ? `<div class="banner">${t("hire.loginbanner")}</div>` : "";
   const cards = Object.keys(POSTINGS).map(id=>{
     const p=POSTINGS[id];
+    const emp = loggedIn ? p.emp : `🔒 ${t("mask.emp")}`;
+    const rightChip = loggedIn ? `<span class="badge ok">${t("hire.gate")}</span>` : `<span class="badge warn">${t("mask.reveal")}</span>`;
     return `<div class="listcard" onclick="openPosting('${id}')">
-      <div class="row2"><div class="t">${p.title[lang]}</div><span class="badge ok">${t("hire.gate")}</span></div>
-      <div class="m">${p.emp} · ${p.region[lang]}</div>
+      <div class="row2"><div class="t">${p.title[lang]}</div>${rightChip}</div>
+      <div class="m">${emp} · ${p.region[lang]}</div>
       <div class="m">💰 ${p.pay[lang]} · 🕒 ${p.when[lang]} · ${p.field[lang]}</div></div>`;
   }).join("");
   el("hireListBody").innerHTML = banner + cards;
@@ -567,9 +572,12 @@ function renderSeekList(){
   const banner = (!loggedIn||userRole!=="employer") ? `<div class="banner">${t("seek.loginbanner")}</div>` : "";
   const cards = Object.keys(STUDENTS).map(id=>{
     const s=STUDENTS[id];
+    const nm = loggedIn ? s.name : maskName(s.name);
+    const sch = loggedIn ? s.school : `🔒 ${t("mask.school")}`;
+    const rightChip = loggedIn ? `<span class="chev">›</span>` : `<span class="badge warn">${t("mask.reveal")}</span>`;
     return `<div class="listcard" onclick="openSeekerProfile('${id}')">
-      <div class="row2"><div class="t">${s.flag} ${s.name}</div><span class="chev">›</span></div>
-      <div class="m">${s.school} · ${s.visa} · ${s.major[lang]} · TOPIK ${s.topik}</div>
+      <div class="row2"><div class="t">${s.flag} ${nm}</div>${rightChip}</div>
+      <div class="m">${sch} · ${s.visa} · ${s.major[lang]} · TOPIK ${s.topik}</div>
       <div class="m">🎯 ${s.want[lang]}</div></div>`;
   }).join("");
   el("seekListBody").innerHTML = banner + cards;
@@ -599,11 +607,14 @@ function openPosting(id){
 }
 function renderPosting(id){
   const j=POSTINGS[id]; const canApply = loggedIn && userRole==="student";
+  const emp = loggedIn ? j.emp : `🔒 ${t("mask.emp")}`;
+  const lockBanner = loggedIn ? "" : `<div class="banner">${t("mask.locked")}</div>`;
   el("detailBody").innerHTML = `
     <div class="section-title">${t2(JL.postTitle)}</div>
+    ${lockBanner}
     <div class="card soft">
       <div class="between"><div class="t" style="font-size:17px">${j.title[lang]}</div><span class="badge ok">${t("hire.gate")}</span></div>
-      <div class="m" style="margin-top:5px">🏪 ${j.emp} · 📍 ${j.region[lang]}</div>
+      <div class="m" style="margin-top:5px">🏪 ${emp} · 📍 ${j.region[lang]}</div>
     </div>
     <div class="jd-facts" style="margin-top:14px">
       <div class="jd-fact"><div class="k">${t2(JL.pay)}</div><div class="v">${j.pay[lang]}</div></div>
@@ -624,12 +635,16 @@ function openSeekerProfile(id){
 }
 function renderSeekerProfile(id){
   const s=STUDENTS[id]; const canPropose = loggedIn && userRole==="employer";
+  const nm = loggedIn ? s.name : maskName(s.name);
+  const sch = loggedIn ? s.school : `🔒 ${t("mask.school")}`;
+  const lockBanner = loggedIn ? "" : `<div class="banner">${t("mask.locked")}</div>`;
   el("detailBody").innerHTML = `
     <div class="section-title">${t2(JL.seekerTitle)}</div>
-    <div class="card soft"><div class="between"><div class="t" style="font-size:17px">${s.flag} ${s.name}</div><span class="badge ok">✓ ${t("seeker.verified")}</span></div>
-      <div class="m" style="margin-top:5px">${s.school} · ${s.visa}</div></div>
+    ${lockBanner}
+    <div class="card soft"><div class="between"><div class="t" style="font-size:17px">${s.flag} ${nm}</div><span class="badge ok">✓ ${t("seeker.verified")}</span></div>
+      <div class="m" style="margin-top:5px">${sch} · ${s.visa}</div></div>
     <div class="jd-facts" style="margin-top:14px">
-      <div class="jd-fact"><div class="k">${t2(JL.school)}</div><div class="v" style="font-size:13px">${s.school} · ${s.visa}</div></div>
+      <div class="jd-fact"><div class="k">${t2(JL.school)}</div><div class="v" style="font-size:13px">${sch} · ${s.visa}</div></div>
       <div class="jd-fact"><div class="k">${t("f.major")}</div><div class="v" style="font-size:13px">${s.major[lang]}</div></div>
       <div class="jd-fact"><div class="k">TOPIK</div><div class="v">${s.topik}</div></div>
       <div class="jd-fact"><div class="k">${t2(JL.want)}</div><div class="v" style="font-size:12.5px">${s.want[lang]}</div></div>
@@ -701,6 +716,7 @@ const I18N = {
     "auth.note":"※ 여권번호·외국인등록번호 등 민감정보는 암호화·접근통제로 보호됩니다.",
     "hire.title":"구인 공고","hire.loginbanner":"🔒 로그인(학생)하면 바로 지원할 수 있어요","hire.gate":"준법 통과",
     "seek.title":"구직자 리스트","seek.loginbanner":"🔒 로그인(업체)하면 채용 제안을 보낼 수 있어요",
+    "mask.emp":"업체명 비공개","mask.school":"학교 비공개","mask.reveal":"로그인 후 공개","mask.locked":"🔒 로그인하면 업체·학교·연락처 등 전체 정보를 볼 수 있어요 (직접 매칭은 로그인 후 가능)",
     "seeker.verified":"인증완료","seeker.gate.title":"비자 허용 근로시간","seeker.gate.used":"이번 주 12h / 20h",
     "seeker.gate.msg":"주말·공휴일·방학은 시간 제한 없음 · 제한업종 공고는 자동 차단됩니다.",
     "seeker.basic":"기본정보","seeker.extra":"추가정보","seeker.want":"구직정보","seeker.list":"구직 리스트",
@@ -730,6 +746,7 @@ const I18N = {
     "auth.note":"※ Passport / ARC numbers are protected with encryption & access control.",
     "hire.title":"Job posts","hire.loginbanner":"🔒 Log in as a student to apply instantly","hire.gate":"Compliant",
     "seek.title":"Students","seek.loginbanner":"🔒 Log in as a business to send offers",
+    "mask.emp":"Employer hidden","mask.school":"School hidden","mask.reveal":"Unlock after login","mask.locked":"🔒 Log in to view full details — employer, school, contact (direct matching after login)",
     "seeker.verified":"Verified","seeker.gate.title":"Visa work-hour limit","seeker.gate.used":"This week 12h / 20h",
     "seeker.gate.msg":"No limit on weekends, holidays & vacation · restricted-industry posts auto-blocked.",
     "seeker.basic":"Basic info","seeker.extra":"Additional info","seeker.want":"Job preferences","seeker.list":"My applications",
