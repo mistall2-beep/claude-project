@@ -47,6 +47,9 @@
   .intro h1{ font-size:40px; margin:4px 0 0; }
   .intro .tagline{ color:var(--ink-2); font-size:14px; margin:8px 0 22px; }
   .intro .chips{ display:flex; gap:7px; justify-content:center; flex-wrap:wrap; margin-bottom:26px; }
+  .intro-hint{ font-size:14px; color:var(--ink-2); background:var(--surface-2); border:2px dashed var(--line-soft);
+               border-radius:14px; padding:14px 16px; width:100%; text-align:center; }
+  .intro-hint b{ color:var(--green-dd); }
   .terms{ margin-top:auto; padding-top:22px; font-size:11.5px; color:var(--ink-3); }
   .terms a{ text-decoration:underline; }
 
@@ -128,8 +131,8 @@
     <button class="iconbtn lang" id="langBtn" title="언어 전환">KO / EN</button>
   </div>
 
-  <!-- role tabs only shown on auth/mypage context -->
-  <div class="roletabs hide" id="roletabs">
+  <!-- role tabs: shown on intro / auth / mypage -->
+  <div class="roletabs" id="roletabs">
     <button class="roletab on" data-role="seeker" data-i18n="tab.seeker">구직</button>
     <button class="roletab" data-role="employer" data-i18n="tab.employer">구인</button>
   </div>
@@ -147,14 +150,7 @@
       <span class="badge" data-i18n="chip.multi">🌏 다국어</span>
     </div>
 
-    <div style="width:100%; display:flex; flex-direction:column; gap:12px;">
-      <button class="btn primary block" onclick="go('auth','seeker')">
-        🎓 <span data-i18n="intro.cta.seeker">구직 — 일자리 찾기</span>
-      </button>
-      <button class="btn block" onclick="go('auth','employer')">
-        🏪 <span data-i18n="intro.cta.employer">구인 — 인력 구하기</span>
-      </button>
-    </div>
+    <div class="intro-hint" data-i18n="intro.choose">상단에서 <b>구직</b> 또는 <b>구인</b>을 선택해 시작하세요</div>
 
     <div class="terms">
       <span data-i18n="intro.terms">가입 시 </span>
@@ -256,24 +252,24 @@
     <div class="block">
       <div class="section-title" data-i18n="seeker.list">구직 리스트</div>
       <p class="tiny muted" style="margin:-6px 0 8px" data-i18n="seeker.list.cur">현재 구직</p>
-      <div class="li">
+      <div class="li click" onclick="openSeekerJob('mega')">
         <div class="between">
           <div class="t">메가커피 왕십리역점</div>
-          <span class="badge ok" data-i18n="status.matched">매칭완료</span>
+          <div class="row" style="gap:7px"><span class="badge ok" data-i18n="status.matched">매칭완료</span><span class="chev">›</span></div>
         </div>
         <div class="m">평일 18:00–22:00 · 시급 10,030원 · <span data-i18n="seeker.list.start">2026.06.10 시작</span></div>
-        <button class="btn sm" style="margin-top:9px" onclick="go('attend')">📅 <span data-i18n="seeker.list.cal">출결 캘린더</span></button>
+        <button class="btn sm" style="margin-top:9px" onclick="event.stopPropagation();go('attend')">📅 <span data-i18n="seeker.list.cal">출결 캘린더</span></button>
       </div>
-      <div class="li">
+      <div class="li click" onclick="openSeekerJob('olive')">
         <div class="between">
           <div class="t">올리브영 성수점</div>
-          <span class="badge info" data-i18n="status.review">검토중</span>
+          <div class="row" style="gap:7px"><span class="badge info" data-i18n="status.review">검토중</span><span class="chev">›</span></div>
         </div>
         <div class="m">주말 11:00–17:00 · <span data-i18n="seeker.list.applied">지원함 · 인터뷰 예정</span></div>
       </div>
       <p class="tiny muted" style="margin:14px 0 8px" data-i18n="seeker.list.past">기존 구직</p>
-      <div class="li">
-        <div class="between"><div class="t">투썸플레이스 건대점</div><span class="badge">완료</span></div>
+      <div class="li click" onclick="openSeekerJob('twosome')">
+        <div class="between"><div class="t">투썸플레이스 건대점</div><div class="row" style="gap:7px"><span class="badge">완료</span><span class="chev">›</span></div></div>
         <div class="m">2025.09 ~ 2026.02 · <span data-i18n="seeker.list.review">평점 ★4.8</span></div>
       </div>
     </div>
@@ -395,6 +391,7 @@ const I18N = {
     "intro.tagline":"한국에서 나의 첫 기록 · 유학생 전용 합법 알바",
     "chip.legal":"⚖ 준법","chip.safe":"🛡 안전","chip.multi":"🌏 다국어",
     "intro.cta.seeker":"구직 — 일자리 찾기","intro.cta.employer":"구인 — 인력 구하기",
+    "intro.choose":"상단에서 <b>구직</b> 또는 <b>구인</b>을 선택해 시작하세요",
     "intro.terms":"가입 시 ","intro.terms2":" 에 동의합니다",
     "auth.title":"휴대폰 번호로 시작하기","auth.sub":"간편 가입 — 휴대폰 번호와 비밀번호만 있으면 됩니다.",
     "auth.phone":"휴대폰 번호","auth.send":"인증","auth.code":"인증번호 (SMS)","auth.pw":"비밀번호",
@@ -425,6 +422,7 @@ const I18N = {
     "intro.tagline":"My first record in Korea · Legal part-time, for students",
     "chip.legal":"⚖ Legal","chip.safe":"🛡 Safe","chip.multi":"🌏 Multilingual",
     "intro.cta.seeker":"Find a job (Student)","intro.cta.employer":"Hire staff (Employer)",
+    "intro.choose":"Choose <b>Seek</b> or <b>Hire</b> above to start",
     "intro.terms":"By joining you agree to ","intro.terms2":"",
     "auth.title":"Start with your phone number","auth.sub":"Quick sign-up — just a phone number and password.",
     "auth.phone":"Phone number","auth.send":"Verify","auth.code":"SMS code","auth.pw":"Password",
@@ -456,13 +454,14 @@ function applyLang(){
   document.documentElement.lang = lang;
   document.querySelectorAll("[data-i18n]").forEach(el=>{
     const k = el.getAttribute("data-i18n");
-    if(I18N[lang][k]!==undefined) el.textContent = I18N[lang][k];
+    const v = I18N[lang][k];
+    if(v!==undefined){ if(v.indexOf("<")>-1) el.innerHTML = v; else el.textContent = v; }
   });
   document.getElementById("langBtn").textContent = lang==="ko" ? "KO / EN" : "EN / KO";
 }
 document.getElementById("langBtn").onclick = ()=>{
   lang = lang==="ko"?"en":"ko"; applyLang();
-  if(document.getElementById("s-jobdetail").classList.contains("on")) renderJob();
+  if(document.getElementById("s-jobdetail").classList.contains("on")){ detailMode==="seeker" ? renderSeekerJob() : renderJob(); }
 };
 
 /* =========================================================
@@ -485,6 +484,8 @@ function go(screen, r){
     show(role);
   } else if(screen==="attend"){
     setRoleTabs(false); show("attend");
+  } else if(screen==="intro"){
+    setRoleTabs(true); syncTabs(); show("intro");
   } else {
     setRoleTabs(false); show(screen);
   }
@@ -498,9 +499,10 @@ function syncTabs(){
 }
 document.querySelectorAll(".roletab").forEach(t=>{
   t.onclick = ()=>{ role=t.dataset.role; syncTabs();
-    // on mypage, switch the page; on auth keep auth
-    if(document.getElementById("s-auth").classList.contains("on")) return;
-    show(role);
+    const cur = screens.find(s=>document.getElementById("s-"+s).classList.contains("on"));
+    if(cur==="intro"){ go("auth", role); }      // from intro → proceed to sign-up
+    else if(cur==="auth"){ /* stay on auth, just switch role */ }
+    else { show(role); }                         // on mypage → switch page
   };
 });
 
@@ -559,10 +561,75 @@ const JL = {
   gateDesc:{ko:"비자 · 허용시간 · 업종 자동 검증 완료 · 유학생 합법 근무 가능",en:"Visa · hours · industry auto-verified · legal for students"},
   tasks:{ko:"업무 내용",en:"Tasks"}, cond:{ko:"근무조건",en:"Conditions"}, welfare:{ko:"복지",en:"Benefits"},
   applicantsT:{ko:"지원자",en:"Applicants"}, ppl:{ko:"명",en:""},
-  edit:{ko:"공고 수정",en:"Edit posting"}, viewAll:{ko:"지원자 전체보기",en:"View all applicants"}
+  edit:{ko:"공고 수정",en:"Edit posting"}, viewAll:{ko:"지원자 전체보기",en:"View all applicants"},
+  /* seeker-facing labels */
+  myjobTitle:{ko:"내 알바 상세",en:"My job detail"}, empinfo:{ko:"수요처 정보",en:"Employer"},
+  myjob:{ko:"내 근무",en:"My shift"}, type:{ko:"업종",en:"Field"}, region:{ko:"위치",en:"Location"},
+  role:{ko:"담당",en:"Role"}, start:{ko:"시작",en:"Start"}, status:{ko:"상태",en:"Status"},
+  contract:{ko:"전자 근로계약 보기",en:"View e-contract"}, interview:{ko:"인터뷰 일정 확인",en:"Interview schedule"},
+  calBtn:{ko:"출결 캘린더",en:"Attendance"}, rating:{ko:"평점",en:"Rating"}, appliedNote:{ko:"지원 완료 · 인터뷰 예정",en:"Applied · interview scheduled"}
 };
-let currentJob = null;
-function openJob(id){ currentJob = id; renderJob(); go("jobdetail"); }
+let currentJob = null, currentSeekerJob = null, detailMode = null;
+function openJob(id){ detailMode="emp"; currentJob = id; renderJob(); go("jobdetail"); }
+
+/* ----- seeker-facing job / employer detail ----- */
+const SEEKER_JOBS = {
+  mega:{ emp:{ko:"메가커피 왕십리역점",en:"Mega Coffee Wangsimni"}, type:{ko:"카페 · 프랜차이즈 제휴",en:"Café · Franchise"},
+    region:{ko:"서울 성동구 왕십리로 410",en:"Wangsimni, Seongdong, Seoul"},
+    role:{ko:"평일 저녁 바리스타",en:"Weekday Evening Barista"}, status:{cls:"ok",ko:"매칭완료",en:"Matched"},
+    pay:{ko:"시급 10,030원",en:"₩10,030 / hr"}, when:{ko:"평일(월·화·목·금) 18:00–22:00",en:"Weekdays 18:00–22:00"}, start:{ko:"2026.06.10",en:"2026.06.10"},
+    tasks:{ko:["음료 제조","매장 응대","마감 정리"],en:["Drink prep","Customer service","Closing"]},
+    welfare:{ko:"식사 제공 · 음료 무료 · 4대보험",en:"Meals · free drinks · insurance"}, contract:true, attend:true },
+  olive:{ emp:{ko:"올리브영 성수점",en:"Olive Young Seongsu"}, type:{ko:"유통 · 헬스&뷰티",en:"Retail · H&B"},
+    region:{ko:"서울 성동구 성수동",en:"Seongsu, Seongdong, Seoul"},
+    role:{ko:"주말 매장 응대 (다국어 우대)",en:"Weekend Store Service"}, status:{cls:"info",ko:"검토중",en:"In review"},
+    pay:{ko:"시급 11,000원",en:"₩11,000 / hr"}, when:{ko:"주말 11:00–17:00",en:"Weekends 11:00–17:00"}, start:{ko:"미정",en:"TBD"},
+    tasks:{ko:["고객 응대","상품 정리","다국어 안내"],en:["Customer service","Stocking","Multilingual help"]},
+    welfare:{ko:"직원 할인 · 교통비",en:"Staff discount · transport"}, contract:false, attend:false, review:true },
+  twosome:{ emp:{ko:"투썸플레이스 건대점",en:"A Twosome Place Konkuk"}, type:{ko:"카페 · 프랜차이즈",en:"Café · Franchise"},
+    region:{ko:"서울 광진구 화양동",en:"Hwayang, Gwangjin, Seoul"},
+    role:{ko:"디저트·바리스타",en:"Dessert·Barista"}, status:{cls:"",ko:"완료",en:"Done"},
+    pay:{ko:"시급 9,860원",en:"₩9,860 / hr"}, when:{ko:"2025.09 ~ 2026.02",en:"2025.09 ~ 2026.02"}, start:{ko:"종료",en:"Ended"},
+    tasks:{ko:["디저트 제조","음료 제조","마감"],en:["Dessert","Drinks","Closing"]},
+    welfare:{ko:"평점 ★4.8 · 재고용 우대",en:"Rating ★4.8 · rehire priority"}, contract:false, attend:false, past:true }
+};
+function openSeekerJob(id){ detailMode="seeker"; currentSeekerJob = id; renderSeekerJob(); go("jobdetail"); }
+function renderSeekerJob(){
+  const j = SEEKER_JOBS[currentSeekerJob]; if(!j) return;
+  const T = o => o[lang];
+  const facts = [["role",j.role],["when",j.when],["pay",j.pay],["start",j.start]];
+  const actions = [];
+  if(j.attend) actions.push(`<button class="btn primary grow" onclick="go('attend')">📅 ${T(JL.calBtn)}</button>`);
+  if(j.contract) actions.push(`<button class="btn grow" onclick="alert('${T(JL.contract)}')">📝 ${T(JL.contract)}</button>`);
+  if(j.review) actions.push(`<button class="btn grow" onclick="alert('${T(JL.interview)}')">🗣 ${T(JL.interview)}</button>`);
+  document.getElementById("jobDetailBody").innerHTML = `
+    <div class="section-title">${T(JL.myjobTitle)}</div>
+    <div class="card soft">
+      <div class="between">
+        <div class="t" style="font-size:17px">${T(j.emp)}</div>
+        <span class="badge ${j.status.cls}">${T(j.status)}</span>
+      </div>
+      <div class="m" style="margin-top:5px">🏪 ${T(j.type)} · 📍 ${T(j.region)}</div>
+    </div>
+    <div class="block" style="margin-top:14px">
+      <div class="section-title">${T(JL.myjob)}</div>
+      <div class="jd-facts">
+        ${facts.map(([k,v])=>`<div class="jd-fact"><div class="k">${T(JL[k])}</div><div class="v" style="font-size:13.5px">${T(v)}</div></div>`).join("")}
+      </div>
+    </div>
+    ${ j.past ? "" : `<div class="gate" style="margin-bottom:14px">
+      <h3>⚖ ${T(JL.gate)}</h3>
+      <div class="tiny" style="color:var(--green-d)">${T(JL.gateDesc)}</div>
+    </div>`}
+    <div class="block">
+      <div class="section-title">${T(JL.tasks)}</div>
+      ${j.tasks[lang].map(x=>`<div class="jd-task">• ${x}</div>`).join("")}
+    </div>
+    <div class="jd-facts" style="margin-bottom:6px">
+      <div class="jd-fact" style="grid-column:1/-1"><div class="k">${T(JL.welfare)}</div><div class="v" style="font-weight:600;font-size:13px;color:var(--ink)">${T(j.welfare)}</div></div>
+    </div>
+    ${ actions.length ? `<div class="row" style="gap:10px;margin-top:8px">${actions.join("")}</div>` : "" }`;
+}
 function renderJob(){
   const j = JOBS[currentJob]; if(!j) return;
   const T = o => o[lang];

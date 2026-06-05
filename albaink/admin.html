@@ -460,11 +460,13 @@ function posting(empId,postId){ return EMP[empId].postings.find(p=>p.id===postId
 /* =========================================================
    list renderers (filter-aware)
    ========================================================= */
-let matchFilter="all", jobsFilter="all", seekersFilter="all";
+let matchFilter="all", jobsFilter="all", seekersFilter="all", searchQ="";
+function hit(...parts){ if(!searchQ) return true; return parts.filter(Boolean).join(" ").toLowerCase().includes(searchQ); }
 
 function renderMatch(){
   const rows = MATCHES.filter(m=>{
-    const e=EMP[m.emp];
+    const e=EMP[m.emp], s=STU[m.stu];
+    if(!hit(s.name,s.school,s.visa,e.name,e.type[lang],e.regionTxt[lang])) return false;
     if(matchFilter==="current") return ["matched","interview","review"].includes(m.status);
     if(matchFilter==="past")    return ["done","blocked"].includes(m.status);
     if(matchFilter==="seoul")   return e.region==="seoul";
@@ -490,6 +492,8 @@ function flatPostings(){
 }
 function renderJobs(){
   const rows = flatPostings().filter(({empId,p})=>{
+    const e=EMP[empId];
+    if(!hit(p.title[lang],e.name,p.pay)) return false;
     if(jobsFilter==="fr") return EMP[empId].franchise;
     if(jobsFilter==="open") return p.status==="open";
     if(jobsFilter==="closing") return p.status==="closing";
@@ -509,6 +513,7 @@ function renderJobs(){
 function renderSeekers(){
   const rows = Object.keys(STU).filter(id=>{
     const s=STU[id];
+    if(!hit(s.name,s.school,s.major[lang],s.nat[lang],s.visa,s.topik)) return false;
     if(seekersFilter==="d2") return s.visa==="D-2";
     if(seekersFilter==="d4") return s.visa==="D-4";
     if(seekersFilter==="done") return s.verify==="done";
@@ -530,7 +535,7 @@ function renderSeekers(){
 }
 
 function renderAttend(){
-  document.getElementById("attendBody").innerHTML = ATT_ROWS.map(([stu,emp])=>{
+  document.getElementById("attendBody").innerHTML = ATT_ROWS.filter(([stu,emp])=>hit(STU[stu].name,EMP[emp].name)).map(([stu,emp])=>{
     const a=ATT[stu+"_"+emp]; const s=STU[stu]; const e=EMP[emp];
     let days=""; for(let d=1; d<=7; d++){ const t=a.marks[d]||"off"; const cls={work:"a-w",late:"a-l",absent:"a-a",off:"a-o"}[t]; days+=`<i class="${cls}"></i>`; }
     const miss = Object.values(a.marks).includes("absent") ? `<span class="badge danger">${L("absent1")}</span>` : "—";
@@ -540,7 +545,7 @@ function renderAttend(){
       <td><div class="days">${days}</div></td>
       <td><b style="color:${a.rate==='100%'?'#2c8a3a':a.rate>='90%'?'#2c8a3a':'#8a6313'}">${a.rate}</b></td>
       <td>${miss}</td><td>📎 ${proofs}</td><td class="chevcell">›</td></tr>`;
-  }).join("");
+  }).join("") || emptyRow(7);
 }
 function emptyRow(cols){ return `<tr><td colspan="${cols}" class="tiny muted" style="text-align:center;padding:24px">${L("empty")}</td></tr>`; }
 
@@ -789,6 +794,13 @@ function wireFilters(id, setter){
 wireFilters("matchFilters",  f=>{ matchFilter=f;  renderMatch();  });
 wireFilters("jobsFilters",   f=>{ jobsFilter=f;   renderJobs();   });
 wireFilters("seekersFilters",f=>{ seekersFilter=f;renderSeekers();});
+
+/* live search — filters the active list view */
+const searchEl=document.querySelector(".search");
+searchEl.oninput=()=>{
+  searchQ=searchEl.value.trim().toLowerCase();
+  if(["match","jobs","seekers","attend"].includes(currentMain)) renderFor(currentMain);
+};
 
 /* =========================================================
    i18n
