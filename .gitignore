@@ -1,3 +1,15 @@
 node_modules/
 package.json
 package-lock.json
+
+# util/package.json 은 추적(빌드 스크립트 의존성 정의)
+!pet-lifebook/util/package.json
+
+# util 빌드 임시 산출물(프레임/클립/오디오 작업 폴더)
+pet-lifebook/util/.frames/
+pet-lifebook/util/.clips/
+pet-lifebook/util/.a/
+
+# util 빌드 메타(원본 의존, 재생성 가능) — 원하면 주석 해제해 추적
+# pet-lifebook/util/manifest.json
+# pet-lifebook/util/curated.json
