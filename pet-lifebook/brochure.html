@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"/>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Pet Lifebook · 브로셔</title>
+<meta property="og:title" content="Pet Lifebook · 우리 하루의 삶"/>
+<meta property="og:description" content="흩어진 기억을 올리면, AI가 반려동물의 삶을 한 권의 이야기로 엮습니다."/>
+<meta property="og:image" content="https://mistall2-beep.github.io/claude-project/pet-lifebook/assets/haru/og-image.jpg"/>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin/>
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"/>
+<style>
+  :root{
+    --brand:#1f9e8a;--brand-deep:#0f6f60;--brand-soft:#e6f6f2;
+    --warm:#e8804a;--warm-soft:#fbeee4;--warm-deep:#a8501f;
+    --ink:#16191f;--muted:#5b6472;--line:#e8eaef;--cream:#fbf6ee;
+    --shadow:0 2px 6px rgba(20,30,25,.06),0 18px 40px rgba(20,30,25,.10);
+    --shadow-lg:0 30px 70px rgba(20,30,25,.20);
+    --maxw:1080px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;color:var(--ink);background:#eee7db;
+    font-family:"Pretendard",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+    line-height:1.6;-webkit-font-smoothing:antialiased;letter-spacing:-.01em}
+  h1,h2,h3,h4{margin:0;line-height:1.2;letter-spacing:-.02em}
+  p{margin:0}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 26px}
+  .shot{border-radius:30px;box-shadow:var(--shadow-lg);display:block;width:100%}
+  .kicker{font-size:12px;font-weight:800;color:var(--brand);letter-spacing:.12em;text-transform:uppercase}
+
+  /* hero */
+  header.hero{background:
+      radial-gradient(1100px 460px at 85% -10%, rgba(232,128,74,.30), transparent 60%),
+      radial-gradient(1000px 460px at 8% 0%, rgba(31,158,138,.32), transparent 62%),
+      linear-gradient(180deg,#0c1b1a,#0f1714);color:#fff;padding:60px 0 70px;overflow:hidden}
+  .hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:30px;align-items:center}
+  .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;color:#bfe9e0;
+    background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);padding:6px 13px;border-radius:999px}
+  .eyebrow .dot{width:7px;height:7px;border-radius:50%;background:#5fe3cc;box-shadow:0 0 0 4px rgba(95,227,204,.22)}
+  header.hero h1{font-size:clamp(30px,4.6vw,50px);font-weight:800;margin:18px 0 14px;letter-spacing:-.03em}
+  header.hero h1 .g{background:linear-gradient(90deg,#5fe3cc,#ffb27a);-webkit-background-clip:text;background-clip:text;color:transparent}
+  header.hero .sub{color:#cfe0db;font-size:clamp(15px,1.7vw,18px);max-width:520px}
+  .anti{margin-top:22px;display:flex;gap:8px;flex-wrap:wrap}
+  .anti span{font-size:12.5px;font-weight:700;padding:6px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.18)}
+  .anti .no{color:#ffb4a0;text-decoration:line-through;opacity:.85}
+  .anti .yes{color:#9af0df;background:rgba(95,227,204,.1)}
+  .hero-phone{position:relative}
+  .hero-phone img{width:78%;margin:0 auto;border-radius:34px}
+  .hero-def{margin-top:26px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);
+    border-radius:14px;padding:15px 18px;font-size:14.5px;color:#dcebe7}
+  .hero-def b{color:#fff}
+
+  /* section */
+  section{padding:64px 0}
+  .sec-head{text-align:center;max-width:720px;margin:0 auto 38px}
+  .sec-head h2{font-size:clamp(23px,3vw,32px);font-weight:800;margin-top:10px}
+  .sec-head p{color:var(--muted);margin-top:10px;font-size:15.5px}
+
+  /* multimodal band */
+  .mm{background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .mm-grid{display:grid;grid-template-columns:.95fr 1.05fr;gap:34px;align-items:center}
+  .mm-chips{display:flex;flex-wrap:wrap;gap:9px;margin-top:18px}
+  .mm-chips span{font-size:13px;font-weight:700;color:#46505f;background:var(--cream);border:1px solid var(--line);padding:8px 13px;border-radius:999px}
+  .mm-phone img{width:62%;display:block;margin:0 auto}
+
+  /* feature grid */
+  .feat{display:grid;grid-template-columns:repeat(3,1fr);gap:30px 26px}
+  .fcard{text-align:center}
+  .fcard .ph{background:linear-gradient(180deg,#fff,#f4efe6);border-radius:30px;padding:0;overflow:hidden;box-shadow:var(--shadow)}
+  .fcard img{width:100%;display:block;border-radius:30px}
+  .fcard h4{font-size:18px;font-weight:800;margin:18px 0 6px}
+  .fcard p{font-size:13.5px;color:var(--muted);line-height:1.55}
+  .fcard .tag{display:inline-block;font-size:11px;font-weight:800;color:var(--brand-deep);background:var(--brand-soft);padding:3px 10px;border-radius:999px;margin-bottom:4px}
+
+  /* desktop showcase */
+  .dweb{background:linear-gradient(180deg,#101627,#0d1320);color:#fff;border-radius:24px;padding:42px 34px;box-shadow:var(--shadow-lg)}
+  .dweb h2{color:#fff;font-size:clamp(22px,2.7vw,30px)}
+  .dweb p{color:#bcc6db;margin-top:10px;max-width:680px;font-size:15px}
+  .dweb img{width:100%;border-radius:14px;margin-top:26px;box-shadow:0 24px 60px rgba(0,0,0,.4)}
+  .dweb .pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+  .dweb .pills span{font-size:12.5px;font-weight:700;color:#cfe0db;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);padding:6px 12px;border-radius:999px}
+
+  /* value strip */
+  .vstrip{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px;margin-top:8px}
+  .vcard{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px;box-shadow:var(--shadow)}
+  .vcard .n{font-size:26px}
+  .vcard h4{font-size:16.5px;font-weight:800;margin:8px 0 6px}
+  .vcard p{font-size:13.5px;color:var(--muted)}
+
+  /* cta footer */
+  footer{background:#0f1714;color:#fff;padding:56px 0 60px;text-align:center}
+  footer h2{font-size:clamp(22px,3vw,30px);font-weight:800}
+  footer p{color:#bcd3cd;margin-top:12px}
+  footer .url{display:inline-block;margin-top:22px;font-size:15px;font-weight:800;color:#06231f;
+    background:linear-gradient(135deg,#5fe3cc,#a9f0e2);padding:13px 24px;border-radius:999px;text-decoration:none}
+  footer .small{margin-top:18px;font-size:12px;color:#7e928b}
+
+  .toolbar{position:fixed;right:18px;bottom:18px;z-index:50}
+  .toolbar button{font-family:inherit;font-size:13px;font-weight:700;color:#fff;background:var(--ink);
+    border:none;border-radius:999px;padding:12px 20px;box-shadow:var(--shadow-lg);cursor:pointer}
+
+  @media(max-width:820px){
+    .hero-grid,.mm-grid{grid-template-columns:1fr}
+    .hero-phone img{width:54%}
+    .feat{grid-template-columns:1fr 1fr}
+    .vstrip{grid-template-columns:1fr}
+  }
+  @media(max-width:520px){.feat{grid-template-columns:1fr}}
+  @media print{body{background:#fff}.toolbar{display:none}section{padding:34px 0}
+    header.hero,.dweb,footer{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow"><span class="dot"></span>Pet-specialized Memory OS · 브로셔</span>
+      <h1>흩어진 기억을 올리면,<br/><span class="g">삶의 이야기</span>로 엮입니다.</h1>
+      <p class="sub">사진 저장 앱이 아닙니다. AI가 반려동물의 삶을 <b style="color:#fff">시간·관계·감정·건강</b> 단위로 읽고, 한 권의 이야기로 구조화하는 <b style="color:#fff">Pet Lifebook</b>입니다.</p>
+      <div class="anti">
+        <span class="no">GPT wrapper</span>
+        <span class="no">포토북 생성기</span>
+        <span class="yes">⭕ Pet Memory OS</span>
+      </div>
+      <div class="hero-def">한 줄 정의 — <b>“사진을 모은 책이 아니라, 삶을 읽은 책을 만든다.”</b></div>
+    </div>
+    <div class="hero-phone"><img class="shot" src="assets/brochure/cap-home.png" alt="Pet Lifebook 홈 화면"/></div>
+  </div>
+</header>
+
+<!-- multimodal -->
+<section class="mm">
+  <div class="wrap mm-grid">
+    <div>
+      <div class="kicker">Multimodal input</div>
+      <h2 style="font-size:30px;font-weight:800;margin-top:10px">사진만이 아닙니다.<br/>삶의 자료를 함께 읽습니다.</h2>
+      <p style="color:var(--muted);margin-top:12px;font-size:15.5px">정리하지 않아도 됩니다. 그냥 올리면 AI가 날짜·장소·관계·건강 흐름을 읽어 <b>한 권의 생애</b>로 엮습니다.</p>
+      <div class="mm-chips">
+        <span>📷 사진</span><span>🎥 영상</span><span>🎙️ 음성</span><span>📝 메모</span>
+        <span>🏥 진료기록</span><span>💊 약 영수증</span><span>🗺️ 산책 GPS</span><span>💬 카톡</span>
+      </div>
+    </div>
+    <div class="mm-phone"><img class="shot" src="assets/brochure/cap-read.png" alt="AI가 읽은 하루"/></div>
+  </div>
+</section>
+
+<!-- feature grid -->
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kicker">What it builds</div>
+      <h2>한 권의 라이프북, 여러 갈래의 회상</h2>
+      <p>흩어진 자료가 살아있는 생애 타임라인·회상 지도·실제 소리·라이프북으로 엮입니다.</p>
+    </div>
+    <div class="feat">
+      <div class="fcard"><div class="ph"><img src="assets/brochure/cap-timeline.png" alt="하루의 타임라인"/></div>
+        <h4><span class="tag">TIMELINE</span><br/>하루의 타임라인</h4>
+        <p>2010–2025, 실제 사진과 함께 흐르는 생애. 각 시점에 AI가 발견한 이야기.</p></div>
+      <div class="fcard"><div class="ph"><img src="assets/brochure/cap-map.png" alt="함께 걸은 길"/></div>
+        <h4><span class="tag">WALK MAP</span><br/>삶의 온도 지도</h4>
+        <p>자주 간 곳일수록 진하게. 장소를 누르면 그날의 사진·소리·산책 영상.</p></div>
+      <div class="fcard"><div class="ph"><img src="assets/brochure/cap-voice.png" alt="함께한 말들"/></div>
+        <h4><span class="tag">VOICE</span><br/>함께한 말들</h4>
+        <p>“산책 갈까?” 가장 자주 들린 말과, 업로드된 음성에서 보존한 실제 소리.</p></div>
+      <div class="fcard"><div class="ph"><img src="assets/brochure/cap-gallery.png" alt="사진 보관함"/></div>
+        <h4><span class="tag">ALBUM</span><br/>대표 사진 보관함</h4>
+        <p>흔들림·중복·저해상도를 자동 정리해 대표 컷만. 연도별 활동 그래프까지.</p></div>
+      <div class="fcard"><div class="ph"><img src="assets/brochure/cap-video.png" alt="하루의 회상 영상"/></div>
+        <h4><span class="tag">REFLECTION</span><br/>회상 영상</h4>
+        <p>음악(피아노·숲소리·무음)을 직접 고르는 조용한 회상. 자동재생하지 않습니다.</p></div>
+      <div class="fcard"><div class="ph"><img src="assets/brochure/cap-keep.png" alt="한 권으로 남기기"/></div>
+        <h4><span class="tag">KEEP</span><br/>한 권으로 남기기</h4>
+        <p>“하루의 15년이 한 권으로 엮였습니다.” 라이프북 PDF·실물 책으로 보관.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- desktop -->
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="dweb">
+      <div class="kicker" style="color:#5fe3cc">Desktop · 펼친 책</div>
+      <h2>데스크탑에선, 한 생애를 ‘읽는 책’처럼.</h2>
+      <p>좌측 챕터 목차 · 가운데 사진과 해석의 양면 spread · 우측 Life Insight · 하단 생애 타임라인. 예전에 쌓아둔 폴더를 한번에 올려도 좋습니다.</p>
+      <div class="pills"><span>📑 챕터 목차 rail</span><span>📖 양면 spread</span><span>✨ Life Insight 패널</span><span>🕒 생애 타임라인</span></div>
+      <img src="assets/brochure/cap-desktop.png" alt="데스크탑 라이프북"/>
+    </div>
+  </div>
+</section>
+
+<!-- value -->
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kicker">Why it matters</div>
+      <h2>되살리는 게 아니라, 보존합니다</h2>
+    </div>
+    <div class="vstrip">
+      <div class="vcard"><div class="n">🧠</div><h4>멀티모달 생애 해석</h4><p>사진·음성·GPS·진료기록을 종합해 ‘삶의 패턴’을 추정. 근거와 신뢰도를 함께 보여줍니다.</p></div>
+      <div class="vcard"><div class="n">👨‍👩‍👧</div><h4>가족이 함께 쓰는 책</h4><p>엄마·아빠의 기억이 더해질수록 깊어지는 락인. AI 책이 아니라 가족 책.</p></div>
+      <div class="vcard"><div class="n">🌈</div><h4>존엄한 추모</h4><p>‘부활’이 아닌 보존·회상. 자극이 아니라 위로. 자동재생·과장 없이 조용히.</p></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <h2>우리 하루의 삶을, 한 권으로.</h2>
+    <p>흩어진 기억, 올리면 삶의 이야기로 엮입니다.</p>
+    <a class="url" href="https://mistall2-beep.github.io/claude-project/pet-lifebook/app.html">데모 체험 · …/claude-project/pet-lifebook</a>
+    <div class="small">Pet Lifebook · powered by LifeOS — 본 브로셔의 화면은 실제 반려견 ‘하루’의 자료로 구성한 데모입니다.</div>
+  </div>
+</footer>
+
+<div class="toolbar"><button onclick="window.print()">PDF로 저장 / 인쇄</button></div>
+</body>
+</html>
