@@ -2090,6 +2090,17 @@
     document.getElementById('btn-en').classList.toggle('active', lang === 'en');
     document.getElementById('btn-ko').classList.toggle('active', lang === 'ko');
     localStorage.setItem('aa-lang', lang);
+    // Refresh demo UI if a character is active
+    if (currentChar) {
+      const c = CHARS[currentChar];
+      const ko = lang === 'ko';
+      document.getElementById('chat-name').textContent = ko ? c.name_ko : c.name_en;
+      document.getElementById('chat-tag').textContent = ko ? c.tag_ko : c.tag_en;
+      document.getElementById('demo-input').placeholder = ko ? c.placeholder_ko : c.placeholder_en;
+      const sugg = document.getElementById('demo-suggested');
+      const arr = ko ? c.suggest_ko : c.suggest_en;
+      sugg.innerHTML = arr.map(s => `<button onclick="useSuggest(this)">${s}</button>`).join('');
+    }
   }
 
   // Restore language preference
