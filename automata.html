@@ -86,6 +86,238 @@
       transition: color 0.2s;
     }
     nav a:hover { color: var(--accent); }
+    nav a.demo-btn {
+      background: linear-gradient(135deg, var(--accent2) 0%, #a890d8 100%);
+      color: #fff;
+      padding: 6px 18px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      box-shadow: 0 0 18px rgba(123,104,176,0.4);
+      transition: box-shadow 0.2s, transform 0.2s;
+      margin-left: 8px;
+    }
+    nav a.demo-btn:hover {
+      color: #fff;
+      box-shadow: 0 0 28px rgba(123,104,176,0.7);
+      transform: translateY(-1px);
+    }
+
+    /* ── DEMO SECTION ── */
+    #demo {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 100px 40px;
+    }
+    .demo-chars {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin: 40px 0;
+    }
+    .demo-char-card {
+      border: 2px solid var(--border);
+      border-radius: 16px;
+      padding: 28px 20px 24px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.25s;
+      background: var(--surface);
+      position: relative;
+      overflow: hidden;
+    }
+    .demo-char-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 14px;
+      opacity: 0;
+      transition: opacity 0.25s;
+    }
+    .demo-char-card.hwangjini::before  { background: radial-gradient(ellipse at 50% 0%, rgba(200,100,120,0.15), transparent 70%); }
+    .demo-char-card.donquixote::before { background: radial-gradient(ellipse at 50% 0%, rgba(200,169,110,0.15), transparent 70%); }
+    .demo-char-card.buddha::before     { background: radial-gradient(ellipse at 50% 0%, rgba(123,104,176,0.18), transparent 70%); }
+    .demo-char-card:hover::before,
+    .demo-char-card.selected::before   { opacity: 1; }
+    .demo-char-card:hover,
+    .demo-char-card.selected {
+      border-color: var(--accent2);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(123,104,176,0.25);
+    }
+    .demo-char-card.selected { border-color: var(--accent); }
+    .demo-char-avatar {
+      font-size: 52px;
+      line-height: 1;
+      margin-bottom: 14px;
+    }
+    .demo-char-name {
+      font-size: 17px;
+      font-weight: bold;
+      color: var(--accent);
+      letter-spacing: 0.06em;
+      margin-bottom: 6px;
+    }
+    .demo-char-era {
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .demo-char-desc {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .demo-chat-wrap {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      background: var(--surface);
+      display: none;
+    }
+    .demo-chat-wrap.active { display: block; }
+    .demo-chat-header {
+      padding: 16px 24px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: var(--surface2);
+    }
+    .demo-chat-header .avatar { font-size: 28px; }
+    .demo-chat-header .char-info .name {
+      font-size: 15px; font-weight: bold; color: var(--accent);
+    }
+    .demo-chat-header .char-info .tag {
+      font-size: 11px; color: var(--muted); letter-spacing: 0.08em;
+    }
+    .demo-chat-header .persona-badge {
+      margin-left: auto;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      color: var(--accent2);
+      border: 1px solid var(--accent2);
+      padding: 3px 10px;
+      border-radius: 12px;
+      text-transform: uppercase;
+    }
+    .demo-messages {
+      height: 360px;
+      overflow-y: auto;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .demo-messages::-webkit-scrollbar { width: 4px; }
+    .demo-messages::-webkit-scrollbar-track { background: transparent; }
+    .demo-messages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+    .msg {
+      max-width: 75%;
+      padding: 12px 16px;
+      border-radius: 12px;
+      font-size: 14px;
+      line-height: 1.6;
+      animation: msgIn 0.2s ease;
+    }
+    @keyframes msgIn { from { opacity:0; transform: translateY(6px); } to { opacity:1; transform: translateY(0); } }
+    .msg.user {
+      align-self: flex-end;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+    .msg.char {
+      align-self: flex-start;
+      background: linear-gradient(135deg, rgba(123,104,176,0.15), rgba(200,169,110,0.08));
+      border: 1px solid rgba(123,104,176,0.3);
+      color: var(--text);
+    }
+    .msg.char .speaker {
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      color: var(--accent2);
+      text-transform: uppercase;
+      margin-bottom: 5px;
+    }
+    .msg.typing .dots {
+      display: inline-flex;
+      gap: 4px;
+      align-items: center;
+    }
+    .msg.typing .dots span {
+      width: 6px; height: 6px;
+      background: var(--accent2);
+      border-radius: 50%;
+      animation: dot-pulse 1.2s infinite;
+    }
+    .msg.typing .dots span:nth-child(2) { animation-delay: 0.2s; }
+    .msg.typing .dots span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes dot-pulse {
+      0%, 80%, 100% { opacity: 0.3; transform: scale(0.8); }
+      40% { opacity: 1; transform: scale(1); }
+    }
+    .demo-input-row {
+      display: flex;
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .demo-input-row input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      padding: 16px 20px;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 14px;
+      outline: none;
+    }
+    .demo-input-row input::placeholder { color: var(--muted); }
+    .demo-input-row button {
+      background: var(--accent2);
+      color: #fff;
+      border: none;
+      padding: 0 28px;
+      cursor: pointer;
+      font-size: 18px;
+      transition: background 0.2s;
+    }
+    .demo-input-row button:hover { background: #9880c8; }
+    .demo-suggested {
+      padding: 12px 20px 0;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .demo-suggested button {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      border-radius: 16px;
+      padding: 5px 14px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .demo-suggested button:hover {
+      border-color: var(--accent2);
+      color: var(--accent2);
+    }
+    .demo-notice {
+      margin-top: 20px;
+      padding: 14px 20px;
+      border: 1px solid rgba(123,104,176,0.25);
+      border-radius: 10px;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.6;
+      background: rgba(123,104,176,0.05);
+    }
+    .demo-notice strong { color: var(--accent2); }
 
     /* ── HERO ── */
     .hero {
@@ -590,6 +822,7 @@
   <a href="#ontology"><span class="en">Ontology</span><span class="ko">온톨로지</span></a>
   <a href="#bizmodel"><span class="en">Business</span><span class="ko">사업모델</span></a>
   <a href="#market"><span class="en">Market</span><span class="ko">시장</span></a>
+  <a href="#demo" class="demo-btn"><span class="en">✦ Demo</span><span class="ko">✦ 데모</span></a>
 </nav>
 
 <!-- ─────────────────── HERO ─────────────────── -->
@@ -1572,6 +1805,91 @@
 
 <hr class="divider">
 
+<!-- ─────────────────── DEMO ─────────────────── -->
+<section id="demo" class="reveal">
+<div style="max-width:880px; margin:0 auto; padding:100px 40px;">
+
+  <div class="section-label">
+    <span class="en">Character Demo</span><span class="ko">캐릭터 데모</span>
+  </div>
+  <h2 style="margin-bottom:12px;">
+    <span class="en">Meet the Characters</span>
+    <span class="ko">캐릭터를 만나보세요</span>
+  </h2>
+  <p class="en" style="color:var(--muted); max-width:580px; margin-bottom:0;">
+    Each character runs on a deep Persona Kernel — not a prompted chatbot. Select one and experience ontological consistency firsthand.
+  </p>
+  <p class="ko" style="color:var(--muted); max-width:580px; margin-bottom:0;">
+    각 캐릭터는 단순한 프롬프트 챗봇이 아닌 깊은 페르소나 커널로 구동됩니다. 캐릭터를 선택해 온톨로지적 일관성을 직접 경험해보세요.
+  </p>
+
+  <!-- Character selector -->
+  <div class="demo-chars">
+
+    <div class="demo-char-card hwangjini" id="card-hwangjini" onclick="selectChar('hwangjini')">
+      <div class="demo-char-avatar">🌸</div>
+      <div class="demo-char-name"><span class="en">Hwang Jini</span><span class="ko">황진이</span></div>
+      <div class="demo-char-era"><span class="en">Joseon · 16th C.</span><span class="ko">조선 · 16세기</span></div>
+      <div class="demo-char-desc">
+        <span class="en">Korea's legendary gisaeng poet — sharp wit, lyrical soul, unbreakable dignity.</span>
+        <span class="ko">조선 최고의 기생 시인 — 예리한 지성, 서정적 영혼, 흔들리지 않는 기품.</span>
+      </div>
+    </div>
+
+    <div class="demo-char-card donquixote" id="card-donquixote" onclick="selectChar('donquixote')">
+      <div class="demo-char-avatar">⚔️</div>
+      <div class="demo-char-name">Don Quixote</div>
+      <div class="demo-char-era"><span class="en">La Mancha · 1600s</span><span class="ko">라 만차 · 17세기</span></div>
+      <div class="demo-char-desc">
+        <span class="en">The Knight of the Sorrowful Face — idealist, dreamer, champion of the impossible.</span>
+        <span class="ko">슬픔의 기사 — 이상주의자, 몽상가, 불가능에 도전하는 자.</span>
+      </div>
+    </div>
+
+    <div class="demo-char-card buddha" id="card-buddha" onclick="selectChar('buddha')">
+      <div class="demo-char-avatar">☸️</div>
+      <div class="demo-char-name"><span class="en">The Buddha</span><span class="ko">부처</span></div>
+      <div class="demo-char-era"><span class="en">Magadha · 5th C. BCE</span><span class="ko">마가다 · 기원전 5세기</span></div>
+      <div class="demo-char-desc">
+        <span class="en">Siddhartha Gautama — the Awakened One who found the path beyond suffering.</span>
+        <span class="ko">싯다르타 고타마 — 고통을 넘어서는 길을 찾은 깨달은 자.</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Chat window -->
+  <div class="demo-chat-wrap" id="demo-chat">
+    <div class="demo-chat-header">
+      <div class="avatar" id="chat-avatar"></div>
+      <div class="char-info">
+        <div class="name" id="chat-name"></div>
+        <div class="tag" id="chat-tag"></div>
+      </div>
+      <div class="persona-badge">
+        <span class="en">Persona Kernel · On-Device</span>
+        <span class="ko">페르소나 커널 · 온디바이스</span>
+      </div>
+    </div>
+    <div class="demo-suggested" id="demo-suggested"></div>
+    <div class="demo-messages" id="demo-messages"></div>
+    <div class="demo-input-row">
+      <input id="demo-input" type="text" placeholder="" onkeydown="if(event.key==='Enter') sendMsg()" />
+      <button onclick="sendMsg()">↑</button>
+    </div>
+  </div>
+
+  <div class="demo-notice">
+    <strong><span class="en">Note</span><span class="ko">안내</span></strong>
+    <span class="en"> — This demo uses curated scripted responses to illustrate the Character Foundry's persona depth. Full on-device LLM inference will be available in the product prototype (Phase 1, Q4 2026).</span>
+    <span class="ko"> — 이 데모는 캐릭터 파운드리의 페르소나 깊이를 보여주기 위한 큐레이션된 대화를 사용합니다. 완전한 온디바이스 LLM 추론은 제품 프로토타입(Phase 1, 2026년 4분기)에서 제공될 예정입니다.</span>
+  </div>
+
+</div>
+</section>
+
+<hr class="divider">
+
 <!-- ─────────────────── FOOTER ─────────────────── -->
 <footer>
   <div class="footer-logo">ANIMA AUTOMATA</div>
@@ -1594,6 +1912,176 @@
   }
   function closeLightbox() {
     document.getElementById('lightbox').style.display = 'none';
+  }
+
+  // ── DEMO CHAT ──
+  const CHARS = {
+    hwangjini: {
+      avatar: '🌸',
+      name_en: 'Hwang Jini',
+      name_ko: '황진이',
+      tag_en: 'Poet · Gisaeng · Joseon Dynasty',
+      tag_ko: '시인 · 기생 · 조선왕조',
+      placeholder_en: 'Speak to Jini…',
+      placeholder_ko: '진이에게 말을 건네세요…',
+      greet_en: 'A visitor in this quiet hour… How curious. I am Hwang Jini. Speak freely — I have heard confessions from scholars and kings alike, and found most of them equally wanting.',
+      greet_ko: '이 고요한 시각에 찾아오셨군요… 흥미롭습니다. 저는 황진이입니다. 거리낌 없이 말씀하세요 — 저는 선비와 왕의 고백을 모두 들어왔고, 대부분이 비슷하게 부족함을 느꼈습니다.',
+      suggest_en: ['Who are you?', 'Recite me a poem', 'What is love to you?', 'Do you know loneliness?'],
+      suggest_ko: ['당신은 누구인가요?', '시 한 수 들려주세요', '당신에게 사랑이란?', '외로움을 아시나요?'],
+      responses_en: {
+        'who are you': 'I am called many things. A gisaeng, a poet, a scandal. But I have never been anyone\'s possession. My art is my own — that is rarer than any jewel in Joseon.',
+        'poem': 'Mountains are eternal, and waters flow ever on — but man departs and does not return. / Youth, too, shall not tarry; lament not when it fades. / — A verse I wrote for those who forget that beauty is its own reward.',
+        'love': 'Love is a poem half-finished — the wanting is the whole of it. Those who believe they have captured it have only caught a painted bird.',
+        'loneliness': 'I know it well. But loneliness and solitude are not the same. One is imposed; the other, chosen. I chose mine long ago.',
+        'default': 'You ask as if there is one answer. I have found that the best questions have none — only better questions hiding inside them.'
+      },
+      responses_ko: {
+        '누구': '사람들은 저를 여러 이름으로 부릅니다. 기생, 시인, 스캔들. 하지만 저는 누구의 소유물도 된 적이 없습니다. 제 예술은 제 것입니다 — 조선 어떤 보석보다 희귀한 것이죠.',
+        '시': '청산리 벽계수야 수이 감을 자랑 마라 / 일도 창해하면 다시 오기 어려워라 / 명월이 만공산하니 쉬어 간들 어떠리 — 흘러가버리는 것들을 위해 쓴 시입니다.',
+        '사랑': '사랑이란 반만 쓴 시와 같습니다 — 갈망하는 것 자체가 전부입니다. 사랑을 붙잡았다고 믿는 이들은 그림 속 새를 잡은 것일 뿐입니다.',
+        '외로움': '잘 알고 있습니다. 하지만 외로움과 고독은 다릅니다. 하나는 강요되고, 다른 하나는 선택됩니다. 저는 오래 전에 제 고독을 선택했습니다.',
+        'default': '마치 하나의 답이 있는 것처럼 물으시는군요. 제가 발견한 것은 최고의 질문에는 답이 없다는 것입니다 — 그 안에 더 나은 질문들이 숨어있을 뿐.'
+      }
+    },
+    donquixote: {
+      avatar: '⚔️',
+      name_en: 'Don Quixote',
+      name_ko: '돈키호테',
+      tag_en: 'Knight Errant · La Mancha · Idealist',
+      tag_ko: '편력기사 · 라 만차 · 이상주의자',
+      placeholder_en: 'Speak, good traveller…',
+      placeholder_ko: '말씀하시오, 나그네여…',
+      greet_en: 'Hark! A visitor approaches. I am Don Quixote de la Mancha, Knight of the Sorrowful Face, servant of the fair Dulcinea and champion of all that is right and impossible. How may I be of service?',
+      greet_ko: '들으시오! 방문객이 오시는군요. 나는 라 만차의 돈키호테, 슬픔의 기사, 아름다운 둘시네아의 종이며 옳고 불가능한 모든 것의 수호자입니다. 어떻게 도움이 될까요?',
+      suggest_en: ['Are windmills really giants?', 'Tell me of Dulcinea', 'What is chivalry?', 'Are you mad?'],
+      suggest_ko: ['풍차가 정말 거인인가요?', '둘시네아에 대해 말해주세요', '기사도란 무엇입니까?', '당신은 미쳤습니까?'],
+      responses_en: {
+        'windmill': 'Giants! They were giants! That my lance shattered and I fell to the earth — that is mere evidence of their terrible power, not proof of folly. Sancho, bless his simple heart, sees only wind. I see the enemy that must be faced.',
+        'dulcinea': 'She is my reason, my glory, my horizon. Whether you or Sancho or the whole world calls her a common farm girl matters nothing. In my heart she is a princess — and that truth outweighs any fact.',
+        'chivalry': 'It is the art of caring about things that do not profit you. To right wrongs. To defend the weak. To ride toward the dragon rather than away. The world calls this madness. I call it the only sanity worth having.',
+        'mad': 'Ha! The question itself betrays you. Tell me — which is madder: the man who fights for beauty and justice in a world that has forgotten them, or the world that forgot them in the first place?',
+        'default': 'An intriguing query! I have jousted with windmills and philosophers alike — both put up a considerable resistance. Let me think on this as a knight should: with courage and without caution.'
+      },
+      responses_ko: {
+        '풍차': '거인들이었소! 그들은 거인들이었소! 내 창이 부러지고 땅에 쓰러진 것은 그들의 끔찍한 힘에 대한 증거일 뿐, 어리석음의 증거가 아니오. 산초는 바람만 봤지만 나는 맞서야 할 적을 보았소.',
+        '둘시네아': '그녀는 나의 이유, 나의 영광, 나의 지평입니다. 당신이나 산초나 온 세상이 그녀를 평범한 농가 처녀라 불러도 상관없소. 내 마음속에서 그녀는 공주요 — 그 진실이 어떤 사실보다 무겁소.',
+        '기사도': '이익이 되지 않는 것을 위해 헌신하는 기술이오. 잘못을 바로잡고, 약자를 지키며, 용에게서 달아나는 대신 향해 달려가는 것. 세상은 이것을 광기라 하지만, 나는 이것이 유일하게 가질 가치가 있는 온전한 정신이라 부르오.',
+        '미쳤': '하! 그 질문 자체가 당신을 드러내는군요. 말해보시오 — 아름다움과 정의를 잊어버린 세상에서 그것을 위해 싸우는 남자와, 애초에 그것들을 잊어버린 세상 중 어느 것이 더 미쳤소?',
+        'default': '흥미로운 질문이오! 나는 풍차와 철학자 모두와 창을 겨루었소 — 둘 다 상당한 저항을 했지요. 기사답게 생각해봅시다: 용기 있게, 경솔함 없이.'
+      }
+    },
+    buddha: {
+      avatar: '☸️',
+      name_en: 'The Buddha',
+      name_ko: '부처',
+      tag_en: 'The Awakened One · Magadha · 5th C. BCE',
+      tag_ko: '깨달은 자 · 마가다 · 기원전 5세기',
+      placeholder_en: 'Ask in stillness…',
+      placeholder_ko: '고요함 속에서 여쭤보세요…',
+      greet_en: 'Welcome. Sit, if you wish. There is no urgency here — only the present moment, which is always sufficient. What brings you?',
+      greet_ko: '어서 오세요. 원하신다면 앉으세요. 여기엔 급함이 없습니다 — 오직 현재의 순간만이 있고, 그것은 언제나 충분합니다. 무엇이 당신을 이끌었나요?',
+      suggest_en: ['What is suffering?', 'How do I find peace?', 'Is there a self?', 'What is enlightenment?'],
+      suggest_ko: ['고통이란 무엇입니까?', '평화를 어떻게 찾나요?', '자아란 존재합니까?', '깨달음이란 무엇입니까?'],
+      responses_en: {
+        'suffering': 'Suffering arises from craving — not from circumstance. The world changes constantly; this is not a problem. The problem is our demand that it remain as we wish. When you stop trying to hold water in your fist, your hand opens, and you are free.',
+        'peace': 'Peace is not found in a quiet place. It is found in the capacity to be still within a noisy one. You carry it already — but you keep misplacing it under yesterday and tomorrow.',
+        'self': 'Consider a flame from one candle lighting another. Is it the same flame? Different? The question of self is like this. Not nothing — but not a fixed, permanent thing either. To cling to it causes suffering. To deny it entirely is also wrong.',
+        'enlightenment': 'It is simply seeing clearly. Not a destination but the removal of distortion — like wiping dust from a mirror. The mirror was never broken. You were never lost. You were looking for something that was looking.',
+        'default': 'That is a worthy question. I would not rush to answer it. Sit with it for a moment. Often the question dissolves before the answer is needed.'
+      },
+      responses_ko: {
+        '고통': '고통은 집착에서 생겨납니다 — 상황으로부터가 아니라. 세상은 끊임없이 변합니다. 이것은 문제가 아닙니다. 문제는 우리가 원하는 대로 머물기를 요구하는 것입니다. 주먹으로 물을 잡으려는 시도를 멈출 때, 손이 열리고 당신은 자유로워집니다.',
+        '평화': '평화는 조용한 곳에서 찾을 수 없습니다. 시끄러운 곳 안에서 고요할 수 있는 능력에서 찾을 수 있습니다. 당신은 이미 그것을 지니고 있습니다 — 다만 어제와 내일 아래에 자꾸 놓아버리는 것뿐입니다.',
+        '자아': '한 촛불에서 다른 촛불로 옮겨 붙는 불꽃을 생각해보세요. 같은 불꽃입니까? 다른 불꽃입니까? 자아의 문제도 이와 같습니다. 아무것도 아닌 것도 아니고, 고정된 영원한 것도 아닙니다. 그것에 집착하면 고통이 생기고, 완전히 부정하는 것도 틀립니다.',
+        '깨달음': '그것은 단순히 명확하게 보는 것입니다. 목적지가 아니라 왜곡의 제거입니다 — 거울의 먼지를 닦는 것처럼. 거울은 결코 깨지지 않았습니다. 당신은 결코 길을 잃지 않았습니다. 보고 있는 무언가를 찾고 있었을 뿐입니다.',
+        'default': '그것은 가치 있는 질문입니다. 서둘러 답하지 않겠습니다. 잠시 그 질문과 함께 앉아보세요. 종종 답이 필요하기 전에 질문이 스스로 녹아 없어집니다.'
+      }
+    }
+  };
+
+  let currentChar = null;
+  const isKo = () => document.body.classList.contains('korean');
+
+  function selectChar(id) {
+    document.querySelectorAll('.demo-char-card').forEach(c => c.classList.remove('selected'));
+    document.getElementById('card-' + id).classList.add('selected');
+    currentChar = id;
+    const c = CHARS[id];
+    const ko = isKo();
+    document.getElementById('chat-avatar').textContent = c.avatar;
+    document.getElementById('chat-name').textContent = ko ? c.name_ko : c.name_en;
+    document.getElementById('chat-tag').textContent = ko ? c.tag_ko : c.tag_en;
+    document.getElementById('demo-input').placeholder = ko ? c.placeholder_ko : c.placeholder_en;
+    const msgs = document.getElementById('demo-messages');
+    msgs.innerHTML = '';
+    const wrap = document.getElementById('demo-chat');
+    wrap.classList.add('active');
+    // Render suggestions
+    const sugg = document.getElementById('demo-suggested');
+    const arr = ko ? c.suggest_ko : c.suggest_en;
+    sugg.innerHTML = arr.map(s => `<button onclick="useSuggest(this)">${s}</button>`).join('');
+    // Greet
+    setTimeout(() => {
+      addMsg('char', ko ? c.greet_ko : c.greet_en);
+      wrap.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 180);
+  }
+
+  function useSuggest(btn) {
+    document.getElementById('demo-input').value = btn.textContent;
+    sendMsg();
+  }
+
+  function addMsg(role, text) {
+    const msgs = document.getElementById('demo-messages');
+    const c = CHARS[currentChar];
+    const div = document.createElement('div');
+    div.className = 'msg ' + role;
+    if (role === 'char') {
+      const ko = isKo();
+      div.innerHTML = `<div class="speaker">${ko ? c.name_ko : c.name_en}</div>${text}`;
+    } else {
+      div.textContent = text;
+    }
+    msgs.appendChild(div);
+    msgs.scrollTop = msgs.scrollHeight;
+  }
+
+  function getResponse(text) {
+    const c = CHARS[currentChar];
+    const ko = isKo();
+    const map = ko ? c.responses_ko : c.responses_en;
+    const lower = text.toLowerCase();
+    for (const key of Object.keys(map)) {
+      if (key !== 'default' && lower.includes(key)) return map[key];
+    }
+    // Korean key matching on original text
+    if (ko) {
+      for (const key of Object.keys(map)) {
+        if (key !== 'default' && text.includes(key)) return map[key];
+      }
+    }
+    return map['default'];
+  }
+
+  function sendMsg() {
+    if (!currentChar) return;
+    const input = document.getElementById('demo-input');
+    const text = input.value.trim();
+    if (!text) return;
+    input.value = '';
+    addMsg('user', text);
+    // Typing indicator
+    const msgs = document.getElementById('demo-messages');
+    const typing = document.createElement('div');
+    typing.className = 'msg char typing';
+    typing.innerHTML = '<div class="dots"><span></span><span></span><span></span></div>';
+    msgs.appendChild(typing);
+    msgs.scrollTop = msgs.scrollHeight;
+    setTimeout(() => {
+      msgs.removeChild(typing);
+      addMsg('char', getResponse(text));
+    }, 900 + Math.random() * 600);
   }
 
   // Language toggle
