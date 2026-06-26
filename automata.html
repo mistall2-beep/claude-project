@@ -1063,7 +1063,7 @@
     <table class="phase-table">
       <thead>
         <tr>
-          <th class="en">Dimension</th><th class="ko">구분</th>
+          <th><span class="en">Dimension</span><span class="ko">구분</span></th>
           <th>Phase 1</th>
           <th>Phase 2</th>
           <th>Phase 3</th>
@@ -1071,67 +1071,58 @@
       </thead>
       <tbody>
         <tr>
-          <td class="en" style="color:var(--text)">Method</td>
-          <td class="ko" style="color:var(--text)">방식</td>
-          <td class="en">Small Open LLM + RAG + Persona Graph (on-device)</td>
-          <td class="en">Small LLM + Character LoRA (on-device)</td>
-          <td class="en">Micro-sLLM Distillation (full on-device)</td>
+          <td style="color:var(--text)"><span class="en">Method</span><span class="ko">방식</span></td>
+          <td><span class="en">Small Open LLM + RAG + Persona Graph (on-device)</span><span class="ko">소형 오픈 LLM + RAG + Persona Graph (온디바이스)</span></td>
+          <td><span class="en">Small LLM + Character LoRA (on-device)</span><span class="ko">소형 LLM + 캐릭터 LoRA (온디바이스)</span></td>
+          <td><span class="en">Micro-sLLM Distillation (full on-device)</span><span class="ko">Micro-sLLM 증류 (완전 온디바이스)</span></td>
         </tr>
         <tr>
-          <td class="en" style="color:var(--text)">Base Model</td>
-          <td class="ko" style="color:var(--text)">베이스 모델</td>
-          <td class="en" style="color:var(--muted)">Phi-3 Mini / Gemma 3 / Qwen 2.5 / Llama 3.2</td>
-          <td class="en" style="color:var(--muted)">Same + Character LoRA adapter</td>
-          <td class="en" style="color:var(--muted)">Distilled character-native model</td>
+          <td style="color:var(--text)"><span class="en">Base Model</span><span class="ko">베이스 모델</span></td>
+          <td style="color:var(--muted)">Phi-3 Mini / Gemma 3 / Qwen 2.5 / Llama 3.2</td>
+          <td style="color:var(--muted)"><span class="en">Same + Character LoRA adapter</span><span class="ko">동일 + 캐릭터 LoRA 어댑터</span></td>
+          <td style="color:var(--muted)"><span class="en">Distilled character-native model</span><span class="ko">캐릭터 전용 증류 모델</span></td>
         </tr>
         <tr>
-          <td class="en" style="color:var(--text)">Goal</td>
-          <td class="ko" style="color:var(--text)">목적</td>
-          <td class="en">Rapid on-device validation</td>
-          <td class="en">Character depth + stability</td>
-          <td class="en">Full independence</td>
+          <td style="color:var(--text)"><span class="en">Goal</span><span class="ko">목적</span></td>
+          <td><span class="en">Rapid on-device validation</span><span class="ko">빠른 온디바이스 검증</span></td>
+          <td><span class="en">Character depth + stability</span><span class="ko">캐릭터 깊이 + 안정성</span></td>
+          <td><span class="en">Full independence</span><span class="ko">완전 독립</span></td>
         </tr>
         <tr>
-          <td class="en" style="color:var(--text)">Online Required?</td>
-          <td class="ko" style="color:var(--text)">인터넷 필요?</td>
+          <td style="color:var(--text)"><span class="en">Online Required?</span><span class="ko">인터넷 필요?</span></td>
           <td><span class="badge badge-green en">Never</span><span class="badge badge-green ko">불필요</span></td>
           <td><span class="badge badge-green en">Never</span><span class="badge badge-green ko">불필요</span></td>
           <td><span class="badge badge-green en">Never</span><span class="badge badge-green ko">불필요</span></td>
         </tr>
         <tr>
-          <td class="en" style="color:var(--text)">Cost</td>
-          <td class="ko" style="color:var(--text)">비용</td>
+          <td style="color:var(--text)"><span class="en">Cost</span><span class="ko">비용</span></td>
           <td><span class="badge badge-green en">Low</span><span class="badge badge-green ko">낮음</span></td>
           <td><span class="badge badge-yellow en">Medium</span><span class="badge badge-yellow ko">중간</span></td>
           <td><span class="badge badge-red en">High</span><span class="badge badge-red ko">높음</span></td>
         </tr>
         <tr>
-          <td class="en" style="color:var(--text)">Speed</td>
-          <td class="ko" style="color:var(--text)">속도</td>
+          <td style="color:var(--text)"><span class="en">Speed</span><span class="ko">속도</span></td>
           <td><span class="badge badge-green en">Fast</span><span class="badge badge-green ko">빠름</span></td>
           <td><span class="badge badge-yellow en">Medium</span><span class="badge badge-yellow ko">보통</span></td>
           <td><span class="badge badge-red en">Slow</span><span class="badge badge-red ko">느림</span></td>
         </tr>
         <tr>
-          <td class="en" style="color:var(--text)">Character Count</td>
-          <td class="ko" style="color:var(--text)">캐릭터 수</td>
-          <td class="en">Many possible</td>
-          <td class="en">Popular characters</td>
-          <td class="en">Top characters only</td>
+          <td style="color:var(--text)"><span class="en">Character Count</span><span class="ko">캐릭터 수</span></td>
+          <td><span class="en">Many possible</span><span class="ko">많게 가능</span></td>
+          <td><span class="en">Popular characters</span><span class="ko">인기 캐릭터 중심</span></td>
+          <td><span class="en">Top characters only</span><span class="ko">Top 캐릭터만</span></td>
         </tr>
         <tr>
-          <td class="en" style="color:var(--text)">Product Stage</td>
-          <td class="ko" style="color:var(--text)">제품 단계</td>
-          <td class="en">MVP / Demo</td>
-          <td class="en">Paid product</td>
-          <td class="en">Flagship</td>
+          <td style="color:var(--text)"><span class="en">Product Stage</span><span class="ko">제품 단계</span></td>
+          <td><span class="en">MVP / Demo</span><span class="ko">MVP / 데모</span></td>
+          <td><span class="en">Paid product</span><span class="ko">유료 제품</span></td>
+          <td><span class="en">Flagship</span><span class="ko">플래그십</span></td>
         </tr>
         <tr>
-          <td class="en" style="color:var(--text)">Moat</td>
-          <td class="ko" style="color:var(--text)">해자</td>
-          <td class="en">Design data</td>
-          <td class="en">Character adapters</td>
-          <td class="en">Independent character brain</td>
+          <td style="color:var(--text)"><span class="en">Moat</span><span class="ko">해자</span></td>
+          <td><span class="en">Design data</span><span class="ko">설계 데이터</span></td>
+          <td><span class="en">Character adapters</span><span class="ko">캐릭터 어댑터</span></td>
+          <td><span class="en">Independent character brain</span><span class="ko">독립 캐릭터 뇌</span></td>
         </tr>
       </tbody>
     </table>
@@ -1364,61 +1355,60 @@
     <table class="phase-table">
       <thead>
         <tr>
-          <th class="en">Dimension</th><th class="ko">구분</th>
-          <th class="en">Character.ai / Replika</th><th class="ko">Character.ai / Replika</th>
-          <th class="en">Generic On-Device AI</th><th class="ko">범용 온디바이스 AI</th>
-          <th style="color:var(--accent);" class="en">Anima Automata ✦</th>
-          <th style="color:var(--accent);" class="ko">Anima Automata ✦</th>
+          <th><span class="en">Dimension</span><span class="ko">구분</span></th>
+          <th>Character.ai / Replika</th>
+          <th><span class="en">Generic On-Device AI</span><span class="ko">범용 온디바이스 AI</span></th>
+          <th style="color:var(--accent);">Anima Automata ✦</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td class="en" style="color:var(--text)">Base Model</td><td class="ko" style="color:var(--text)">베이스 모델</td>
-          <td class="en">GPT-class (cloud)</td>
-          <td class="en">Small generic (e.g. GPT-4o mini)</td>
-          <td class="en" style="color:var(--accent);">Small open LLM (on-device)</td>
+          <td style="color:var(--text)"><span class="en">Base Model</span><span class="ko">베이스 모델</span></td>
+          <td><span class="en">GPT-class (cloud)</span><span class="ko">GPT급 (클라우드)</span></td>
+          <td><span class="en">Small generic (e.g. GPT-4o mini)</span><span class="ko">소형 범용 (예: GPT-4o mini)</span></td>
+          <td style="color:var(--accent);"><span class="en">Small open LLM (on-device)</span><span class="ko">소형 오픈 LLM (온디바이스)</span></td>
         </tr>
         <tr>
-          <td class="en" style="color:var(--text)">Character Layer</td><td class="ko" style="color:var(--text)">캐릭터 레이어</td>
-          <td class="en">Thin system prompt</td>
-          <td class="en">Thin system prompt</td>
-          <td class="en" style="color:var(--accent);">Deep Character OS (Persona Kernel + Memory Engine + Runtime)</td>
+          <td style="color:var(--text)"><span class="en">Character Layer</span><span class="ko">캐릭터 레이어</span></td>
+          <td><span class="en">Thin system prompt</span><span class="ko">얇은 시스템 프롬프트</span></td>
+          <td><span class="en">Thin system prompt</span><span class="ko">얇은 시스템 프롬프트</span></td>
+          <td style="color:var(--accent);"><span class="en">Deep Character OS (Persona Kernel + Memory Engine + Runtime)</span><span class="ko">깊은 캐릭터 OS (Persona Kernel + Memory Engine + Runtime)</span></td>
         </tr>
         <tr>
-          <td class="en" style="color:var(--text)">Character Quality</td><td class="ko" style="color:var(--text)">캐릭터 퀄리티</td>
+          <td style="color:var(--text)"><span class="en">Character Quality</span><span class="ko">캐릭터 퀄리티</span></td>
           <td><span class="badge badge-yellow en">Medium — generic feel</span><span class="badge badge-yellow ko">중간 — 평이함</span></td>
           <td><span class="badge badge-red en">Low — shallow persona</span><span class="badge badge-red ko">낮음 — 얇은 페르소나</span></td>
           <td><span class="badge badge-green en">High — architecturally deep</span><span class="badge badge-green ko">높음 — 아키텍처적 깊이</span></td>
         </tr>
         <tr>
-          <td class="en" style="color:var(--text)">Online Required</td><td class="ko" style="color:var(--text)">인터넷 필요</td>
+          <td style="color:var(--text)"><span class="en">Online Required</span><span class="ko">인터넷 필요</span></td>
           <td><span class="badge badge-red en">Always</span><span class="badge badge-red ko">항상</span></td>
           <td><span class="badge badge-green en">No</span><span class="badge badge-green ko">불필요</span></td>
           <td><span class="badge badge-green en">Never</span><span class="badge badge-green ko">절대 없음</span></td>
         </tr>
         <tr>
-          <td class="en" style="color:var(--text)">Memory</td><td class="ko" style="color:var(--text)">기억</td>
-          <td class="en">Session-only or cloud</td>
-          <td class="en">None / minimal</td>
-          <td class="en" style="color:var(--accent);">WORM 4-layer (Episodic → Mythic)</td>
+          <td style="color:var(--text)"><span class="en">Memory</span><span class="ko">기억</span></td>
+          <td><span class="en">Session-only or cloud</span><span class="ko">세션 한정 또는 클라우드</span></td>
+          <td><span class="en">None / minimal</span><span class="ko">없음 / 최소</span></td>
+          <td style="color:var(--accent);"><span class="en">WORM 4-layer (Episodic → Mythic)</span><span class="ko">WORM 4층 (Episodic → Mythic)</span></td>
         </tr>
         <tr>
-          <td class="en" style="color:var(--text)">Physical Presence</td><td class="ko" style="color:var(--text)">물리적 존재</td>
-          <td class="en">Screen only</td>
-          <td class="en">Screen only</td>
-          <td class="en" style="color:var(--accent);">Multi-sensor embodied Automaton</td>
+          <td style="color:var(--text)"><span class="en">Physical Presence</span><span class="ko">물리적 존재</span></td>
+          <td><span class="en">Screen only</span><span class="ko">화면뿐</span></td>
+          <td><span class="en">Screen only</span><span class="ko">화면뿐</span></td>
+          <td style="color:var(--accent);"><span class="en">Multi-sensor embodied Automaton</span><span class="ko">다중 센서 체화 Automaton</span></td>
         </tr>
         <tr>
-          <td class="en" style="color:var(--text)">Privacy</td><td class="ko" style="color:var(--text)">프라이버시</td>
+          <td style="color:var(--text)"><span class="en">Privacy</span><span class="ko">프라이버시</span></td>
           <td><span class="badge badge-red en">Cloud data</span><span class="badge badge-red ko">클라우드 저장</span></td>
           <td><span class="badge badge-yellow en">Partial</span><span class="badge badge-yellow ko">부분적</span></td>
           <td><span class="badge badge-green en">100% local</span><span class="badge badge-green ko">100% 로컬</span></td>
         </tr>
         <tr>
-          <td class="en" style="color:var(--text)">Moat</td><td class="ko" style="color:var(--text)">해자</td>
-          <td class="en">Scale / data / brand</td>
-          <td class="en">None</td>
-          <td class="en" style="color:var(--accent);">Character Architecture + Physical Form + Accumulated Memory</td>
+          <td style="color:var(--text)"><span class="en">Moat</span><span class="ko">해자</span></td>
+          <td><span class="en">Scale / data / brand</span><span class="ko">규모 / 데이터 / 브랜드</span></td>
+          <td><span class="en">None</span><span class="ko">없음</span></td>
+          <td style="color:var(--accent);"><span class="en">Character Architecture + Physical Form + Accumulated Memory</span><span class="ko">캐릭터 아키텍처 + 물리적 형태 + 축적된 기억</span></td>
         </tr>
       </tbody>
     </table>
