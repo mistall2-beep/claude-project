@@ -4,27 +4,30 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Anima Automata — Investor Briefing</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Serif+KR:wght@400;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #0a0a0f;
-      --surface: #12121a;
-      --surface2: #1a1a26;
-      --border: #2a2a40;
-      --accent: #c8a96e;
-      --accent2: #7b68b0;
-      --text: #e8e6f0;
-      --muted: #888899;
-      --green: #5fba8a;
-      --red: #e07070;
+      --bg: #f8f7f4;
+      --surface: #ffffff;
+      --surface2: #f0ede8;
+      --border: #e0dbd2;
+      --accent: #9b7d3f;
+      --accent2: #5c4e8a;
+      --text: #1a1814;
+      --muted: #6b6560;
+      --green: #2d7a55;
+      --red: #b84040;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
       background: var(--bg);
       color: var(--text);
-      font-family: 'Georgia', serif;
-      font-size: 16px;
-      line-height: 1.7;
+      font-family: 'Inter', 'Noto Serif KR', sans-serif;
+      font-size: 17px;
+      line-height: 1.75;
     }
 
     /* ── LANG TOGGLE ── */
@@ -40,7 +43,7 @@
       backdrop-filter: blur(12px);
     }
     #lang-toggle button {
-      background: rgba(18,18,26,0.85);
+      background: rgba(255,255,255,0.9);
       color: var(--muted);
       border: none;
       padding: 7px 16px;
@@ -51,7 +54,7 @@
     }
     #lang-toggle button.active {
       background: var(--accent);
-      color: #0a0a0f;
+      color: #fff;
       font-weight: bold;
     }
 
@@ -60,7 +63,7 @@
       position: fixed;
       top: 0; left: 0;
       width: 100%;
-      background: rgba(10,10,15,0.92);
+      background: rgba(248,247,244,0.95);
       backdrop-filter: blur(14px);
       border-bottom: 1px solid var(--border);
       z-index: 900;
@@ -227,14 +230,14 @@
     @keyframes msgIn { from { opacity:0; transform: translateY(6px); } to { opacity:1; transform: translateY(0); } }
     .msg.user {
       align-self: flex-end;
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      color: var(--text);
+      background: var(--accent2);
+      border: none;
+      color: #fff;
     }
     .msg.char {
       align-self: flex-start;
-      background: linear-gradient(135deg, rgba(123,104,176,0.15), rgba(200,169,110,0.08));
-      border: 1px solid rgba(123,104,176,0.3);
+      background: var(--surface2);
+      border: 1px solid var(--border);
       color: var(--text);
     }
     .msg.char .speaker {
@@ -310,12 +313,12 @@
     .demo-notice {
       margin-top: 20px;
       padding: 14px 20px;
-      border: 1px solid rgba(123,104,176,0.25);
+      border: 1px solid rgba(92,78,138,0.2);
       border-radius: 10px;
       font-size: 12px;
       color: var(--muted);
       line-height: 1.6;
-      background: rgba(123,104,176,0.05);
+      background: rgba(92,78,138,0.04);
     }
     .demo-notice strong { color: var(--accent2); }
 
@@ -328,8 +331,8 @@
       justify-content: center;
       text-align: center;
       padding: 100px 40px 80px;
-      background: radial-gradient(ellipse 80% 60% at 50% 30%, rgba(123,104,176,0.12) 0%, transparent 70%),
-                  radial-gradient(ellipse 50% 40% at 50% 80%, rgba(200,169,110,0.07) 0%, transparent 60%);
+      background: radial-gradient(ellipse 80% 60% at 50% 30%, rgba(92,78,138,0.07) 0%, transparent 70%),
+                  radial-gradient(ellipse 50% 40% at 50% 80%, rgba(155,125,63,0.06) 0%, transparent 60%);
     }
     .hero-label {
       font-size: 11px;
@@ -380,7 +383,7 @@
     }
     .btn-primary {
       background: var(--accent);
-      color: #0a0a0f;
+      color: #fff;
       border: none;
       font-weight: bold;
     }
@@ -543,6 +546,7 @@
       position: relative;
       z-index: 1;
     }
+
     .roadmap-phase {
       text-align: right;
       padding-right: 0;
@@ -611,7 +615,7 @@
       vertical-align: top;
     }
     .phase-table tr:last-child td { border-bottom: none; }
-    .phase-table tr:hover td { background: rgba(255,255,255,0.02); }
+    .phase-table tr:hover td { background: rgba(0,0,0,0.02); }
     .badge {
       display: inline-block;
       padding: 3px 10px;
@@ -620,9 +624,9 @@
       font-weight: bold;
       letter-spacing: 0.05em;
     }
-    .badge-green { background: rgba(95,186,138,0.15); color: var(--green); }
-    .badge-yellow { background: rgba(200,169,110,0.15); color: var(--accent); }
-    .badge-red { background: rgba(224,112,112,0.12); color: var(--red); }
+    .badge-green { background: rgba(45,122,85,0.12); color: var(--green); }
+    .badge-yellow { background: rgba(155,125,63,0.12); color: var(--accent); }
+    .badge-red { background: rgba(184,64,64,0.1); color: var(--red); }
 
     /* ── ENGINES ── */
     .engine-grid {
@@ -761,7 +765,7 @@
 
     /* ── FOOTER ── */
     footer {
-      background: var(--surface);
+      background: var(--surface2);
       border-top: 1px solid var(--border);
       padding: 40px;
       text-align: center;
