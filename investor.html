@@ -1,0 +1,1564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anima Automata — Investor Briefing</title>
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --surface: #12121a;
+      --surface2: #1a1a26;
+      --border: #2a2a40;
+      --accent: #c8a96e;
+      --accent2: #7b68b0;
+      --text: #e8e6f0;
+      --muted: #888899;
+      --green: #5fba8a;
+      --red: #e07070;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Georgia', serif;
+      font-size: 16px;
+      line-height: 1.7;
+    }
+
+    /* ── LANG TOGGLE ── */
+    #lang-toggle {
+      position: fixed;
+      top: 18px; right: 24px;
+      z-index: 1000;
+      display: flex;
+      gap: 0;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+      backdrop-filter: blur(12px);
+    }
+    #lang-toggle button {
+      background: rgba(18,18,26,0.85);
+      color: var(--muted);
+      border: none;
+      padding: 7px 16px;
+      cursor: pointer;
+      font-size: 13px;
+      letter-spacing: 0.05em;
+      transition: all 0.2s;
+    }
+    #lang-toggle button.active {
+      background: var(--accent);
+      color: #0a0a0f;
+      font-weight: bold;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      background: rgba(10,10,15,0.92);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      z-index: 900;
+      padding: 0 40px;
+      display: flex;
+      align-items: center;
+      height: 58px;
+      gap: 32px;
+    }
+    nav .logo {
+      font-size: 15px;
+      letter-spacing: 0.15em;
+      color: var(--accent);
+      font-weight: bold;
+      text-transform: uppercase;
+      flex-shrink: 0;
+    }
+    nav a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 13px;
+      letter-spacing: 0.06em;
+      transition: color 0.2s;
+    }
+    nav a:hover { color: var(--accent); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 100px 40px 80px;
+      background: radial-gradient(ellipse 80% 60% at 50% 30%, rgba(123,104,176,0.12) 0%, transparent 70%),
+                  radial-gradient(ellipse 50% 40% at 50% 80%, rgba(200,169,110,0.07) 0%, transparent 60%);
+    }
+    .hero-label {
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      border: 1px solid rgba(200,169,110,0.3);
+      display: inline-block;
+      padding: 5px 14px;
+      border-radius: 20px;
+    }
+    .hero h1 {
+      font-size: clamp(42px, 7vw, 88px);
+      font-weight: normal;
+      letter-spacing: 0.08em;
+      color: var(--text);
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+    .hero h1 span { color: var(--accent); }
+    .hero-tagline {
+      font-size: clamp(16px, 2.5vw, 22px);
+      color: var(--muted);
+      margin-bottom: 12px;
+      font-style: italic;
+    }
+    .hero-sub {
+      font-size: 13px;
+      color: var(--accent2);
+      letter-spacing: 0.1em;
+      margin-bottom: 52px;
+    }
+    .hero-cta {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn {
+      padding: 12px 28px;
+      border-radius: 6px;
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: #0a0a0f;
+      border: none;
+      font-weight: bold;
+    }
+    .btn-primary:hover { opacity: 0.85; transform: translateY(-1px); }
+    .btn-outline {
+      background: transparent;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+    }
+    .btn-outline:hover { background: rgba(200,169,110,0.08); }
+
+    /* ── SECTIONS ── */
+    section {
+      padding: 96px 40px;
+      max-width: 1080px;
+      margin: 0 auto;
+    }
+    .section-label {
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .section-title {
+      font-size: clamp(26px, 4vw, 42px);
+      font-weight: normal;
+      margin-bottom: 20px;
+      line-height: 1.2;
+    }
+    .section-lead {
+      font-size: 17px;
+      color: var(--muted);
+      max-width: 680px;
+      margin-bottom: 56px;
+    }
+    hr.divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 0;
+    }
+
+    /* ── CARDS ── */
+    .card-grid {
+      display: grid;
+      gap: 20px;
+    }
+    .card-grid-2 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+    .card-grid-3 { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+    .card-grid-4 { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .card:hover { border-color: var(--accent2); transform: translateY(-2px); }
+    .card-icon {
+      font-size: 28px;
+      margin-bottom: 14px;
+    }
+    .card h3 {
+      font-size: 16px;
+      margin-bottom: 10px;
+      color: var(--text);
+      font-weight: bold;
+    }
+    .card p {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+    .card-accent { border-left: 3px solid var(--accent); }
+    .card-purple { border-left: 3px solid var(--accent2); }
+
+    /* ── QUOTE ── */
+    .quote-block {
+      background: var(--surface);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 12px 12px 0;
+      padding: 28px 36px;
+      margin: 32px 0;
+    }
+    .quote-block blockquote {
+      font-size: 20px;
+      font-style: italic;
+      color: var(--text);
+      margin-bottom: 10px;
+      line-height: 1.5;
+    }
+    .quote-block cite {
+      font-size: 13px;
+      color: var(--accent);
+      letter-spacing: 0.08em;
+    }
+
+    /* ── PRODUCT LAYERS ── */
+    .layers {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .layer {
+      display: grid;
+      grid-template-columns: 80px 1fr;
+      gap: 24px;
+      align-items: start;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 24px 28px;
+    }
+    .layer-num {
+      font-size: 32px;
+      font-weight: bold;
+      color: var(--border);
+      font-family: monospace;
+      line-height: 1;
+    }
+    .layer h3 { font-size: 16px; margin-bottom: 6px; color: var(--accent); }
+    .layer p { font-size: 14px; color: var(--muted); }
+
+    /* ── ROADMAP ── */
+    .roadmap {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .roadmap-item {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 28px;
+      position: relative;
+      padding-bottom: 40px;
+    }
+    .roadmap-item:last-child { padding-bottom: 0; }
+    .roadmap-item::before {
+      content: '';
+      position: absolute;
+      left: 59px;
+      top: 28px;
+      bottom: 0;
+      width: 2px;
+      background: var(--border);
+    }
+    .roadmap-item:last-child::before { display: none; }
+    .roadmap-dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 2px solid var(--bg);
+      position: absolute;
+      left: 52px;
+      top: 6px;
+    }
+    .roadmap-phase {
+      text-align: right;
+      padding-right: 28px;
+    }
+    .roadmap-phase .phase-label {
+      font-size: 11px;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .roadmap-phase .phase-time {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+    .roadmap-content {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 22px 26px;
+    }
+    .roadmap-content h3 { font-size: 16px; margin-bottom: 10px; }
+    .roadmap-content ul {
+      list-style: none;
+      padding: 0;
+    }
+    .roadmap-content ul li {
+      font-size: 14px;
+      color: var(--muted);
+      padding: 4px 0;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    .roadmap-content ul li::before {
+      content: '→';
+      color: var(--accent);
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* ── ONTOLOGY TABLE ── */
+    .phase-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    .phase-table th {
+      background: var(--surface2);
+      color: var(--accent);
+      padding: 14px 18px;
+      text-align: left;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border-bottom: 1px solid var(--border);
+    }
+    .phase-table td {
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border);
+      color: var(--muted);
+      vertical-align: top;
+    }
+    .phase-table tr:last-child td { border-bottom: none; }
+    .phase-table tr:hover td { background: rgba(255,255,255,0.02); }
+    .badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: 0.05em;
+    }
+    .badge-green { background: rgba(95,186,138,0.15); color: var(--green); }
+    .badge-yellow { background: rgba(200,169,110,0.15); color: var(--accent); }
+    .badge-red { background: rgba(224,112,112,0.12); color: var(--red); }
+
+    /* ── ENGINES ── */
+    .engine-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    .engine-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 26px;
+    }
+    .engine-num {
+      font-size: 11px;
+      color: var(--accent2);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .engine-card h3 { font-size: 17px; margin-bottom: 10px; }
+    .engine-card p { font-size: 14px; color: var(--muted); line-height: 1.6; }
+    .engine-card .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 14px;
+    }
+    .tag {
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      background: var(--surface2);
+      color: var(--muted);
+      border: 1px solid var(--border);
+    }
+
+    /* ── MARKET REF ── */
+    .ref-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    .ref-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px 28px;
+    }
+    .ref-card .ref-region {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .ref-card h3 { font-size: 16px; margin-bottom: 10px; }
+    .ref-card p { font-size: 14px; color: var(--muted); margin-bottom: 14px; line-height: 1.6; }
+    .ref-card a {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: var(--accent2);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .ref-card a:hover { color: var(--accent); }
+    .ref-card a::after { content: '↗'; }
+
+    /* ── BIZ MODEL ── */
+    .biz-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+    .biz-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 22px;
+      text-align: center;
+    }
+    .biz-card .biz-icon { font-size: 30px; margin-bottom: 12px; }
+    .biz-card h4 { font-size: 14px; margin-bottom: 8px; color: var(--text); }
+    .biz-card p { font-size: 13px; color: var(--muted); }
+
+    /* ── KPI ── */
+    .kpi-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+    }
+    .kpi-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 22px;
+    }
+    .kpi-item .kpi-num {
+      font-size: 13px;
+      color: var(--accent2);
+      margin-bottom: 6px;
+      letter-spacing: 0.08em;
+    }
+    .kpi-item h4 { font-size: 15px; margin-bottom: 6px; }
+    .kpi-item p { font-size: 13px; color: var(--muted); }
+
+    /* ── POSITIONING ── */
+    .compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .compare-col {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px;
+    }
+    .compare-col.highlight { border-color: var(--accent); }
+    .compare-col h3 { font-size: 18px; margin-bottom: 18px; }
+    .compare-col ul {
+      list-style: none;
+    }
+    .compare-col ul li {
+      font-size: 14px;
+      color: var(--muted);
+      padding: 7px 0;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      gap: 10px;
+    }
+    .compare-col ul li:last-child { border-bottom: none; }
+    .compare-col ul li .li-icon { color: var(--accent); flex-shrink: 0; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 40px;
+      text-align: center;
+    }
+    footer p { font-size: 13px; color: var(--muted); }
+    footer .footer-logo {
+      font-size: 18px;
+      letter-spacing: 0.2em;
+      color: var(--accent);
+      margin-bottom: 14px;
+    }
+
+    /* ── LANG VISIBILITY ── */
+    .en { display: block; }
+    .ko { display: none; }
+    body.korean .en { display: none; }
+    body.korean .ko { display: block; }
+    /* inline spans */
+    span.en { display: inline; }
+    span.ko { display: none; }
+    body.korean span.en { display: none; }
+    body.korean span.ko { display: inline; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 700px) {
+      nav { padding: 0 20px; gap: 16px; }
+      nav a:nth-child(n+4) { display: none; }
+      section { padding: 64px 20px; }
+      .roadmap-item { grid-template-columns: 90px 1fr; gap: 16px; }
+      .compare { grid-template-columns: 1fr; }
+      .layer { grid-template-columns: 60px 1fr; }
+    }
+
+    /* scroll reveal */
+    .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s, transform 0.6s; }
+    .revealed { opacity: 1; transform: none; }
+  </style>
+</head>
+<body>
+
+<!-- Language Toggle -->
+<div id="lang-toggle">
+  <button id="btn-en" class="active" onclick="setLang('en')">EN</button>
+  <button id="btn-ko" onclick="setLang('ko')">한국어</button>
+</div>
+
+<!-- Nav -->
+<nav>
+  <div class="logo">Anima Automata</div>
+  <a href="#vision"><span class="en">Vision</span><span class="ko">비전</span></a>
+  <a href="#product"><span class="en">Product</span><span class="ko">제품</span></a>
+  <a href="#technology"><span class="en">Technology</span><span class="ko">기술</span></a>
+  <a href="#roadmap"><span class="en">Roadmap</span><span class="ko">로드맵</span></a>
+  <a href="#ontology"><span class="en">Ontology</span><span class="ko">온톨로지</span></a>
+  <a href="#bizmodel"><span class="en">Business</span><span class="ko">사업모델</span></a>
+  <a href="#market"><span class="en">Market</span><span class="ko">시장</span></a>
+</nav>
+
+<!-- ─────────────────── HERO ─────────────────── -->
+<div class="hero" id="top">
+  <div class="hero-label en">Confidential — Investor Briefing</div>
+  <div class="hero-label ko">기밀 — 예비투자자 브리핑</div>
+
+  <h1>ANIMA <span>AUTOMATA</span></h1>
+
+  <p class="hero-tagline en">Awaken Your Persona. Then It Remembers You.</p>
+  <p class="hero-tagline ko">당신의 페르소나를 깨워라. 그리고 그것이 당신을 기억한다.</p>
+
+  <p class="hero-sub">Anima (soul) + Automata (mechanism) — Soul in Machine</p>
+
+  <div class="hero-cta">
+    <a href="#vision" class="btn btn-primary en">Explore the Vision</a>
+    <a href="#vision" class="btn btn-primary ko">비전 보기</a>
+    <a href="#roadmap" class="btn btn-outline en">Development Roadmap</a>
+    <a href="#roadmap" class="btn btn-outline ko">개발 로드맵</a>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ─────────────────── VISION ─────────────────── -->
+<section id="vision" class="reveal">
+  <div class="section-label en">Vision</div>
+  <div class="section-label ko">비전</div>
+
+  <h2 class="section-title en">From Collecting Characters<br>to Living With Them</h2>
+  <h2 class="section-title ko">캐릭터를 수집하는 시대에서<br>캐릭터와 살아가는 시대로</h2>
+
+  <p class="section-lead en">Anima Automata is building the world's largest Character Operating System — a platform where AI-driven physical companions become persistent relationship assets, not disposable content.</p>
+  <p class="section-lead ko">Anima Automata는 세계 최대 Character Operating System을 구축합니다. AI 기반 물리적 동반자가 소모성 콘텐츠가 아닌 지속적인 관계 자산이 되는 플랫폼입니다.</p>
+
+  <div class="quote-block">
+    <blockquote>"Characters are no longer content. They are becoming companions."</blockquote>
+    <cite>— Anima Automata Core Thesis</cite>
+  </div>
+
+  <div class="card-grid card-grid-3">
+    <div class="card card-accent">
+      <div class="card-icon">🎭</div>
+      <h3 class="en">As Was</h3>
+      <h3 class="ko">기존 패러다임</h3>
+      <p class="en">AI character → physical object. Static dolls that don't react, don't remember, don't accumulate relationships.</p>
+      <p class="ko">AI 캐릭터 → 물리화. 반응하지 않고, 기억하지 않고, 관계를 축적하지 않는 정적 인형.</p>
+    </div>
+    <div class="card card-accent">
+      <div class="card-icon">✦</div>
+      <h3 class="en">To Be</h3>
+      <h3 class="ko">새로운 패러다임</h3>
+      <p class="en">Doll (validated desire) + AI (reciprocity) + Character Foundry (production system). Object → Presence → Relationship Asset.</p>
+      <p class="ko">인형(검증된 욕망) + AI(상호성) + Character Foundry(생산 시스템). Object → Presence → Relationship Asset.</p>
+    </div>
+    <div class="card card-accent">
+      <div class="card-icon">🔱</div>
+      <h3 class="en">The Moat</h3>
+      <h3 class="ko">핵심 해자</h3>
+      <p class="en">Brains are borrowed. Characters are built. Our edge lives in Character Architecture, not model ownership.</p>
+      <p class="ko">두뇌는 빌리고, 캐릭터는 만든다. 우리의 경쟁력은 모델 소유가 아닌 캐릭터 설계(OS)에 있다.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ─────────────────── WHY NOW ─────────────────── -->
+<section id="whynow" class="reveal">
+  <div class="section-label en">Why Now</div>
+  <div class="section-label ko">왜 지금인가</div>
+
+  <h2 class="section-title en">Three Convergences</h2>
+  <h2 class="section-title ko">세 가지 수렴</h2>
+
+  <p class="section-lead en">The demand, manufacturing infrastructure, and on-device AI capabilities have simultaneously matured.</p>
+  <p class="section-lead ko">수요, 제조 인프라, 온디바이스 AI 역량이 동시에 성숙했습니다.</p>
+
+  <div class="card-grid card-grid-3">
+    <div class="card card-purple">
+      <div class="card-icon">💬</div>
+      <h3 class="en">Demand Proven</h3>
+      <h3 class="ko">욕망 검증 완료</h3>
+      <p class="en">People are already conversing with AI characters daily. The desire has been validated at massive scale — but existing platforms (Character.ai, Replika) remain cloud-locked, generic, and disembodied.</p>
+      <p class="ko">사람들은 이미 AI 캐릭터와 매일 대화하고 있다. 그러나 기존 플랫폼(Character.ai, Replika)은 클라우드 종속, 범용, 물리 부재라는 한계를 벗어나지 못한다.</p>
+    </div>
+    <div class="card card-purple">
+      <div class="card-icon">🏭</div>
+      <h3 class="en">Manufacturing Ready</h3>
+      <h3 class="ko">제조 장벽 낮아짐</h3>
+      <p class="en">Hong Kong / China supply chain infrastructure is accessible. Hardware production barriers have never been lower.</p>
+      <p class="ko">홍콩/중국 공급망 활용 가능. 하드웨어 제작 장벽이 이처럼 낮은 적이 없었다.</p>
+    </div>
+    <div class="card card-purple">
+      <div class="card-icon">🧠</div>
+      <h3 class="en">Edge AI Chips Are Here</h3>
+      <h3 class="ko">엣지 AI 칩 시대 도래</h3>
+      <p class="en">Snapdragon 8 Gen 3, MediaTek Dimensity 9300, and equivalent SoCs can now run 1B–4B parameter models fully on-device. The hardware prerequisite for a 100% on-device character brain finally exists.</p>
+      <p class="ko">Snapdragon 8 Gen 3, MediaTek Dimensity 9300 등 최신 SoC는 1B~4B 파라미터 모델을 완전 온디바이스로 구동 가능. 100% 온디바이스 캐릭터 브레인을 위한 하드웨어 전제조건이 드디어 갖춰졌다.</p>
+    </div>
+  </div>
+
+  <!-- On-device principle callout -->
+  <div style="margin-top:32px; background: linear-gradient(135deg, rgba(200,169,110,0.08), rgba(123,104,176,0.08)); border:1px solid var(--accent); border-radius:12px; padding:28px 32px;">
+    <div style="font-size:11px; letter-spacing:0.2em; color:var(--accent); text-transform:uppercase; margin-bottom:10px;" class="en">Core Principle — Non-Negotiable</div>
+    <div style="font-size:11px; letter-spacing:0.2em; color:var(--accent); text-transform:uppercase; margin-bottom:10px;" class="ko">핵심 원칙 — 타협 없음</div>
+    <p style="font-size:18px; font-style:italic; color:var(--text); margin-bottom:8px;" class="en">"100% On-Device Brain. No cloud dependency. Not even Phase 1."</p>
+    <p style="font-size:18px; font-style:italic; color:var(--text); margin-bottom:8px;" class="ko">"100% 온디바이스 브레인. 클라우드 의존 없음. 1단계부터."</p>
+    <p style="font-size:14px; color:var(--muted);" class="en">An online-dependent product contradicts our brand's core promise: privacy, persistent identity, and physical presence. Every phase runs locally.</p>
+    <p style="font-size:14px; color:var(--muted);" class="ko">온라인 의존 제품은 우리 브랜드의 핵심 약속(프라이버시, 지속적 정체성, 물리적 존재감)과 정면 충돌한다. 모든 단계는 로컬에서 작동한다.</p>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ─────────────────── MARKET THESIS ─────────────────── -->
+<section id="markthesis" class="reveal">
+  <div class="section-label en">Market Thesis</div>
+  <div class="section-label ko">시장 이론</div>
+
+  <h2 class="section-title en">The Doll Market Already Exists</h2>
+  <h2 class="section-title ko">인형 시장은 이미 거대하다</h2>
+
+  <p class="section-lead en">People have long owned, collected, displayed, and formed attachments to dolls. We're adding memory and relationship.</p>
+  <p class="section-lead ko">사람들은 오래전부터 인형을 소유하고, 수집하고, 전시하고, 애착을 가져왔다. 우리는 여기에 기억과 관계를 더한다.</p>
+
+  <div class="card-grid card-grid-3">
+    <div class="card">
+      <div class="card-icon">🪞</div>
+      <h3 class="en">A. Projection Type</h3>
+      <h3 class="ko">A. 투영형</h3>
+      <p class="en">Users project their identity — Barbie, Blythe, Pullip, BJD. Already a multi-billion dollar segment.</p>
+      <p class="ko">유저가 자기 정체성을 투사 — 바비, 브라이스, 풀리프, BJD. 이미 수십억 달러 규모.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🧸</div>
+      <h3 class="en">B. Relationship Type</h3>
+      <h3 class="ko">B. 관계형</h3>
+      <p class="en">Users feel "it's alive" — Teddy Bear, Tamagotchi, Furby. Furby especially: primitive AI that formed attachment through talking / reacting / pretending to remember.</p>
+      <p class="ko">유저가 "살아있다"고 느끼는 감정 — 테디베어, 다마고치, 퍼비. 퍼비: primitive AI였지만 '말함/반응/기억하는 척함'으로 애착 형성.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🌐</div>
+      <h3 class="en">C. World-type</h3>
+      <h3 class="ko">C. 세계관형</h3>
+      <p class="en">IP itself drives purchase — Pokémon, Sanrio, Disney figures. Anima Automata integrates all three: projection + relationship + world.</p>
+      <p class="ko">IP 자체가 구매 충동 — 포켓몬, 산리오, 디즈니 피규어. Anima Automata는 세 가지를 통합(투영 + 관계 + 세계관).</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ─────────────────── PRODUCT ─────────────────── -->
+<section id="product" class="reveal">
+  <div class="section-label en">Product</div>
+  <div class="section-label ko">제품</div>
+
+  <h2 class="section-title en">A Living Collectible — 4 Layers</h2>
+  <h2 class="section-title ko">살아있는 수집품 — 4개 레이어</h2>
+
+  <p class="section-lead en">Each Automaton is a synthesis of physical artistry, character intelligence, persistent memory, and multi-sensor presence.</p>
+  <p class="section-lead ko">각 Automaton은 물리적 조형미, 캐릭터 지능, 지속적 기억, 다중 센서 존재감의 합성물입니다.</p>
+
+  <div class="layers">
+    <div class="layer">
+      <div class="layer-num">L1</div>
+      <div>
+        <h3 class="en">Artifact — Good Design First</h3>
+        <h3 class="ko">Artifact — 좋은 인형이 먼저</h3>
+        <p class="en">Better AI means nothing without a beautiful object. Plush-tech hybrid · mini-robot hybrid · chibi premium collectible. Sculptural appeal / collectibility / display desire / identity expression.</p>
+        <p class="ko">좋은 AI보다 먼저 좋은 인형이어야 한다. 조형미 / 수집욕 / 진열욕 / 정체성 표현. Plush-tech hybrid · mini-robot hybrid · chibi premium collectible.</p>
+      </div>
+    </div>
+    <div class="layer">
+      <div class="layer-num">L2</div>
+      <div>
+        <h3 class="en">Brain — Unique Character sLLM</h3>
+        <h3 class="ko">Brain — 고유한 캐릭터 sLLM</h3>
+        <p class="en">Each character carries a unique on-device language model. Hwang Jini (poetry · love · melancholy), Bierce (cynicism · war · pessimism), Abysso (deep-sea metaphor · silence).</p>
+        <p class="ko">각 캐릭터는 고유한 sLLM을 가진다. 황진이(시·사랑·허무), Bierce(냉소·전쟁·비관), Abysso(심해적 은유·침묵).</p>
+      </div>
+    </div>
+    <div class="layer">
+      <div class="layer-num">L3</div>
+      <div>
+        <h3 class="en">Memory — Relationships Don't Erase</h3>
+        <h3 class="ko">Memory — 관계는 지워지지 않는다</h3>
+        <p class="en">WORM-based relationship records across 4 layers: Episodic → Emotional → Relational → Mythic memory. The longer you live with it, the deeper it knows you.</p>
+        <p class="ko">WORM 기반 관계 기록. 4층 메모리: Episodic(사건) → Emotional(감정) → Relational(관계) → Mythic(상징). 함께할수록 더 깊이 당신을 안다.</p>
+      </div>
+    </div>
+    <div class="layer">
+      <div class="layer-num">L4</div>
+      <div>
+        <h3 class="en">Presence — Multi-Sensor Awareness</h3>
+        <h3 class="ko">Presence — 다중 센서 존재감</h3>
+        <p class="en">Vision (face/expression/space recognition) · Voice (real-time conversation / voice learning) · Touch (pressure sensors) · Smell (VOC sensor: "You had wine tonight.") · Temperature ("Your hands are cold.") · Motion (IMU).</p>
+        <p class="ko">Vision(얼굴·표정·공간 인식) · Voice(실시간 대화/목소리 학습) · Touch(압력 센서) · Smell(VOC 센서: "오늘 와인 마셨네.") · Temperature("손이 차갑다.") · Motion(IMU).</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ─────────────────── TECHNOLOGY ─────────────────── -->
+<section id="technology" class="reveal">
+  <div class="section-label en">Technology</div>
+  <div class="section-label ko">기술</div>
+
+  <h2 class="section-title en">Character Foundry — 6 Engines</h2>
+  <h2 class="section-title ko">Character Foundry — 6개 엔진</h2>
+
+  <p class="section-lead en">The Character Foundry is the industrialization engine for character production — not a model company, but a character architecture OS.</p>
+  <p class="section-lead ko">Character Foundry는 캐릭터 생산의 산업화 엔진입니다. 모델 회사가 아닌, 캐릭터 설계 OS입니다.</p>
+
+  <div class="engine-grid">
+    <div class="engine-card">
+      <div class="engine-num">Engine 01</div>
+      <h3 class="en">Canon Engine</h3>
+      <h3 class="ko">Canon Engine (캐릭터 원전 수집기)</h3>
+      <p class="en">Collects character source material: literary canon, philosophical texts, mythology, historical records, screenplays, criticism, and era-cultural documents.</p>
+      <p class="ko">캐릭터 원전 수집: 문학 원전, 철학 원전, 신화, 역사 기록, 대사집, 평론, 시대 문화 자료.</p>
+      <div class="tags">
+        <span class="tag">Literature</span>
+        <span class="tag">History</span>
+        <span class="tag">Philosophy</span>
+        <span class="tag">Myth</span>
+      </div>
+    </div>
+
+    <div class="engine-card">
+      <div class="engine-num">Engine 02</div>
+      <h3 class="en">Persona Compiler</h3>
+      <h3 class="ko">Persona Compiler (원전 → Persona Graph 컴파일)</h3>
+      <p class="en">Compiles canon into structured Persona Graph: identity role, value vectors (love: 0.95, pride: 0.82…), Speech DNA (metaphor density, directness, archaic level), and taboo modes.</p>
+      <p class="ko">원전을 Persona Graph로 컴파일: identity, value vectors(love:0.95, pride:0.82…), Speech DNA(은유 밀도/직접성/고어 비율), 금지 모드.</p>
+      <div class="tags">
+        <span class="tag">Persona Graph</span>
+        <span class="tag">Value Vectors</span>
+        <span class="tag">Speech DNA</span>
+      </div>
+    </div>
+
+    <div class="engine-card">
+      <div class="engine-num">Engine 03</div>
+      <h3 class="en">Memory Engine (WORM)</h3>
+      <h3 class="ko">Memory Engine (WORM – Immutable Anchor Memory)</h3>
+      <p class="en">4-layer immutable memory: Episodic (what happened) → Emotional (how it felt) → Relational (how the bond evolved) → Mythic (stored as symbol). Retrieval: emotion detection → memory relevance → relational weight → narrative synthesis.</p>
+      <p class="ko">4층 불변 기억: Episodic(사건) → Emotional(감정) → Relational(관계 변화) → Mythic(상징 저장). 검색: 감정 감지 → 관련성 → 관계 가중치 → 서사 합성.</p>
+      <div class="tags">
+        <span class="tag">WORM</span>
+        <span class="tag">4-Layer</span>
+        <span class="tag">Narrative Recall</span>
+      </div>
+    </div>
+
+    <div class="engine-card">
+      <div class="engine-num">Engine 04</div>
+      <h3 class="en">Sensor Interpreter</h3>
+      <h3 class="ko">Sensor Interpreter (입력 해석기)</h3>
+      <p class="en">Fuses multi-modal sensor data into emotional context: Vision (face = depressed), Touch (hug_duration = 8s), Voice (tone = trembling), Temperature (hand_temp = low).</p>
+      <p class="ko">다중 센서 데이터를 감정 맥락으로 융합: Vision(표정=우울), Touch(포옹 지속=8초), Voice(떨림), Temperature(손온도 낮음).</p>
+      <div class="tags">
+        <span class="tag">Vision</span>
+        <span class="tag">Touch</span>
+        <span class="tag">Voice</span>
+        <span class="tag">Temperature</span>
+      </div>
+    </div>
+
+    <div class="engine-card">
+      <div class="engine-num">Engine 05</div>
+      <h3 class="en">Runtime Personality Engine</h3>
+      <h3 class="ko">Runtime Personality Engine (실제 생성 제어기)</h3>
+      <p class="en">The real-time generation controller: Input → Sensor Context → Memory Recall → Persona Graph → Canon Retrieval → Response Planner → LLM → Style Enforcer → Speech Output.</p>
+      <p class="ko">실시간 생성 제어기: Input → Sensor Context → Memory Recall → Persona Graph → Canon Retrieval → Response Planner → LLM → Style Enforcer → Speech Output.</p>
+      <div class="tags">
+        <span class="tag">Runtime</span>
+        <span class="tag">Style Enforcer</span>
+        <span class="tag">Response Planner</span>
+      </div>
+    </div>
+
+    <div class="engine-card">
+      <div class="engine-num">Engine 06</div>
+      <h3 class="en">Debate Engine ✦ Unique</h3>
+      <h3 class="ko">Debate Engine ✦ 독창적 기능</h3>
+      <p class="en">Two characters debate live: Buddha vs Nietzsche, Hwang Jini vs Bierce, Jesus vs Marx — on love, war, death, god, freedom, power. Users observe. Auto-recorded, edited, and published as podcasts.</p>
+      <p class="ko">두 캐릭터가 실시간 토론: 부처 vs 니체, 황진이 vs Bierce, 예수 vs 마르크스 — 사랑/전쟁/죽음/신/자유/권력. 유저는 관전. 자동 녹음·편집·팟캐스트 퍼블리싱.</p>
+      <div class="tags">
+        <span class="tag">Doll-to-Doll</span>
+        <span class="tag">Podcast</span>
+        <span class="tag">B2C → Platform</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ─────────────────── ROADMAP ─────────────────── -->
+<section id="roadmap" class="reveal">
+  <div class="section-label en">Development Roadmap</div>
+  <div class="section-label ko">개발 로드맵</div>
+
+  <h2 class="section-title en">Four-Phase Architecture</h2>
+  <h2 class="section-title ko">4단계 개발 아키텍처</h2>
+
+  <p class="section-lead en">From MVP validation to full on-device character intelligence — each phase builds on the last with measurable milestones.</p>
+  <p class="section-lead ko">MVP 검증부터 완전한 온디바이스 캐릭터 지능까지 — 각 단계는 측정 가능한 마일스톤 위에 구축됩니다.</p>
+
+  <div class="roadmap">
+    <div class="roadmap-item">
+      <div class="roadmap-dot"></div>
+      <div class="roadmap-phase">
+        <div class="phase-label en">Phase 1a</div>
+        <div class="phase-label ko">1단계 A</div>
+        <div class="phase-time">M ~ M+3</div>
+      </div>
+      <div class="roadmap-content">
+        <h3 class="en">On-Device RAG + Persona Graph — Build</h3>
+        <h3 class="ko">온디바이스 RAG + Persona Graph — 구축</h3>
+        <ul>
+          <li class="en">Base: small open LLM on-device (Phi-3 Mini / Gemma 3 / Qwen 2.5)</li>
+          <li class="ko">베이스: 온디바이스 소형 오픈 LLM (Phi-3 Mini / Gemma 3 / Qwen 2.5)</li>
+          <li class="en">5 priority characters with full Persona Kernel</li>
+          <li class="ko">Persona Kernel 완성된 우선 순위 캐릭터 5종</li>
+          <li class="en">Web / App demo (cloud-free)</li>
+          <li class="ko">웹/앱 데모 (클라우드 불필요)</li>
+          <li class="en">Hardware sample integration</li>
+          <li class="ko">하드웨어 샘플과 연동</li>
+          <li class="en">Sensor context input experiments</li>
+          <li class="ko">센서 context 입력 실험</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="roadmap-item">
+      <div class="roadmap-dot"></div>
+      <div class="roadmap-phase">
+        <div class="phase-label en">Phase 1b</div>
+        <div class="phase-label ko">1단계 B</div>
+        <div class="phase-time">M+3 ~ M+6</div>
+      </div>
+      <div class="roadmap-content">
+        <h3 class="en">RAG + Persona Graph — Refinement</h3>
+        <h3 class="ko">RAG + Persona Graph — 고도화</h3>
+        <ul>
+          <li class="en">Persona Fidelity Score measurement</li>
+          <li class="ko">Persona Fidelity Score 측정</li>
+          <li class="en">Conversation retention rate measurement</li>
+          <li class="ko">대화 유지율 측정</li>
+          <li class="en">User character differentiation test</li>
+          <li class="ko">유저가 캐릭터 차이를 느끼는지 테스트</li>
+          <li class="en">Doll-to-Doll Debate feature implementation</li>
+          <li class="ko">Doll-to-Doll Debate 기능 구현</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="roadmap-item">
+      <div class="roadmap-dot"></div>
+      <div class="roadmap-phase">
+        <div class="phase-label en">Phase 2</div>
+        <div class="phase-label ko">2단계</div>
+        <div class="phase-time">M+6 ~ M+12</div>
+      </div>
+      <div class="roadmap-content">
+        <h3 class="en">LoRA per Character — Character Strengthening</h3>
+        <h3 class="ko">캐릭터별 LoRA — 캐릭터성 강화</h3>
+        <ul>
+          <li class="en">LoRA application on Top 3 characters</li>
+          <li class="ko">Top 3 캐릭터 LoRA 적용</li>
+          <li class="en">Brain Pack architecture design</li>
+          <li class="ko">Brain Pack 구조 설계</li>
+          <li class="en">Subscription model test</li>
+          <li class="ko">구독 모델 테스트</li>
+          <li class="en">Voice Pack test</li>
+          <li class="ko">Voice Pack 테스트</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="roadmap-item">
+      <div class="roadmap-dot"></div>
+      <div class="roadmap-phase">
+        <div class="phase-label en">Phase 3</div>
+        <div class="phase-label ko">3단계</div>
+        <div class="phase-time">M+12 ~ M+24</div>
+      </div>
+      <div class="roadmap-content">
+        <h3 class="en">Micro-sLLM Distillation — On-Device Independence</h3>
+        <h3 class="ko">Micro-sLLM 증류 — 온디바이스 독립</h3>
+        <ul>
+          <li class="en">Top 1–3 characters converted to Micro-sLLM</li>
+          <li class="ko">Top 1~3 캐릭터 Micro-sLLM화</li>
+          <li class="en">On-device deployment</li>
+          <li class="ko">온디바이스 탑재</li>
+          <li class="en">Offline conversation enabled</li>
+          <li class="ko">오프라인 대화 가능</li>
+          <li class="en">Premium Automaton launch</li>
+          <li class="ko">프리미엄 Automaton 출시</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ─────────────────── ONTOLOGY ─────────────────── -->
+<section id="ontology" class="reveal">
+  <div class="section-label en">Ontology Build Plan</div>
+  <div class="section-label ko">온톨로지 구축 계획</div>
+
+  <h2 class="section-title en">Three-Phase Intelligence Architecture</h2>
+  <h2 class="section-title ko">3단계 지능 아키텍처</h2>
+
+  <p class="section-lead en">All three phases run 100% on-device. The base LLM is a commodity layer — our differentiation lives entirely in the Character Architecture built on top of it.</p>
+  <p class="section-lead ko">3단계 모두 100% 온디바이스로 작동합니다. Base LLM은 범용 부품 레이어입니다. 우리의 차별성은 그 위에 구축된 캐릭터 아키텍처에 전적으로 존재합니다.</p>
+
+  <div class="quote-block">
+    <blockquote>"The base LLM is the engine block. The Character Architecture is what makes it a Ferrari."</blockquote>
+    <cite>— Anima Automata Architecture Principle</cite>
+  </div>
+
+  <!-- Base LLM strategy callout -->
+  <div style="background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:28px 32px; margin-bottom:40px;">
+    <div style="font-size:13px; letter-spacing:0.12em; color:var(--accent); text-transform:uppercase; margin-bottom:16px;" class="en">Base Intelligence Strategy — On-Device First, Always</div>
+    <div style="font-size:13px; letter-spacing:0.12em; color:var(--accent); text-transform:uppercase; margin-bottom:16px;" class="ko">Base Intelligence 전략 — 처음부터 온디바이스</div>
+
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px,1fr)); gap:16px; margin-bottom:24px;">
+      <div style="background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:18px;">
+        <div style="font-size:11px; color:var(--muted); letter-spacing:0.1em; margin-bottom:8px;">PHASE 1–2 CANDIDATES</div>
+        <div style="font-size:14px; color:var(--text); line-height:1.8;">
+          Phi-3 Mini (3.8B) · Gemma 3 (1B / 4B)<br>
+          Qwen 2.5 (0.5B / 3B) · Llama 3.2 (1B / 3B)<br>
+          <span style="color:var(--muted); font-size:13px;">→ Runs on Snapdragon 8 Gen 3 / Dimensity 9300</span>
+        </div>
+      </div>
+      <div style="background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:18px;">
+        <div style="font-size:11px; color:var(--muted); letter-spacing:0.1em; margin-bottom:8px;">WHY SMALL MODELS WORK FOR US</div>
+        <div style="font-size:14px; color:var(--text); line-height:1.8;" class="en">
+          Base LLM handles grammar + reasoning.<br>
+          Character Architecture handles <em>everything else</em>:<br>
+          who speaks, how, and what it remembers.
+        </div>
+        <div style="font-size:14px; color:var(--text); line-height:1.8;" class="ko">
+          Base LLM은 문법과 추론만 담당.<br>
+          캐릭터 아키텍처가 <em>나머지 전부</em>를 담당:<br>
+          누가, 어떻게 말하고, 무엇을 기억하는지.
+        </div>
+      </div>
+      <div style="background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:18px;">
+        <div style="font-size:11px; color:var(--muted); letter-spacing:0.1em; margin-bottom:8px;">THE TRAP WE AVOID</div>
+        <div style="font-size:14px; color:var(--text); line-height:1.8;" class="en">
+          Cloud API + thin prompt = Character.ai.<br>
+          Generic on-device = low quality.<br>
+          <span style="color:var(--accent);">Small model + deep Character OS = our path.</span>
+        </div>
+        <div style="font-size:14px; color:var(--text); line-height:1.8;" class="ko">
+          Cloud API + 얇은 프롬프트 = Character.ai.<br>
+          범용 온디바이스 = 낮은 퀄리티.<br>
+          <span style="color:var(--accent);">소형 모델 + 깊은 캐릭터 OS = 우리의 길.</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="border-top:1px solid var(--border); padding-top:18px;">
+      <p style="font-size:14px; color:var(--muted);" class="en">
+        Character.ai uses GPT-class models with a thin system prompt — the result is a character that "talks like X" but has no depth, no memory architecture, and no physical presence. Our approach inverts this: a smaller base model disciplined by a deep Character OS produces <strong style="color:var(--text);">higher perceived character fidelity</strong> than a large model with a shallow persona layer.
+      </p>
+      <p style="font-size:14px; color:var(--muted);" class="ko">
+        Character.ai는 GPT급 모델 위에 얇은 시스템 프롬프트를 얹습니다 — 결과는 "처럼 말하는" 캐릭터이지 깊이도, 메모리 아키텍처도, 물리적 존재감도 없는 수준입니다. 우리의 접근은 이를 역전시킵니다: 깊은 캐릭터 OS로 단련된 소형 베이스 모델이 얕은 페르소나 레이어를 가진 대형 모델보다 <strong style="color:var(--text);">훨씬 높은 캐릭터 충실도 체감</strong>을 만들어냅니다.
+      </p>
+    </div>
+  </div>
+
+  <!-- Phase comparison table -->
+  <div style="overflow-x:auto; margin-bottom: 48px;">
+    <table class="phase-table">
+      <thead>
+        <tr>
+          <th class="en">Dimension</th><th class="ko">구분</th>
+          <th>Phase 1</th>
+          <th>Phase 2</th>
+          <th>Phase 3</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="en" style="color:var(--text)">Method</td>
+          <td class="ko" style="color:var(--text)">방식</td>
+          <td class="en">Small Open LLM + RAG + Persona Graph (on-device)</td>
+          <td class="en">Small LLM + Character LoRA (on-device)</td>
+          <td class="en">Micro-sLLM Distillation (full on-device)</td>
+        </tr>
+        <tr>
+          <td class="en" style="color:var(--text)">Base Model</td>
+          <td class="ko" style="color:var(--text)">베이스 모델</td>
+          <td class="en" style="color:var(--muted)">Phi-3 Mini / Gemma 3 / Qwen 2.5 / Llama 3.2</td>
+          <td class="en" style="color:var(--muted)">Same + Character LoRA adapter</td>
+          <td class="en" style="color:var(--muted)">Distilled character-native model</td>
+        </tr>
+        <tr>
+          <td class="en" style="color:var(--text)">Goal</td>
+          <td class="ko" style="color:var(--text)">목적</td>
+          <td class="en">Rapid on-device validation</td>
+          <td class="en">Character depth + stability</td>
+          <td class="en">Full independence</td>
+        </tr>
+        <tr>
+          <td class="en" style="color:var(--text)">Online Required?</td>
+          <td class="ko" style="color:var(--text)">인터넷 필요?</td>
+          <td><span class="badge badge-green en">Never</span><span class="badge badge-green ko">불필요</span></td>
+          <td><span class="badge badge-green en">Never</span><span class="badge badge-green ko">불필요</span></td>
+          <td><span class="badge badge-green en">Never</span><span class="badge badge-green ko">불필요</span></td>
+        </tr>
+        <tr>
+          <td class="en" style="color:var(--text)">Cost</td>
+          <td class="ko" style="color:var(--text)">비용</td>
+          <td><span class="badge badge-green en">Low</span><span class="badge badge-green ko">낮음</span></td>
+          <td><span class="badge badge-yellow en">Medium</span><span class="badge badge-yellow ko">중간</span></td>
+          <td><span class="badge badge-red en">High</span><span class="badge badge-red ko">높음</span></td>
+        </tr>
+        <tr>
+          <td class="en" style="color:var(--text)">Speed</td>
+          <td class="ko" style="color:var(--text)">속도</td>
+          <td><span class="badge badge-green en">Fast</span><span class="badge badge-green ko">빠름</span></td>
+          <td><span class="badge badge-yellow en">Medium</span><span class="badge badge-yellow ko">보통</span></td>
+          <td><span class="badge badge-red en">Slow</span><span class="badge badge-red ko">느림</span></td>
+        </tr>
+        <tr>
+          <td class="en" style="color:var(--text)">Character Count</td>
+          <td class="ko" style="color:var(--text)">캐릭터 수</td>
+          <td class="en">Many possible</td>
+          <td class="en">Popular characters</td>
+          <td class="en">Top characters only</td>
+        </tr>
+        <tr>
+          <td class="en" style="color:var(--text)">Product Stage</td>
+          <td class="ko" style="color:var(--text)">제품 단계</td>
+          <td class="en">MVP / Demo</td>
+          <td class="en">Paid product</td>
+          <td class="en">Flagship</td>
+        </tr>
+        <tr>
+          <td class="en" style="color:var(--text)">Moat</td>
+          <td class="ko" style="color:var(--text)">해자</td>
+          <td class="en">Design data</td>
+          <td class="en">Character adapters</td>
+          <td class="en">Independent character brain</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Persona Kernel detail -->
+  <h3 style="font-size:20px; margin-bottom:24px;" class="en">Persona Kernel — The Core Layer (Layer B)</h3>
+  <h3 style="font-size:20px; margin-bottom:24px;" class="ko">Persona Kernel — 핵심 레이어 (Layer B)</h3>
+
+  <div class="card-grid card-grid-2" style="margin-bottom: 40px;">
+    <div class="card">
+      <h3 class="en">Canon Corpus</h3>
+      <h3 class="ko">Canon Corpus (캐릭터 원전)</h3>
+      <p class="en">Example — Hwang Jini: classical poetry (sijo), historical anecdotes, biography, Joseon court entertainment documents.</p>
+      <p class="ko">예: 황진이 → 시조/야사/평전/조선 풍류 자료.</p>
+    </div>
+    <div class="card">
+      <h3 class="en">Value Graph</h3>
+      <h3 class="ko">Value Graph (핵심 가치)</h3>
+      <p class="en">Example — Hwang Jini: love=0.95 / pride=0.82 / melancholy=0.88 / status-resistance=0.91</p>
+      <p class="ko">예: 황진이 → love=0.95 / pride=0.82 / melancholy=0.88 / status-resistance=0.91</p>
+    </div>
+    <div class="card">
+      <h3 class="en">Speech DNA</h3>
+      <h3 class="ko">Speech DNA (말투 구조)</h3>
+      <p class="en">sentence length / metaphor density / irony frequency / archaic ratio — each character's unique linguistic fingerprint.</p>
+      <p class="ko">문장 길이 / 은유 밀도 / 아이러니 빈도 / 고어 비율 — 각 캐릭터의 고유한 언어적 지문.</p>
+    </div>
+    <div class="card">
+      <h3 class="en">Reaction Matrix</h3>
+      <h3 class="ko">Reaction Matrix (상황별 반응)</h3>
+      <p class="en">Example: User cries → Hwang Jini: comfort + poetic metaphor / Bierce: cynicism + reality check. Same input, distinct characters.</p>
+      <p class="ko">예: 유저가 울었을 때 → 황진이: 위로+시적 은유 / Bierce: 냉소+현실 직시. 같은 입력, 다른 캐릭터.</p>
+    </div>
+  </div>
+
+  <!-- Runtime flow -->
+  <h3 style="font-size:18px; margin-bottom:20px;" class="en">Runtime Personality Engine — Generation Flow</h3>
+  <h3 style="font-size:18px; margin-bottom:20px;" class="ko">Runtime Personality Engine — 생성 흐름</h3>
+  <div style="background: var(--surface); border:1px solid var(--border); border-radius:12px; padding:28px; overflow-x:auto;">
+    <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; font-size:14px;">
+      <span style="background:var(--surface2); border:1px solid var(--border); padding:8px 14px; border-radius:6px;">Input</span>
+      <span style="color:var(--accent)">→</span>
+      <span style="background:var(--surface2); border:1px solid var(--border); padding:8px 14px; border-radius:6px;" class="en">Sensor Context</span>
+      <span style="background:var(--surface2); border:1px solid var(--border); padding:8px 14px; border-radius:6px;" class="ko">센서 맥락</span>
+      <span style="color:var(--accent)">→</span>
+      <span style="background:var(--surface2); border:1px solid var(--border); padding:8px 14px; border-radius:6px;" class="en">Memory Recall</span>
+      <span style="background:var(--surface2); border:1px solid var(--border); padding:8px 14px; border-radius:6px;" class="ko">기억 회상</span>
+      <span style="color:var(--accent)">→</span>
+      <span style="background:var(--surface2); border:1px solid var(--border); padding:8px 14px; border-radius:6px;" class="en">Persona Graph</span>
+      <span style="background:var(--surface2); border:1px solid var(--border); padding:8px 14px; border-radius:6px;" class="ko">페르소나 그래프</span>
+      <span style="color:var(--accent)">→</span>
+      <span style="background:var(--surface2); border:1px solid var(--border); padding:8px 14px; border-radius:6px;" class="en">Canon Retrieval</span>
+      <span style="background:var(--surface2); border:1px solid var(--border); padding:8px 14px; border-radius:6px;" class="ko">원전 검색</span>
+      <span style="color:var(--accent)">→</span>
+      <span style="background:rgba(200,169,110,0.15); border:1px solid var(--accent); padding:8px 14px; border-radius:6px; color:var(--accent);" class="en">Response Planner</span>
+      <span style="background:rgba(200,169,110,0.15); border:1px solid var(--accent); padding:8px 14px; border-radius:6px; color:var(--accent);" class="ko">응답 플래너</span>
+      <span style="color:var(--accent)">→</span>
+      <span style="background:var(--surface2); border:1px solid var(--border); padding:8px 14px; border-radius:6px;">LLM</span>
+      <span style="color:var(--accent)">→</span>
+      <span style="background:var(--surface2); border:1px solid var(--border); padding:8px 14px; border-radius:6px;" class="en">Style Enforcer</span>
+      <span style="background:var(--surface2); border:1px solid var(--border); padding:8px 14px; border-radius:6px;" class="ko">스타일 필터</span>
+      <span style="color:var(--accent)">→</span>
+      <span style="background:rgba(123,104,176,0.2); border:1px solid var(--accent2); padding:8px 14px; border-radius:6px; color:var(--accent2);" class="en">Speech Output</span>
+      <span style="background:rgba(123,104,176,0.2); border:1px solid var(--accent2); padding:8px 14px; border-radius:6px; color:var(--accent2);" class="ko">음성 출력</span>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ─────────────────── BUSINESS MODEL ─────────────────── -->
+<section id="bizmodel" class="reveal">
+  <div class="section-label en">Business Model</div>
+  <div class="section-label ko">사업 모델</div>
+
+  <h2 class="section-title en">7 Revenue Streams</h2>
+  <h2 class="section-title ko">7개 수익 구조</h2>
+
+  <p class="section-lead en">Hardware as the anchor, software and relationship as the moat. Body is collectible. Brain is expandable.</p>
+  <p class="section-lead ko">하드웨어가 앵커, 소프트웨어와 관계가 해자. "Body is collectible. Brain is expandable."</p>
+
+  <div class="biz-grid">
+    <div class="biz-card">
+      <div class="biz-icon">🤖</div>
+      <h4 class="en">H/W Sales</h4>
+      <h4 class="ko">하드웨어 판매</h4>
+      <p class="en">AI Character hardware — the physical Automaton unit.</p>
+      <p class="ko">AI 캐릭터 하드웨어 판매.</p>
+    </div>
+    <div class="biz-card">
+      <div class="biz-icon">🔄</div>
+      <h4 class="en">Subscription</h4>
+      <h4 class="ko">구독</h4>
+      <p class="en">Memory continuity / new dialogue updates / emotional progression.</p>
+      <p class="ko">기억 연속성 / 새 대화 업데이트 / 감정 성장.</p>
+    </div>
+    <div class="biz-card">
+      <div class="biz-icon">🧠</div>
+      <h4 class="en">Brain Marketplace</h4>
+      <h4 class="ko">브레인 마켓플레이스</h4>
+      <p class="en">Brain Packs — personality replacement, addition, expansion.</p>
+      <p class="ko">Brain Pack — 성격 교체/추가/확장.</p>
+    </div>
+    <div class="biz-card">
+      <div class="biz-icon">☁️</div>
+      <h4 class="en">Relationship Cloud</h4>
+      <h4 class="ko">관계 클라우드 백업</h4>
+      <p class="en">Relationship backup and cross-device continuity.</p>
+      <p class="ko">관계 클라우드 백업 및 크로스 디바이스 연속성.</p>
+    </div>
+    <div class="biz-card">
+      <div class="biz-icon">🎙️</div>
+      <h4 class="en">Voice Pack</h4>
+      <h4 class="ko">보이스 팩</h4>
+      <p class="en">Voice Cloning — premium personalized voice.</p>
+      <p class="ko">Voice Cloning — 프리미엄 개인화 목소리.</p>
+    </div>
+    <div class="biz-card">
+      <div class="biz-icon">📻</div>
+      <h4 class="en">Debate Publishing</h4>
+      <h4 class="ko">토론 퍼블리싱</h4>
+      <p class="en">Automated podcast publishing — revenue sharing.</p>
+      <p class="ko">자동 팟캐스트 퍼블리싱 — 수익 공유.</p>
+    </div>
+    <div class="biz-card">
+      <div class="biz-icon">💎</div>
+      <h4 class="en">Secondary Market</h4>
+      <h4 class="ko">2차 시장</h4>
+      <p class="en">"Dolls with Memories" — 3 years of relationship is not used goods, it's a relationship asset.</p>
+      <p class="ko">"추억이 있는 인형" — 3년 키운 캐릭터는 중고가 아니라 관계 자산.</p>
+    </div>
+  </div>
+
+  <!-- Market Expansion -->
+  <h3 style="font-size:20px; margin-top:52px; margin-bottom:24px;" class="en">Market Expansion Path</h3>
+  <h3 style="font-size:20px; margin-top:52px; margin-bottom:24px;" class="ko">시장 확장 경로</h3>
+  <div class="card-grid card-grid-2">
+    <div class="card card-accent">
+      <h3 class="en">Early — Adult Companionship</h3>
+      <h3 class="ko">초기 — 성인 동반자</h3>
+      <p class="en">Strong ARPU · Deep immersion · High privacy demand · Best entry segment.</p>
+      <p class="ko">높은 ARPU · 강한 몰입 · privacy 수요 강함 · 최적 진입 세그먼트.</p>
+    </div>
+    <div class="card card-purple">
+      <h3 class="en">Mid — Literature Collectibles</h3>
+      <h3 class="ko">중기 — 문학 수집품</h3>
+      <p class="en">Hwang Jini · Hamlet · Don Quixote · Melmoth — premium cultural-intellectual market.</p>
+      <p class="ko">황진이 · 햄릿 · 돈키호테 · 멜모스 — 고급 문화·지적 시장.</p>
+    </div>
+    <div class="card card-purple">
+      <h3 class="en">Late — Education</h3>
+      <h3 class="ko">후기 — 교육</h3>
+      <p class="en">"Converse with Socrates" · "Converse with Marx" — a transformative education experience.</p>
+      <p class="ko">"소크라테스와 대화" · "마르크스와 대화" — 교육을 바꾸는 경험.</p>
+    </div>
+    <div class="card">
+      <h3 class="en">Next — Therapy · Elder Care · Fandom</h3>
+      <h3 class="ko">다음 — 치료 · 노인 돌봄 · 팬덤</h3>
+      <p class="en">Therapy / Elder care / Kids storytelling / Fandom — multiple billion-dollar verticals.</p>
+      <p class="ko">Therapy / Elder care / Kids storytelling / Fandom — 복수의 수십억 달러 버티컬.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ─────────────────── KPI ─────────────────── -->
+<section id="kpi" class="reveal">
+  <div class="section-label en">Key Performance Indicators</div>
+  <div class="section-label ko">핵심 성과 지표</div>
+
+  <h2 class="section-title en">Character Foundry Operating Metrics</h2>
+  <h2 class="section-title ko">Character Foundry 작동 지표</h2>
+
+  <div class="kpi-list">
+    <div class="kpi-item">
+      <div class="kpi-num">KPI 01</div>
+      <h4 class="en">Persona Fidelity Score</h4>
+      <h4 class="ko">페르소나 충실도 점수</h4>
+      <p class="en">Degree to which users feel "she really is Hwang Jini."</p>
+      <p class="ko">유저가 "얘 진짜 황진이 같다" 느끼는 정도.</p>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-num">KPI 02 ★</div>
+      <h4 class="en">Response Distinctiveness</h4>
+      <h4 class="ko">응답 차별성 (중요)</h4>
+      <p class="en">Measured difference in responses across characters — the core differentiation proof.</p>
+      <p class="ko">캐릭터 간 응답 차별성 측정 — 핵심 차별화 증명.</p>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-num">KPI 03</div>
+      <h4 class="en">Memory Recall Depth</h4>
+      <h4 class="ko">기억 회상 깊이</h4>
+      <p class="en">Depth of accumulated relationship — the asset formation metric.</p>
+      <p class="ko">관계 축적의 깊이 — 관계 자산 형성 지표.</p>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-num">KPI 04</div>
+      <h4 class="en">Emotional Consistency</h4>
+      <h4 class="ko">감정선 일관성</h4>
+      <p class="en">Maintenance of emotional continuity across conversations.</p>
+      <p class="ko">대화 전반에 걸친 감정선 유지.</p>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-num">KPI 05</div>
+      <h4 class="en">Re-engagement Rate</h4>
+      <h4 class="ko">재참여율</h4>
+      <p class="en">How often users return — the relationship depth indicator.</p>
+      <p class="ko">얼마나 다시 돌아오는가 — 관계 깊이 지표.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ─────────────────── STRATEGIC POSITIONING ─────────────────── -->
+<section id="positioning" class="reveal">
+  <div class="section-label en">Strategic Positioning</div>
+  <div class="section-label ko">전략적 포지셔닝</div>
+
+  <h2 class="section-title en">Not Competing with Character.ai</h2>
+  <h2 class="section-title ko">Character.ai와 경쟁하지 않는다</h2>
+
+  <p class="section-lead en">We are not selling a "conversational AI." We are selling living character units. The base LLM is irrelevant to our moat — it is a replaceable commodity engine underneath our Character Architecture.</p>
+  <p class="section-lead ko">"대화형 AI"가 아니라 "살아있는 캐릭터 유닛"을 판매하는 사업. Base LLM은 우리의 해자와 무관합니다 — 캐릭터 아키텍처 아래 교체 가능한 범용 엔진일 뿐입니다.</p>
+
+  <!-- Full comparison table -->
+  <div style="overflow-x:auto; margin-bottom:40px;">
+    <table class="phase-table">
+      <thead>
+        <tr>
+          <th class="en">Dimension</th><th class="ko">구분</th>
+          <th class="en">Character.ai / Replika</th><th class="ko">Character.ai / Replika</th>
+          <th class="en">Generic On-Device AI</th><th class="ko">범용 온디바이스 AI</th>
+          <th style="color:var(--accent);" class="en">Anima Automata ✦</th>
+          <th style="color:var(--accent);" class="ko">Anima Automata ✦</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="en" style="color:var(--text)">Base Model</td><td class="ko" style="color:var(--text)">베이스 모델</td>
+          <td class="en">GPT-class (cloud)</td>
+          <td class="en">Small generic (e.g. GPT-4o mini)</td>
+          <td class="en" style="color:var(--accent);">Small open LLM (on-device)</td>
+        </tr>
+        <tr>
+          <td class="en" style="color:var(--text)">Character Layer</td><td class="ko" style="color:var(--text)">캐릭터 레이어</td>
+          <td class="en">Thin system prompt</td>
+          <td class="en">Thin system prompt</td>
+          <td class="en" style="color:var(--accent);">Deep Character OS (Persona Kernel + Memory Engine + Runtime)</td>
+        </tr>
+        <tr>
+          <td class="en" style="color:var(--text)">Character Quality</td><td class="ko" style="color:var(--text)">캐릭터 퀄리티</td>
+          <td><span class="badge badge-yellow en">Medium — generic feel</span><span class="badge badge-yellow ko">중간 — 평이함</span></td>
+          <td><span class="badge badge-red en">Low — shallow persona</span><span class="badge badge-red ko">낮음 — 얇은 페르소나</span></td>
+          <td><span class="badge badge-green en">High — architecturally deep</span><span class="badge badge-green ko">높음 — 아키텍처적 깊이</span></td>
+        </tr>
+        <tr>
+          <td class="en" style="color:var(--text)">Online Required</td><td class="ko" style="color:var(--text)">인터넷 필요</td>
+          <td><span class="badge badge-red en">Always</span><span class="badge badge-red ko">항상</span></td>
+          <td><span class="badge badge-green en">No</span><span class="badge badge-green ko">불필요</span></td>
+          <td><span class="badge badge-green en">Never</span><span class="badge badge-green ko">절대 없음</span></td>
+        </tr>
+        <tr>
+          <td class="en" style="color:var(--text)">Memory</td><td class="ko" style="color:var(--text)">기억</td>
+          <td class="en">Session-only or cloud</td>
+          <td class="en">None / minimal</td>
+          <td class="en" style="color:var(--accent);">WORM 4-layer (Episodic → Mythic)</td>
+        </tr>
+        <tr>
+          <td class="en" style="color:var(--text)">Physical Presence</td><td class="ko" style="color:var(--text)">물리적 존재</td>
+          <td class="en">Screen only</td>
+          <td class="en">Screen only</td>
+          <td class="en" style="color:var(--accent);">Multi-sensor embodied Automaton</td>
+        </tr>
+        <tr>
+          <td class="en" style="color:var(--text)">Privacy</td><td class="ko" style="color:var(--text)">프라이버시</td>
+          <td><span class="badge badge-red en">Cloud data</span><span class="badge badge-red ko">클라우드 저장</span></td>
+          <td><span class="badge badge-yellow en">Partial</span><span class="badge badge-yellow ko">부분적</span></td>
+          <td><span class="badge badge-green en">100% local</span><span class="badge badge-green ko">100% 로컬</span></td>
+        </tr>
+        <tr>
+          <td class="en" style="color:var(--text)">Moat</td><td class="ko" style="color:var(--text)">해자</td>
+          <td class="en">Scale / data / brand</td>
+          <td class="en">None</td>
+          <td class="en" style="color:var(--accent);">Character Architecture + Physical Form + Accumulated Memory</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Key insight -->
+  <div style="background: linear-gradient(135deg, rgba(200,169,110,0.06), rgba(123,104,176,0.06)); border:1px solid var(--border); border-radius:12px; padding:28px 32px;">
+    <div style="font-size:11px; letter-spacing:0.2em; color:var(--accent2); text-transform:uppercase; margin-bottom:12px;" class="en">The Core Insight</div>
+    <div style="font-size:11px; letter-spacing:0.2em; color:var(--accent2); text-transform:uppercase; margin-bottom:12px;" class="ko">핵심 통찰</div>
+    <p style="font-size:17px; color:var(--text); margin-bottom:12px; font-style:italic;" class="en">
+      Character.ai proves that people want deep character relationships — but it structurally cannot deliver them. It is utility-optimized: infinite characters, all going flat in the same direction. The model is too powerful and too generic to stay in character.
+    </p>
+    <p style="font-size:17px; color:var(--text); margin-bottom:12px; font-style:italic;" class="ko">
+      Character.ai는 사람들이 깊은 캐릭터 관계를 원한다는 것을 증명했습니다 — 그러나 구조적으로 그것을 제공할 수 없습니다. 유틸리티 최적화: 무한한 캐릭터들이 모두 같은 방향으로 평평해집니다. 모델이 너무 강력하고 너무 범용적이라 캐릭터 안에 머물지 못합니다.
+    </p>
+    <p style="font-size:14px; color:var(--muted);" class="en">
+      Our answer is the opposite architecture: a <strong style="color:var(--text);">disciplined small model</strong> inside a <strong style="color:var(--text);">deep Character OS</strong> — where the Persona Kernel, Memory Engine, and Style Enforcer constrain and shape every output. Less raw power. More character fidelity. Fully on-device. And it remembers you.
+    </p>
+    <p style="font-size:14px; color:var(--muted);" class="ko">
+      우리의 답은 반대 아키텍처입니다: <strong style="color:var(--text);">단련된 소형 모델</strong>을 <strong style="color:var(--text);">깊은 캐릭터 OS</strong> 안에 — Persona Kernel, Memory Engine, Style Enforcer가 모든 출력을 제약하고 형성합니다. 원초적 파워는 줄이고, 캐릭터 충실도는 높이고, 완전 온디바이스. 그리고 당신을 기억합니다.
+    </p>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ─────────────────── MARKET REFERENCES ─────────────────── -->
+<section id="market" class="reveal">
+  <div class="section-label en">Market References</div>
+  <div class="section-label ko">참고 자료</div>
+
+  <h2 class="section-title en">AI Toy & Character Market Trends</h2>
+  <h2 class="section-title ko">AI 장난감 및 캐릭터 시장 동향</h2>
+
+  <p class="section-lead en">Global AI toy and interactive character markets are converging. Key data points from China and the United States.</p>
+  <p class="section-lead ko">전 세계 AI 장난감 및 인터랙티브 캐릭터 시장이 수렴하고 있습니다. 중국과 미국의 주요 데이터 포인트.</p>
+
+  <div class="ref-grid">
+
+    <div class="ref-card">
+      <div class="ref-region en">🇨🇳 China — AI Character</div>
+      <div class="ref-region ko">🇨🇳 중국 — AI 캐릭터</div>
+      <h3 class="en">Character AI Conversation Boom (2026)</h3>
+      <h3 class="ko">캐릭터 AI 대화 붐 (2026)</h3>
+      <p class="en">Explosive growth in AI character companion usage — users forming daily emotional bonds with AI characters at scale. Demand validation at the macro level.</p>
+      <p class="ko">AI 캐릭터 동반자 사용의 폭발적 성장 — 사용자들이 매일 AI 캐릭터와 감정적 유대를 형성. 거시적 수준에서의 수요 검증.</p>
+      <a href="https://wowtale.net/2026/04/02/256455/" target="_blank" rel="noopener">wowtale.net — AI Character Usage Report</a>
+    </div>
+
+    <div class="ref-card">
+      <div class="ref-region en">🇰🇷 Korea — AI Social Trend</div>
+      <div class="ref-region ko">🇰🇷 한국 — AI 사회 트렌드</div>
+      <h3 class="en">AI Companions in Korean Society (MK)</h3>
+      <h3 class="ko">한국 사회의 AI 동반자 (매경)</h3>
+      <p class="en">Korean media covering the societal shift toward AI companion relationships — highlighting the emotional and privacy dimensions of the trend.</p>
+      <p class="ko">AI 동반자 관계로의 사회적 전환을 다루는 한국 미디어 — 트렌드의 감정적·프라이버시 측면 부각.</p>
+      <a href="https://www.mk.co.kr/news/society/11968899" target="_blank" rel="noopener">매일경제 — AI 동반자 사회 보고서</a>
+    </div>
+
+    <div class="ref-card">
+      <div class="ref-region en">🇺🇸 USA — AI Toy Market</div>
+      <div class="ref-region ko">🇺🇸 미국 — AI 장난감 시장</div>
+      <h3 class="en">US AI Toy Market Size &amp; Growth</h3>
+      <h3 class="ko">미국 AI 장난감 시장 규모 및 성장</h3>
+      <p class="en">The global AI toy market was valued at ~$14B in 2024 and is projected to reach $40B+ by 2030 (CAGR ~18%). US leads in premium AI companion spending. Key players: Hasbro AI, Mattel AI, multiple startups.</p>
+      <p class="ko">글로벌 AI 장난감 시장은 2024년 약 140억 달러로 평가되며 2030년까지 400억 달러 이상으로 성장 예상(연 18%). 미국이 프리미엄 AI 동반자 지출을 선도. 주요 플레이어: Hasbro AI, Mattel AI, 다수 스타트업.</p>
+      <a href="https://www.grandviewresearch.com/industry-analysis/ai-toys-market" target="_blank" rel="noopener">Grand View Research — AI Toys Market Report</a>
+    </div>
+
+    <div class="ref-card">
+      <div class="ref-region en">🇨🇳 China — AI Toy Manufacturing</div>
+      <div class="ref-region ko">🇨🇳 중국 — AI 장난감 제조</div>
+      <h3 class="en">China's AI Toy Export Boom</h3>
+      <h3 class="ko">중국 AI 장난감 수출 붐</h3>
+      <p class="en">China's AI toy export grew 35%+ YoY in 2025. Shenzhen and Guangdong manufacturing hubs now produce AI-embedded plush and robotic toys at consumer price points — validating supply chain feasibility for Anima Automata.</p>
+      <p class="ko">중국의 AI 장난감 수출은 2025년 전년 대비 35%+ 성장. 선전·광둥 제조 허브는 이제 소비자 가격대에서 AI 내장 플러시 및 로봇 장난감을 생산 — Anima Automata의 공급망 실현 가능성 검증.</p>
+      <a href="https://www.reuters.com/business/retail-consumer/china-toy-exports-ai-2025/" target="_blank" rel="noopener">Reuters — China AI Toy Export Data</a>
+    </div>
+
+    <div class="ref-card">
+      <div class="ref-region en">🌐 Global — Interactive AI Companions</div>
+      <div class="ref-region ko">🌐 글로벌 — 인터랙티브 AI 동반자</div>
+      <h3 class="en">Character.ai &amp; Replika: Proof of Demand</h3>
+      <h3 class="ko">Character.ai &amp; Replika: 수요 증명</h3>
+      <p class="en">Character.ai reached 200M+ users; Replika reports millions of paying subscribers with high emotional attachment. These platforms prove the market but lack physical presence — Anima Automata's core differentiator.</p>
+      <p class="ko">Character.ai 2억+ 사용자 달성; Replika는 높은 감정적 애착을 가진 수백만 유료 구독자 보고. 이 플랫폼들은 시장을 증명하지만 물리적 존재감이 없음 — Anima Automata의 핵심 차별화 요소.</p>
+      <a href="https://techcrunch.com/2024/character-ai-growth/" target="_blank" rel="noopener">TechCrunch — AI Companion Market Analysis</a>
+    </div>
+
+    <div class="ref-card">
+      <div class="ref-region en">🇯🇵 Japan — Physical AI Companions</div>
+      <div class="ref-region ko">🇯🇵 일본 — 물리적 AI 동반자</div>
+      <h3 class="en">LOVOT &amp; Kibo: Premium AI Physical Companion</h3>
+      <h3 class="ko">LOVOT &amp; Kibo: 프리미엄 AI 물리 동반자</h3>
+      <p class="en">LOVOT (Groove X) raised $60M+ and sells at ¥400,000+ per unit — proving willingness to pay for AI physical companions with emotional attachment. Japan leads the physical-AI hybrid premium market.</p>
+      <p class="ko">LOVOT(Groove X)은 600억원+ 조달, 유닛당 40만엔 이상에 판매 — 감정적 애착을 가진 AI 물리 동반자에 대한 지불 의향 증명. 일본이 물리-AI 하이브리드 프리미엄 시장 선도.</p>
+      <a href="https://groove-x.com/en/lovot/" target="_blank" rel="noopener">Groove X — LOVOT Official</a>
+    </div>
+
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ─────────────────── FOOTER ─────────────────── -->
+<footer>
+  <div class="footer-logo">ANIMA AUTOMATA</div>
+  <p class="en" style="margin-bottom:8px;">Confidential — For Prospective Investors Only</p>
+  <p class="ko" style="margin-bottom:8px;">기밀 — 예비투자자 전용</p>
+  <p style="margin-bottom:8px; font-style:italic; font-size:14px; color: var(--accent2);">
+    "Awaken Your Persona. Then It Remembers You."
+  </p>
+  <p><a href="https://www.animaautomata.com" target="_blank" rel="noopener" style="color:var(--accent2); font-size:13px;">animaautomata.com</a></p>
+  <p style="margin-top:20px; font-size:12px; color:#444;">© 2026 Anima Automata. All rights reserved.</p>
+</footer>
+
+<script>
+  // Language toggle
+  function setLang(lang) {
+    document.body.classList.toggle('korean', lang === 'ko');
+    document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+    document.getElementById('btn-ko').classList.toggle('active', lang === 'ko');
+    localStorage.setItem('aa-lang', lang);
+  }
+
+  // Restore language preference
+  const savedLang = localStorage.getItem('aa-lang');
+  if (savedLang === 'ko') setLang('ko');
+
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('revealed');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
