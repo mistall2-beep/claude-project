@@ -281,18 +281,18 @@
     }
     .roadmap-item {
       display: grid;
-      grid-template-columns: 160px 32px 1fr;
+      grid-template-columns: 140px 32px 1fr;
       gap: 0 16px;
       position: relative;
       padding-bottom: 40px;
       align-items: start;
     }
     .roadmap-item:last-child { padding-bottom: 0; }
-    /* vertical line through the dot column */
+    /* vertical line down the dot column (col 2 starts at 140+16=156px) */
     .roadmap-item::before {
       content: '';
       position: absolute;
-      left: 176px;
+      left: 164px;
       top: 20px;
       bottom: 0;
       width: 2px;
@@ -313,7 +313,7 @@
     }
     .roadmap-phase {
       text-align: right;
-      padding-right: 8px;
+      padding-right: 0;
       padding-top: 2px;
     }
     .roadmap-phase .phase-label {
@@ -558,8 +558,8 @@
       nav { padding: 0 20px; gap: 16px; }
       nav a:nth-child(n+4) { display: none; }
       section { padding: 64px 20px; }
-      .roadmap-item { grid-template-columns: 100px 24px 1fr; gap: 0 10px; }
-      .roadmap-item::before { left: 112px; }
+      .roadmap-item { grid-template-columns: 90px 24px 1fr; gap: 0 10px; }
+      .roadmap-item::before { left: 107px; }
       .roadmap-phase .phase-label { font-size: 11px; }
       .roadmap-phase .phase-time { font-size: 11px; }
       .compare { grid-template-columns: 1fr; }
@@ -985,95 +985,70 @@
 
   <div class="roadmap">
     <div class="roadmap-item">
-      <div class="roadmap-dot"></div>
       <div class="roadmap-phase">
-        <div class="phase-label en">Phase 1a</div>
-        <div class="phase-label ko">1단계 A</div>
+        <div class="phase-label"><span class="en">Phase 1a</span><span class="ko">1단계 A</span></div>
         <div class="phase-time">M ~ M+3</div>
       </div>
+      <div class="roadmap-dot"></div>
       <div class="roadmap-content">
-        <h3 class="en">On-Device RAG + Persona Graph — Build</h3>
-        <h3 class="ko">온디바이스 RAG + Persona Graph — 구축</h3>
+        <h3><span class="en">On-Device RAG + Persona Graph — Build</span><span class="ko">온디바이스 RAG + Persona Graph — 구축</span></h3>
         <ul>
-          <li class="en">Base: small open LLM on-device (Phi-3 Mini / Gemma 3 / Qwen 2.5)</li>
-          <li class="ko">베이스: 온디바이스 소형 오픈 LLM (Phi-3 Mini / Gemma 3 / Qwen 2.5)</li>
-          <li class="en">5 priority characters with full Persona Kernel</li>
-          <li class="ko">Persona Kernel 완성된 우선 순위 캐릭터 5종</li>
-          <li class="en">Web / App demo (cloud-free)</li>
-          <li class="ko">웹/앱 데모 (클라우드 불필요)</li>
-          <li class="en">Hardware sample integration</li>
-          <li class="ko">하드웨어 샘플과 연동</li>
-          <li class="en">Sensor context input experiments</li>
-          <li class="ko">센서 context 입력 실험</li>
+          <li><span class="en">Base: small open LLM on-device (Phi-3 Mini / Gemma 3 / Qwen 2.5)</span><span class="ko">베이스: 온디바이스 소형 오픈 LLM (Phi-3 Mini / Gemma 3 / Qwen 2.5)</span></li>
+          <li><span class="en">5 priority characters with full Persona Kernel</span><span class="ko">Persona Kernel 완성된 우선 순위 캐릭터 5종</span></li>
+          <li><span class="en">Web / App demo (cloud-free)</span><span class="ko">웹/앱 데모 (클라우드 불필요)</span></li>
+          <li><span class="en">Hardware sample integration</span><span class="ko">하드웨어 샘플과 연동</span></li>
+          <li><span class="en">Sensor context input experiments</span><span class="ko">센서 context 입력 실험</span></li>
         </ul>
       </div>
     </div>
 
     <div class="roadmap-item">
-      <div class="roadmap-dot"></div>
       <div class="roadmap-phase">
-        <div class="phase-label en">Phase 1b</div>
-        <div class="phase-label ko">1단계 B</div>
+        <div class="phase-label"><span class="en">Phase 1b</span><span class="ko">1단계 B</span></div>
         <div class="phase-time">M+3 ~ M+6</div>
       </div>
+      <div class="roadmap-dot"></div>
       <div class="roadmap-content">
-        <h3 class="en">RAG + Persona Graph — Refinement</h3>
-        <h3 class="ko">RAG + Persona Graph — 고도화</h3>
+        <h3><span class="en">RAG + Persona Graph — Refinement</span><span class="ko">RAG + Persona Graph — 고도화</span></h3>
         <ul>
-          <li class="en">Persona Fidelity Score measurement</li>
-          <li class="ko">Persona Fidelity Score 측정</li>
-          <li class="en">Conversation retention rate measurement</li>
-          <li class="ko">대화 유지율 측정</li>
-          <li class="en">User character differentiation test</li>
-          <li class="ko">유저가 캐릭터 차이를 느끼는지 테스트</li>
-          <li class="en">Doll-to-Doll Debate feature implementation</li>
-          <li class="ko">Doll-to-Doll Debate 기능 구현</li>
+          <li><span class="en">Persona Fidelity Score measurement</span><span class="ko">Persona Fidelity Score 측정</span></li>
+          <li><span class="en">Conversation retention rate measurement</span><span class="ko">대화 유지율 측정</span></li>
+          <li><span class="en">User character differentiation test</span><span class="ko">유저가 캐릭터 차이를 느끼는지 테스트</span></li>
+          <li><span class="en">Doll-to-Doll Debate feature implementation</span><span class="ko">Doll-to-Doll Debate 기능 구현</span></li>
         </ul>
       </div>
     </div>
 
     <div class="roadmap-item">
-      <div class="roadmap-dot"></div>
       <div class="roadmap-phase">
-        <div class="phase-label en">Phase 2</div>
-        <div class="phase-label ko">2단계</div>
+        <div class="phase-label"><span class="en">Phase 2</span><span class="ko">2단계</span></div>
         <div class="phase-time">M+6 ~ M+12</div>
       </div>
+      <div class="roadmap-dot"></div>
       <div class="roadmap-content">
-        <h3 class="en">LoRA per Character — Character Strengthening</h3>
-        <h3 class="ko">캐릭터별 LoRA — 캐릭터성 강화</h3>
+        <h3><span class="en">LoRA per Character — Character Strengthening</span><span class="ko">캐릭터별 LoRA — 캐릭터성 강화</span></h3>
         <ul>
-          <li class="en">LoRA application on Top 3 characters</li>
-          <li class="ko">Top 3 캐릭터 LoRA 적용</li>
-          <li class="en">Brain Pack architecture design</li>
-          <li class="ko">Brain Pack 구조 설계</li>
-          <li class="en">Subscription model test</li>
-          <li class="ko">구독 모델 테스트</li>
-          <li class="en">Voice Pack test</li>
-          <li class="ko">Voice Pack 테스트</li>
+          <li><span class="en">LoRA applied to Top 3 characters</span><span class="ko">Top 3 캐릭터 LoRA 적용</span></li>
+          <li><span class="en">Brain Pack architecture design</span><span class="ko">Brain Pack 구조 설계</span></li>
+          <li><span class="en">Subscription model test</span><span class="ko">구독 모델 테스트</span></li>
+          <li><span class="en">Voice Pack test</span><span class="ko">Voice Pack 테스트</span></li>
         </ul>
       </div>
     </div>
 
     <div class="roadmap-item">
-      <div class="roadmap-dot"></div>
       <div class="roadmap-phase">
-        <div class="phase-label en">Phase 3</div>
-        <div class="phase-label ko">3단계</div>
+        <div class="phase-label"><span class="en">Phase 3</span><span class="ko">3단계</span></div>
         <div class="phase-time">M+12 ~ M+24</div>
       </div>
+      <div class="roadmap-dot"></div>
       <div class="roadmap-content">
-        <h3 class="en">Micro-sLLM Distillation — On-Device Independence</h3>
-        <h3 class="ko">Micro-sLLM 증류 — 온디바이스 독립</h3>
+        <h3><span class="en">Micro-sLLM Distillation — On-Device Independence</span><span class="ko">Micro-sLLM 증류 — 온디바이스 독립</span></h3>
         <ul>
-          <li class="en">Top 1–3 characters converted to Micro-sLLM</li>
-          <li class="ko">Top 1~3 캐릭터 Micro-sLLM화</li>
-          <li class="en">On-device deployment</li>
-          <li class="ko">온디바이스 탑재</li>
-          <li class="en">Offline conversation enabled</li>
-          <li class="ko">오프라인 대화 가능</li>
-          <li class="en">Premium Automaton launch</li>
-          <li class="ko">프리미엄 Automaton 출시</li>
+          <li><span class="en">Top 1–3 characters converted to Micro-sLLM</span><span class="ko">Top 1~3 캐릭터 Micro-sLLM화</span></li>
+          <li><span class="en">On-device deployment</span><span class="ko">온디바이스 탑재</span></li>
+          <li><span class="en">Offline conversation enabled</span><span class="ko">오프라인 대화 가능</span></li>
+          <li><span class="en">Premium Automaton launch</span><span class="ko">프리미엄 Automaton 출시</span></li>
         </ul>
       </div>
     </div>
