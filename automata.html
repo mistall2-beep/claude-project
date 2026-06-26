@@ -826,46 +826,38 @@
       </div>
     </div>
 
-    <!-- Row 2: two columns -->
-    <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
-      <div style="border-radius:14px; overflow:hidden; border:1px solid var(--border); cursor:zoom-in;" onclick="openLightbox(this)">
-        <img src="assets/char-donquixote-sancho.png" alt="Don Quixote & Sancho Panza" style="width:100%; display:block; transition:transform 0.4s;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
-        <div style="background:var(--surface); padding:12px 16px;">
-          <span style="font-size:14px; font-weight:bold; color:var(--text);">Don Quixote</span>
-          <span style="color:var(--border); margin:0 8px;">·</span>
-          <span style="font-size:14px; font-weight:bold; color:var(--text);">Sancho Panza</span>
-          <div style="margin-top:6px; display:flex; gap:6px; flex-wrap:wrap;">
-            <span class="tag en">Idealism vs Pragmatism</span>
-            <span class="tag ko">이상주의 vs 실용주의</span>
-          </div>
+    <!-- Row 2: Don Quixote + Sancho full width -->
+    <div style="border-radius:14px; overflow:hidden; border:1px solid var(--border); cursor:zoom-in;" onclick="openLightbox(this)">
+      <img src="assets/char-donquixote-sancho.png" alt="Don Quixote & Sancho Panza" style="width:100%; display:block; transition:transform 0.4s;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+      <div style="background:var(--surface); padding:14px 20px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+        <div>
+          <span style="font-size:15px; font-weight:bold; color:var(--text);">Don Quixote</span>
+          <span style="color:var(--border); margin:0 10px;">·</span>
+          <span style="font-size:15px; font-weight:bold; color:var(--text);">Sancho Panza</span>
         </div>
-      </div>
-      <div style="border-radius:14px; overflow:hidden; border:1px solid var(--border); cursor:zoom-in;" onclick="openLightbox(this)">
-        <img src="assets/char-buddha-jesus.png" alt="Buddha & Jesus" style="width:100%; display:block; transition:transform 0.4s;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
-        <div style="background:var(--surface); padding:12px 16px;">
-          <span style="font-size:14px; font-weight:bold; color:var(--text);">Buddha</span>
-          <span style="color:var(--border); margin:0 8px;">·</span>
-          <span style="font-size:14px; font-weight:bold; color:var(--text);">Jesus</span>
-          <div style="margin-top:6px; display:flex; gap:6px; flex-wrap:wrap;">
-            <span class="tag en">Compassion · Wisdom vs Love · Forgiveness</span>
-            <span class="tag ko">자비·지혜 vs 사랑·용서</span>
-          </div>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <span class="tag en">Idealism vs Pragmatism</span>
+          <span class="tag ko">이상주의 vs 실용주의</span>
         </div>
       </div>
     </div>
 
-    <!-- Row 3: plush debate -->
-    <div style="border-radius:14px; overflow:hidden; border:1px solid var(--border); position:relative; cursor:zoom-in;" onclick="openLightbox(this)">
-      <img src="assets/char-plush-debate.jpg" alt="Doll-to-Doll Debate" style="width:100%; display:block; max-height:420px; object-fit:cover; transition:transform 0.4s;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
-      <div style="position:absolute; top:16px; left:16px; background:rgba(10,10,15,0.82); backdrop-filter:blur(8px); border:1px solid var(--accent); border-radius:8px; padding:8px 14px;">
-        <span style="font-size:12px; color:var(--accent); letter-spacing:0.12em; text-transform:uppercase;" class="en">✦ Doll-to-Doll Debate — Live</span>
-        <span style="font-size:12px; color:var(--accent); letter-spacing:0.12em; text-transform:uppercase;" class="ko">✦ Doll-to-Doll Debate — 라이브</span>
-      </div>
-      <div style="background:var(--surface); padding:14px 20px;">
-        <p style="font-size:14px; color:var(--muted);" class="en">Two Automatons connected — debating live. Conversations recorded and published automatically as podcasts. The world's only physical AI debate format.</p>
-        <p style="font-size:14px; color:var(--muted);" class="ko">두 Automaton이 연결되어 실시간으로 토론합니다. 대화는 자동으로 녹음되고 팟캐스트로 퍼블리싱됩니다. 세계 유일의 물리적 AI 토론 포맷.</p>
+    <!-- Row 3: Buddha + Jesus full width -->
+    <div style="border-radius:14px; overflow:hidden; border:1px solid var(--border); cursor:zoom-in;" onclick="openLightbox(this)">
+      <img src="assets/char-buddha-jesus.png" alt="Buddha & Jesus" style="width:100%; display:block; transition:transform 0.4s;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+      <div style="background:var(--surface); padding:14px 20px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+        <div>
+          <span style="font-size:15px; font-weight:bold; color:var(--text);">Buddha</span>
+          <span style="color:var(--border); margin:0 10px;">·</span>
+          <span style="font-size:15px; font-weight:bold; color:var(--text);">Jesus</span>
+        </div>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <span class="tag en">Compassion · Wisdom vs Love · Forgiveness</span>
+          <span class="tag ko">자비·지혜 vs 사랑·용서</span>
+        </div>
       </div>
     </div>
+
   </div>
 
   <!-- Lightbox -->
