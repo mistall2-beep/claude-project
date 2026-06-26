@@ -281,17 +281,19 @@
     }
     .roadmap-item {
       display: grid;
-      grid-template-columns: 120px 1fr;
-      gap: 28px;
+      grid-template-columns: 160px 32px 1fr;
+      gap: 0 16px;
       position: relative;
       padding-bottom: 40px;
+      align-items: start;
     }
     .roadmap-item:last-child { padding-bottom: 0; }
+    /* vertical line through the dot column */
     .roadmap-item::before {
       content: '';
       position: absolute;
-      left: 59px;
-      top: 28px;
+      left: 176px;
+      top: 20px;
       bottom: 0;
       width: 2px;
       background: var(--border);
@@ -302,25 +304,31 @@
       height: 16px;
       border-radius: 50%;
       background: var(--accent);
-      border: 2px solid var(--bg);
-      position: absolute;
-      left: 52px;
-      top: 6px;
+      border: 3px solid var(--bg);
+      box-shadow: 0 0 0 2px var(--accent);
+      margin-top: 4px;
+      justify-self: center;
+      position: relative;
+      z-index: 1;
     }
     .roadmap-phase {
       text-align: right;
-      padding-right: 28px;
+      padding-right: 8px;
+      padding-top: 2px;
     }
     .roadmap-phase .phase-label {
-      font-size: 11px;
+      font-size: 12px;
       color: var(--accent);
-      letter-spacing: 0.1em;
+      letter-spacing: 0.06em;
       text-transform: uppercase;
+      font-weight: bold;
+      white-space: nowrap;
     }
     .roadmap-phase .phase-time {
-      font-size: 13px;
+      font-size: 12px;
       color: var(--muted);
-      margin-top: 2px;
+      margin-top: 4px;
+      white-space: nowrap;
     }
     .roadmap-content {
       background: var(--surface);
@@ -550,7 +558,10 @@
       nav { padding: 0 20px; gap: 16px; }
       nav a:nth-child(n+4) { display: none; }
       section { padding: 64px 20px; }
-      .roadmap-item { grid-template-columns: 90px 1fr; gap: 16px; }
+      .roadmap-item { grid-template-columns: 100px 24px 1fr; gap: 0 10px; }
+      .roadmap-item::before { left: 112px; }
+      .roadmap-phase .phase-label { font-size: 11px; }
+      .roadmap-phase .phase-time { font-size: 11px; }
       .compare { grid-template-columns: 1fr; }
       .layer { grid-template-columns: 60px 1fr; }
     }
@@ -573,6 +584,7 @@
   <div class="logo">Anima Automata</div>
   <a href="#vision"><span class="en">Vision</span><span class="ko">비전</span></a>
   <a href="#product"><span class="en">Product</span><span class="ko">제품</span></a>
+  <a href="#gallery"><span class="en">Characters</span><span class="ko">캐릭터</span></a>
   <a href="#technology"><span class="en">Technology</span><span class="ko">기술</span></a>
   <a href="#roadmap"><span class="en">Roadmap</span><span class="ko">로드맵</span></a>
   <a href="#ontology"><span class="en">Ontology</span><span class="ko">온톨로지</span></a>
@@ -779,6 +791,86 @@
         <p class="ko">Vision(얼굴·표정·공간 인식) · Voice(실시간 대화/목소리 학습) · Touch(압력 센서) · Smell(VOC 센서: "오늘 와인 마셨네.") · Temperature("손이 차갑다.") · Motion(IMU).</p>
       </div>
     </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ─────────────────── CHARACTER GALLERY ─────────────────── -->
+<section id="gallery" class="reveal">
+  <div class="section-label en">Character Samples</div>
+  <div class="section-label ko">캐릭터 샘플</div>
+
+  <h2 class="section-title en">Living Collectibles — First Look</h2>
+  <h2 class="section-title ko">살아있는 수집품 — 첫 번째 공개</h2>
+
+  <p class="section-lead en">Each Automaton is designed as a premium collectible first — with full Character Architecture running inside. These are early concept renders of the first character lineup.</p>
+  <p class="section-lead ko">각 Automaton은 프리미엄 수집품으로 먼저 설계됩니다 — 내부에서 완전한 캐릭터 아키텍처가 작동합니다. 첫 번째 캐릭터 라인업의 초기 컨셉 렌더입니다.</p>
+
+  <div style="display:grid; gap:16px;">
+    <!-- Row 1: full width -->
+    <div style="border-radius:14px; overflow:hidden; border:1px solid var(--border); cursor:zoom-in;" onclick="openLightbox(this)">
+      <img src="assets/char-hamlet-donquixote.png" alt="Hamlet & Don Quixote" style="width:100%; display:block; transition:transform 0.4s;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+      <div style="background:var(--surface); padding:14px 20px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+        <div>
+          <span style="font-size:15px; font-weight:bold; color:var(--text);">Hamlet</span>
+          <span style="color:var(--border); margin:0 10px;">·</span>
+          <span style="font-size:15px; font-weight:bold; color:var(--text);">Don Quixote</span>
+        </div>
+        <div style="display:flex; gap:8px;">
+          <span class="tag en">Melancholy · Doubt · Intellect</span>
+          <span class="tag ko">멜랑콜리 · 의심 · 지성</span>
+          <span class="tag en">Chivalry · Dreams · Courage</span>
+          <span class="tag ko">기사도 · 꿈 · 용기</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 2: two columns -->
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+      <div style="border-radius:14px; overflow:hidden; border:1px solid var(--border); cursor:zoom-in;" onclick="openLightbox(this)">
+        <img src="assets/char-donquixote-sancho.png" alt="Don Quixote & Sancho Panza" style="width:100%; display:block; transition:transform 0.4s;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+        <div style="background:var(--surface); padding:12px 16px;">
+          <span style="font-size:14px; font-weight:bold; color:var(--text);">Don Quixote</span>
+          <span style="color:var(--border); margin:0 8px;">·</span>
+          <span style="font-size:14px; font-weight:bold; color:var(--text);">Sancho Panza</span>
+          <div style="margin-top:6px; display:flex; gap:6px; flex-wrap:wrap;">
+            <span class="tag en">Idealism vs Pragmatism</span>
+            <span class="tag ko">이상주의 vs 실용주의</span>
+          </div>
+        </div>
+      </div>
+      <div style="border-radius:14px; overflow:hidden; border:1px solid var(--border); cursor:zoom-in;" onclick="openLightbox(this)">
+        <img src="assets/char-buddha-jesus.png" alt="Buddha & Jesus" style="width:100%; display:block; transition:transform 0.4s;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+        <div style="background:var(--surface); padding:12px 16px;">
+          <span style="font-size:14px; font-weight:bold; color:var(--text);">Buddha</span>
+          <span style="color:var(--border); margin:0 8px;">·</span>
+          <span style="font-size:14px; font-weight:bold; color:var(--text);">Jesus</span>
+          <div style="margin-top:6px; display:flex; gap:6px; flex-wrap:wrap;">
+            <span class="tag en">Compassion · Wisdom vs Love · Forgiveness</span>
+            <span class="tag ko">자비·지혜 vs 사랑·용서</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 3: plush debate -->
+    <div style="border-radius:14px; overflow:hidden; border:1px solid var(--border); position:relative; cursor:zoom-in;" onclick="openLightbox(this)">
+      <img src="assets/char-plush-debate.jpg" alt="Doll-to-Doll Debate" style="width:100%; display:block; max-height:420px; object-fit:cover; transition:transform 0.4s;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+      <div style="position:absolute; top:16px; left:16px; background:rgba(10,10,15,0.82); backdrop-filter:blur(8px); border:1px solid var(--accent); border-radius:8px; padding:8px 14px;">
+        <span style="font-size:12px; color:var(--accent); letter-spacing:0.12em; text-transform:uppercase;" class="en">✦ Doll-to-Doll Debate — Live</span>
+        <span style="font-size:12px; color:var(--accent); letter-spacing:0.12em; text-transform:uppercase;" class="ko">✦ Doll-to-Doll Debate — 라이브</span>
+      </div>
+      <div style="background:var(--surface); padding:14px 20px;">
+        <p style="font-size:14px; color:var(--muted);" class="en">Two Automatons connected — debating live. Conversations recorded and published automatically as podcasts. The world's only physical AI debate format.</p>
+        <p style="font-size:14px; color:var(--muted);" class="ko">두 Automaton이 연결되어 실시간으로 토론합니다. 대화는 자동으로 녹음되고 팟캐스트로 퍼블리싱됩니다. 세계 유일의 물리적 AI 토론 포맷.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lightbox -->
+  <div id="lightbox" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.92); z-index:2000; align-items:center; justify-content:center; cursor:zoom-out;" onclick="closeLightbox()">
+    <img id="lightbox-img" src="" alt="" style="max-width:92vw; max-height:92vh; border-radius:8px; box-shadow:0 0 60px rgba(0,0,0,0.8);">
   </div>
 </section>
 
@@ -1526,6 +1618,17 @@
 </footer>
 
 <script>
+  // Lightbox
+  function openLightbox(card) {
+    const img = card.querySelector('img');
+    document.getElementById('lightbox-img').src = img.src;
+    const lb = document.getElementById('lightbox');
+    lb.style.display = 'flex';
+  }
+  function closeLightbox() {
+    document.getElementById('lightbox').style.display = 'none';
+  }
+
   // Language toggle
   function setLang(lang) {
     document.body.classList.toggle('korean', lang === 'ko');
