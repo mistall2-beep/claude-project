@@ -661,8 +661,8 @@
       <div class="card-icon">💬</div>
       <h3 class="en">Demand Proven</h3>
       <h3 class="ko">욕망 검증 완료</h3>
-      <p class="en">People are already conversing with AI characters daily. The desire has been validated at massive scale (Character.ai, etc.).</p>
-      <p class="ko">사람들은 이미 AI 캐릭터와 매일 대화하고 있다. 욕망은 거대한 규모에서 이미 검증됐다.</p>
+      <p class="en">People are already conversing with AI characters daily. The desire has been validated at massive scale — but existing platforms (Character.ai, Replika) remain cloud-locked, generic, and disembodied.</p>
+      <p class="ko">사람들은 이미 AI 캐릭터와 매일 대화하고 있다. 그러나 기존 플랫폼(Character.ai, Replika)은 클라우드 종속, 범용, 물리 부재라는 한계를 벗어나지 못한다.</p>
     </div>
     <div class="card card-purple">
       <div class="card-icon">🏭</div>
@@ -673,11 +673,21 @@
     </div>
     <div class="card card-purple">
       <div class="card-icon">🧠</div>
-      <h3 class="en">On-Device AI Ready</h3>
-      <h3 class="ko">온디바이스 AI 준비됨</h3>
-      <p class="en">Local-brain AI now provides privacy, low latency, and identity consistency — previously impossible without cloud dependency.</p>
-      <p class="ko">이전에는 클라우드가 필수였다. 지금은 privacy/latency/identity consistency를 갖춘 local brain이 가능하다.</p>
+      <h3 class="en">Edge AI Chips Are Here</h3>
+      <h3 class="ko">엣지 AI 칩 시대 도래</h3>
+      <p class="en">Snapdragon 8 Gen 3, MediaTek Dimensity 9300, and equivalent SoCs can now run 1B–4B parameter models fully on-device. The hardware prerequisite for a 100% on-device character brain finally exists.</p>
+      <p class="ko">Snapdragon 8 Gen 3, MediaTek Dimensity 9300 등 최신 SoC는 1B~4B 파라미터 모델을 완전 온디바이스로 구동 가능. 100% 온디바이스 캐릭터 브레인을 위한 하드웨어 전제조건이 드디어 갖춰졌다.</p>
     </div>
+  </div>
+
+  <!-- On-device principle callout -->
+  <div style="margin-top:32px; background: linear-gradient(135deg, rgba(200,169,110,0.08), rgba(123,104,176,0.08)); border:1px solid var(--accent); border-radius:12px; padding:28px 32px;">
+    <div style="font-size:11px; letter-spacing:0.2em; color:var(--accent); text-transform:uppercase; margin-bottom:10px;" class="en">Core Principle — Non-Negotiable</div>
+    <div style="font-size:11px; letter-spacing:0.2em; color:var(--accent); text-transform:uppercase; margin-bottom:10px;" class="ko">핵심 원칙 — 타협 없음</div>
+    <p style="font-size:18px; font-style:italic; color:var(--text); margin-bottom:8px;" class="en">"100% On-Device Brain. No cloud dependency. Not even Phase 1."</p>
+    <p style="font-size:18px; font-style:italic; color:var(--text); margin-bottom:8px;" class="ko">"100% 온디바이스 브레인. 클라우드 의존 없음. 1단계부터."</p>
+    <p style="font-size:14px; color:var(--muted);" class="en">An online-dependent product contradicts our brand's core promise: privacy, persistent identity, and physical presence. Every phase runs locally.</p>
+    <p style="font-size:14px; color:var(--muted);" class="ko">온라인 의존 제품은 우리 브랜드의 핵심 약속(프라이버시, 지속적 정체성, 물리적 존재감)과 정면 충돌한다. 모든 단계는 로컬에서 작동한다.</p>
   </div>
 </section>
 
@@ -890,13 +900,15 @@
         <div class="phase-time">M ~ M+3</div>
       </div>
       <div class="roadmap-content">
-        <h3 class="en">RAG + Persona Graph — Build</h3>
-        <h3 class="ko">RAG + Persona Graph — 구축</h3>
+        <h3 class="en">On-Device RAG + Persona Graph — Build</h3>
+        <h3 class="ko">온디바이스 RAG + Persona Graph — 구축</h3>
         <ul>
-          <li class="en">5 priority characters produced</li>
-          <li class="ko">우선 순위 캐릭터 5종 제작</li>
-          <li class="en">Web / App demo</li>
-          <li class="ko">웹/앱 데모</li>
+          <li class="en">Base: small open LLM on-device (Phi-3 Mini / Gemma 3 / Qwen 2.5)</li>
+          <li class="ko">베이스: 온디바이스 소형 오픈 LLM (Phi-3 Mini / Gemma 3 / Qwen 2.5)</li>
+          <li class="en">5 priority characters with full Persona Kernel</li>
+          <li class="ko">Persona Kernel 완성된 우선 순위 캐릭터 5종</li>
+          <li class="en">Web / App demo (cloud-free)</li>
+          <li class="ko">웹/앱 데모 (클라우드 불필요)</li>
           <li class="en">Hardware sample integration</li>
           <li class="ko">하드웨어 샘플과 연동</li>
           <li class="en">Sensor context input experiments</li>
@@ -986,12 +998,64 @@
   <h2 class="section-title en">Three-Phase Intelligence Architecture</h2>
   <h2 class="section-title ko">3단계 지능 아키텍처</h2>
 
-  <p class="section-lead en">The ontology build strategy progressively deepens character intelligence — from rapid validation to full on-device independence — without building our own base LLM.</p>
-  <p class="section-lead ko">온톨로지 구축 전략은 자체 base LLM 없이, 빠른 검증에서 완전한 온디바이스 독립까지 캐릭터 지능을 단계적으로 심화합니다.</p>
+  <p class="section-lead en">All three phases run 100% on-device. The base LLM is a commodity layer — our differentiation lives entirely in the Character Architecture built on top of it.</p>
+  <p class="section-lead ko">3단계 모두 100% 온디바이스로 작동합니다. Base LLM은 범용 부품 레이어입니다. 우리의 차별성은 그 위에 구축된 캐릭터 아키텍처에 전적으로 존재합니다.</p>
 
   <div class="quote-block">
-    <blockquote>"Brains are borrowed. Characters are built."</blockquote>
-    <cite>— Core Architecture Principle</cite>
+    <blockquote>"The base LLM is the engine block. The Character Architecture is what makes it a Ferrari."</blockquote>
+    <cite>— Anima Automata Architecture Principle</cite>
+  </div>
+
+  <!-- Base LLM strategy callout -->
+  <div style="background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:28px 32px; margin-bottom:40px;">
+    <div style="font-size:13px; letter-spacing:0.12em; color:var(--accent); text-transform:uppercase; margin-bottom:16px;" class="en">Base Intelligence Strategy — On-Device First, Always</div>
+    <div style="font-size:13px; letter-spacing:0.12em; color:var(--accent); text-transform:uppercase; margin-bottom:16px;" class="ko">Base Intelligence 전략 — 처음부터 온디바이스</div>
+
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px,1fr)); gap:16px; margin-bottom:24px;">
+      <div style="background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:18px;">
+        <div style="font-size:11px; color:var(--muted); letter-spacing:0.1em; margin-bottom:8px;">PHASE 1–2 CANDIDATES</div>
+        <div style="font-size:14px; color:var(--text); line-height:1.8;">
+          Phi-3 Mini (3.8B) · Gemma 3 (1B / 4B)<br>
+          Qwen 2.5 (0.5B / 3B) · Llama 3.2 (1B / 3B)<br>
+          <span style="color:var(--muted); font-size:13px;">→ Runs on Snapdragon 8 Gen 3 / Dimensity 9300</span>
+        </div>
+      </div>
+      <div style="background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:18px;">
+        <div style="font-size:11px; color:var(--muted); letter-spacing:0.1em; margin-bottom:8px;">WHY SMALL MODELS WORK FOR US</div>
+        <div style="font-size:14px; color:var(--text); line-height:1.8;" class="en">
+          Base LLM handles grammar + reasoning.<br>
+          Character Architecture handles <em>everything else</em>:<br>
+          who speaks, how, and what it remembers.
+        </div>
+        <div style="font-size:14px; color:var(--text); line-height:1.8;" class="ko">
+          Base LLM은 문법과 추론만 담당.<br>
+          캐릭터 아키텍처가 <em>나머지 전부</em>를 담당:<br>
+          누가, 어떻게 말하고, 무엇을 기억하는지.
+        </div>
+      </div>
+      <div style="background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:18px;">
+        <div style="font-size:11px; color:var(--muted); letter-spacing:0.1em; margin-bottom:8px;">THE TRAP WE AVOID</div>
+        <div style="font-size:14px; color:var(--text); line-height:1.8;" class="en">
+          Cloud API + thin prompt = Character.ai.<br>
+          Generic on-device = low quality.<br>
+          <span style="color:var(--accent);">Small model + deep Character OS = our path.</span>
+        </div>
+        <div style="font-size:14px; color:var(--text); line-height:1.8;" class="ko">
+          Cloud API + 얇은 프롬프트 = Character.ai.<br>
+          범용 온디바이스 = 낮은 퀄리티.<br>
+          <span style="color:var(--accent);">소형 모델 + 깊은 캐릭터 OS = 우리의 길.</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="border-top:1px solid var(--border); padding-top:18px;">
+      <p style="font-size:14px; color:var(--muted);" class="en">
+        Character.ai uses GPT-class models with a thin system prompt — the result is a character that "talks like X" but has no depth, no memory architecture, and no physical presence. Our approach inverts this: a smaller base model disciplined by a deep Character OS produces <strong style="color:var(--text);">higher perceived character fidelity</strong> than a large model with a shallow persona layer.
+      </p>
+      <p style="font-size:14px; color:var(--muted);" class="ko">
+        Character.ai는 GPT급 모델 위에 얇은 시스템 프롬프트를 얹습니다 — 결과는 "처럼 말하는" 캐릭터이지 깊이도, 메모리 아키텍처도, 물리적 존재감도 없는 수준입니다. 우리의 접근은 이를 역전시킵니다: 깊은 캐릭터 OS로 단련된 소형 베이스 모델이 얕은 페르소나 레이어를 가진 대형 모델보다 <strong style="color:var(--text);">훨씬 높은 캐릭터 충실도 체감</strong>을 만들어냅니다.
+      </p>
+    </div>
   </div>
 
   <!-- Phase comparison table -->
@@ -1009,19 +1073,30 @@
         <tr>
           <td class="en" style="color:var(--text)">Method</td>
           <td class="ko" style="color:var(--text)">방식</td>
-          <td class="en">RAG + Persona Graph</td>
-          <td class="en">LoRA per Character</td>
-          <td class="en">Micro-sLLM Distillation</td>
-          <td class="ko" style="display:none">RAG + Persona Graph</td>
-          <td class="ko" style="display:none">캐릭터별 LoRA</td>
-          <td class="ko" style="display:none">Micro-sLLM 증류</td>
+          <td class="en">Small Open LLM + RAG + Persona Graph (on-device)</td>
+          <td class="en">Small LLM + Character LoRA (on-device)</td>
+          <td class="en">Micro-sLLM Distillation (full on-device)</td>
+        </tr>
+        <tr>
+          <td class="en" style="color:var(--text)">Base Model</td>
+          <td class="ko" style="color:var(--text)">베이스 모델</td>
+          <td class="en" style="color:var(--muted)">Phi-3 Mini / Gemma 3 / Qwen 2.5 / Llama 3.2</td>
+          <td class="en" style="color:var(--muted)">Same + Character LoRA adapter</td>
+          <td class="en" style="color:var(--muted)">Distilled character-native model</td>
         </tr>
         <tr>
           <td class="en" style="color:var(--text)">Goal</td>
           <td class="ko" style="color:var(--text)">목적</td>
-          <td class="en">Rapid validation</td>
-          <td class="en">Character strengthening</td>
-          <td class="en">On-device independence</td>
+          <td class="en">Rapid on-device validation</td>
+          <td class="en">Character depth + stability</td>
+          <td class="en">Full independence</td>
+        </tr>
+        <tr>
+          <td class="en" style="color:var(--text)">Online Required?</td>
+          <td class="ko" style="color:var(--text)">인터넷 필요?</td>
+          <td><span class="badge badge-green en">Never</span><span class="badge badge-green ko">불필요</span></td>
+          <td><span class="badge badge-green en">Never</span><span class="badge badge-green ko">불필요</span></td>
+          <td><span class="badge badge-green en">Never</span><span class="badge badge-green ko">불필요</span></td>
         </tr>
         <tr>
           <td class="en" style="color:var(--text)">Cost</td>
@@ -1281,32 +1356,90 @@
   <h2 class="section-title en">Not Competing with Character.ai</h2>
   <h2 class="section-title ko">Character.ai와 경쟁하지 않는다</h2>
 
-  <p class="section-lead en">We are not selling a "conversational AI." We are selling living character units.</p>
-  <p class="section-lead ko">"대화형 AI"가 아니라 "살아있는 캐릭터 유닛"을 판매하는 사업.</p>
+  <p class="section-lead en">We are not selling a "conversational AI." We are selling living character units. The base LLM is irrelevant to our moat — it is a replaceable commodity engine underneath our Character Architecture.</p>
+  <p class="section-lead ko">"대화형 AI"가 아니라 "살아있는 캐릭터 유닛"을 판매하는 사업. Base LLM은 우리의 해자와 무관합니다 — 캐릭터 아키텍처 아래 교체 가능한 범용 엔진일 뿐입니다.</p>
 
-  <div class="compare">
-    <div class="compare-col">
-      <h3 class="en">Character.ai</h3>
-      <h3 class="ko">Character.ai</h3>
-      <ul>
-        <li><span class="li-icon">·</span><span class="en">Utility-optimized</span><span class="ko">유틸리티 최적화</span></li>
-        <li><span class="li-icon">·</span><span class="en">Infinite / Generic</span><span class="ko">무한 / 범용</span></li>
-        <li><span class="li-icon">·</span><span class="en">Persona Compression Problem — roleplay ≠ embodiment</span><span class="ko">Persona Compression 문제 — roleplay ≠ 체화</span></li>
-        <li><span class="li-icon">·</span><span class="en">Cloud-dependent</span><span class="ko">클라우드 의존</span></li>
-        <li><span class="li-icon">·</span><span class="en">No physical presence</span><span class="ko">물리적 존재감 없음</span></li>
-      </ul>
-    </div>
-    <div class="compare-col highlight">
-      <h3 class="en">Anima Automata ✦</h3>
-      <h3 class="ko">Anima Automata ✦</h3>
-      <ul>
-        <li><span class="li-icon" style="color:var(--accent)">✦</span><span class="en">Ownership / Finite / Collectible</span><span class="ko">소유권 / 한정 / 수집품</span></li>
-        <li><span class="li-icon" style="color:var(--accent)">✦</span><span class="en">Persistent — relationship accumulates</span><span class="ko">지속적 — 관계가 축적된다</span></li>
-        <li><span class="li-icon" style="color:var(--accent)">✦</span><span class="en">Ontological Consistency — not "talks like X", IS X</span><span class="ko">존재론적 일관성 — "처럼 말하는 AI"가 아니라 그 자체</span></li>
-        <li><span class="li-icon" style="color:var(--accent)">✦</span><span class="en">On-device / Privacy-first</span><span class="ko">온디바이스 / 프라이버시 우선</span></li>
-        <li><span class="li-icon" style="color:var(--accent)">✦</span><span class="en">Physical presence + multi-sensor</span><span class="ko">물리적 존재 + 다중 센서</span></li>
-      </ul>
-    </div>
+  <!-- Full comparison table -->
+  <div style="overflow-x:auto; margin-bottom:40px;">
+    <table class="phase-table">
+      <thead>
+        <tr>
+          <th class="en">Dimension</th><th class="ko">구분</th>
+          <th class="en">Character.ai / Replika</th><th class="ko">Character.ai / Replika</th>
+          <th class="en">Generic On-Device AI</th><th class="ko">범용 온디바이스 AI</th>
+          <th style="color:var(--accent);" class="en">Anima Automata ✦</th>
+          <th style="color:var(--accent);" class="ko">Anima Automata ✦</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="en" style="color:var(--text)">Base Model</td><td class="ko" style="color:var(--text)">베이스 모델</td>
+          <td class="en">GPT-class (cloud)</td>
+          <td class="en">Small generic (e.g. GPT-4o mini)</td>
+          <td class="en" style="color:var(--accent);">Small open LLM (on-device)</td>
+        </tr>
+        <tr>
+          <td class="en" style="color:var(--text)">Character Layer</td><td class="ko" style="color:var(--text)">캐릭터 레이어</td>
+          <td class="en">Thin system prompt</td>
+          <td class="en">Thin system prompt</td>
+          <td class="en" style="color:var(--accent);">Deep Character OS (Persona Kernel + Memory Engine + Runtime)</td>
+        </tr>
+        <tr>
+          <td class="en" style="color:var(--text)">Character Quality</td><td class="ko" style="color:var(--text)">캐릭터 퀄리티</td>
+          <td><span class="badge badge-yellow en">Medium — generic feel</span><span class="badge badge-yellow ko">중간 — 평이함</span></td>
+          <td><span class="badge badge-red en">Low — shallow persona</span><span class="badge badge-red ko">낮음 — 얇은 페르소나</span></td>
+          <td><span class="badge badge-green en">High — architecturally deep</span><span class="badge badge-green ko">높음 — 아키텍처적 깊이</span></td>
+        </tr>
+        <tr>
+          <td class="en" style="color:var(--text)">Online Required</td><td class="ko" style="color:var(--text)">인터넷 필요</td>
+          <td><span class="badge badge-red en">Always</span><span class="badge badge-red ko">항상</span></td>
+          <td><span class="badge badge-green en">No</span><span class="badge badge-green ko">불필요</span></td>
+          <td><span class="badge badge-green en">Never</span><span class="badge badge-green ko">절대 없음</span></td>
+        </tr>
+        <tr>
+          <td class="en" style="color:var(--text)">Memory</td><td class="ko" style="color:var(--text)">기억</td>
+          <td class="en">Session-only or cloud</td>
+          <td class="en">None / minimal</td>
+          <td class="en" style="color:var(--accent);">WORM 4-layer (Episodic → Mythic)</td>
+        </tr>
+        <tr>
+          <td class="en" style="color:var(--text)">Physical Presence</td><td class="ko" style="color:var(--text)">물리적 존재</td>
+          <td class="en">Screen only</td>
+          <td class="en">Screen only</td>
+          <td class="en" style="color:var(--accent);">Multi-sensor embodied Automaton</td>
+        </tr>
+        <tr>
+          <td class="en" style="color:var(--text)">Privacy</td><td class="ko" style="color:var(--text)">프라이버시</td>
+          <td><span class="badge badge-red en">Cloud data</span><span class="badge badge-red ko">클라우드 저장</span></td>
+          <td><span class="badge badge-yellow en">Partial</span><span class="badge badge-yellow ko">부분적</span></td>
+          <td><span class="badge badge-green en">100% local</span><span class="badge badge-green ko">100% 로컬</span></td>
+        </tr>
+        <tr>
+          <td class="en" style="color:var(--text)">Moat</td><td class="ko" style="color:var(--text)">해자</td>
+          <td class="en">Scale / data / brand</td>
+          <td class="en">None</td>
+          <td class="en" style="color:var(--accent);">Character Architecture + Physical Form + Accumulated Memory</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Key insight -->
+  <div style="background: linear-gradient(135deg, rgba(200,169,110,0.06), rgba(123,104,176,0.06)); border:1px solid var(--border); border-radius:12px; padding:28px 32px;">
+    <div style="font-size:11px; letter-spacing:0.2em; color:var(--accent2); text-transform:uppercase; margin-bottom:12px;" class="en">The Core Insight</div>
+    <div style="font-size:11px; letter-spacing:0.2em; color:var(--accent2); text-transform:uppercase; margin-bottom:12px;" class="ko">핵심 통찰</div>
+    <p style="font-size:17px; color:var(--text); margin-bottom:12px; font-style:italic;" class="en">
+      Character.ai proves that people want deep character relationships — but it structurally cannot deliver them. It is utility-optimized: infinite characters, all going flat in the same direction. The model is too powerful and too generic to stay in character.
+    </p>
+    <p style="font-size:17px; color:var(--text); margin-bottom:12px; font-style:italic;" class="ko">
+      Character.ai는 사람들이 깊은 캐릭터 관계를 원한다는 것을 증명했습니다 — 그러나 구조적으로 그것을 제공할 수 없습니다. 유틸리티 최적화: 무한한 캐릭터들이 모두 같은 방향으로 평평해집니다. 모델이 너무 강력하고 너무 범용적이라 캐릭터 안에 머물지 못합니다.
+    </p>
+    <p style="font-size:14px; color:var(--muted);" class="en">
+      Our answer is the opposite architecture: a <strong style="color:var(--text);">disciplined small model</strong> inside a <strong style="color:var(--text);">deep Character OS</strong> — where the Persona Kernel, Memory Engine, and Style Enforcer constrain and shape every output. Less raw power. More character fidelity. Fully on-device. And it remembers you.
+    </p>
+    <p style="font-size:14px; color:var(--muted);" class="ko">
+      우리의 답은 반대 아키텍처입니다: <strong style="color:var(--text);">단련된 소형 모델</strong>을 <strong style="color:var(--text);">깊은 캐릭터 OS</strong> 안에 — Persona Kernel, Memory Engine, Style Enforcer가 모든 출력을 제약하고 형성합니다. 원초적 파워는 줄이고, 캐릭터 충실도는 높이고, 완전 온디바이스. 그리고 당신을 기억합니다.
+    </p>
   </div>
 </section>
 
