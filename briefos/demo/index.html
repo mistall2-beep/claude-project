@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BriefOS · 커뮤니케이션 콘솔 (데모)</title>
+<meta name="description" content="긴 보고서를 AI가 1페이지로 재구조화하고, 실제 읽힘 데이터를 측정하는 BriefOS의 인터랙티브 데모 콘솔.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+  :root{
+    --main:#3538CD; --main-d:#23268C; --main-l:#EEF0FC; --main-r:#CFD4F5; --main-soft:#F4F5FD;
+    --ink:#1B1E2B; --ink2:#3B4050; --muted:#6A7086; --faint:#98A0B4;
+    --line:#E6E8F1; --line2:#EFF1F7; --bg:#F5F6FB; --panel:#fff;
+    --amber:#B5701F; --amber-l:#F8EEDC; --amber-r:#E9D3AC;
+    --green:#2E7D52; --green-l:#E4F1E9; --green-r:#C4E2CF;
+    --rose:#B24A46; --rose-l:#F8E7E5;
+    --shadow:0 1px 2px rgba(20,25,60,.05),0 10px 28px rgba(20,25,60,.07);
+    --shadow-lg:0 24px 60px rgba(18,22,70,.18);
+    --r:14px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{height:100%;}
+  body{color:var(--ink); background:var(--bg);
+    font-family:"Pretendard","Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased; letter-spacing:-.012em; line-height:1.55;
+    display:flex; flex-direction:column; height:100vh; overflow:hidden;}
+  button{font-family:inherit; cursor:pointer;}
+  .mono{font-variant-numeric:tabular-nums;}
+  a{color:inherit;}
+
+  /* top bar */
+  .topbar{flex:0 0 auto; display:flex; align-items:center; gap:14px; height:58px; padding:0 18px;
+    background:var(--panel); border-bottom:1px solid var(--line); z-index:40;}
+  .brand{display:flex; align-items:center; gap:10px; font-weight:900; letter-spacing:-.03em; font-size:16.5px; color:var(--ink); text-decoration:none;}
+  .brand .mark{width:30px; height:30px; border-radius:9px; background:linear-gradient(135deg,var(--main),#5a5ee6);
+    display:flex; align-items:center; justify-content:center; color:#fff; font-size:14px; font-weight:900; box-shadow:0 4px 12px rgba(53,56,205,.35);}
+  .brand b{color:var(--main);}
+  .brand .demo{font-size:10.5px; font-weight:800; color:var(--main); background:var(--main-l); border:1px solid var(--main-r); padding:3px 8px; border-radius:999px; letter-spacing:.02em;}
+  .org{margin-left:2px; padding:5px 11px; border:1px solid var(--line); border-radius:999px; font-size:12.5px; font-weight:700; color:var(--ink2); background:var(--bg); display:flex; align-items:center; gap:7px;}
+  .org .dot{width:7px; height:7px; border-radius:50%; background:var(--green);}
+  .sp{flex:1;}
+  .topbar .home{font-size:12.5px; font-weight:800; color:var(--main); text-decoration:none; padding:7px 12px; border:1px solid var(--main-r); border-radius:999px; background:var(--main-l);}
+  .topbar .home:hover{background:var(--main-l); border-color:var(--main);}
+  .who{display:flex; align-items:center; gap:9px;}
+  .who .av{width:32px; height:32px; border-radius:50%; background:var(--main-l); color:var(--main-d); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:13px; border:1px solid var(--main-r);}
+  .who .t{font-size:12.5px; line-height:1.25;}
+  .who .t b{font-weight:800;} .who .t span{color:var(--muted); font-size:11px; display:block;}
+  @media(max-width:720px){.who .t,.org{display:none;}}
+
+  /* shell */
+  .shell{flex:1; display:flex; min-height:0;}
+  .rail{flex:0 0 226px; background:var(--panel); border-right:1px solid var(--line); display:flex; flex-direction:column; overflow-y:auto;}
+  .rail .cap{font-size:10.5px; font-weight:800; letter-spacing:.09em; color:var(--faint); text-transform:uppercase; padding:16px 18px 7px;}
+  .navbtn{display:flex; align-items:center; gap:11px; width:calc(100% - 16px); margin:1px 8px; padding:10px 12px; border:0; background:transparent; border-radius:10px; text-align:left; color:var(--ink2); font-size:13.5px; font-weight:700;}
+  .navbtn .ni{width:26px; height:26px; border-radius:8px; background:var(--bg); display:flex; align-items:center; justify-content:center; font-size:13px; flex:0 0 auto;}
+  .navbtn:hover{background:var(--bg);}
+  .navbtn.on{background:var(--main-l); color:var(--main-d);}
+  .navbtn.on .ni{background:var(--main); color:#fff;}
+  .navbtn small{display:block; font-size:10.5px; font-weight:600; color:var(--faint);}
+  .rail .foot{margin-top:auto; padding:16px 18px; border-top:1px solid var(--line2); font-size:11px; color:var(--faint); line-height:1.5;}
+  @media(max-width:900px){.rail{flex-basis:64px;} .navbtn small,.rail .cap,.rail .foot,.navbtn .lbl b~small{display:none;} .navbtn{justify-content:center; padding:11px;} .navbtn .txt{display:none;}}
+
+  /* main */
+  .main{flex:1; overflow-y:auto; min-width:0;}
+  .view{display:none; padding:22px 26px 40px;}
+  .view.on{display:block;}
+  .vhead{margin-bottom:18px;}
+  .vhead .eb{font-size:11px; font-weight:800; letter-spacing:.1em; color:var(--main); text-transform:uppercase;}
+  .vhead h1{font-size:21px; font-weight:800; letter-spacing:-.03em; margin:4px 0 3px;}
+  .vhead p{font-size:13px; color:var(--muted); max-width:680px;}
+
+  /* ==== COMPRESS view ==== */
+  .cwrap{display:grid; grid-template-columns:1fr 1fr; gap:16px; align-items:start;}
+  @media(max-width:980px){.cwrap{grid-template-columns:1fr;}}
+  .card{background:var(--panel); border:1px solid var(--line); border-radius:16px; box-shadow:var(--shadow);}
+  .card .ch{display:flex; align-items:center; gap:10px; padding:14px 16px; border-bottom:1px solid var(--line2);}
+  .card .ch .lab{font-size:13px; font-weight:800;}
+  .card .ch .meta{margin-left:auto; font-size:11.5px; color:var(--muted); font-weight:600;}
+  .card .cb{padding:16px;}
+
+  .samplebar{display:flex; gap:7px; flex-wrap:wrap; padding:12px 16px 0;}
+  .chip{font-size:12px; font-weight:700; color:var(--ink2); background:var(--bg); border:1px solid var(--line); padding:6px 12px; border-radius:999px;}
+  .chip.on{background:var(--main); color:#fff; border-color:var(--main);}
+  .chip:hover:not(.on){border-color:var(--main-r);}
+  .doc{width:100%; min-height:300px; max-height:360px; overflow-y:auto; border:1px solid var(--line); border-radius:12px; background:#FCFCFE; padding:14px 15px; font-size:12.5px; line-height:1.7; color:var(--ink2); resize:vertical; font-family:inherit;}
+  .doc:focus{outline:none; border-color:var(--main-r);}
+  .docmeta{display:flex; gap:14px; margin-top:10px; font-size:11.5px; color:var(--muted); flex-wrap:wrap;}
+  .docmeta b{color:var(--ink); font-weight:800;}
+
+  .tplrow{display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-top:14px;}
+  .tplrow .tl{font-size:11.5px; font-weight:800; color:var(--faint); text-transform:uppercase; letter-spacing:.06em; margin-right:2px;}
+  .tpl{font-size:12px; font-weight:700; color:var(--ink2); background:var(--panel); border:1px solid var(--line); padding:6px 12px; border-radius:9px;}
+  .tpl.on{background:var(--main-l); color:var(--main-d); border-color:var(--main-r); box-shadow:0 0 0 3px var(--main-soft);}
+  .runbtn{margin-top:16px; width:100%; padding:13px; border:0; border-radius:12px; background:var(--main); color:#fff; font-size:14px; font-weight:800; box-shadow:0 8px 20px rgba(53,56,205,.28); display:flex; align-items:center; justify-content:center; gap:9px; transition:background .15s;}
+  .runbtn:hover{background:var(--main-d);}
+  .runbtn:disabled{opacity:.6; cursor:default;}
+
+  /* output side */
+  .outempty{display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:60px 24px; color:var(--faint);}
+  .outempty .ico{width:56px; height:56px; border-radius:16px; background:var(--main-l); color:var(--main); display:flex; align-items:center; justify-content:center; font-size:26px; margin-bottom:14px;}
+  .outempty b{color:var(--ink2); font-size:14px; font-weight:800;}
+  .outempty p{font-size:12.5px; margin-top:5px; max-width:260px;}
+
+  /* progress */
+  .prog{padding:34px 26px;}
+  .prog .steps{display:flex; flex-direction:column; gap:12px; max-width:360px; margin:0 auto;}
+  .pstep{display:flex; align-items:center; gap:12px; font-size:13px; font-weight:700; color:var(--faint); transition:color .3s;}
+  .pstep .pd{width:24px; height:24px; border-radius:50%; border:2px solid var(--line); display:flex; align-items:center; justify-content:center; font-size:12px; flex:0 0 auto; transition:all .3s;}
+  .pstep.act{color:var(--main-d);} .pstep.act .pd{border-color:var(--main); color:var(--main);}
+  .pstep.done{color:var(--ink2);} .pstep.done .pd{background:var(--main); border-color:var(--main); color:#fff;}
+  .pbar{height:6px; border-radius:4px; background:var(--line2); margin:22px auto 0; max-width:360px; overflow:hidden;}
+  .pbar i{display:block; height:100%; width:0; background:linear-gradient(90deg,var(--main),#5a5ee6); border-radius:4px; transition:width .35s ease;}
+
+  /* brief output */
+  .brief .bstat{display:flex; gap:10px; padding:14px 16px; border-bottom:1px solid var(--line2); flex-wrap:wrap;}
+  .bstat .s{flex:1; min-width:74px;}
+  .bstat .s .n{font-size:19px; font-weight:900; color:var(--main-d); letter-spacing:-.02em;}
+  .bstat .s .l{font-size:10.5px; color:var(--muted); font-weight:700;}
+  .briefbody{padding:16px;}
+  .sect{margin-bottom:16px;}
+  .sect .st{font-size:10.5px; font-weight:900; letter-spacing:.06em; color:var(--main); text-transform:uppercase; margin-bottom:8px; display:flex; align-items:center; gap:7px;}
+  .sect .st .bar{width:14px; height:2px; background:var(--main); border-radius:2px;}
+  .sum3{list-style:none; counter-reset:s; display:flex; flex-direction:column; gap:8px;}
+  .sum3 li{position:relative; padding:11px 13px 11px 40px; background:var(--main-soft); border:1px solid var(--main-r); border-radius:11px; font-size:13.5px; font-weight:700; color:var(--ink); line-height:1.45;}
+  .sum3 li::before{counter-increment:s; content:counter(s); position:absolute; left:11px; top:11px; width:20px; height:20px; border-radius:6px; background:var(--main); color:#fff; font-size:11px; font-weight:900; display:flex; align-items:center; justify-content:center;}
+  .pts{list-style:none; display:flex; flex-direction:column; gap:6px;}
+  .pts li{font-size:13px; color:var(--ink2); padding-left:17px; position:relative; line-height:1.5;}
+  .pts li::before{content:""; position:absolute; left:3px; top:8px; width:6px; height:6px; border-radius:50%; background:var(--main);}
+  .pts li b{color:var(--ink); font-weight:800;}
+  .evid{list-style:none; display:flex; flex-direction:column; gap:5px;}
+  .evid li{font-size:12px; color:var(--muted); padding-left:17px; position:relative; line-height:1.5;}
+  .evid li::before{content:"—"; position:absolute; left:2px; top:0; color:var(--faint);}
+  .decision{background:var(--amber-l); border:1px solid var(--amber-r); border-radius:12px; padding:13px 15px;}
+  .decision .dh{font-size:11px; font-weight:900; color:#7a4e14; letter-spacing:.04em; margin-bottom:7px; display:flex; align-items:center; gap:6px;}
+  .decision ul{list-style:none; display:flex; flex-direction:column; gap:6px;}
+  .decision li{font-size:13px; font-weight:700; color:#5c3c11; padding-left:16px; position:relative;}
+  .decision li::before{content:"◆"; position:absolute; left:0; top:1px; color:var(--amber); font-size:9px;}
+  .actions{list-style:none; display:flex; flex-direction:column; gap:6px;}
+  .actions li{display:flex; align-items:center; gap:9px; font-size:12.5px; color:var(--ink2); background:var(--bg); border:1px solid var(--line); border-radius:9px; padding:8px 11px;}
+  .actions li .ck{width:16px; height:16px; border-radius:5px; border:2px solid var(--main-r); flex:0 0 auto;}
+  .actions li .owner{margin-left:auto; font-size:11px; font-weight:800; color:var(--main-d); background:var(--main-l); padding:2px 8px; border-radius:999px;}
+
+  .sendrow{display:flex; gap:8px; padding:14px 16px; border-top:1px solid var(--line2); flex-wrap:wrap;}
+  .sendbtn{flex:1; min-width:120px; font-size:12.5px; font-weight:800; padding:10px; border-radius:10px; border:1px solid var(--line); background:var(--panel); color:var(--ink2); display:flex; align-items:center; justify-content:center; gap:7px;}
+  .sendbtn:hover{border-color:var(--main-r); color:var(--main-d);}
+  .sendbtn .lg{width:18px; height:18px; border-radius:5px; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:900; color:#fff;}
+
+  /* ==== TEMPLATES view ==== */
+  .tgrid{display:grid; grid-template-columns:repeat(2,1fr); gap:16px;}
+  @media(max-width:840px){.tgrid{grid-template-columns:1fr;}}
+  .tcard{background:var(--panel); border:1px solid var(--line); border-radius:16px; box-shadow:var(--shadow); overflow:hidden;}
+  .tcard .th{padding:16px; border-bottom:1px solid var(--line2); display:flex; align-items:center; gap:12px;}
+  .tcard .tk{width:40px; height:40px; border-radius:11px; background:var(--main-l); color:var(--main-d); display:flex; align-items:center; justify-content:center; font-weight:900; font-size:13px; flex:0 0 auto;}
+  .tcard h3{font-size:15px; font-weight:800;}
+  .tcard .th p{font-size:11.5px; color:var(--muted);}
+  .tcard .preview{margin:16px; background:#FCFCFE; border:1px solid var(--line); border-radius:12px; padding:14px; font-size:12px; color:var(--ink2); line-height:1.6;}
+  .tcard .preview .pl{font-size:10px; font-weight:900; color:var(--main); letter-spacing:.05em; text-transform:uppercase; margin-bottom:7px;}
+  .tcard .preview .row{padding:3px 0; border-bottom:1px dashed var(--line2);}
+  .tcard .preview .row:last-child{border-bottom:0;}
+  .tcard .use2{margin:0 16px 16px; font-size:11.5px; color:var(--muted);}
+  .tcard .use2 b{color:var(--ink2);}
+
+  /* ==== ANALYTICS view ==== */
+  .kpis{display:grid; grid-template-columns:repeat(4,1fr); gap:13px; margin-bottom:18px;}
+  @media(max-width:900px){.kpis{grid-template-columns:1fr 1fr;}}
+  .kpi{background:var(--panel); border:1px solid var(--line); border-radius:15px; padding:16px 18px; box-shadow:var(--shadow); position:relative;}
+  .kpi .n{font-size:27px; font-weight:900; letter-spacing:-.03em; color:var(--main-d);}
+  .kpi .n small{font-size:14px; font-weight:800;}
+  .kpi .l{font-size:12px; font-weight:700; margin-top:3px;}
+  .kpi .d{font-size:11px; color:var(--faint); margin-top:1px;}
+  .kpi .trend{position:absolute; top:16px; right:16px; font-size:11px; font-weight:800; padding:2px 8px; border-radius:999px;}
+  .kpi .trend.up{color:var(--green); background:var(--green-l);}
+  .kpi .trend.down{color:var(--rose); background:var(--rose-l);}
+
+  .arow{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px;}
+  @media(max-width:900px){.arow{grid-template-columns:1fr;}}
+  .achart{background:var(--panel); border:1px solid var(--line); border-radius:16px; box-shadow:var(--shadow); padding:18px;}
+  .achart h3{font-size:14px; font-weight:800; margin-bottom:3px;}
+  .achart .cd{font-size:11.5px; color:var(--muted); margin-bottom:16px;}
+
+  /* before/after bars */
+  .ba{display:flex; flex-direction:column; gap:14px;}
+  .barow{}
+  .barow .bl{display:flex; justify-content:space-between; font-size:12px; margin-bottom:6px;}
+  .barow .bl b{font-weight:800;}
+  .barow .track{height:26px; border-radius:8px; background:var(--line2); overflow:hidden; position:relative;}
+  .barow .track i{display:block; height:100%; border-radius:8px; width:0; transition:width 1s cubic-bezier(.2,.7,.3,1);}
+  .barow.before .track i{background:linear-gradient(90deg,#9aa2c9,#b6bcda);}
+  .barow.after .track i{background:linear-gradient(90deg,var(--main),#5a5ee6);}
+  .barow .track .pct{position:absolute; right:10px; top:50%; transform:translateY(-50%); font-size:12px; font-weight:900; color:#fff;}
+
+  /* team bars */
+  .teambars{display:flex; flex-direction:column; gap:11px;}
+  .tb{display:grid; grid-template-columns:88px 1fr 44px; align-items:center; gap:10px;}
+  .tb .name{font-size:12px; font-weight:700; color:var(--ink2);}
+  .tb .track{height:14px; border-radius:7px; background:var(--line2); overflow:hidden;}
+  .tb .track i{display:block; height:100%; border-radius:7px; width:0; background:var(--main); transition:width .9s ease;}
+  .tb .val{font-size:12px; font-weight:800; color:var(--main-d); text-align:right;}
+
+  /* recent docs table */
+  .docs{background:var(--panel); border:1px solid var(--line); border-radius:16px; box-shadow:var(--shadow); overflow:hidden;}
+  .docs .dh2{padding:16px 18px 4px;}
+  .docs .dh2 h3{font-size:14px; font-weight:800;}
+  .docs .dh2 p{font-size:11.5px; color:var(--muted);}
+  table.dtbl{width:100%; border-collapse:collapse; font-size:12.5px; margin-top:10px;}
+  table.dtbl th, table.dtbl td{padding:11px 18px; text-align:left; border-top:1px solid var(--line2);}
+  table.dtbl th{font-size:11px; font-weight:800; color:var(--faint); text-transform:uppercase; letter-spacing:.04em;}
+  table.dtbl td{color:var(--ink2);}
+  table.dtbl td .mini{display:inline-block; width:70px; height:7px; border-radius:4px; background:var(--line2); overflow:hidden; vertical-align:middle; margin-right:8px;}
+  table.dtbl td .mini i{display:block; height:100%; background:var(--main); border-radius:4px;}
+  .rate{font-weight:800;} .rate.hi{color:var(--green);} .rate.mid{color:var(--amber);} .rate.lo{color:var(--rose);}
+  .tag-tpl{font-size:11px; font-weight:700; color:var(--main-d); background:var(--main-l); padding:2px 8px; border-radius:999px;}
+  @media(max-width:720px){table.dtbl .hidecol{display:none;}}
+
+  /* ==== INTEGRATIONS view ==== */
+  .igrid{display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
+  @media(max-width:900px){.igrid{grid-template-columns:1fr 1fr;}}
+  @media(max-width:560px){.igrid{grid-template-columns:1fr;}}
+  .icard{background:var(--panel); border:1px solid var(--line); border-radius:16px; box-shadow:var(--shadow); padding:18px;}
+  .icard .it{display:flex; align-items:center; gap:11px; margin-bottom:12px;}
+  .icard .il{width:38px; height:38px; border-radius:11px; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:900; color:#fff; flex:0 0 auto;}
+  .icard h3{font-size:14px; font-weight:800;}
+  .icard .it p{font-size:11px; color:var(--muted);}
+  .icard .desc{font-size:12px; color:var(--ink2); margin-bottom:14px; min-height:34px;}
+  .tog{display:flex; align-items:center; justify-content:space-between;}
+  .tog .stt{font-size:12px; font-weight:800;}
+  .tog .stt.conn{color:var(--green);} .tog .stt.dis{color:var(--faint);}
+  .switch{width:44px; height:25px; border-radius:999px; background:var(--line); border:0; position:relative; transition:background .2s; flex:0 0 auto;}
+  .switch i{position:absolute; top:3px; left:3px; width:19px; height:19px; border-radius:50%; background:#fff; box-shadow:0 1px 3px rgba(0,0,0,.2); transition:left .2s;}
+  .switch.on{background:var(--main);} .switch.on i{left:22px;}
+  .inote{margin-top:16px; background:var(--main-l); border:1px solid var(--main-r); border-radius:14px; padding:16px 18px; font-size:12.5px; color:var(--main-d);}
+  .inote b{font-weight:800;}
+
+  /* toast */
+  .toast{position:fixed; left:50%; bottom:30px; transform:translate(-50%,20px); background:var(--ink); color:#fff; font-size:13px; font-weight:700; padding:12px 20px; border-radius:12px; box-shadow:var(--shadow-lg); opacity:0; pointer-events:none; transition:all .3s; z-index:80; display:flex; align-items:center; gap:9px;}
+  .toast.show{opacity:1; transform:translate(-50%,0);}
+  .toast .tk{width:20px; height:20px; border-radius:6px; background:var(--green); display:flex; align-items:center; justify-content:center; font-size:11px;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="brand" href="../index.html" title="BriefOS 소개로">
+    <span class="mark">B</span>Brief<b>OS</b>
+    <span class="demo">DEMO</span>
+  </a>
+  <div class="org"><span class="dot"></span> 한빛산업 · 경영지원실</div>
+  <div class="sp"></div>
+  <a class="home" href="../index.html">← 소개로</a>
+  <div class="who">
+    <div class="av">김</div>
+    <div class="t"><b>김도현 팀장</b><span>경영지원실</span></div>
+  </div>
+</div>
+
+<div class="shell">
+  <nav class="rail">
+    <div class="cap">Workspace</div>
+    <button class="navbtn on" data-view="compress"><span class="ni">✦</span><span class="txt"><span class="lbl">AI 압축 엔진</span><small>긴 문서 → 1페이지</small></span></button>
+    <button class="navbtn" data-view="templates"><span class="ni">▤</span><span class="txt"><span class="lbl">한국형 템플릿</span><small>보고 포맷 4종</small></span></button>
+    <button class="navbtn" data-view="analytics"><span class="ni">◔</span><span class="txt"><span class="lbl">읽힘 분석</span><small>전달 데이터</small></span></button>
+    <button class="navbtn" data-view="integrations"><span class="ni">⇄</span><span class="txt"><span class="lbl">협업툴 연동</span><small>1-click 발송</small></span></button>
+    <div class="foot">BriefOS 데모 콘솔<br>모든 데이터는 예시입니다.</div>
+  </nav>
+
+  <main class="main">
+
+    <!-- ===== COMPRESS ===== -->
+    <section class="view on" id="v-compress">
+      <div class="vhead">
+        <div class="eb">AI Compression Engine</div>
+        <h1>긴 보고서를 1페이지로 재구조화</h1>
+        <p>단순 요약이 아닙니다. AI가 독자 관점에서 <b>핵심 결론 → 근거 → 의사결정 포인트</b> 순으로 메시지 구조 자체를 재설계합니다.</p>
+      </div>
+
+      <div class="cwrap">
+        <!-- input -->
+        <div class="card">
+          <div class="samplebar" id="samplebar"></div>
+          <div class="cb">
+            <textarea class="doc" id="docInput" spellcheck="false"></textarea>
+            <div class="docmeta">
+              <span>원문 <b id="wcOrig" class="mono">0</b>자</span>
+              <span>예상 읽기 <b id="rtOrig" class="mono">0분</b></span>
+              <span id="docKind">신제품 출시 보고</span>
+            </div>
+            <div class="tplrow">
+              <span class="tl">템플릿</span>
+              <button class="tpl on" data-tpl="onepage">1페이지 보고</button>
+              <button class="tpl" data-tpl="three">3줄 보고</button>
+              <button class="tpl" data-tpl="exec">임원 보고</button>
+              <button class="tpl" data-tpl="weekly">주간 리포트</button>
+            </div>
+            <button class="runbtn" id="runBtn"><span>✦</span> AI로 1페이지 압축</button>
+          </div>
+        </div>
+
+        <!-- output -->
+        <div class="card" id="outCard">
+          <div class="outempty" id="outEmpty">
+            <div class="ico">✦</div>
+            <b>압축 결과가 여기에 표시됩니다</b>
+            <p>왼쪽에서 원문과 템플릿을 고른 뒤 <b>AI로 1페이지 압축</b>을 눌러 보세요.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== TEMPLATES ===== -->
+    <section class="view" id="v-templates">
+      <div class="vhead">
+        <div class="eb">Korean Templates</div>
+        <h1>한국형 템플릿 시스템</h1>
+        <p>한국 조직의 직급 체계와 경어 문화, 보고 관행을 반영한 표준 포맷입니다. 조직별로 커스터마이즈할 수 있습니다.</p>
+      </div>
+      <div class="tgrid" id="tgrid"></div>
+    </section>
+
+    <!-- ===== ANALYTICS ===== -->
+    <section class="view" id="v-analytics">
+      <div class="vhead">
+        <div class="eb">Communication Analytics</div>
+        <h1>읽힘 데이터 분석</h1>
+        <p>공지와 보고가 <b>실제로 읽혔는지</b> 데이터로 확인합니다. 읽은 시간·스크롤 깊이·팀별 전달 효율을 측정해 커뮤니케이션을 지속 개선합니다.</p>
+      </div>
+
+      <div class="kpis">
+        <div class="kpi"><span class="trend up">▲ 3.4×</span><div class="n mono">78<small>%</small></div><div class="l">평균 완독률</div><div class="d">도입 전 23% → 78%</div></div>
+        <div class="kpi"><span class="trend down">▼ 71%</span><div class="n mono">1.4<small>분</small></div><div class="l">평균 읽은 시간</div><div class="d">문서당 · 이해도 유지</div></div>
+        <div class="kpi"><span class="trend down">▼ 62%</span><div class="n mono">1.2<small>회</small></div><div class="l">월 반복 보고</div><div class="d">도입 전 3.2회</div></div>
+        <div class="kpi"><span class="trend down">▼ 41%</span><div class="n mono">3.7<small>h</small></div><div class="l">주간 회의 시간</div><div class="d">불필요 회의 축소</div></div>
+      </div>
+
+      <div class="arow">
+        <div class="achart">
+          <h3>완독률 — 압축 전 vs 후</h3>
+          <div class="cd">동일 공지를 원문 그대로 발송했을 때와 BriefOS로 압축했을 때</div>
+          <div class="ba">
+            <div class="barow before"><div class="bl"><span>기존 원문 보고 (10장+)</span><b>23%</b></div><div class="track"><i data-w="23"><span class="pct">23%</span></i></div></div>
+            <div class="barow after"><div class="bl"><span>BriefOS 1페이지 보고</span><b>78%</b></div><div class="track"><i data-w="78"><span class="pct">78%</span></i></div></div>
+          </div>
+        </div>
+        <div class="achart">
+          <h3>팀·직급별 전달 효율</h3>
+          <div class="cd">최근 30일 발송 문서의 완독률</div>
+          <div class="teambars" id="teambars"></div>
+        </div>
+      </div>
+
+      <div class="docs">
+        <div class="dh2"><h3>최근 발송 문서</h3><p>클릭 한 번으로 어떤 메시지가 실제로 전달됐는지 추적합니다.</p></div>
+        <table class="dtbl">
+          <thead><tr><th>문서</th><th class="hidecol">템플릿</th><th class="hidecol">수신</th><th>완독률</th></tr></thead>
+          <tbody id="docsBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ===== INTEGRATIONS ===== -->
+    <section class="view" id="v-integrations">
+      <div class="vhead">
+        <div class="eb">Native Integrations</div>
+        <h1>협업툴 네이티브 연동</h1>
+        <p>기존 업무 환경을 바꾸지 않고 그대로 적용합니다. 압축한 1페이지 보고를 <b>1-click으로</b> 사내 채널에 발송합니다.</p>
+      </div>
+      <div class="igrid" id="igrid"></div>
+      <div class="inote">🔒 <b>보안</b> — 온프레미스·VPC 배포 옵션과 <b>고객 데이터 AI 학습 미사용</b> 옵션을 기본 제공합니다. ISMS-P 인증(2027) 후 공공·금융기관 조달이 가능합니다.</div>
+    </section>
+
+  </main>
+</div>
+
+<div class="toast" id="toast"><span class="tk">✓</span><span id="toastMsg"></span></div>
+
+<script>
+/* ================= DATA ================= */
+const SAMPLES = {
+  launch: {
+    name: "신제품 출시 보고",
+    text: `[신제품 'H-Series' 출시 진행 경과 보고]
+
+경영지원실에서는 지난 분기부터 준비해 온 신제품 H-Series의 출시 진행 상황을 아래와 같이 종합적으로 보고드립니다. 본 보고서는 제품 개발, 생산, 마케팅, 영업 채널 준비 현황을 포괄하며, 현재까지 확인된 주요 이슈와 대응 방안을 함께 담고 있습니다.
+
+먼저 제품 개발 측면에서는 당초 계획된 기능 사양의 약 92%가 구현 완료되었습니다. 핵심 기능은 모두 안정화 단계에 접어들었으며, 잔여 8%는 부가 기능으로 출시 이후 순차 업데이트가 가능한 항목입니다. 품질 검증(QA)은 3차 테스트까지 완료되었고, 치명적 결함은 발견되지 않았습니다.
+
+생산 측면에서 한 가지 중요한 이슈가 있습니다. 핵심 부품인 컨트롤러 모듈의 수급에 병목이 발생하여, 당초 예정된 출시 일정 대비 약 2주간의 지연이 예상됩니다. 다만 대체 벤더 2개사를 이미 확보하였고, 그중 1개사와는 공급 계약 체결을 완료하여 추가 지연 리스크는 해소된 상태입니다. 초도 물량 1만 대 생산에는 차질이 없을 것으로 판단됩니다.
+
+마케팅 측면에서는 출시 캠페인 콘텐츠 제작이 90% 완료되었으며, 온라인 광고 집행 계획도 수립되어 있습니다. 다만 출시 일정이 2주 지연됨에 따라, 광고 예산의 조기 집행 여부에 대한 의사결정이 필요합니다. 조기 집행 시 사전 예약 판매를 유도할 수 있으나 약 3천만 원의 추가 예산이 소요됩니다.
+
+영업 채널은 주요 대리점 45개사와의 사전 협의를 완료하였으며, 초기 반응은 긍정적입니다. 매출에 미치는 영향은 2주 지연을 감안하더라도 분기 목표의 95% 이상 달성이 가능할 것으로 전망됩니다.
+
+종합적으로, 제품 자체의 완성도와 시장 반응은 양호하나, 부품 수급으로 인한 일정 지연과 마케팅 예산 조기 집행에 대한 경영진의 판단이 필요한 시점입니다.`,
+    compressRate: 91,
+    readTime: "0.4분",
+    summary3: [
+      "H-Series 신제품, 기능 92% 구현 완료 · QA 3차까지 통과, 출시 준비 양호",
+      "부품 수급 병목으로 출시 2주 지연 — 대체 벤더 확보로 추가 리스크는 해소",
+      "마케팅 예산 3천만 원 조기 집행 여부에 대한 경영진 의사결정 필요"
+    ],
+    points: [
+      "<b>제품</b> — 계획 기능의 92% 구현, 핵심 기능 안정화 완료. 잔여 8%는 출시 후 순차 업데이트",
+      "<b>생산</b> — 컨트롤러 모듈 수급 병목으로 2주 지연, 대체 벤더 1개사 공급계약 체결 완료",
+      "<b>영업</b> — 대리점 45개사 사전 협의 완료, 분기 목표 95% 이상 달성 전망"
+    ],
+    evidence: [
+      "QA 3차 테스트 완료, 치명적 결함 없음",
+      "초도 물량 1만 대 생산 차질 없음",
+      "출시 캠페인 콘텐츠 90% 제작 완료"
+    ],
+    decision: [
+      "마케팅 광고 예산 조기 집행 승인 여부 (추가 3천만 원, 사전 예약 판매 유도)",
+      "2주 지연된 출시 일정 확정"
+    ],
+    actions: [
+      { t: "대체 벤더 공급 일정 최종 확정", o: "생산팀" },
+      { t: "광고 예산 조기 집행안 품의 상신", o: "마케팅팀" },
+      { t: "대리점 초도 물량 배분 계획 수립", o: "영업팀" }
+    ]
+  },
+  quarter: {
+    name: "분기 실적 공지",
+    text: `[2026년 1분기 경영 실적 및 주요 현황 공유]
+
+임직원 여러분께 2026년 1분기 경영 실적과 주요 현황을 공유드립니다. 어려운 대외 환경 속에서도 전 구성원의 노력으로 의미 있는 성과를 거두었기에, 그 내용을 상세히 정리하여 안내드립니다.
+
+먼저 매출 실적입니다. 1분기 연결 기준 매출은 전년 동기 대비 14% 증가한 342억 원을 기록하였습니다. 이는 분기 목표 330억 원을 3.6% 초과 달성한 수치로, 특히 신규 B2B 채널에서의 성장이 두드러졌습니다. B2B 부문 매출은 전년 대비 31% 성장하며 전체 성장을 견인하였습니다.
+
+수익성 측면에서 영업이익은 38억 원으로 영업이익률 11.1%를 기록하였습니다. 전년 동기 영업이익률 9.4% 대비 1.7%p 개선된 결과입니다. 원가 절감 프로젝트를 통해 매출원가율을 2%p 낮춘 것이 주요 요인입니다.
+
+한편, 유의해야 할 부분도 있습니다. 해외 사업 부문은 환율 변동과 현지 경쟁 심화로 목표 대비 88% 수준에 그쳤습니다. 2분기에는 현지 파트너십 재정비와 가격 정책 조정을 통해 개선을 추진할 예정입니다.
+
+인력 측면에서는 1분기 중 신규 인력 24명을 채용하였으며, 특히 개발 및 영업 직군을 중심으로 조직을 강화하였습니다. 2분기에도 핵심 포지션 채용을 지속할 계획입니다.
+
+2분기 전망은 긍정적입니다. 신제품 출시와 B2B 채널 확대에 힘입어 매출 370억 원, 영업이익률 12%를 목표로 하고 있습니다. 전 구성원의 지속적인 관심과 노력을 부탁드립니다.`,
+    compressRate: 89,
+    readTime: "0.4분",
+    summary3: [
+      "1분기 매출 342억 원 (전년비 +14%), 목표 3.6% 초과 달성",
+      "영업이익률 11.1%로 1.7%p 개선 — 원가 절감·B2B 성장이 견인",
+      "해외 부문은 목표 88% 미달, 2분기 파트너십·가격 정책으로 개선 추진"
+    ],
+    points: [
+      "<b>매출</b> — 342억 원, 전년 동기 대비 14% 증가, 분기 목표 초과 달성",
+      "<b>수익성</b> — 영업이익 38억 원, 이익률 11.1% (전년비 +1.7%p)",
+      "<b>성장동력</b> — B2B 부문 전년비 31% 성장으로 전체 성장 견인",
+      "<b>인력</b> — 개발·영업 중심 24명 신규 채용"
+    ],
+    evidence: [
+      "매출원가율 2%p 절감으로 수익성 개선",
+      "2분기 목표: 매출 370억 원 · 영업이익률 12%",
+      "해외 부문 부진 요인: 환율 변동·현지 경쟁 심화"
+    ],
+    decision: [
+      "해외 부문 가격 정책 조정안 검토",
+      "2분기 핵심 포지션 채용 규모 확정"
+    ],
+    actions: [
+      { t: "해외 파트너십 재정비 계획 수립", o: "글로벌사업팀" },
+      { t: "2분기 B2B 채널 확대 로드맵 공유", o: "영업기획팀" }
+    ]
+  },
+  weekly: {
+    name: "주간 팀 리포트",
+    text: `[경영지원실 주간 업무 보고 — 4월 3주차]
+
+이번 주 경영지원실의 주요 업무 진행 상황과 다음 주 계획을 정리하여 보고드립니다. 전반적으로 계획된 일정에 맞추어 진행되고 있으며, 일부 지원이 필요한 사항이 있어 함께 안내드립니다.
+
+먼저 인사 부문입니다. 상반기 정기 채용 프로세스가 진행 중이며, 이번 주에는 서류 전형을 마감하고 1차 면접 대상자 선정을 완료하였습니다. 총 지원자는 320명이며, 이 중 45명을 1차 면접 대상으로 확정하였습니다. 다음 주에는 1차 면접을 진행할 예정입니다.
+
+재무 부문에서는 1분기 결산 작업이 마무리 단계에 있습니다. 외부 회계 검토를 위한 자료 준비를 완료하였으며, 다음 주 중 회계법인 실사가 예정되어 있습니다. 또한 2분기 예산 편성 작업을 병행하고 있으며, 각 부서로부터 예산 요청안을 취합 중입니다.
+
+총무 부문에서는 신규 사무 공간 임대차 계약과 관련하여 3개 후보지에 대한 실사를 완료하였습니다. 비용과 접근성을 종합적으로 검토한 결과, 2개 후보지로 압축하였으며, 최종 결정을 위해 경영진 검토가 필요한 상황입니다.
+
+법무 부문에서는 주요 거래처와의 계약 갱신 3건을 검토 완료하였고, 특이사항은 없습니다.
+
+다음 주 주요 계획으로는 1차 면접 진행, 회계법인 실사 대응, 신규 사무 공간 최종 결정, 2분기 예산안 1차 취합 완료 등이 있습니다. 신규 사무 공간 건은 임대 시장 상황을 고려할 때 이번 달 내 결정이 필요하여 경영진의 조속한 검토를 요청드립니다.`,
+    compressRate: 87,
+    readTime: "0.3분",
+    summary3: [
+      "정기 채용 서류 마감 — 지원자 320명 중 1차 면접 대상 45명 확정",
+      "1분기 결산 마무리 단계, 다음 주 회계법인 실사 예정",
+      "신규 사무 공간 2개 후보지로 압축 — 경영진 최종 결정 필요 (이달 내)"
+    ],
+    points: [
+      "<b>인사</b> — 서류 전형 마감, 1차 면접 대상 45명 선정 (지원 320명)",
+      "<b>재무</b> — 1분기 결산 마무리, 회계 실사 대응 및 2분기 예산 취합 병행",
+      "<b>총무</b> — 신규 사무 공간 후보 2곳으로 압축, 최종 결정 대기",
+      "<b>법무</b> — 거래처 계약 갱신 3건 검토 완료, 특이사항 없음"
+    ],
+    evidence: [
+      "외부 회계 검토 자료 준비 완료",
+      "사무 공간 3개 후보지 실사 완료 → 2곳 압축",
+      "임대 시장 상황상 이달 내 결정 필요"
+    ],
+    decision: [
+      "신규 사무 공간 최종 후보지 선정 (경영진 검토, 이달 내)"
+    ],
+    actions: [
+      { t: "1차 면접 일정 확정 및 통보", o: "인사팀" },
+      { t: "회계법인 실사 대응 자료 최종 점검", o: "재무팀" },
+      { t: "사무 공간 2개 후보 비교표 경영진 보고", o: "총무팀" }
+    ]
+  }
+};
+
+const TEMPLATES = {
+  onepage: { name:"1페이지 보고", desc:"전체 맥락 + 의사결정까지 한 장에" },
+  three:   { name:"3줄 보고", desc:"가장 압축된 핵심 3줄" },
+  exec:    { name:"임원 보고", desc:"결론과 의사결정 포인트 우선" },
+  weekly:  { name:"주간 리포트", desc:"완료 / 진행 / 차주 계획 구조" }
+};
+
+let curSample = "launch";
+let curTpl = "onepage";
+
+/* ================= COMPRESS ================= */
+const docInput = document.getElementById('docInput');
+const samplebar = document.getElementById('samplebar');
+
+function estReadTime(len){ const min = len/500; return min < 1 ? Math.max(1,Math.round(min*10))/10 + "분" : Math.round(min) + "분"; }
+function refreshMeta(){
+  const len = docInput.value.length;
+  document.getElementById('wcOrig').textContent = len.toLocaleString();
+  document.getElementById('rtOrig').textContent = estReadTime(len);
+  document.getElementById('docKind').textContent = SAMPLES[curSample].name;
+}
+function loadSample(key){
+  curSample = key;
+  docInput.value = SAMPLES[key].text;
+  refreshMeta();
+  [...samplebar.children].forEach(c => c.classList.toggle('on', c.dataset.s === key));
+  resetOutput();
+}
+Object.keys(SAMPLES).forEach(k => {
+  const b = document.createElement('button');
+  b.className = 'chip' + (k===curSample?' on':''); b.dataset.s = k; b.textContent = SAMPLES[k].name;
+  b.onclick = () => loadSample(k);
+  samplebar.appendChild(b);
+});
+docInput.addEventListener('input', refreshMeta);
+
+document.querySelectorAll('.tpl').forEach(t => t.onclick = () => {
+  document.querySelectorAll('.tpl').forEach(x => x.classList.remove('on'));
+  t.classList.add('on'); curTpl = t.dataset.tpl;
+});
+
+const outCard = document.getElementById('outCard');
+function resetOutput(){
+  outCard.innerHTML = `<div class="outempty" id="outEmpty">
+    <div class="ico">✦</div>
+    <b>압축 결과가 여기에 표시됩니다</b>
+    <p>왼쪽에서 원문과 템플릿을 고른 뒤 <b>AI로 1페이지 압축</b>을 눌러 보세요.</p></div>`;
+}
+
+const PROG_STEPS = ["문서 구조 분석", "핵심 메시지 추출", "독자 관점 재배열", "경어·직급 반영"];
+function runCompress(){
+  const btn = document.getElementById('runBtn');
+  btn.disabled = true;
+  outCard.innerHTML = `<div class="prog"><div class="steps" id="psteps"></div><div class="pbar"><i id="pbar"></i></div></div>`;
+  const ps = document.getElementById('psteps');
+  PROG_STEPS.forEach((s,i) => {
+    const d = document.createElement('div'); d.className = 'pstep'; d.id = 'ps'+i;
+    d.innerHTML = `<span class="pd">${i+1}</span>${s}`; ps.appendChild(d);
+  });
+  let i = 0;
+  const bar = document.getElementById('pbar');
+  const tick = () => {
+    if(i>0){ const prev=document.getElementById('ps'+(i-1)); prev.classList.remove('act'); prev.classList.add('done'); prev.querySelector('.pd').textContent='✓'; }
+    if(i < PROG_STEPS.length){
+      document.getElementById('ps'+i).classList.add('act');
+      bar.style.width = ((i+1)/PROG_STEPS.length*100)+'%';
+      i++; setTimeout(tick, 480);
+    } else {
+      setTimeout(renderBrief, 340);
+    }
+  };
+  setTimeout(tick, 260);
+}
+document.getElementById('runBtn').onclick = runCompress;
+
+function renderBrief(){
+  document.getElementById('runBtn').disabled = false;
+  const s = SAMPLES[curSample];
+  const origLen = docInput.value.length;
+  const tplName = TEMPLATES[curTpl].name;
+  let body = '';
+
+  const sumSect = `<div class="sect"><div class="st"><span class="bar"></span>3줄 요약</div>
+    <ul class="sum3">${s.summary3.map(x=>`<li>${x}</li>`).join('')}</ul></div>`;
+  const ptsSect = `<div class="sect"><div class="st"><span class="bar"></span>핵심 포인트</div>
+    <ul class="pts">${s.points.map(x=>`<li>${x}</li>`).join('')}</ul></div>`;
+  const evSect = `<div class="sect"><div class="st"><span class="bar"></span>근거</div>
+    <ul class="evid">${s.evidence.map(x=>`<li>${x}</li>`).join('')}</ul></div>`;
+  const decSect = `<div class="sect"><div class="decision"><div class="dh">◆ 의사결정 필요</div>
+    <ul>${s.decision.map(x=>`<li>${x}</li>`).join('')}</ul></div></div>`;
+  const actSect = `<div class="sect"><div class="st"><span class="bar"></span>액션 아이템</div>
+    <ul class="actions">${s.actions.map(a=>`<li><span class="ck"></span>${a.t}<span class="owner">${a.o}</span></li>`).join('')}</ul></div>`;
+
+  if(curTpl === 'three'){
+    body = sumSect;
+  } else if(curTpl === 'exec'){
+    body = sumSect + decSect + ptsSect;
+  } else if(curTpl === 'weekly'){
+    const done = s.points.slice(0, Math.ceil(s.points.length/2));
+    const next = s.actions;
+    body = sumSect +
+      `<div class="sect"><div class="st"><span class="bar"></span>이번 주 진행·완료</div>
+        <ul class="pts">${done.map(x=>`<li>${x}</li>`).join('')}</ul></div>` +
+      `<div class="sect"><div class="st"><span class="bar"></span>다음 주 계획</div>
+        <ul class="actions">${next.map(a=>`<li><span class="ck"></span>${a.t}<span class="owner">${a.o}</span></li>`).join('')}</ul></div>` +
+      decSect;
+  } else { // onepage
+    body = sumSect + ptsSect + evSect + decSect + actSect;
+  }
+
+  const compact = Math.max(60, s.compressRate);
+  outCard.innerHTML = `
+    <div class="ch"><span class="lab">✦ BriefOS · ${tplName}</span><span class="meta">${SAMPLES[curSample].name}</span></div>
+    <div class="brief">
+      <div class="bstat">
+        <div class="s"><div class="n mono">${compact}%</div><div class="l">압축률</div></div>
+        <div class="s"><div class="n mono">${s.readTime}</div><div class="l">예상 읽기</div></div>
+        <div class="s"><div class="n mono">${origLen.toLocaleString()}자</div><div class="l">원문 분량</div></div>
+        <div class="s"><div class="n mono" style="color:var(--green)">1<span style="font-size:13px">페이지</span></div><div class="l">출력</div></div>
+      </div>
+      <div class="briefbody">${body}</div>
+      <div class="sendrow">
+        <button class="sendbtn" data-ch="카카오워크"><span class="lg" style="background:#3B1E1E">K</span>카카오워크</button>
+        <button class="sendbtn" data-ch="네이버웍스"><span class="lg" style="background:#00C73C">N</span>네이버웍스</button>
+        <button class="sendbtn" data-ch="이메일"><span class="lg" style="background:#3538CD">✉</span>이메일</button>
+      </div>
+    </div>`;
+  outCard.querySelectorAll('.sendbtn').forEach(b => b.onclick = () => showToast(`${b.dataset.ch}(으)로 1페이지 보고를 발송했습니다`));
+}
+
+/* ================= TEMPLATES view ================= */
+const tgrid = document.getElementById('tgrid');
+const TPL_CARDS = [
+  { k:"3줄", name:"3줄 보고", desc:"메신저·모바일에서 3초 안에 파악", rows:["① H-Series 기능 92% 구현 완료", "② 부품 수급으로 출시 2주 지연 (리스크 해소)", "③ 마케팅 예산 조기 집행 결정 필요"], use:"카카오워크·문자 등 <b>즉시성</b>이 중요한 공지에 적합" },
+  { k:"1P", name:"1페이지 보고", desc:"맥락부터 의사결정까지 한 장에", rows:["요약 3줄 · 핵심 포인트", "근거 · 데이터", "◆ 의사결정 포인트", "액션 아이템 + 담당"], use:"부서장·팀 단위 <b>정식 보고</b>의 표준 포맷" },
+  { k:"임원", name:"임원 보고", desc:"결론과 판단 포인트를 최상단에", rows:["핵심 결론 3줄", "◆ 의사결정 필요 항목", "판단 근거 (핵심 숫자)"], use:"C-Suite·경영진 대상, <b>결정</b>에 집중한 포맷" },
+  { k:"주간", name:"주간 리포트", desc:"완료 / 진행 / 차주 계획 구조", rows:["요약 3줄", "이번 주 진행·완료", "다음 주 계획 + 담당", "◆ 지원 필요 사항"], use:"팀 단위 <b>주간 업무 보고</b>의 반복 포맷" }
+];
+TPL_CARDS.forEach(t => {
+  const el = document.createElement('div'); el.className = 'tcard';
+  el.innerHTML = `
+    <div class="th"><div class="tk">${t.k}</div><div><h3>${t.name}</h3><p>${t.desc}</p></div></div>
+    <div class="preview"><div class="pl">미리보기</div>${t.rows.map(r=>`<div class="row">${r}</div>`).join('')}</div>
+    <div class="use2">${t.use}</div>`;
+  tgrid.appendChild(el);
+});
+
+/* ================= ANALYTICS view ================= */
+const TEAMS = [
+  { n:"경영진", v:91 }, { n:"팀장급", v:84 }, { n:"실무진", v:76 }, { n:"타 부서", v:68 }, { n:"신입", v:72 }
+];
+const teambars = document.getElementById('teambars');
+TEAMS.forEach(t => {
+  const el = document.createElement('div'); el.className='tb';
+  el.innerHTML = `<div class="name">${t.n}</div><div class="track"><i data-w="${t.v}"></i></div><div class="val mono">${t.v}%</div>`;
+  teambars.appendChild(el);
+});
+const RECENT = [
+  { t:"H-Series 출시 진행 경과 보고", tpl:"1페이지 보고", who:"경영진 · 12명", rate:94, cls:"hi" },
+  { t:"1분기 경영 실적 공유", tpl:"임원 보고", who:"전사 · 240명", rate:81, cls:"hi" },
+  { t:"경영지원실 주간 보고 (4월 3주)", tpl:"주간 리포트", who:"실 · 14명", rate:88, cls:"hi" },
+  { t:"신규 복지제도 안내 공지", tpl:"3줄 보고", who:"전사 · 240명", rate:67, cls:"mid" },
+  { t:"정보보안 교육 이수 안내", tpl:"3줄 보고", who:"전사 · 240명", rate:52, cls:"mid" }
+];
+const docsBody = document.getElementById('docsBody');
+RECENT.forEach(d => {
+  const tr = document.createElement('tr');
+  tr.innerHTML = `<td><b style="color:var(--ink);font-weight:700">${d.t}</b></td>
+    <td class="hidecol"><span class="tag-tpl">${d.tpl}</span></td>
+    <td class="hidecol">${d.who}</td>
+    <td><span class="mini"><i style="width:${d.rate}%"></i></span><span class="rate ${d.cls}">${d.rate}%</span></td>`;
+  docsBody.appendChild(tr);
+});
+
+/* ================= INTEGRATIONS view ================= */
+const INTS = [
+  { k:"K", c:"#3B1E1E", name:"카카오워크", tag:"메신저", desc:"1페이지 보고를 카드형 메시지로 채널에 발송", on:true },
+  { k:"N", c:"#00C73C", name:"네이버웍스", tag:"그룹웨어", desc:"게시판·메일로 압축 보고 자동 배포", on:true },
+  { k:"J", c:"#0B7EF5", name:"잔디 (JANDI)", tag:"메신저", desc:"토픽에 요약 카드 발송, 반응 데이터 수집", on:false },
+  { k:"G", c:"#54607a", name:"사내 그룹웨어", tag:"결재/게시", desc:"전자결재 문서에 1페이지 요약 자동 첨부", on:true },
+  { k:"✉", c:"#3538CD", name:"이메일 · 뉴스레터", tag:"이메일", desc:"주간 리포트를 뉴스레터로 발송·오픈율 측정", on:false },
+  { k:"S", c:"#B5701F", name:"SSO · 권한 연동", tag:"보안", desc:"조직 계정으로 로그인, 직급별 열람 권한 연동", on:true }
+];
+const igrid = document.getElementById('igrid');
+INTS.forEach(it => {
+  const el = document.createElement('div'); el.className='icard';
+  el.innerHTML = `
+    <div class="it"><div class="il" style="background:${it.c}">${it.k}</div>
+      <div><h3>${it.name}</h3><p>${it.tag}</p></div></div>
+    <div class="desc">${it.desc}</div>
+    <div class="tog"><span class="stt ${it.on?'conn':'dis'}">${it.on?'● 연결됨':'○ 미연결'}</span>
+      <button class="switch ${it.on?'on':''}"><i></i></button></div>`;
+  const sw = el.querySelector('.switch'); const stt = el.querySelector('.stt');
+  sw.onclick = () => {
+    const now = sw.classList.toggle('on');
+    stt.textContent = now ? '● 연결됨' : '○ 미연결';
+    stt.className = 'stt ' + (now?'conn':'dis');
+    showToast(`${it.name} ${now?'연결을 완료':'연결을 해제'}했습니다`);
+  };
+  igrid.appendChild(el);
+});
+
+/* ================= NAV + toast ================= */
+document.querySelectorAll('.navbtn').forEach(b => b.onclick = () => {
+  document.querySelectorAll('.navbtn').forEach(x => x.classList.remove('on'));
+  b.classList.add('on');
+  const v = b.dataset.view;
+  document.querySelectorAll('.view').forEach(x => x.classList.remove('on'));
+  document.getElementById('v-'+v).classList.add('on');
+  document.querySelector('.main').scrollTop = 0;
+  if(v==='analytics') setTimeout(animateBars, 80);
+});
+function animateBars(){
+  document.querySelectorAll('#v-analytics .track i[data-w], #v-analytics .barow .track i[data-w]').forEach(i => { i.style.width = i.dataset.w + '%'; });
+}
+let toastT;
+function showToast(msg){
+  const t = document.getElementById('toast');
+  document.getElementById('toastMsg').textContent = msg;
+  t.classList.add('show'); clearTimeout(toastT);
+  toastT = setTimeout(() => t.classList.remove('show'), 2600);
+}
+
+/* init */
+loadSample('launch');
+</script>
+</body>
+</html>

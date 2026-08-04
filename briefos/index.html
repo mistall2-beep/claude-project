@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BriefOS — 조직 커뮤니케이션을 1페이지로 재정의하는 AI SaaS</title>
+<meta name="description" content="긴 보고서·공지·회의 자료를 AI가 독자 관점에서 재구조화해 1페이지로 압축하고, 실제 읽힘 데이터를 측정해 조직의 커뮤니케이션 구조 자체를 지속 개선하는 B2B SaaS. 짧고 명확한 커뮤니케이션이 조직의 실행력을 바꿉니다.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="BriefOS — 조직 커뮤니케이션을 1페이지로 재정의하는 AI SaaS">
+<meta property="og:description" content="문장을 고치지 않습니다. 조직의 의사결정 구조를 바꿉니다. AI 압축 엔진 · 한국형 템플릿 · 읽힘 데이터 분석 · 협업툴 네이티브 연동.">
+<meta property="og:url" content="https://mistall2-beep.github.io/claude-project/briefos/">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+  :root{
+    --main:#3538CD; --main-d:#23268C; --main-l:#EEF0FC; --main-r:#CFD4F5;
+    --text:#1B1E2B; --text2:#3B4050; --sub:#6A7086; --faint:#98A0B4;
+    --line:#E6E8F1; --line2:#EFF1F7; --bg:#F5F6FB; --panel:#fff;
+    --amber:#B5701F; --amber-l:#F8EEDC; --amber-r:#E9D3AC;
+    --green:#2E7D52; --green-l:#E4F1E9;
+    --rose:#B24A46; --rose-l:#F8E7E5;
+    --shadow:0 1px 2px rgba(20,25,60,.05),0 14px 36px rgba(20,25,60,.07);
+    --shadow-lg:0 30px 70px rgba(18,22,70,.16);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{color:var(--text); background:var(--bg);
+    font-family:"Pretendard","Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",system-ui,sans-serif;
+    line-height:1.6; -webkit-font-smoothing:antialiased; letter-spacing:-.015em;}
+  a{color:inherit;}
+  .mono{font-variant-numeric:tabular-nums;}
+  .wrap{max-width:1080px; margin:0 auto; padding:0 24px;}
+
+  /* nav */
+  nav{position:sticky; top:0; z-index:40; background:rgba(245,246,251,.82); backdrop-filter:blur(10px); border-bottom:1px solid var(--line);}
+  nav .row{display:flex; align-items:center; gap:14px; height:60px;}
+  .logo{display:flex; align-items:baseline; gap:7px; font-weight:800; font-size:20px; color:var(--main); letter-spacing:-.4px; text-decoration:none;}
+  .logo span{color:var(--sub); font-weight:600; font-size:13px;}
+  nav .sp{flex:1;}
+  nav .lk{font-size:13.5px; font-weight:700; color:var(--sub); text-decoration:none; padding:8px 10px;}
+  nav .lk:hover{color:var(--text);}
+  .cta{font-size:13.5px; font-weight:800; color:#fff; background:var(--main); padding:9px 16px; border-radius:999px; text-decoration:none; box-shadow:0 6px 16px rgba(53,56,205,.28);}
+  .cta:hover{background:var(--main-d);}
+  @media(max-width:820px){nav .lk{display:none;}}
+
+  /* hero */
+  .hero{position:relative; overflow:hidden; padding:76px 0 58px;
+    background:
+      radial-gradient(820px 440px at 84% -14%, rgba(53,56,205,.13), transparent 60%),
+      radial-gradient(760px 420px at 4% 6%, rgba(181,112,31,.10), transparent 62%);}
+  .badge{display:inline-flex; align-items:center; gap:8px; font-size:12px; font-weight:800; letter-spacing:.06em; color:var(--main-d); background:var(--main-l); border:1px solid var(--main-r); padding:7px 14px; border-radius:999px;}
+  .hero h1{font-size:clamp(32px,5.6vw,54px); font-weight:800; letter-spacing:-.04em; line-height:1.14; margin:20px 0 0;}
+  .hero h1 .g{background:linear-gradient(120deg,var(--main),#5a5ee6); -webkit-background-clip:text; background-clip:text; color:transparent;}
+  .hero .tag{margin-top:16px; font-size:clamp(14px,1.9vw,17px); font-weight:700; color:var(--main-d);}
+  .hero .tag b{color:var(--amber);}
+  .hero .lead{margin-top:16px; font-size:clamp(14px,2vw,17px); color:var(--text2); max-width:660px;}
+  .hero .lead b{color:var(--text); font-weight:700;}
+  .btns{display:flex; gap:12px; flex-wrap:wrap; margin-top:30px;}
+  .btn-lg{font-size:15px; font-weight:800; padding:14px 24px; border-radius:14px; text-decoration:none; display:inline-flex; align-items:center; gap:9px;}
+  .btn-p{color:#fff; background:var(--main); box-shadow:var(--shadow);}
+  .btn-p:hover{background:var(--main-d); transform:translateY(-1px);}
+  .btn-s{color:var(--text2); background:var(--panel); border:1px solid var(--line);}
+  .btn-s:hover{border-color:var(--main-r);}
+  .heronote{margin-top:15px; font-size:12.5px; color:var(--faint);}
+
+  /* hero visual: before → after */
+  .heroviz{margin-top:40px; display:grid; grid-template-columns:1fr auto 1fr; gap:16px; align-items:center;}
+  .hv{background:var(--panel); border:1px solid var(--line); border-radius:16px; box-shadow:var(--shadow); overflow:hidden;}
+  .hv .hh{padding:11px 16px; font-size:12px; font-weight:800; border-bottom:1px solid var(--line2); display:flex; align-items:center; justify-content:space-between;}
+  .hv.b .hh{color:var(--sub);} .hv.a .hh{color:var(--main-d); background:var(--main-l);}
+  .hv .bd{padding:16px;}
+  .hv.b .ln{height:7px; border-radius:4px; background:#EAECF3; margin-bottom:7px;}
+  .hv.b .ln:nth-child(3n){width:78%;} .hv.b .ln:nth-child(4n){width:88%;}
+  .hv.b .more{font-size:11px; color:var(--faint); font-weight:700; margin-top:8px;}
+  .hv.a .k{font-size:10px; font-weight:900; letter-spacing:.06em; color:var(--main); text-transform:uppercase;}
+  .hv.a h4{font-size:14.5px; font-weight:800; margin:3px 0 10px; letter-spacing:-.02em;}
+  .hv.a .pt{font-size:12px; color:var(--text2); padding-left:16px; position:relative; margin-bottom:6px;}
+  .hv.a .pt::before{content:""; position:absolute; left:3px; top:7px; width:5px; height:5px; border-radius:50%; background:var(--main);}
+  .hv.a .dec{margin-top:10px; font-size:11.5px; font-weight:800; color:var(--amber); background:var(--amber-l); border:1px solid var(--amber-r); padding:6px 10px; border-radius:9px;}
+  .harrow{width:44px; height:44px; border-radius:50%; background:var(--main); color:#fff; display:flex; align-items:center; justify-content:center; font-size:20px; font-weight:900; box-shadow:0 8px 20px rgba(53,56,205,.35);}
+  @media(max-width:760px){.heroviz{grid-template-columns:1fr; gap:10px;} .harrow{transform:rotate(90deg); margin:0 auto;}}
+
+  section{padding:58px 0;}
+  .eyebrow{font-size:12px; font-weight:800; letter-spacing:.12em; color:var(--main); text-transform:uppercase;}
+  h2{font-size:clamp(23px,3.5vw,33px); font-weight:800; letter-spacing:-.035em; margin:10px 0 6px;}
+  .sub{color:var(--sub); font-size:15px; max-width:680px; margin:0;}
+  .panel-sec{background:var(--panel); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+
+  /* problem stats */
+  .pgrid{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:28px;}
+  .pcard{background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:20px; box-shadow:var(--shadow); position:relative;}
+  .pcard .num{width:26px; height:26px; border-radius:8px; background:var(--rose-l); color:var(--rose); display:flex; align-items:center; justify-content:center; font-weight:900; font-size:13px;}
+  .pcard h3{font-size:14.5px; font-weight:800; margin:12px 0 8px; letter-spacing:-.02em; line-height:1.35;}
+  .pcard .big{font-size:30px; font-weight:900; letter-spacing:-.03em; color:var(--rose);}
+  .pcard .d{font-size:11.5px; color:var(--sub); margin-top:5px; line-height:1.45;}
+  @media(max-width:760px){.pgrid{grid-template-columns:1fr 1fr;}}
+  .concl{margin-top:20px; background:linear-gradient(135deg,#20255f,#31358f); color:#e7e9fb; border-radius:18px; padding:24px 26px; display:grid; grid-template-columns:1fr auto; gap:20px; align-items:center;}
+  .concl .t{font-size:16px; font-weight:800; color:#fff; margin-bottom:6px;}
+  .concl p{font-size:13px; color:#c8ccf2; max-width:640px;}
+  .concl .kpi{text-align:right; white-space:nowrap;}
+  .concl .kpi .n{font-size:34px; font-weight:900; letter-spacing:-.03em; color:#fff;}
+  .concl .kpi .l{font-size:11px; color:#aab0ee; font-weight:700;}
+  @media(max-width:680px){.concl{grid-template-columns:1fr;} .concl .kpi{text-align:left;}}
+
+  /* market validation */
+  .axios{margin-top:26px; background:var(--panel); border:1px solid var(--line); border-radius:18px; padding:22px 24px; box-shadow:var(--shadow);}
+  .axios .h{display:flex; align-items:center; gap:10px; flex-wrap:wrap;}
+  .axios .h b{font-size:15px; font-weight:800;}
+  .axios .h span{font-size:12px; color:var(--sub);}
+  .axstats{display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-top:16px;}
+  .axst{background:var(--main-l); border:1px solid var(--main-r); border-radius:13px; padding:15px;}
+  .axst .n{font-size:24px; font-weight:900; color:var(--main-d); letter-spacing:-.03em;}
+  .axst .l{font-size:11.5px; color:var(--text2); font-weight:700; margin-top:3px;}
+  @media(max-width:680px){.axstats{grid-template-columns:1fr 1fr;}}
+  .cases{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:14px;}
+  .case{background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:20px; box-shadow:var(--shadow);}
+  .case .co{font-size:15px; font-weight:800;}
+  .case .ind{font-size:12px; color:var(--amber); font-weight:700; margin:3px 0 10px;}
+  .case p{font-size:12.5px; color:var(--text2);}
+  @media(max-width:680px){.cases{grid-template-columns:1fr;}}
+  .insight{margin-top:16px; font-size:14px; color:var(--main-d); background:var(--main-l); border:1px solid var(--main-r); border-radius:14px; padding:16px 18px; line-height:1.6;}
+  .insight b{color:var(--main-d);}
+
+  /* market size */
+  .som{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:28px;}
+  .somc{border-radius:16px; padding:22px; position:relative; overflow:hidden;}
+  .somc.t3{background:var(--panel); border:1px solid var(--line); box-shadow:var(--shadow);}
+  .somc.t2{background:var(--main-l); border:1px solid var(--main-r);}
+  .somc.t1{background:linear-gradient(150deg,#20255f,#33378f); color:#e9ebfb;}
+  .somc .lab{font-size:12px; font-weight:900; letter-spacing:.05em;}
+  .somc.t3 .lab{color:var(--sub);} .somc.t2 .lab{color:var(--main);} .somc.t1 .lab{color:#9ea4ee;}
+  .somc .amt{font-size:27px; font-weight:900; letter-spacing:-.03em; margin:8px 0 6px;}
+  .somc.t3 .amt{color:var(--text);} .somc.t2 .amt{color:var(--main-d);} .somc.t1 .amt{color:#fff;}
+  .somc .desc{font-size:12.5px;} .somc.t3 .desc, .somc.t2 .desc{color:var(--text2);} .somc.t1 .desc{color:#c3c7f0;}
+  @media(max-width:760px){.som{grid-template-columns:1fr;}}
+  .kadv{display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-top:14px;}
+  .kadv .a{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:16px; box-shadow:var(--shadow);}
+  .kadv .a h4{font-size:13px; font-weight:800; margin-bottom:6px; color:var(--main-d);}
+  .kadv .a p{font-size:11.5px; color:var(--text2);}
+  @media(max-width:760px){.kadv{grid-template-columns:1fr 1fr;}}
+
+  /* solution pillars */
+  .quote{margin-top:26px; font-size:clamp(18px,2.6vw,24px); font-weight:800; letter-spacing:-.02em; line-height:1.45; color:var(--text);}
+  .quote .mk{color:var(--main);}
+  .pillars{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:24px;}
+  .pil{background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:20px; box-shadow:var(--shadow);}
+  .pil .ic{width:40px; height:40px; border-radius:11px; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:13px; color:#fff; letter-spacing:.02em;}
+  .pil.a .ic{background:linear-gradient(135deg,#3538CD,#5a5ee6);} .pil.b .ic{background:linear-gradient(135deg,#B5701F,#d89a44);} .pil.c .ic{background:linear-gradient(135deg,#2E7D52,#57a97b);} .pil.d .ic{background:linear-gradient(135deg,#3f4756,#6a7488);}
+  .pil h3{font-size:15px; font-weight:800; margin:13px 0 6px;}
+  .pil p{font-size:12.5px; color:var(--text2);}
+  @media(max-width:820px){.pillars{grid-template-columns:1fr 1fr;}}
+  @media(max-width:480px){.pillars{grid-template-columns:1fr;}}
+
+  /* product features */
+  .feat{display:grid; grid-template-columns:repeat(2,1fr); gap:14px; margin-top:26px;}
+  .fc{background:var(--panel); border:1px solid var(--line); border-radius:18px; padding:22px; box-shadow:var(--shadow); display:grid; grid-template-columns:auto 1fr; gap:16px;}
+  .fc .no{width:44px; height:44px; border-radius:12px; background:var(--main); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:17px;}
+  .fc .tag2{font-size:10.5px; font-weight:900; letter-spacing:.06em; color:var(--main); text-transform:uppercase;}
+  .fc h3{font-size:16px; font-weight:800; margin:2px 0 6px;}
+  .fc .lead2{font-size:12.5px; color:var(--sub); margin-bottom:10px;}
+  .fc ul{list-style:none; display:flex; flex-direction:column; gap:5px;}
+  .fc li{font-size:12.5px; color:var(--text2); padding-left:15px; position:relative;}
+  .fc li::before{content:""; position:absolute; left:2px; top:8px; width:5px; height:5px; border-radius:50%; background:var(--main-r);}
+  @media(max-width:760px){.feat{grid-template-columns:1fr;}}
+  .platnote{margin-top:14px; font-size:12.5px; color:var(--text2); background:var(--main-l); border:1px solid var(--main-r); border-radius:12px; padding:13px 16px;}
+
+  /* comparison table */
+  .cmp{margin-top:26px; overflow-x:auto; border:1px solid var(--line); border-radius:16px; box-shadow:var(--shadow); background:var(--panel);}
+  table.ctbl{width:100%; border-collapse:collapse; min-width:720px; font-size:12.5px;}
+  table.ctbl th, table.ctbl td{padding:12px 14px; text-align:left; border-bottom:1px solid var(--line2); vertical-align:top;}
+  table.ctbl thead th{font-size:12px; font-weight:800; color:var(--sub); background:#FAFBFE; position:sticky; top:0;}
+  table.ctbl thead th.us{color:#fff; background:var(--main);}
+  table.ctbl tbody th{font-weight:800; color:var(--text); white-space:nowrap;}
+  table.ctbl td{color:var(--text2);}
+  table.ctbl td.us{background:var(--main-l); color:var(--main-d); font-weight:700;}
+  table.ctbl tr:last-child td, table.ctbl tr:last-child th{border-bottom:0;}
+  .cmpnote{margin-top:14px; font-size:13px; color:var(--text2); background:#FAFBFE; border:1px solid var(--line); border-radius:12px; padding:14px 16px;}
+  .cmpnote b{color:var(--main-d);}
+
+  /* business model layers */
+  .layer{margin-top:22px;}
+  .layer .lh{font-size:12px; font-weight:900; letter-spacing:.04em; color:var(--main); margin-bottom:12px; display:flex; align-items:center; gap:9px;}
+  .layer .lh .tag3{font-size:10px; font-weight:900; color:#fff; background:var(--main); padding:3px 9px; border-radius:999px; letter-spacing:.02em;}
+  .tiers{display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
+  .tier{background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:20px; box-shadow:var(--shadow); position:relative;}
+  .tier.mid{border:2px solid var(--main); box-shadow:0 0 0 4px var(--main-l), var(--shadow);}
+  .tier .pl{font-size:15px; font-weight:800;}
+  .tier .price{font-size:20px; font-weight:900; color:var(--main-d); letter-spacing:-.02em; margin:6px 0 2px;}
+  .tier .cap{font-size:12px; color:var(--sub);}
+  .tier .star{position:absolute; top:16px; right:16px; font-size:10.5px; font-weight:900; color:#fff; background:var(--amber); padding:3px 9px; border-radius:999px;}
+  .svc{display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
+  .svc .s{background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:18px; box-shadow:var(--shadow);}
+  .svc .s h4{font-size:14px; font-weight:800;}
+  .svc .s .p{font-size:16px; font-weight:900; color:var(--amber); margin:5px 0 6px;}
+  .svc .s p{font-size:12px; color:var(--text2);}
+  .plat{display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
+  .plat .p{background:#FAFBFE; border:1px dashed var(--main-r); border-radius:16px; padding:18px;}
+  .plat .p h4{font-size:14px; font-weight:800; color:var(--main-d);}
+  .plat .p p{font-size:12px; color:var(--text2); margin-top:5px;}
+  @media(max-width:760px){.tiers,.svc,.plat{grid-template-columns:1fr;}}
+  .bmnote{margin-top:16px; font-size:12.5px; color:var(--text2); background:var(--amber-l); border:1px solid var(--amber-r); border-radius:12px; padding:13px 16px;}
+  .bmnote b{color:#7a4e14;}
+
+  /* GTM phases */
+  .phases{display:grid; grid-template-columns:repeat(4,1fr); gap:0; margin-top:26px; overflow-x:auto;}
+  .ph{position:relative; padding:18px 16px; background:var(--panel); border:1px solid var(--line); min-width:150px;}
+  .ph:first-child{border-radius:14px 0 0 14px;} .ph:last-child{border-radius:0 14px 14px 0;} .ph:not(:last-child){border-right:0;}
+  .ph .pn{font-size:10px; font-weight:900; color:var(--main); letter-spacing:.04em;}
+  .ph .pt{font-size:11px; color:var(--faint); font-weight:700; margin-top:2px;}
+  .ph h3{font-size:15px; font-weight:800; margin:8px 0 8px;}
+  .ph ul{list-style:none; display:flex; flex-direction:column; gap:5px;}
+  .ph li{font-size:11.5px; color:var(--text2); padding-left:12px; position:relative; line-height:1.4;}
+  .ph li::before{content:"·"; position:absolute; left:2px; top:0; color:var(--main); font-weight:900;}
+  .ph .goal{margin-top:11px; font-size:12px; font-weight:800; color:#fff; background:var(--main); padding:5px 10px; border-radius:8px; display:inline-block;}
+  .ph .arw{position:absolute; right:-9px; top:34px; z-index:2; width:18px; height:18px; border-radius:50%; background:var(--main); color:#fff; display:flex; align-items:center; justify-content:center; font-size:11px;}
+  .ph:last-child .arw{display:none;}
+  @media(max-width:820px){.phases{grid-template-columns:1fr; gap:10px;} .ph{border-radius:14px !important; border-right:1px solid var(--line) !important;} .ph .arw{display:none;}}
+
+  /* roadmap */
+  .road{margin-top:26px; overflow-x:auto; border:1px solid var(--line); border-radius:16px; box-shadow:var(--shadow); background:var(--panel);}
+  table.rtbl{width:100%; border-collapse:collapse; min-width:820px; font-size:12px;}
+  table.rtbl th, table.rtbl td{border-bottom:1px solid var(--line2); border-right:1px solid var(--line2); padding:9px 6px; text-align:center;}
+  table.rtbl thead .yr{font-weight:900; color:var(--main-d); background:#FAFBFE; font-size:12.5px;}
+  table.rtbl thead .q{font-weight:700; color:var(--sub); background:#FAFBFE; font-size:11px;}
+  table.rtbl tbody th{text-align:left; font-weight:800; color:var(--text); white-space:nowrap; background:#FAFBFE; padding-left:14px;}
+  table.rtbl .bar{color:#fff; font-weight:800; font-size:10.5px; border-radius:6px; padding:5px 4px; white-space:nowrap;}
+  table.rtbl .b-main{background:var(--main);} table.rtbl .b-amber{background:var(--amber);} table.rtbl .b-green{background:var(--green);} table.rtbl .b-slate{background:#54607a;}
+  table.rtbl td:last-child, table.rtbl th:last-child{border-right:0;}
+  .milestone{margin-top:14px; font-size:12.5px; color:var(--text2); background:var(--main-l); border:1px solid var(--main-r); border-radius:12px; padding:13px 16px;}
+  .milestone b{color:var(--main-d);}
+
+  /* financials */
+  .fin{display:grid; grid-template-columns:1.3fr .7fr; gap:16px; margin-top:26px;}
+  .fintbl{overflow-x:auto; border:1px solid var(--line); border-radius:16px; box-shadow:var(--shadow); background:var(--panel);}
+  table.ftbl{width:100%; border-collapse:collapse; min-width:420px; font-size:12.5px;}
+  table.ftbl th, table.ftbl td{padding:10px 14px; border-bottom:1px solid var(--line2); text-align:right;}
+  table.ftbl thead th{font-weight:800; color:var(--main-d); background:#FAFBFE;}
+  table.ftbl thead th:first-child, table.ftbl tbody th{text-align:left; font-weight:700; color:var(--text2); white-space:nowrap;}
+  table.ftbl tbody th{background:#FAFBFE;}
+  table.ftbl tr.sum td, table.ftbl tr.sum th{font-weight:900; color:var(--text); background:#FCFCFE;}
+  table.ftbl tr.op td, table.ftbl tr.op th{font-weight:900; color:var(--main-d); background:var(--main-l);}
+  table.ftbl tr:last-child td, table.ftbl tr:last-child th{border-bottom:0;}
+  table.ftbl .neg{color:var(--rose);}
+  .finkpi{display:flex; flex-direction:column; gap:12px;}
+  .fk{background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:18px 20px; box-shadow:var(--shadow);}
+  .fk .n{font-size:26px; font-weight:900; letter-spacing:-.03em; color:var(--main-d);}
+  .fk .l{font-size:12.5px; font-weight:700; margin-top:3px;}
+  .fk .d{font-size:11px; color:var(--faint);}
+  @media(max-width:820px){.fin{grid-template-columns:1fr;}}
+  .finnote{margin-top:14px; font-size:12.5px; color:var(--text2);}
+
+  /* investment ask */
+  .askbox{margin-top:26px; display:grid; grid-template-columns:.8fr 1.2fr; gap:16px;}
+  .askhero{background:linear-gradient(150deg,#20255f,#33378f); color:#e9ebfb; border-radius:18px; padding:26px; display:flex; flex-direction:column; justify-content:center;}
+  .askhero .r{font-size:12px; font-weight:900; letter-spacing:.08em; color:#9ea4ee;}
+  .askhero .amt{font-size:46px; font-weight:900; letter-spacing:-.03em; color:#fff; margin:6px 0 4px;}
+  .askhero .l{font-size:13px; color:#c3c7f0;}
+  .askhero .val{margin-top:14px; font-size:12px; color:#aab0ee; border-top:1px solid rgba(255,255,255,.14); padding-top:12px;}
+  .use{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+  .u{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:16px; box-shadow:var(--shadow);}
+  .u .pct{font-size:22px; font-weight:900; color:var(--main-d); letter-spacing:-.02em;}
+  .u .pct small{font-size:12px; color:var(--sub); font-weight:800; margin-left:6px;}
+  .u h4{font-size:13px; font-weight:800; margin-top:4px;}
+  .u .bar{height:5px; border-radius:3px; background:var(--main-l); margin-top:8px; overflow:hidden;}
+  .u .bar i{display:block; height:100%; background:var(--main); border-radius:3px;}
+  @media(max-width:760px){.askbox{grid-template-columns:1fr;} .use{grid-template-columns:1fr 1fr;}}
+
+  /* vision / conclusion */
+  .vis{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:26px;}
+  .vc{border-radius:16px; padding:22px; position:relative; overflow:hidden;}
+  .vc.v1{background:var(--panel); border:1px solid var(--line); box-shadow:var(--shadow);}
+  .vc.v2{background:var(--main-l); border:1px solid var(--main-r);}
+  .vc.v3{background:linear-gradient(150deg,#20255f,#33378f); color:#e9ebfb;}
+  .vc .step{font-size:12px; font-weight:900; color:var(--main);}
+  .vc.v3 .step{color:#9ea4ee;}
+  .vc h3{font-size:17px; font-weight:800; margin:6px 0 6px;}
+  .vc p{font-size:12.5px; color:var(--text2);} .vc.v3 p{color:#c3c7f0;}
+  @media(max-width:760px){.vis{grid-template-columns:1fr;}}
+
+  /* cta band */
+  .band{background:var(--panel); border:1px solid var(--line); border-radius:24px; padding:44px 34px; text-align:center; box-shadow:var(--shadow-lg); margin-top:14px;}
+  .band h2{margin:0 0 8px;}
+  .band p{color:var(--sub); font-size:15px; max-width:600px; margin:0 auto 22px;}
+
+  footer{padding:38px 0 60px; color:var(--faint); font-size:12.5px; border-top:1px solid var(--line); margin-top:10px;}
+  footer b{color:var(--text2);}
+  footer a{color:var(--main); text-decoration:none; font-weight:700;}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap row">
+    <a class="logo" href="index.html">BriefOS <span>브리프오에스</span></a>
+    <div class="sp"></div>
+    <a class="lk" href="#problem">문제</a>
+    <a class="lk" href="#solution">솔루션</a>
+    <a class="lk" href="#product">제품</a>
+    <a class="lk" href="#model">수익모델</a>
+    <a class="lk" href="#invest">투자</a>
+    <a class="cta" href="demo/index.html">▶ 데모 열기</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="badge">BUSINESS PLAN · v0.2 · 2026.04</span>
+    <h1>조직 커뮤니케이션을<br><span class="g">1페이지로 재정의</span>하는 AI SaaS</h1>
+    <p class="tag">AI 구조 재설계 · 한국형 템플릿 · 읽힘 데이터 &nbsp;—&nbsp; <b>커뮤니케이션 구조 자체를 바꾸는 OS</b></p>
+    <p class="lead">긴 보고서·공지·회의 자료를 <b>AI가 독자 관점에서 재구조화</b>해 1페이지로 압축하고,
+      실제 <b>읽힘 데이터</b>를 측정해 조직의 커뮤니케이션 구조를 지속 개선합니다.
+      우리는 문장을 고치지 않습니다 — 조직의 <b>의사결정 구조</b>를 바꿉니다.</p>
+    <div class="btns">
+      <a class="btn-lg btn-p" href="demo/index.html">▶ BriefOS 데모 체험</a>
+      <a class="btn-lg btn-s" href="#product">제품 살펴보기</a>
+    </div>
+    <div class="heronote">조직 커뮤니케이션 운영체제 · 사업계획서 v0.2 요약 · 데모는 예시 데이터입니다</div>
+
+    <div class="heroviz">
+      <div class="hv b">
+        <div class="hh"><span>기존 보고서</span><span>10장+</span></div>
+        <div class="bd">
+          <div class="ln"></div><div class="ln"></div><div class="ln"></div><div class="ln"></div>
+          <div class="ln"></div><div class="ln"></div><div class="ln"></div>
+          <div class="more">… 실제 읽히는 것은 첫 2장</div>
+        </div>
+      </div>
+      <div class="harrow">→</div>
+      <div class="hv a">
+        <div class="hh"><span>BriefOS · 1PAGE</span><span>AI 구조 재설계</span></div>
+        <div class="bd">
+          <div class="k">3줄 요약</div>
+          <h4>3분기 신제품 출시, 목표 대비 92% 달성</h4>
+          <div class="pt">핵심 결론 — 출시 일정 2주 지연, 매출 영향 제한적</div>
+          <div class="pt">근거 — 부품 수급 병목, 대체 벤더 확보 완료</div>
+          <div class="dec">◆ 의사결정 필요 — 마케팅 예산 조기 집행 승인</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- PROBLEM -->
+<section id="problem" class="panel-sec"><div class="wrap">
+  <div class="eyebrow">Problem</div>
+  <h2>기업 커뮤니케이션은 여전히 비효율적이다</h2>
+  <p class="sub">보고서는 길고, 공지는 읽히지 않으며, 핵심 메시지는 전달되지 않습니다. 커뮤니케이션 문제는 곧 조직 성과 문제입니다.</p>
+  <div class="pgrid">
+    <div class="pcard"><div class="num">1</div><h3>보고서는 길고<br>읽히지 않는다</h3><div class="big mono">10장+</div><div class="d">평균 보고서 분량 · 실제 읽히는 것은 첫 2장</div></div>
+    <div class="pcard"><div class="num">2</div><h3>핵심 메시지가<br>전달되지 않는다</h3><div class="big mono">47<small>%</small></div><div class="d">수신자가 공지 내용을 당일 내 망각</div></div>
+    <div class="pcard"><div class="num">3</div><h3>의사결정이<br>지연된다</h3><div class="big mono">6.3<small>h</small></div><div class="d">불필요한 회의로 주당 낭비되는 시간</div></div>
+    <div class="pcard"><div class="num">4</div><h3>반복 보고가<br>증가한다</h3><div class="big mono">3.2<small>회</small></div><div class="d">동일 내용 재보고 · 월 평균 발생 횟수</div></div>
+  </div>
+  <div class="concl">
+    <div>
+      <div class="t">결론 : 커뮤니케이션 문제 = 조직 성과 문제</div>
+      <p>McKinsey 연구에 따르면 커뮤니케이션 효율을 높이면 생산성을 20~25% 향상시킬 수 있습니다. 그러나 대부분의 기업은 협업 '도구'만 도입할 뿐, 커뮤니케이션 <b style="color:#fff">구조 자체</b>는 바꾸지 않습니다.</p>
+    </div>
+    <div class="kpi"><div class="n mono">20~25%</div><div class="l">커뮤니케이션 개선을 통한<br>생산성 향상 잠재력</div></div>
+  </div>
+</div></section>
+
+<!-- MARKET VALIDATION -->
+<section><div class="wrap">
+  <div class="eyebrow">Market Validation</div>
+  <h2>짧고 명확한 커뮤니케이션 시장은 이미 검증되었다</h2>
+  <p class="sub">Axios HQ가 SaaS + 교육/컨설팅 하이브리드 모델로 빠르게 PMF를 달성하며 시장의 존재를 증명했습니다.</p>
+  <div class="axios">
+    <div class="h"><b>Axios HQ</b> <span>SaaS + 교육/컨설팅 하이브리드 · 빠른 PMF 달성</span></div>
+    <div class="axstats">
+      <div class="axst"><div class="n mono">$10M+</div><div class="l">2년 내 달성 ARR</div></div>
+      <div class="axst"><div class="n mono">600+</div><div class="l">확보 고객사</div></div>
+      <div class="axst"><div class="n mono">$20M</div><div class="l">누적 투자 유치</div></div>
+      <div class="axst"><div class="n mono">$100M</div><div class="l">기업가치 (2023)</div></div>
+    </div>
+  </div>
+  <div class="cases">
+    <div class="case"><div class="co">American Airlines</div><div class="ind">항공업 · 전사 커뮤니케이션 품질 개선</div><p>조직 메시지 정렬 및 일관성 향상, 임직원 참여도 및 이해도 증가.</p></div>
+    <div class="case"><div class="co">TAUC</div><div class="ind">건설업 조합 · 회원사 뉴스레터 커뮤니케이션</div><p>뉴스레터 제작 시간 50% 단축, 커뮤니케이션 효율성 대폭 향상.</p></div>
+  </div>
+  <div class="insight">💡 <b>핵심 인사이트</b> — Axios HQ가 '커뮤니케이션을 잘 쓰게 만드는 SaaS'를 증명했다면, BriefOS는 <b>'커뮤니케이션 구조 자체를 운영 시스템으로 바꾸는 SaaS'</b>입니다.</div>
+</div></section>
+
+<!-- MARKET SIZE -->
+<section class="panel-sec"><div class="wrap">
+  <div class="eyebrow">Market Size</div>
+  <h2>거대한 시장, 구조적 기회</h2>
+  <p class="sub">글로벌 기업 커뮤니케이션 SaaS 시장의 성장에, 한국 시장 특화 기회가 더해집니다.</p>
+  <div class="som">
+    <div class="somc t1"><div class="lab">TAM</div><div class="amt mono">$420억</div><div class="desc">글로벌 기업 커뮤니케이션 SaaS (2027E)</div></div>
+    <div class="somc t2"><div class="lab">SAM</div><div class="amt mono">약 $50억</div><div class="desc">아시아·한국어권 기업 커뮤니케이션</div></div>
+    <div class="somc t3"><div class="lab">SOM</div><div class="amt mono">₩300억</div><div class="desc">국내 중견·대기업·공공 (3~5년)</div></div>
+  </div>
+  <div class="kadv">
+    <div class="a"><h4>한국 기업 특화</h4><p>Axios HQ 진출 불가 영역 · 한국어 AI + 직급·경어 문화 반영</p></div>
+    <div class="a"><h4>공공 · 금융 진입</h4><p>ISMS-P 인증 후 나라장터 조달 등록 가능</p></div>
+    <div class="a"><h4>데이터 네트워크 효과</h4><p>고객 보고 데이터 축적 → AI 품질 향상 → 복제 불가</p></div>
+    <div class="a"><h4>글로벌 확장성</h4><p>동남아 한국계 기업 대상 SaaS 공급으로 확장 가능</p></div>
+  </div>
+</div></section>
+
+<!-- SOLUTION -->
+<section id="solution"><div class="wrap">
+  <div class="eyebrow">Solution</div>
+  <h2>BriefOS — 커뮤니케이션 방식을 바꾸는 OS</h2>
+  <p class="sub">단순한 문서 작성 도구가 아닌, 조직의 커뮤니케이션 구조 자체를 재설계하는 플랫폼입니다.</p>
+  <div class="quote">“우리는 문장을 고치지 않습니다.<br><span class="mk">조직의 의사결정 구조</span>를 바꿉니다.”</div>
+  <div class="pillars">
+    <div class="pil a"><div class="ic">AI</div><h3>AI 구조 재설계</h3><p>단순 요약이 아니라 메시지의 구조 자체를 독자 관점에서 재정의. 핵심 결론 → 근거 → 의사결정 포인트 순으로 자동 재배열.</p></div>
+    <div class="pil b"><div class="ic">KR</div><h3>한국형 템플릿</h3><p>3줄 보고 · 1페이지 보고 · 임원 보고 포맷 · 주간 리포트. 한국 조직의 직급 체계와 경어 문화를 반영한 표준 포맷.</p></div>
+    <div class="pil c"><div class="ic">DA</div><h3>읽힘 데이터 분석</h3><p>읽은 시간 · 집중 구간 · 반응 데이터를 측정해 어떤 메시지가 실제로 전달되었는지 확인하고 지속 최적화.</p></div>
+    <div class="pil d"><div class="ic">IN</div><h3>협업툴 네이티브 연동</h3><p>카카오워크 · 네이버웍스 · 잔디 · 그룹웨어 · 이메일과 1-click 연동. 기존 업무 환경을 바꾸지 않고 그대로 적용.</p></div>
+  </div>
+</div></section>
+
+<!-- PRODUCT -->
+<section id="product" class="panel-sec"><div class="wrap">
+  <div class="eyebrow">Product</div>
+  <h2>핵심 기능 — AI 압축 엔진부터 데이터 분석까지</h2>
+  <p class="sub">조직 커뮤니케이션의 전 주기(작성 → 배포 → 측정 → 개선)를 커버하는 통합 기능입니다.</p>
+  <div class="feat">
+    <div class="fc"><div class="no">01</div><div><div class="tag2">AI Core</div><h3>AI 보고서 압축 엔진</h3><p class="lead2">긴 문서를 입력하면 핵심을 자동 추출해 1페이지로 재구성합니다.</p><ul><li>3줄 요약 자동 생성</li><li>핵심 Bullet 추출</li><li>의사결정 포인트 도출</li><li>한국어 경어·직급 반영</li></ul></div></div>
+    <div class="fc"><div class="no">02</div><div><div class="tag2">Templates</div><h3>한국형 템플릿 시스템</h3><p class="lead2">한국 조직의 보고 문화에 맞춘 표준 포맷을 제공합니다.</p><ul><li>3줄 보고 / 1페이지 보고</li><li>임원 보고 포맷</li><li>주간·월간 리포트</li><li>조직별 커스터마이즈</li></ul></div></div>
+    <div class="fc"><div class="no">03</div><div><div class="tag2">Analytics</div><h3>커뮤니케이션 분석</h3><p class="lead2">공지와 보고가 실제로 읽혔는지 데이터로 확인합니다.</p><ul><li>읽은 시간·스크롤 깊이</li><li>메시지 집중도 측정</li><li>팀·직급별 전달 효율</li><li>개선 리포트 자동 발행</li></ul></div></div>
+    <div class="fc"><div class="no">04</div><div><div class="tag2">Integration</div><h3>협업툴 네이티브 연동</h3><p class="lead2">기존 워크플로우를 유지한 채 1-click으로 연결합니다.</p><ul><li>카카오워크 · 네이버웍스</li><li>잔디 · 사내 그룹웨어</li><li>이메일 · 뉴스레터</li><li>SSO 및 권한 연동</li></ul></div></div>
+  </div>
+  <div class="platnote">모든 기능은 <b>웹 · 모바일 · 협업툴 내부</b>에서 동일하게 동작하며, <b>온프레미스 및 프라이빗 클라우드</b> 배포를 지원합니다.</div>
+</div></section>
+
+<!-- COMPETITION -->
+<section><div class="wrap">
+  <div class="eyebrow">Competitive Landscape</div>
+  <h2>BriefOS vs 기존 솔루션</h2>
+  <p class="sub">단순 협업툴도, 문서 관리 도구도 아닌 — 조직 커뮤니케이션 OS입니다.</p>
+  <div class="cmp">
+    <table class="ctbl">
+      <thead><tr>
+        <th>비교 항목</th>
+        <th>협업툴<br><small>Slack / Teams</small></th>
+        <th>문서툴<br><small>Notion / Confluence</small></th>
+        <th>Axios HQ</th>
+        <th class="us">BriefOS</th>
+      </tr></thead>
+      <tbody>
+        <tr><th>핵심 목적</th><td>메시지 전달 / 대화</td><td>문서 작성 / 저장</td><td>커뮤니케이션 효율</td><td class="us">커뮤니케이션 OS</td></tr>
+        <tr><th>주요 기능</th><td>채팅, 알림, 공유</td><td>문서 작성, 템플릿</td><td>글쓰기 스타일 개선</td><td class="us">구조 재설계 + 자동 최적화</td></tr>
+        <tr><th>AI 역할</th><td>없음 / 보조</td><td>보조적 검색·요약</td><td>문장·스타일 개선</td><td class="us">구조 재설계 및 자동화</td></tr>
+        <tr><th>한국어 지원</th><td>부분 지원</td><td>부분 지원</td><td>미지원</td><td class="us">한국어 특화</td></tr>
+        <tr><th>분석 · 측정</th><td>제한적</td><td>제한적</td><td>이메일 오픈율</td><td class="us">읽힘·집중도·반응 전체</td></tr>
+        <tr><th>적용 단위</th><td>개인 · 팀</td><td>팀 · 부서</td><td>커뮤니케이션 팀</td><td class="us">조직 전사 인프라</td></tr>
+        <tr><th>차별점</th><td>범용 커뮤니케이션</td><td>문서 관리 중심</td><td>글쓰기 스타일 도구</td><td class="us">조직 커뮤니케이션 인프라</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="cmpnote"><b>결론</b> — BriefOS는 '더 잘 쓰게 만드는 도구'가 아니라, '쓰는 방식 자체를 바꾸는 OS'입니다. 경쟁 축이 기능이 아닌 <b>조직 운영 방식</b>이므로 전환 비용이 높고 Lock-in이 강합니다.</div>
+</div></section>
+
+<!-- BUSINESS MODEL -->
+<section id="model" class="panel-sec"><div class="wrap">
+  <div class="eyebrow">Business Model</div>
+  <h2>SaaS + 서비스로 확장 가능한 수익 구조</h2>
+  <p class="sub">반복 구독 매출을 기반으로 고마진 서비스 레이어를 쌓아 올리는 3단계 모델입니다.</p>
+
+  <div class="layer">
+    <div class="lh"><span class="tag3">LAYER 1</span> SaaS 구독 — ARR 기반 반복 매출</div>
+    <div class="tiers">
+      <div class="tier"><div class="pl">Starter</div><div class="price mono">₩30만<small style="font-size:12px;color:var(--sub)"> / 월</small></div><div class="cap">50인 이하 · AI 압축 · 기본 템플릿 5종</div></div>
+      <div class="tier mid"><span class="star">추천</span><div class="pl">Business</div><div class="price mono">₩80만<small style="font-size:12px;color:var(--sub)"> / 월</small></div><div class="cap">300인 이하 · 분석 · 협업툴 2종 · 맞춤 템플릿</div></div>
+      <div class="tier"><div class="pl">Enterprise</div><div class="price">견적 협의</div><div class="cap">인원 무제한 · 온프레미스 · 전담 CS · ISMS</div></div>
+    </div>
+  </div>
+
+  <div class="layer">
+    <div class="lh"><span class="tag3">LAYER 2</span> 프로페셔널 서비스 — 고마진 프로젝트 매출</div>
+    <div class="svc">
+      <div class="s"><h4>조직 커뮤니케이션 진단</h4><div class="p mono">₩500만~</div><p>현행 보고 체계 분석 → BriefOS 설계</p></div>
+      <div class="s"><h4>임원 라이팅 코칭</h4><div class="p mono">₩200만~ / 월</div><p>C-Suite 보고 글쓰기 1:1 워크숍</p></div>
+      <div class="s"><h4>커뮤니케이션 리포트</h4><div class="p mono">₩300만~ / 분기</div><p>조직 정보 전달 효율 진단서 발행</p></div>
+    </div>
+  </div>
+
+  <div class="layer">
+    <div class="lh"><span class="tag3">LAYER 3</span> 플랫폼 확장 — 장기 해자 구축 (Year 3+)</div>
+    <div class="plat">
+      <div class="p"><h4>템플릿 마켓플레이스</h4><p>외부 컨설턴트 등록 · 수수료 30%</p></div>
+      <div class="p"><h4>BriefOS API (B2B2B)</h4><p>AI 압축 엔진 개방 · 사용량 과금</p></div>
+      <div class="p"><h4>글로벌 확장</h4><p>동남아 한국계 기업 SaaS 공급</p></div>
+    </div>
+  </div>
+  <div class="bmnote"><b>서비스 매출 비중 40% 유지 목표</b> — 단순 AI 도구와의 가격 경쟁에서 이탈해 방어적 사업 구조를 완성합니다.</div>
+</div></section>
+
+<!-- GO TO MARKET -->
+<section><div class="wrap">
+  <div class="eyebrow">Go-to-Market</div>
+  <h2>단계별 시장 진입 전략</h2>
+  <p class="sub">Beachhead에서 시작해 공공·금융까지, 이후 플랫폼화로 해자를 구축합니다.</p>
+  <div class="phases">
+    <div class="ph"><div class="pn">PHASE 1</div><div class="pt">0 ~ 12개월</div><h3>Beachhead</h3><ul><li>스타트업·중견기업 50개사 파일럿</li><li>Product-led Growth (팀장급 무료체험)</li><li>조직 전체 확산 구조 검증</li></ul><div class="goal">목표 ARR ₩3억</div><div class="arw">›</div></div>
+    <div class="ph"><div class="pn">PHASE 2</div><div class="pt">Year 1 ~ 2</div><h3>Enterprise</h3><ul><li>대기업 HR·경영지원팀 공략</li><li>조직 진단 서비스로 문 열고 SaaS 전환</li><li>NRR 85% 이상 유지</li></ul><div class="goal">목표 ARR ₩15억</div><div class="arw">›</div></div>
+    <div class="ph"><div class="pn">PHASE 3</div><div class="pt">Year 2 ~ 3</div><h3>공공 · 금융</h3><ul><li>ISMS-P 인증 완료 후 공공기관 진입</li><li>금융기관 온프레미스 공급</li><li>나라장터 조달 등록</li></ul><div class="goal">목표 ARR ₩30억</div><div class="arw">›</div></div>
+    <div class="ph"><div class="pn">PHASE 4</div><div class="pt">Year 3+</div><h3>플랫폼화</h3><ul><li>API 개방 · 마켓플레이스 론칭</li><li>동남아 한국계 기업 글로벌 확장</li><li>커뮤니케이션 인텔리전스 사업화</li></ul><div class="goal">목표 ARR ₩100억+</div><div class="arw">›</div></div>
+  </div>
+</div></section>
+
+<!-- ROADMAP -->
+<section class="panel-sec"><div class="wrap">
+  <div class="eyebrow">Roadmap</div>
+  <h2>사업 추진 일정</h2>
+  <p class="sub">2026년 2분기 제품 출시부터 2028년 플랫폼 확장까지의 단계별 실행 계획입니다.</p>
+  <div class="road">
+    <table class="rtbl">
+      <thead>
+        <tr><th rowspan="2"></th><th class="yr" colspan="3">2026</th><th class="yr" colspan="4">2027</th><th class="yr" colspan="4">2028</th></tr>
+        <tr><th class="q">Q2</th><th class="q">Q3</th><th class="q">Q4</th><th class="q">Q1</th><th class="q">Q2</th><th class="q">Q3</th><th class="q">Q4</th><th class="q">Q1</th><th class="q">Q2</th><th class="q">Q3</th><th class="q">Q4</th></tr>
+      </thead>
+      <tbody>
+        <tr><th>제품 개발</th><td colspan="2"><div class="bar b-main">MVP 개발</div></td><td><div class="bar b-main">정식 출시</div></td><td colspan="4"><div class="bar b-main">분석 모듈 고도화</div></td><td colspan="4"><div class="bar b-main">API · 마켓플레이스</div></td></tr>
+        <tr><th>인증 · 보안</th><td></td><td></td><td></td><td colspan="4"><div class="bar b-amber">ISMS-P 준비 → 인증 취득</div></td><td colspan="4"><div class="bar b-amber">온프레미스 공급</div></td></tr>
+        <tr><th>영업 · 마케팅</th><td colspan="3"><div class="bar b-green">파일럿 50개사</div></td><td colspan="4"><div class="bar b-green">엔터프라이즈 확산</div></td><td colspan="4"><div class="bar b-green">공공 · 금융 진입</div></td></tr>
+        <tr><th>조직 · 인력</th><td colspan="3"><div class="bar b-slate">12명</div></td><td colspan="4"><div class="bar b-slate">24명</div></td><td colspan="4"><div class="bar b-slate">40명</div></td></tr>
+        <tr><th>투자 유치</th><td><div class="bar b-main">Pre-A ₩10억</div></td><td></td><td></td><td></td><td></td><td colspan="2"><div class="bar b-main">Series A</div></td><td colspan="4"></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="milestone"><b>핵심 마일스톤</b> — 2026 Q4 정식 출시 · ARR ₩3억 &nbsp;|&nbsp; 2027 Q4 ISMS-P 인증 취득 후 공공·금융 진입 &nbsp;|&nbsp; 2028 Q4 ARR ₩30억 · 손익분기점 달성</div>
+</div></section>
+
+<!-- FINANCIALS -->
+<section><div class="wrap">
+  <div class="eyebrow">Financial Plan</div>
+  <h2>3개년 재무 계획</h2>
+  <p class="sub">3차년도 매출 ₩30억, 손익분기점 달성을 목표로 하는 추정 손익 (단위: 억원).</p>
+  <div class="fin">
+    <div class="fintbl">
+      <table class="ftbl">
+        <thead><tr><th>구분</th><th>2026 (Y1)</th><th>2027 (Y2)</th><th>2028 (Y3)</th></tr></thead>
+        <tbody>
+          <tr><th>SaaS 구독 매출</th><td class="mono">1.8</td><td class="mono">9.0</td><td class="mono">18.0</td></tr>
+          <tr><th>서비스 매출</th><td class="mono">1.2</td><td class="mono">6.0</td><td class="mono">12.0</td></tr>
+          <tr class="sum"><th>매출 합계</th><td class="mono">3.0</td><td class="mono">15.0</td><td class="mono">30.0</td></tr>
+          <tr><th>매출원가</th><td class="mono">0.9</td><td class="mono">4.2</td><td class="mono">8.1</td></tr>
+          <tr><th>매출총이익</th><td class="mono">2.1</td><td class="mono">10.8</td><td class="mono">21.9</td></tr>
+          <tr><th>(매출총이익률)</th><td class="mono">70%</td><td class="mono">72%</td><td class="mono">73%</td></tr>
+          <tr><th>판매관리비</th><td class="mono">7.6</td><td class="mono">12.8</td><td class="mono">17.4</td></tr>
+          <tr class="op"><th>영업이익</th><td class="mono neg">-5.5</td><td class="mono neg">-2.0</td><td class="mono">4.5</td></tr>
+          <tr><th>기말 인원 (명)</th><td class="mono">12</td><td class="mono">24</td><td class="mono">40</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="finkpi">
+      <div class="fk"><div class="n">2028년</div><div class="l">손익분기점 달성</div><div class="d">3차년도 영업이익 흑자 전환</div></div>
+      <div class="fk"><div class="n mono">70%+</div><div class="l">매출총이익률 유지</div><div class="d">SaaS 구조의 고마진</div></div>
+      <div class="fk"><div class="n mono">40%</div><div class="l">서비스 매출 비중</div><div class="d">방어적 사업 구조</div></div>
+    </div>
+  </div>
+  <div class="finnote">재무 전략 — 1~2차년도는 제품 고도화와 레퍼런스 확보에 집중해 계획된 적자를 감수하고, 3차년도 ARR ₩30억 시점에 영업이익 흑자로 전환합니다.</div>
+</div></section>
+
+<!-- INVESTMENT -->
+<section id="invest" class="panel-sec"><div class="wrap">
+  <div class="eyebrow">Investment Ask</div>
+  <h2>투자 유치 및 자금 사용 계획</h2>
+  <p class="sub">Pre-A 라운드 — 제품 고도화 및 엔터프라이즈 영업 조직 구축.</p>
+  <div class="askbox">
+    <div class="askhero">
+      <div class="r">PRE-A ROUND</div>
+      <div class="amt mono">₩10억</div>
+      <div class="l">목표 투자액 · 기업가치 ₩100억 기준 (Post-money)</div>
+      <div class="val">희석률 약 10% · 자금 소진 기간 약 18개월 · 후속 라운드 2027년 하반기</div>
+    </div>
+    <div class="use">
+      <div class="u"><div class="pct mono">40%<small>₩4.0억</small></div><h4>AI 엔진 고도화</h4><div class="bar"><i style="width:100%"></i></div></div>
+      <div class="u"><div class="pct mono">30%<small>₩3.0억</small></div><h4>엔터프라이즈 영업 조직</h4><div class="bar"><i style="width:75%"></i></div></div>
+      <div class="u"><div class="pct mono">15%<small>₩1.5억</small></div><h4>보안 인증 (ISMS-P)</h4><div class="bar"><i style="width:37%"></i></div></div>
+      <div class="u"><div class="pct mono">15%<small>₩1.5억</small></div><h4>마케팅 · 브랜딩</h4><div class="bar"><i style="width:37%"></i></div></div>
+    </div>
+  </div>
+</div></section>
+
+<!-- VISION / CONCLUSION -->
+<section><div class="wrap">
+  <div class="eyebrow">Conclusion</div>
+  <h2>BriefOS는 단순한 도구가 아닙니다</h2>
+  <p class="sub">조직이 소통하는 방식을 바꾸는 인프라입니다. 검증된 시장 · 구조적 차별화 · 명확한 실행 계획을 갖췄습니다.</p>
+  <div class="vis">
+    <div class="vc v1"><div class="step">01 검증된 시장</div><h3>이미 증명된 수요</h3><p>Axios HQ가 2년 만에 ARR $10M을 달성하며 '짧고 명확한 커뮤니케이션' 시장의 존재를 이미 증명했습니다.</p></div>
+    <div class="vc v2"><div class="step">02 구조적 차별화</div><h3>복제 불가한 해자</h3><p>한국어 특화 AI와 조직 진단 컨설팅의 결합으로 글로벌 사업자가 진입하기 어려운 해자를 구축합니다.</p></div>
+    <div class="vc v3"><div class="step">03 명확한 실행 계획</div><h3>3년 로드맵</h3><p>3년 내 도입 기업 200개사, ARR ₩30억, 손익분기점 달성까지의 단계별 로드맵을 갖추고 있습니다.</p></div>
+  </div>
+</div></section>
+
+<!-- BAND -->
+<section><div class="wrap">
+  <div class="band">
+    <div class="eyebrow">조직이 소통하는 방식을 바꾼다</div>
+    <h2>긴 보고서를 1페이지로, 지금 직접 확인하세요</h2>
+    <p>AI가 독자 관점에서 구조를 재설계하고, 실제 읽힘 데이터로 커뮤니케이션을 개선합니다. BriefOS 데모에서 압축 엔진과 분석 대시보드를 체험해 보세요.</p>
+    <a class="btn-lg btn-p" href="demo/index.html">▶ BriefOS 데모 열기</a>
+  </div>
+</div></section>
+
+<footer><div class="wrap">
+  <b>BriefOS</b> · 조직 커뮤니케이션을 1페이지로 재정의하는 AI SaaS · 사업계획서 v0.2 기반 소개<br>
+  이 페이지는 소개용 <b>데모</b>이며, 수치·사례는 사업계획서 요약입니다. · contact@briefos.ai · <a href="demo/index.html">데모 열기</a>
+</div></footer>
+
+</body>
+</html>

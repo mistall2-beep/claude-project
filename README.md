@@ -16,6 +16,7 @@
 | 🌱 **lifeOS** | [`/lifeos`](lifeos/) | 개인의 일상·건강·일정을 관리하는 라이프 운영체제 데모 — 작가의 인터뷰 준비를 돕는 AI 코파일럿(자료수집→인물진단→질문지). 외부 `lifeos-demo` 저장소에서 **내부로 이전** | [데모](https://mistall2-beep.github.io/claude-project/lifeos/lifeos-demo/) · [소개](https://mistall2-beep.github.io/claude-project/lifeos/) |
 | 🐾 **Pet Lifebook** | [`/pet-lifebook`](pet-lifebook/) | 반려동물의 흩어진 기억(사진·영상·음성·GPS·진료기록)을 AI가 읽어 한 권의 라이프북으로 엮는 Pet Memory OS | [제품소개](https://mistall2-beep.github.io/claude-project/pet-lifebook/) · [사용자화면](https://mistall2-beep.github.io/claude-project/pet-lifebook/app.html) · [브로셔](https://mistall2-beep.github.io/claude-project/pet-lifebook/brochure.html) |
 | 💼 **알바ink** | [`/albaink`](albaink/) | 구인·구직(알바) 매칭 데모 — 구직자/구인자/관리자 + 모바일 앱 | [앱](https://mistall2-beep.github.io/claude-project/albaink/app.html) · [관리자](https://mistall2-beep.github.io/claude-project/albaink/admin.html) |
+| 📄 **BriefOS** | [`/briefos`](briefos/) | 조직 커뮤니케이션을 1페이지로 재정의하는 B2B AI SaaS — 긴 보고서·공지를 AI가 독자 관점에서 재구조화해 1페이지로 압축하고 읽힘 데이터로 개선. 소개(사업계획서 v0.2) + AI 압축 엔진·템플릿·읽힘 분석·연동 인터랙티브 데모 | [소개](https://mistall2-beep.github.io/claude-project/briefos/) · [데모](https://mistall2-beep.github.io/claude-project/briefos/demo/) |
 
 ## 폴더 구조
 
@@ -31,6 +32,7 @@ claude-project/
 │  └─ assets/{haru, brochure}/
 ├─ albaink/              # 💼 알바ink
 │  └─ index.html app.html admin.html start.html styles.css assets/
+├─ briefos/              # 📄 BriefOS — index.html(소개) demo/index.html(압축·분석 콘솔 데모)
 └─ .github/workflows/pages.yml   # GitHub Pages 배포
 ```
 
