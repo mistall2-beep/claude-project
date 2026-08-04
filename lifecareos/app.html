@@ -180,7 +180,7 @@
   .cover{flex-direction:column; align-items:stretch}
   .covtop{display:flex; gap:14px; align-items:center; flex-wrap:wrap}
   .covmx{width:100%; margin-top:14px; overflow-x:auto}
-  .covmx table{border-collapse:separate; border-spacing:5px; min-width:560px; width:100%; table-layout:fixed}
+  .covmx table{border-collapse:separate; border-spacing:5px; min-width:640px; width:100%; table-layout:fixed}
   .covmx th{font-size:10px; font-weight:700; color:var(--muted); text-align:center; vertical-align:bottom; line-height:1.25; padding:0 1px}
   .covmx td.rl{font-size:10.5px; font-weight:800; color:var(--ink2); white-space:nowrap; text-align:right; padding-right:6px; width:76px}
   .covmx td.cell{height:26px; border-radius:7px; transition:background .5s ease}
@@ -573,7 +573,8 @@ const AXMAP = Object.fromEntries(AXES.map(a=>[a.key,a]));
 
 /* ---- Coverage matrix: 생애 단계 × 주제 (lifeOS 방식) ---- */
 const STAGES = ['유년·성장','청년·독립','결혼·가정형성','중년·전성기','노년·현재'];
-const THEMES = ['가족·관계','일·생계','건강·기능','시련·전환점','가치관·신념','일상·취미','사회참여'];
+// 열 = 9개 축 중 '시간'을 뺀 8개 축 (시간 축 = 행/생애 단계)
+const THEMES = ['관계','건강','성격','생활패턴','사회참여','가치관','위험요인','강점'];
 const LV = [ // 레벨별 색·라벨
   {c:'#e9eeec', t:'미충족'},   // 0 · 보충 대상
   {c:'#cfe6de', t:'얕음'},     // 1
@@ -582,20 +583,21 @@ const LV = [ // 레벨별 색·라벨
 ];
 const NA = {c:'#f4f7f5', t:'해당 없음'}; // -1
 // 인물별 커버리지 (행=STAGES, 열=THEMES). '.'=해당 없음
+// 열 순서: 관계·건강·성격·생활패턴·사회참여·가치관·위험요인·강점 (8칸). '.'=해당 없음
 const PCOV = {
-  kim:['2.12211','2212212','3222212','3323323','3122323'],
-  park:['2.1111.','2312111','3322211','2322211','3121212'],
-  lee:['3.1231.','2212311','2323321','2322322','2122323'],
-  jung:['2.1101.','1111101','1110000','1120111','1020102'],
-  choi:['2.1111.','2213111','2223211','2223212','3132312'],
+  kim:['212122.1','212222.2','32222212','32323313','32323323'],
+  park:['211111.1','212111.2','32211212','22211211','32222212'],
+  lee:['312213.2','212213.2','22221313','22232313','23233323'],
+  jung:['111000.0','111110.1','11100000','12111011','12101111'],
+  choi:['211111.1','212111.1','22211221','22212232','33212332'],
 };
 // 질문 순서 → 답변 시 채워지는 칸 [stageIdx, themeIdx]
 const QCELLS = {
-  kim:[[4,3],[4,2],[4,1]],
-  park:[[3,0],[4,5],[4,3]],
-  lee:[[4,5],[1,5],[4,0]],
-  jung:[[2,0],[4,5],[3,1],[3,4]],
-  choi:[[4,3],[3,0],[4,6]],
+  kim:[[4,6],[4,1],[4,3]],
+  park:[[3,0],[4,3],[4,6]],
+  lee:[[3,4],[0,2],[4,0]],
+  jung:[[2,0],[4,3],[3,7],[3,5]],
+  choi:[[4,2],[3,0],[4,4]],
 };
 
 const TYPES = [
@@ -874,7 +876,7 @@ function renderProfile(){
   cov.innerHTML=`
     <div class="covtop">
       <div class="ring" style="--p:${pct}"><i><b>${pct}%</b><span>완성율</span></i></div>
-      <div class="ctxt"><h3>${p.name} 어르신 · 커버리지 매트릭스</h3><p>생애 ${STAGES.length}개 시기 × ${THEMES.length}개 주제로 <b>어디가 채워졌는지</b> 판단합니다. 유효 ${t}칸 중 ${f}칸에 근거 축적 · 미충족 칸은 Question Agent가 보충합니다.</p></div>
+      <div class="ctxt"><h3>${p.name} 어르신 · 커버리지 매트릭스</h3><p>행(생애 ${STAGES.length}단계)이 <b>시간 축</b>, 열이 나머지 <b>${THEMES.length}개 축</b> — 9개 축으로 <b>어디가 채워졌는지</b> 판단합니다. 유효 ${t}칸 중 ${f}칸에 근거 축적 · 미충족 칸은 Question Agent가 보충합니다.</p></div>
     </div>
     ${covMatrixHTML(p)}`;
   // axes grid
