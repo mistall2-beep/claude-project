@@ -4,94 +4,32 @@
 <meta charset="UTF-8"/>
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>프로젝트 허브 · mistall2-beep</title>
-<meta name="description" content="이 저장소에 모인 데모 프로젝트 모음 — Pet Lifebook, 알바ink."/>
+<meta name="robots" content="noindex, nofollow"/>
+<title>mistall2-beep</title>
+<meta name="description" content="비공개 작업 공간입니다."/>
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin/>
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"/>
 <style>
-  :root{--ink:#16191f;--muted:#5b6472;--line:#e7e3da;--card:#fff}
   *{box-sizing:border-box}
-  body{margin:0;color:var(--ink);background:
-      radial-gradient(900px 460px at 80% -10%, rgba(232,128,74,.14), transparent 60%),
-      radial-gradient(900px 460px at 10% 0%, rgba(31,158,138,.16), transparent 62%),#f3eee4;
+  body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;
+    color:#2a2f36;background:
+      radial-gradient(900px 460px at 80% -10%, rgba(232,128,74,.12), transparent 60%),
+      radial-gradient(900px 460px at 10% 0%, rgba(31,158,138,.14), transparent 62%),#f3eee4;
     font-family:"Pretendard",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
-    line-height:1.6;-webkit-font-smoothing:antialiased;letter-spacing:-.01em;min-height:100vh}
-  .wrap{max-width:880px;margin:0 auto;padding:64px 24px 80px}
-  .eyebrow{font-size:12.5px;font-weight:800;color:#0f6f60;letter-spacing:.08em;text-transform:uppercase}
-  h1{font-size:clamp(28px,5vw,42px);font-weight:800;letter-spacing:-.03em;margin:12px 0 10px}
-  .lead{color:var(--muted);font-size:16px;max-width:560px}
-  .grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:38px}
-  .proj{display:block;text-decoration:none;color:inherit;background:var(--card);border:1px solid var(--line);
-    border-radius:20px;padding:26px;box-shadow:0 2px 6px rgba(40,30,15,.05),0 18px 40px rgba(40,30,15,.08);
-    transition:transform .14s ease,box-shadow .2s ease;position:relative;overflow:hidden}
-  .proj:hover{transform:translateY(-3px);box-shadow:0 30px 60px rgba(40,30,15,.16)}
-  .proj .cover-link{position:absolute;inset:0;z-index:1}
-  .proj .ic{width:54px;height:54px;border-radius:15px;display:flex;align-items:center;justify-content:center;font-size:27px}
-  .proj.pl .ic{background:linear-gradient(135deg,#1f9e8a,#e8804a)}
-  .proj.ab .ic{background:linear-gradient(135deg,#3056d3,#6f8bff)}
-  .proj.lc .ic{background:linear-gradient(135deg,#0f6b5f,#1fae93)}
-  .proj h2{font-size:21px;font-weight:800;margin:16px 0 6px}
-  .proj p{font-size:14px;color:var(--muted)}
-  .proj .tags{margin-top:14px;display:flex;flex-wrap:wrap;gap:7px}
-  .proj .tags span{font-size:11.5px;font-weight:700;color:#46505f;background:#f2efe7;border:1px solid var(--line);padding:4px 10px;border-radius:999px}
-  .proj .go{position:absolute;right:22px;top:26px;color:#c9bfae;font-size:22px}
-  .sub-links{margin-top:14px;display:flex;gap:8px;flex-wrap:wrap;position:relative;z-index:2}
-  .sub-links a{font-size:12.5px;font-weight:700;color:#0f6f60;background:#e6f6f2;border:1px solid #cfe9e2;padding:6px 11px;border-radius:999px;text-decoration:none}
-  footer{margin-top:46px;color:var(--muted);font-size:12.5px;border-top:1px solid var(--line);padding-top:20px}
-  @media(max-width:640px){.grid{grid-template-columns:1fr}}
+    line-height:1.6;-webkit-font-smoothing:antialiased;letter-spacing:-.01em}
+  .box{max-width:420px;text-align:center}
+  .mark{width:56px;height:56px;border-radius:16px;margin:0 auto 18px;display:flex;align-items:center;justify-content:center;
+    font-size:26px;color:#fff;background:linear-gradient(135deg,#1f9e8a,#e8804a);
+    box-shadow:0 10px 26px rgba(31,158,138,.3)}
+  h1{font-size:22px;font-weight:800;letter-spacing:-.02em;margin:0 0 8px}
+  p{color:#5b6472;font-size:14.5px;margin:0}
 </style>
 </head>
 <body>
-  <div class="wrap">
-    <span class="eyebrow">Project Hub</span>
-    <h1>mistall2-beep · 데모 프로젝트</h1>
-    <p class="lead">이 저장소(<b>claude-project</b>)에 모인 데모들입니다. 각 프로젝트는 폴더로 분리되어 독립적으로 동작합니다.</p>
-
-    <div class="grid">
-      <article class="proj lc">
-        <a class="cover-link" href="lifecareos/index.html" aria-label="Life CareOS 제품소개 열기"></a>
-        <span class="go">↗</span>
-        <div class="ic">◍</div>
-        <h2>Life CareOS</h2>
-        <p>복지관·지자체 내부의 Private AI가 흩어진 기록을 한 사람에 대한 이해로 바꾸는 돌봄 운영체제.</p>
-        <div class="tags"><span>Private AI</span><span>돌봄 OS</span><span>6개 제품</span><span>공공복지</span></div>
-        <div class="sub-links">
-          <a href="lifecareos/app.html">🖥️ 운영 콘솔</a>
-          <a href="lifecareos/index.html">📄 제품소개</a>
-        </div>
-      </article>
-
-      <article class="proj pl">
-        <a class="cover-link" href="pet-lifebook/index.html" aria-label="Pet Lifebook 제품소개 열기"></a>
-        <span class="go">↗</span>
-        <div class="ic">🐾</div>
-        <h2>Pet Lifebook</h2>
-        <p>흩어진 기억을 올리면, AI가 반려동물의 삶을 한 권의 이야기로 엮는 Pet Memory OS.</p>
-        <div class="tags"><span>제품 소개</span><span>모바일·PC 데모</span><span>멀티모달</span><span>라이프북</span></div>
-        <div class="sub-links">
-          <a href="pet-lifebook/app.html">📱 사용자 화면</a>
-          <a href="pet-lifebook/brochure.html">📄 브로셔</a>
-        </div>
-      </article>
-
-      <article class="proj ab">
-        <a class="cover-link" href="albaink/index.html" aria-label="알바ink 제품소개 열기"></a>
-        <span class="go">↗</span>
-        <div class="ic">💼</div>
-        <h2>알바ink</h2>
-        <p>구인·구직(알바) 매칭 데모 — 구직자·구인자·관리자 화면과 모바일 앱.</p>
-        <div class="tags"><span>구인·구직</span><span>모바일 앱</span><span>관리자</span></div>
-        <div class="sub-links">
-          <a href="albaink/app.html">📱 앱</a>
-          <a href="albaink/admin.html">🛠️ 관리자</a>
-        </div>
-      </article>
-    </div>
-
-    <footer>
-      각 프로젝트는 <code>/pet-lifebook</code>, <code>/albaink</code> 폴더에서 독립적으로 관리됩니다.
-      옛 주소(<code>/app.html</code>, <code>/brochure.html</code>)는 Pet Lifebook으로 자동 이동됩니다.
-    </footer>
+  <div class="box">
+    <div class="mark">🌿</div>
+    <h1>비공개 작업 공간</h1>
+    <p>이 페이지는 공개된 내용이 없습니다.<br>권한이 있는 경우 안내받은 주소로 접속해 주세요.</p>
   </div>
 </body>
 </html>
