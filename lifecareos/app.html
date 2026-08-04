@@ -35,7 +35,9 @@
   /* ===== Top bar ===== */
   .topbar{flex:0 0 auto; display:flex; align-items:center; gap:14px; height:58px; padding:0 18px;
     background:var(--panel); border-bottom:1px solid var(--line); z-index:40}
-  .brand{display:flex; align-items:center; gap:10px; font-weight:900; letter-spacing:-.03em; font-size:16.5px}
+  .brand{display:flex; align-items:center; gap:10px; font-weight:900; letter-spacing:-.03em; font-size:16.5px;
+    color:var(--ink); text-decoration:none; border-radius:9px; transition:opacity .15s ease}
+  a.brand:hover{opacity:.72}
   .brand .mark{width:30px; height:30px; border-radius:9px; background:linear-gradient(135deg,var(--teal),#1fae93);
     display:flex; align-items:center; justify-content:center; color:#fff; font-size:16px; box-shadow:0 4px 12px rgba(15,107,95,.35)}
   .brand b{color:var(--teal)}
@@ -321,7 +323,7 @@
 
 <div class="topbar">
   <button class="menu" onclick="document.getElementById('rail').classList.toggle('open')">☰</button>
-  <div class="brand"><span class="mark">◍</span> Life<b>Care</b>OS</div>
+  <a class="brand" href="index.html" title="인트로(제품 소개)로 이동"><span class="mark">◍</span> Life<b>Care</b>OS</a>
   <div class="org"><span class="dot"></span> 햇살종합사회복지관 · 내부망</div>
   <div class="spacer"></div>
   <span class="date" id="today">2026. 8. 4. (화)</span>
