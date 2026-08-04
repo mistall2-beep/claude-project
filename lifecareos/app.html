@@ -174,6 +174,18 @@
   .cbar .track{height:6px; background:var(--line2); border-radius:99px; overflow:hidden}
   .cbar .val{height:100%; background:var(--teal); border-radius:99px; transition:width .6s ease}
   .cbar.low .val{background:var(--amber)}
+  /* coverage matrix (lifeOS-style) */
+  .cover{flex-direction:column; align-items:stretch}
+  .covtop{display:flex; gap:14px; align-items:center; flex-wrap:wrap}
+  .covmx{width:100%; margin-top:14px; overflow-x:auto}
+  .covmx table{border-collapse:separate; border-spacing:5px; min-width:560px; width:100%; table-layout:fixed}
+  .covmx th{font-size:10px; font-weight:700; color:var(--muted); text-align:center; vertical-align:bottom; line-height:1.25; padding:0 1px}
+  .covmx td.rl{font-size:10.5px; font-weight:800; color:var(--ink2); white-space:nowrap; text-align:right; padding-right:6px; width:76px}
+  .covmx td.cell{height:26px; border-radius:7px; transition:background .5s ease}
+  .covmx td.cell.flash{animation:cellflash 1.3s ease}
+  @keyframes cellflash{0%{box-shadow:0 0 0 0 rgba(31,125,109,.55)}100%{box-shadow:0 0 0 7px rgba(31,125,109,0)}}
+  .covleg{display:flex; gap:13px; flex-wrap:wrap; margin-top:11px; font-size:10.5px; color:var(--muted); font-weight:600}
+  .covleg i{display:inline-block; width:13px; height:13px; border-radius:4px; vertical-align:-2px; margin-right:5px}
 
   /* ===== Persona ===== */
   .persona-hero{display:grid; grid-template-columns:1.1fr 1fr; gap:14px; margin-bottom:16px}
@@ -313,7 +325,6 @@
   <div class="org"><span class="dot"></span> 햇살종합사회복지관 · 내부망</div>
   <div class="spacer"></div>
   <span class="date" id="today">2026. 8. 4. (화)</span>
-  <a class="home" href="../admin.html">← 프로젝트 허브</a>
   <div class="who">
     <div class="av">서</div>
     <div class="t"><b>서지연</b> 사회복지사<br><span>맞춤돌봄팀 · 담당 148명</span></div>
@@ -374,7 +385,7 @@
       <div class="kpis">
         <div class="card kpi p"><div class="n" id="k-urgent">2</div><div class="l">우선 확인 필요</div><div class="d">고립·미참여 신호</div></div>
         <div class="card kpi t"><div class="n mono">148</div><div class="l">담당 대상자</div><div class="d">프로파일 관리 중</div></div>
-        <div class="card kpi a"><div class="n mono">73<span style="font-size:16px">%</span></div><div class="l">평균 프로파일 완성율</div><div class="d">결손 항목 자동 탐지</div></div>
+        <div class="card kpi a"><div class="n mono"><span id="k-avg">73</span><span style="font-size:16px">%</span></div><div class="l">평균 프로파일 완성율</div><div class="d">커버리지 매트릭스 기반</div></div>
         <div class="card kpi b"><div class="n mono" id="k-done">0</div><div class="l">오늘 처리한 제안</div><div class="d">실행·기록 완료</div></div>
       </div>
 
@@ -558,6 +569,33 @@ const AXES = [
 ];
 const AXMAP = Object.fromEntries(AXES.map(a=>[a.key,a]));
 
+/* ---- Coverage matrix: 생애 단계 × 주제 (lifeOS 방식) ---- */
+const STAGES = ['유년·성장','청년·독립','결혼·가정형성','중년·전성기','노년·현재'];
+const THEMES = ['가족·관계','일·생계','건강·기능','시련·전환점','가치관·신념','일상·취미','사회참여'];
+const LV = [ // 레벨별 색·라벨
+  {c:'#e9eeec', t:'미충족'},   // 0 · 보충 대상
+  {c:'#cfe6de', t:'얕음'},     // 1
+  {c:'#7bb6a9', t:'보통'},     // 2
+  {c:'#1f7d6d', t:'충실'},     // 3
+];
+const NA = {c:'#f4f7f5', t:'해당 없음'}; // -1
+// 인물별 커버리지 (행=STAGES, 열=THEMES). '.'=해당 없음
+const PCOV = {
+  kim:['2.12211','2212212','3222212','3323323','3122323'],
+  park:['2.1111.','2312111','3322211','2322211','3121212'],
+  lee:['3.1231.','2212311','2323321','2322322','2122323'],
+  jung:['2.1101.','1111101','1110000','1120111','1020102'],
+  choi:['2.1111.','2213111','2223211','2223212','3132312'],
+};
+// 질문 순서 → 답변 시 채워지는 칸 [stageIdx, themeIdx]
+const QCELLS = {
+  kim:[[4,3],[4,2],[4,1]],
+  park:[[3,0],[4,5],[4,3]],
+  lee:[[4,5],[1,5],[4,0]],
+  jung:[[2,0],[4,5],[3,1],[3,4]],
+  choi:[[4,3],[3,0],[4,6]],
+};
+
 const TYPES = [
   {k:'사회참여형',d:'모임과 활동에서 에너지를 얻음'},
   {k:'가족중심형',d:'가족 이야기에서 회상이 가장 깊음'},
@@ -658,7 +696,7 @@ const PEOPLE = [
     id:'jung', name:'정복동', age:80, sex:'남', color:'#c67b1e',
     type:'독립형', type2:'신중형', conf:41,
     basis:['도움 제안에 "괜찮다" 반복 (상담일지 5회)','프로그램 참여는 있으나 개인 정보 공개 최소','자료 대부분이 행정 기록에 한정'],
-    signal:{ic:'🕳',text:'프로파일 결손 항목 다수 (완성율 41% · 6개 축 비어 있음)'},
+    signal:{ic:'🕳',text:'프로파일 결손 항목 다수 — 생애 여러 시기·주제가 비어 있음'},
     sugg:{lab:'세션 배정',text:'다음 회상 세션 우선 배정'}, prio:2,
     updated:'3일 전',
     axes:{
@@ -726,12 +764,33 @@ let doneCases = new Set();
 const $ = s=>document.querySelector(s);
 function initials(n){return n.slice(-2);}
 function personById(id){return PEOPLE.find(p=>p.id===id);}
-function completion(p){
-  let filled=0; AXES.forEach(a=>{ if((p.axes[a.key]||[]).length) filled++; });
-  // weight by richness
-  let pts=0,max=AXES.length*3;
-  AXES.forEach(a=>{ pts+=Math.min(3,(p.axes[a.key]||[]).length); });
-  return Math.round(pts/max*100);
+function completion(p){ // 커버리지 매트릭스 기반 완성율
+  const M=p._cov; if(!M) return 0;
+  let sum=0,cnt=0;
+  M.forEach(row=>row.forEach(lv=>{ if(lv>=0){ sum+=lv; cnt++; } }));
+  return cnt?Math.round(sum/(cnt*3)*100):0;
+}
+function covFilledCells(p){ let f=0,t=0; (p._cov||[]).forEach(r=>r.forEach(lv=>{ if(lv>=0){t++; if(lv>0)f++;} })); return {f,t}; }
+function covMatrixHTML(p){
+  const M=p._cov, fl=p._flash;
+  const head='<tr><th></th>'+THEMES.map(t=>`<th>${t.replace('·','·<br>')}</th>`).join('')+'</tr>';
+  const rows=STAGES.map((s,r)=>{
+    const tds=M[r].map((lv,c)=>{
+      if(lv<0) return `<td class="cell" style="background:${NA.c};border:1px solid var(--line2)" title="${s} × ${THEMES[c]} · 해당 없음"></td>`;
+      const fx=(fl&&fl[0]===r&&fl[1]===c)?' flash':'';
+      return `<td class="cell${fx}" style="background:${LV[lv].c}" title="${s} × ${THEMES[c]} · ${LV[lv].t}"></td>`;
+    }).join('');
+    return `<tr><td class="rl">${s}</td>${tds}</tr>`;
+  }).join('');
+  p._flash=null;
+  return `<div class="covmx"><table>${head}${rows}</table></div>
+    <div class="covleg">
+      <span><i style="background:${LV[0].c}"></i>미충족(보충 대상)</span>
+      <span><i style="background:${LV[1].c}"></i>얕음</span>
+      <span><i style="background:${LV[2].c}"></i>보통</span>
+      <span><i style="background:${LV[3].c}"></i>충실</span>
+      <span><i style="background:${NA.c};border:1px solid var(--line)"></i>해당 없음</span>
+    </div>`;
 }
 function toast(msg){const t=$('#toast'); t.textContent=msg; t.classList.add('on'); clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('on'),2600);}
 
@@ -807,17 +866,15 @@ function renderProfile(){
   const p=personById(curPerson);
   const pct=completion(p);
   $('#prof-updated').textContent='갱신 '+p.updated;
-  // cover / coverage matrix
+  // cover / coverage matrix (생애 단계 × 주제)
   const cov=$('#coverBox');
-  let bars='';
-  AXES.forEach(a=>{
-    const n=(p.axes[a.key]||[]).length; const v=Math.min(100,n/3*100);
-    bars+=`<div class="cbar ${v<34?'low':''}"><div class="r"><span>${a.label}</span><span>${n?Math.round(v)+'%':'비어있음'}</span></div><div class="track"><div class="val" style="width:${v}%"></div></div></div>`;
-  });
+  const {f,t}=covFilledCells(p);
   cov.innerHTML=`
-    <div class="ring" style="--p:${pct}"><i><b>${pct}%</b><span>완성율</span></i></div>
-    <div class="ctxt"><h3>${p.name} 어르신 · 진단 커버리지</h3><p>9개 축 중 ${AXES.filter(a=>(p.axes[a.key]||[]).length).length}개 축에 정보 축적 · 결손 항목은 Question Agent로 보충</p></div>
-    <div class="cbars">${bars}</div>`;
+    <div class="covtop">
+      <div class="ring" style="--p:${pct}"><i><b>${pct}%</b><span>완성율</span></i></div>
+      <div class="ctxt"><h3>${p.name} 어르신 · 커버리지 매트릭스</h3><p>생애 ${STAGES.length}개 시기 × ${THEMES.length}개 주제로 <b>어디가 채워졌는지</b> 판단합니다. 유효 ${t}칸 중 ${f}칸에 근거 축적 · 미충족 칸은 Question Agent가 보충합니다.</p></div>
+    </div>
+    ${covMatrixHTML(p)}`;
   // axes grid
   const grid=$('#axGrid'); grid.innerHTML='';
   AXES.forEach(a=>{
@@ -906,18 +963,22 @@ function answerQ(pid,i,btn){
   const ta=card.querySelector('textarea');
   const ans=(ta.value||'').trim() || '(현장에서 기록됨)';
   const q=p.questions[i];
-  // push into profile
+  const before=completion(p);
+  // push into profile axis
   if(!p.axes[q.ax]) p.axes[q.ax]=[];
   p.axes[q.ax].push(E(ans.slice(0,60)+(ans.length>60?'…':''), '오늘 상담 기록(P4)', ans, null, false));
+  // fill the targeted coverage cell (생애 단계 × 주제) → 충실
+  let cellNote='';
+  const cell=(QCELLS[pid]||[])[i];
+  if(cell){ const [r,c]=cell; if(p._cov[r][c]>=0){ p._cov[r][c]=3; p._flash=[r,c]; cellNote=` · [${STAGES[r]} × ${THEMES[c]}] 칸 충실`; } }
   card.classList.add('answered');
-  card.querySelector('.qact').innerHTML='<span style="font-size:12.5px;font-weight:800;color:var(--ok)">✓ 프로파일에 반영됨 · Decision Agent 추천 갱신</span>';
+  card.querySelector('.qact').innerHTML='<span style="font-size:12.5px;font-weight:800;color:var(--ok)">✓ 커버리지 매트릭스 반영됨 · Decision Agent 추천 갱신</span>';
   ta.setAttribute('disabled','');
-  // update bar with animation
-  const before=parseInt($('#q-pct').textContent,10);
+  // update completion bar with animation
   const after=completion(p);
   $('#q-pct').textContent=after; $('#q-bar').style.width=after+'%';
   $('#q-gain').textContent = after>before? `▲ +${after-before}%p 상승 — 다음 질문이 더 정확해집니다`:'';
-  toast(`↻ ${p.name} · ${AXMAP[q.ax].label} 축 보강 → 완성율 ${after}% (P4→P2→P5 환류)`);
+  toast(`↻ ${p.name}${cellNote} → 완성율 ${after}% (P4→P2→P5 환류)`);
 }
 
 /* ============ P1 STARTER ============ */
@@ -971,6 +1032,11 @@ function renderArchive(){
 
 /* ============ INIT ============ */
 (function init(){
+  // parse coverage matrices ('.'=해당 없음 → -1)
+  PEOPLE.forEach(p=>{ p._cov=(PCOV[p.id]||[]).map(row=>row.split('').map(ch=>ch==='.'?-1:+ch)); });
+  // average completion across shown people → KPI
+  const avg=Math.round(PEOPLE.reduce((s,p)=>s+completion(p),0)/PEOPLE.length);
+  const ka=$('#k-avg'); if(ka) ka.textContent=avg;
   renderCases();
   seedFileRow();
   // today
