@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"/>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="robots" content="noindex, nofollow"/>
+<title>관리자 · mistall2-beep</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin/>
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"/>
+<style>
+  :root{--ink:#16191f;--muted:#5b6472;--line:#e7e3da;--card:#fff}
+  *{box-sizing:border-box}
+  body{margin:0;color:var(--ink);background:
+      radial-gradient(900px 460px at 80% -10%, rgba(232,128,74,.14), transparent 60%),
+      radial-gradient(900px 460px at 10% 0%, rgba(31,158,138,.16), transparent 62%),#f3eee4;
+    font-family:"Pretendard",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+    line-height:1.6;-webkit-font-smoothing:antialiased;letter-spacing:-.01em;min-height:100vh}
+  .wrap{max-width:880px;margin:0 auto;padding:64px 24px 80px}
+  .eyebrow{font-size:12.5px;font-weight:800;color:#0f6f60;letter-spacing:.08em;text-transform:uppercase}
+  h1{font-size:clamp(28px,5vw,42px);font-weight:800;letter-spacing:-.03em;margin:12px 0 10px}
+  .lead{color:var(--muted);font-size:16px;max-width:560px}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:38px}
+  .proj{display:block;text-decoration:none;color:inherit;background:var(--card);border:1px solid var(--line);
+    border-radius:20px;padding:26px;box-shadow:0 2px 6px rgba(40,30,15,.05),0 18px 40px rgba(40,30,15,.08);
+    transition:transform .14s ease,box-shadow .2s ease;position:relative;overflow:hidden}
+  .proj:hover{transform:translateY(-3px);box-shadow:0 30px 60px rgba(40,30,15,.16)}
+  .proj .cover-link{position:absolute;inset:0;z-index:1}
+  .proj .ic{width:54px;height:54px;border-radius:15px;display:flex;align-items:center;justify-content:center;font-size:27px}
+  .proj.pl .ic{background:linear-gradient(135deg,#1f9e8a,#e8804a)}
+  .proj.ab .ic{background:linear-gradient(135deg,#3056d3,#6f8bff)}
+  .proj.lc .ic{background:linear-gradient(135deg,#0f6b5f,#1fae93)}
+  .proj.lo .ic{background:linear-gradient(135deg,#3f9b6b,#8fd694)}
+  .proj h2{font-size:21px;font-weight:800;margin:16px 0 6px;display:flex;align-items:center;gap:8px}
+  .proj h2 .ext{font-size:10.5px;font-weight:800;color:#3f7a55;background:#e6f6ec;border:1px solid #cfe9d7;padding:2px 8px;border-radius:999px}
+  .proj p{font-size:14px;color:var(--muted)}
+  .proj p code{background:#f2efe7;border:1px solid var(--line);border-radius:6px;padding:1px 6px;font-size:12px}
+  .proj .tags{margin-top:14px;display:flex;flex-wrap:wrap;gap:7px}
+  .proj .tags span{font-size:11.5px;font-weight:700;color:#46505f;background:#f2efe7;border:1px solid var(--line);padding:4px 10px;border-radius:999px}
+  .proj .go{position:absolute;right:22px;top:26px;color:#c9bfae;font-size:22px}
+  .sub-links{margin-top:14px;display:flex;gap:8px;flex-wrap:wrap;position:relative;z-index:2}
+  .sub-links a{font-size:12.5px;font-weight:700;color:#0f6f60;background:#e6f6f2;border:1px solid #cfe9e2;padding:6px 11px;border-radius:999px;text-decoration:none}
+  footer{margin-top:46px;color:var(--muted);font-size:12.5px;border-top:1px solid var(--line);padding-top:20px}
+  .lockbtn{margin-top:12px;display:inline-block;font-family:inherit;font-size:12.5px;font-weight:800;color:#8a5a2a;
+    background:#f7ead9;border:1px solid #e7d3ba;border-radius:999px;padding:7px 13px;cursor:pointer}
+  code{background:#f2efe7;border:1px solid var(--line);border-radius:6px;padding:1px 6px;font-size:12px}
+  @media(max-width:640px){.grid{grid-template-columns:1fr}}
+
+  /* gate */
+  .gate{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+  .gatebox{width:100%;max-width:380px;background:var(--card);border:1px solid var(--line);border-radius:22px;
+    padding:34px 30px;box-shadow:0 2px 6px rgba(40,30,15,.05),0 22px 50px rgba(40,30,15,.12);text-align:center}
+  .gatebox .lock{font-size:34px}
+  .gatebox h2{font-size:20px;font-weight:800;margin:12px 0 4px;letter-spacing:-.02em}
+  .gatebox p{font-size:13px;color:var(--muted);margin:0 0 20px}
+  .gatebox form{display:flex;flex-direction:column;gap:10px}
+  .gatebox input{font-family:inherit;font-size:15px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;
+    background:#faf7f0;text-align:center;letter-spacing:.02em}
+  .gatebox input:focus{outline:none;border-color:#8fd0c4;background:#fff}
+  .gatebox button{font-family:inherit;font-size:14px;font-weight:800;color:#fff;background:#0f6b5f;border:0;
+    border-radius:12px;padding:12px 14px;cursor:pointer}
+  .gatebox button:hover{background:#0a5147}
+  .gatebox .err{color:#b5493f;font-size:12.5px;font-weight:700;height:16px;margin-top:2px}
+  .gatebox .note{font-size:11px;color:#9aa39c;margin-top:14px;line-height:1.5}
+</style>
+</head>
+<body>
+  <div class="gate" id="gate">
+    <div class="gatebox">
+      <div class="lock">🔒</div>
+      <h2>관리자 허브</h2>
+      <p>이 페이지는 비밀번호로 보호됩니다.</p>
+      <form id="f" autocomplete="off">
+        <input id="pw" type="password" placeholder="비밀번호" autocomplete="current-password" aria-label="비밀번호"/>
+        <button type="submit">열기</button>
+        <div class="err" id="err"></div>
+      </form>
+      <div class="note">권한이 있는 관리자만 접근할 수 있습니다.<br>공개 주소에는 프로젝트 목록이 표시되지 않습니다.</div>
+    </div>
+  </div>
+
+  <div class="wrap" id="hub" hidden></div>
+
+<script>
+  const P = {"s":"GVm5cDgJ7UMY94tX8NKIVQ==","i":"Aoal4alORYHbWW4e","c":"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"};
+  const SK = 'admin-hub-pw';
+  const b64d = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+  async function deriveKey(pw){
+    const km = await crypto.subtle.importKey('raw', new TextEncoder().encode(pw), 'PBKDF2', false, ['deriveKey']);
+    return crypto.subtle.deriveKey({name:'PBKDF2', salt:b64d(P.s), iterations:150000, hash:'SHA-256'},
+      km, {name:'AES-GCM', length:256}, false, ['decrypt']);
+  }
+  async function tryUnlock(pw){
+    const key = await deriveKey(pw);
+    const pt = await crypto.subtle.decrypt({name:'AES-GCM', iv:b64d(P.i)}, key, b64d(P.c));
+    return new TextDecoder().decode(pt); // throws if wrong password
+  }
+  function reveal(html){
+    document.getElementById('hub').innerHTML = html;
+    document.getElementById('hub').hidden = false;
+    document.getElementById('gate').style.display = 'none';
+  }
+  window.lockNow = function(){ sessionStorage.removeItem(SK); location.reload(); };
+  document.getElementById('f').addEventListener('submit', async e => {
+    e.preventDefault();
+    const pw = document.getElementById('pw').value;
+    const err = document.getElementById('err');
+    err.textContent = '';
+    try{ const html = await tryUnlock(pw); sessionStorage.setItem(SK, pw); reveal(html); }
+    catch(_){ err.textContent = '비밀번호가 올바르지 않습니다.'; document.getElementById('pw').select(); }
+  });
+  // auto-unlock within the same browser session
+  (async () => {
+    const saved = sessionStorage.getItem(SK);
+    if(saved){ try{ reveal(await tryUnlock(saved)); }catch(_){ sessionStorage.removeItem(SK); } }
+  })();
+</script>
+</body>
+</html>
