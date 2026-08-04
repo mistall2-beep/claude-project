@@ -1,0 +1,2329 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LifeOS · 당신 삶의 이야기 (Demo2)</title>
+<style>
+  :root{
+    --main:#1A7068; --main-d:#125249; --main-l:#E4EFED;
+    --text:#2C2C2C; --sub:#7A7A7A; --line:#E6E8EA; --bg:#F4F6F7;
+    --amber:#BE7B2C; --amber-l:#F6ECDB; --green:#2E7D52; --green-l:#E3F0E8;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{font-family:"Malgun Gothic","Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif;
+    background:var(--bg); color:var(--text); line-height:1.55; -webkit-font-smoothing:antialiased;}
+  /* top bar */
+  .topbar{background:#fff; border-bottom:1px solid var(--line); height:58px; display:flex;
+    align-items:center; padding:0 28px; gap:14px; position:sticky; top:0; z-index:10;}
+  .logo{font-weight:800; font-size:20px; color:var(--main); letter-spacing:-.3px;}
+  .logo span{color:var(--text); font-weight:600; font-size:14px; margin-left:2px;}
+  .topbar .spacer{flex:1;}
+  .who{font-size:13px; color:var(--sub);}
+  .who b{color:var(--text);}
+  .avatar{width:30px; height:30px; border-radius:50%; background:var(--main-l); color:var(--main);
+    display:flex; align-items:center; justify-content:center; font-weight:700; font-size:13px;}
+  /* tabs */
+  .tabs{display:flex; gap:8px; padding:18px 28px 0; max-width:1080px; margin:0 auto; width:100%;}
+  .tab{border:1px solid var(--line); background:#fff; color:var(--sub); padding:9px 18px;
+    border-radius:999px; font-size:14px; font-weight:600; cursor:pointer;}
+  .tab.active{background:var(--main); color:#fff; border-color:var(--main);}
+  .wrap{max-width:1080px; margin:0 auto; padding:22px 28px 60px;}
+  .view{display:none;} .view.active{display:block;}
+  /* generic */
+  .row{display:flex; gap:18px;} .row.wrap-row{flex-wrap:wrap;}
+  .card{background:#fff; border:1px solid var(--line); border-radius:14px;}
+  .pagehead{display:flex; align-items:center; justify-content:space-between; margin:6px 0 16px;}
+  .pagehead h1{font-size:21px; font-weight:800; letter-spacing:-.4px;}
+  .btn{background:var(--main); color:#fff; border:none; border-radius:9px; padding:9px 16px;
+    font-size:13.5px; font-weight:700; cursor:pointer;}
+  .btn.ghost{background:#fff; color:var(--main); border:1px solid var(--main);}
+  .muted{color:var(--sub);}
+  .badge{display:inline-block; font-size:11.5px; font-weight:700; padding:3px 10px; border-radius:999px;}
+  .b-collect{background:var(--amber-l); color:var(--amber);}
+  .b-diag{background:var(--main-l); color:var(--main-d);}
+  .b-q{background:var(--green-l); color:var(--green);}
+  /* stat strip */
+  .stats{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:20px;}
+  .stat{padding:16px 18px;}
+  .stat .n{font-size:26px; font-weight:800; letter-spacing:-.5px;}
+  .stat .l{font-size:12.5px; color:var(--sub); margin-top:2px;}
+  .stat .n.accent{color:var(--main);}
+  /* project cards */
+  .projects{display:flex; flex-direction:column; gap:14px;}
+  .pcard{display:flex; align-items:center; gap:20px; padding:18px 20px; cursor:pointer;}
+  .pcard:hover{border-color:var(--main); box-shadow:0 2px 12px rgba(26,112,104,.07);}
+  .pcard .av{width:46px; height:46px; border-radius:12px; background:var(--main-l); color:var(--main-d);
+    display:flex; align-items:center; justify-content:center; font-weight:800; font-size:17px; flex-shrink:0;}
+  .pcard .info{flex:1; min-width:0;}
+  .pcard .nm{font-size:16px; font-weight:800;}
+  .pcard .nm small{font-weight:500; color:var(--sub); font-size:12.5px; margin-left:6px;}
+  .pcard .meta{font-size:12.5px; color:var(--sub); margin-top:3px;}
+  .pcard .next{font-size:12.5px; margin-top:7px;}
+  .pcard .next b{color:var(--main-d);}
+  .pcard .prog{width:170px; flex-shrink:0;}
+  .pcard .prog .pct{font-size:13px; font-weight:800; display:flex; justify-content:space-between;}
+  .pcard .prog .pct span{color:var(--sub); font-weight:600; font-size:11.5px;}
+  .bar{height:7px; border-radius:99px; background:#EDEFF1; margin-top:5px; overflow:hidden;}
+  .bar > i{display:block; height:100%; border-radius:99px; background:var(--main);}
+  .ai-tip{font-size:11.5px; color:var(--amber); margin-top:3px;}
+  /* report */
+  .backlink{font-size:13px; color:var(--main); cursor:pointer; margin-bottom:12px; display:inline-block;}
+  .rhead{display:flex; align-items:flex-start; gap:18px; padding:22px 24px; margin-bottom:18px;}
+  .rhead .av{width:60px; height:60px; border-radius:16px; background:var(--main-l); color:var(--main-d);
+    display:flex; align-items:center; justify-content:center; font-weight:800; font-size:22px; flex-shrink:0;}
+  .rhead h1{font-size:23px; font-weight:800; letter-spacing:-.5px;}
+  .rhead .sub{font-size:13.5px; color:var(--sub); margin-top:3px;}
+  .rhead .tags{margin-top:9px; display:flex; gap:7px; flex-wrap:wrap;}
+  .tag{font-size:12px; font-weight:700; padding:4px 11px; border-radius:8px; background:#F3F4F5; color:var(--text);}
+  .tag.main{background:var(--main); color:#fff;}
+  .tag.line{background:#fff; border:1px solid var(--main); color:var(--main);}
+  .grid2{display:grid; grid-template-columns:300px 1fr; gap:18px; margin-bottom:18px;}
+  .sec{padding:20px 22px; margin-bottom:18px;}
+  .sec h2{font-size:15px; font-weight:800; margin-bottom:14px; padding-bottom:9px;
+    border-bottom:1px solid var(--line); display:flex; align-items:center; gap:8px;}
+  .sec h2 .dot{width:8px; height:8px; border-radius:2px; background:var(--main);}
+  /* ring */
+  .ringbox{display:flex; flex-direction:column; align-items:center; justify-content:center; padding:24px;}
+  .ring{position:relative; width:130px; height:130px;}
+  .ring svg{transform:rotate(-90deg);}
+  .ring .ctr{position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center;}
+  .ring .ctr .v{font-size:30px; font-weight:800; color:var(--main-d); letter-spacing:-1px;}
+  .ring .ctr .t{font-size:11.5px; color:var(--sub);}
+  .ringbox .cap{margin-top:10px; font-size:12.5px; color:var(--sub); text-align:center;}
+  .kv{display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--line); border-radius:10px; overflow:hidden;}
+  .kv > div{background:#fff; padding:13px 14px;}
+  .kv .k{font-size:11.5px; color:var(--sub);}
+  .kv .v{font-size:18px; font-weight:800; margin-top:2px;}
+  /* type bars */
+  .typebar{margin-bottom:11px;}
+  .typebar .lab{display:flex; justify-content:space-between; font-size:13px; margin-bottom:4px;}
+  .typebar .lab b{font-weight:700;} .typebar .lab span{color:var(--sub); font-size:12px;}
+  .tb{height:9px; background:#EDEFF1; border-radius:99px; overflow:hidden;}
+  .tb > i{display:block; height:100%; background:var(--main); border-radius:99px;}
+  .tb > i.sec2{background:#9CC2BC;}
+  /* chapters */
+  ol.ch{list-style:none; counter-reset:c;}
+  ol.ch li{counter-increment:c; padding:9px 0 9px 40px; position:relative; border-bottom:1px dashed var(--line); font-size:14px;}
+  ol.ch li:last-child{border-bottom:none;}
+  ol.ch li::before{content:counter(c); position:absolute; left:0; top:8px; width:26px; height:26px;
+    background:var(--main-l); color:var(--main-d); border-radius:8px; font-weight:800; font-size:12.5px;
+    display:flex; align-items:center; justify-content:center;}
+  ol.ch li small{color:var(--sub); font-weight:500; margin-left:8px; font-size:12px;}
+  /* heatmap */
+  .heat{border-collapse:separate; border-spacing:4px; width:100%;}
+  .heat th{font-size:11px; font-weight:700; color:var(--sub); padding:4px; text-align:center; vertical-align:bottom;}
+  .heat th.rowh{text-align:right; padding-right:8px; white-space:nowrap; color:var(--text); width:96px;}
+  .heat td{height:34px; border-radius:6px; text-align:center; font-size:11px; color:#fff; font-weight:700;}
+  .l0{background:#F0F1F2; border:1px dashed #D4D7DA; color:#B8BCBF;}
+  .l1{background:rgba(26,112,104,.22); color:var(--main-d);}
+  .l2{background:rgba(26,112,104,.55);}
+  .l3{background:rgba(26,112,104,.9);}
+  .na{background:#FAFBFB; color:#C8CCce;}
+  .legend{display:flex; gap:14px; align-items:center; margin-top:12px; font-size:11.5px; color:var(--sub); flex-wrap:wrap;}
+  .legend i{display:inline-block; width:14px; height:14px; border-radius:3px; vertical-align:-2px; margin-right:4px;}
+  /* chips & timeline */
+  .chips{display:flex; gap:8px; flex-wrap:wrap;}
+  .chip{background:#F3F4F5; border-radius:8px; padding:6px 12px; font-size:13px;}
+  .chip b{color:var(--main-d);}
+  .tl{position:relative; padding-left:18px;}
+  .tl::before{content:""; position:absolute; left:4px; top:4px; bottom:4px; width:2px; background:var(--line);}
+  .tl .ev{position:relative; padding:0 0 13px 14px; font-size:13.5px;}
+  .tl .ev::before{content:""; position:absolute; left:-17px; top:5px; width:10px; height:10px;
+    border-radius:50%; background:var(--main); border:2px solid #fff;}
+  .tl .ev .y{font-weight:800; color:var(--main-d); margin-right:8px;}
+  /* gap / request */
+  .gapsec{border:1px solid var(--amber); background:#FFFCF6;}
+  .gapsec h2{border-color:#EAD9BD;} .gapsec h2 .dot{background:var(--amber);}
+  .gaplist{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:14px;}
+  .gaplist .g{background:var(--amber-l); color:var(--amber); font-size:12.5px; font-weight:700;
+    padding:6px 12px; border-radius:8px;}
+  .draft{background:#fff; border:1px dashed #E0D3BB; border-radius:10px; padding:14px 16px; margin-top:6px;}
+  .draft .dh{font-size:12px; color:var(--amber); font-weight:800; margin-bottom:6px;}
+  .draft .dt{font-size:13.5px; color:var(--text); line-height:1.7;}
+  .draft .da{margin-top:11px; display:flex; gap:8px;}
+  .draft .da button{font-size:12px; padding:6px 12px; border-radius:7px; cursor:pointer;}
+  .note{font-size:11px; color:#A9AEB2; text-align:center; margin-top:26px;}
+  /* ---- questions (step 3) ---- */
+  .qactions{display:flex; gap:8px; align-items:flex-start;}
+  .qactions .btn{font-size:12.5px; padding:8px 13px;}
+  .qstats{display:grid; grid-template-columns:repeat(5,1fr); gap:1px; background:var(--line);
+    border-radius:12px; overflow:hidden; margin-bottom:16px;}
+  .qstats > div{background:#fff; padding:13px 14px; text-align:center;}
+  .qstats .n{font-size:21px; font-weight:800; letter-spacing:-.5px;}
+  .qstats .n.accent{color:var(--main);}
+  .qstats .l{font-size:11.5px; color:var(--sub); margin-top:2px;}
+  .qbanner{display:flex; gap:10px; background:#FFFCF6; border:1px solid #EAD9BD; border-radius:12px;
+    padding:13px 16px; font-size:13px; line-height:1.65; margin-bottom:18px;}
+  .qbanner .ic{color:var(--amber); font-weight:800;}
+  .qsec{margin-bottom:16px; overflow:hidden;}
+  .qsec-head{display:flex; align-items:center; gap:12px; padding:15px 18px; border-bottom:1px solid var(--line);}
+  .qsec-head .cnum{width:28px; height:28px; border-radius:8px; background:var(--main); color:#fff;
+    font-weight:800; font-size:13px; display:flex; align-items:center; justify-content:center; flex-shrink:0;}
+  .qsec-head .ctitle{font-size:15px; font-weight:800;}
+  .qsec-head .clabel{font-size:11.5px; color:var(--sub); margin-top:1px;}
+  .qsec-head .ccount{margin-left:auto; font-size:12px; color:var(--sub); font-weight:700;}
+  .qlist{padding:4px 8px;}
+  .q{display:flex; gap:13px; align-items:flex-start; padding:13px 10px; border-bottom:1px dashed var(--line);}
+  .q:last-child{border-bottom:none;}
+  .q:hover{background:#FAFBFB;}
+  .qnum{width:24px; height:24px; border-radius:50%; background:#F0F1F2; color:var(--sub);
+    font-size:12px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px;}
+  .qbody{flex:1; min-width:0;}
+  .qtext{font-size:14.5px; line-height:1.55;}
+  .qtags{margin-top:7px; display:flex; gap:6px; flex-wrap:wrap; align-items:center;}
+  .qt{font-size:11px; font-weight:700; padding:3px 9px; border-radius:7px; background:#F1F2F3; color:var(--sub);}
+  .qt.emo{background:var(--main-l); color:var(--main-d);}
+  .qt.gap{background:var(--amber-l); color:var(--amber);}
+  .qmat{font-size:11.5px; color:var(--sub);}
+  .qact{color:#C2C6C9; font-size:18px; cursor:pointer; padding:0 4px; flex-shrink:0; line-height:1;}
+  .morebtn{display:block; width:100%; text-align:center; background:#fff; border:1px dashed var(--line);
+    color:var(--main); border-radius:10px; padding:11px; font-size:13px; font-weight:700; cursor:pointer;}
+  /* ---- chat (step 1) ---- */
+  .chatwrap{display:grid; grid-template-columns:290px 1fr; gap:18px; align-items:start;}
+  .scard{padding:16px 18px;}
+  .scard .sh{font-size:13px; font-weight:800; margin-bottom:12px;}
+  .ckr{display:flex; align-items:center; gap:9px; font-size:13px; padding:7px 0; border-bottom:1px dashed var(--line);}
+  .ckr:last-of-type{border-bottom:none;}
+  .ckr .bx{width:20px; height:20px; border-radius:6px; display:flex; align-items:center; justify-content:center;
+    font-size:12px; font-weight:800; flex-shrink:0;}
+  .ckr.done .bx{background:var(--main); color:#fff;}
+  .ckr.req .bx{background:var(--amber-l); color:var(--amber);}
+  .ckr.wait .bx{background:#F0F1F2; color:#B8BCBF;}
+  .ckr .st{margin-left:auto; font-size:11px; font-weight:700; color:var(--main);}
+  .ckr .st.amber{color:var(--amber);} .ckr .st.sub{color:var(--sub);}
+  .ckbar{margin-top:13px;}
+  .ckbar-h{display:flex; justify-content:space-between; font-size:11.5px; color:var(--sub); margin-bottom:5px;}
+  .ckbar-h b{color:var(--text);}
+  .chat{padding:18px; display:flex; flex-direction:column;}
+  .msg{display:flex; gap:10px; max-width:88%; margin-bottom:14px;}
+  .msg.ai{align-self:flex-start;}
+  .msg.me{align-self:flex-end;}
+  .msg .ava{width:30px; height:30px; border-radius:9px; background:var(--main-l); color:var(--main-d);
+    font-size:11px; font-weight:800; display:flex; align-items:center; justify-content:center; flex-shrink:0;}
+  .ainame{font-size:11px; color:var(--sub); font-weight:700; margin-bottom:4px;}
+  .bubble{font-size:13.5px; line-height:1.62; padding:11px 14px; border-radius:13px;}
+  .bubble.ai{background:#F4F6F7; border-top-left-radius:3px;}
+  .bubble.me{background:var(--main); color:#fff; border-top-right-radius:3px;}
+  .icard{background:#fff; border:1px solid var(--line); border-radius:10px; padding:11px 13px; margin-top:9px;}
+  .icard .ih{font-weight:800; font-size:12.5px; margin-bottom:7px;}
+  .checkrow{font-size:13px; padding:3px 0; line-height:1.5;}
+  .composer{display:flex; gap:10px; align-items:center; border-top:1px solid var(--line); padding:13px 4px 2px; margin-top:6px;}
+  .composer .clip{font-size:17px; color:var(--sub);}
+  .composer input{flex:1; border:1px solid var(--line); border-radius:9px; padding:10px 13px; font-size:13.5px;
+    font-family:inherit; color:var(--text); background:#FAFBFB;}
+  /* ---- type edit (report) ---- */
+  .editbtn{margin-left:auto; background:#fff; border:1px solid var(--main); color:var(--main);
+    font-size:12px; font-weight:700; padding:5px 12px; border-radius:8px; cursor:pointer;}
+  .tstate{font-size:11.5px; font-weight:700; padding:3px 10px; border-radius:999px;
+    background:var(--main-l); color:var(--main-d); margin-left:6px;}
+  .tstate.locked{background:#FBEFD9; color:var(--amber);}
+  .typecur{display:flex; gap:8px; margin-bottom:14px;}
+  .tcur{font-size:12.5px; font-weight:700; padding:5px 12px; border-radius:8px; background:#F3F4F5; color:var(--text);}
+  .tcur.main{background:var(--main); color:#fff;}
+  .whybox{margin-top:13px; font-size:12.5px; line-height:1.65; color:var(--sub);
+    border-left:3px solid var(--line); padding:2px 0 2px 12px;}
+  .whybox b{color:var(--text);}
+  .editpanel{display:none; margin-top:14px; border:1px solid var(--line); border-radius:12px;
+    padding:16px; background:#FAFBFB;}
+  .editpanel.open{display:block;}
+  .eprow{display:flex; gap:14px;}
+  .epf{flex:1;}
+  .epf label{display:block; font-size:11.5px; color:var(--sub); font-weight:700; margin-bottom:5px;}
+  .epf select{width:100%; border:1px solid var(--line); border-radius:8px; padding:9px 11px;
+    font-size:13.5px; font-family:inherit; color:var(--text); background:#fff;}
+  .epnote{font-size:11.5px; color:var(--amber); margin:12px 0;}
+  .epbtns{display:flex; gap:8px;}
+  .epbtns .btn{font-size:12.5px; padding:8px 16px;}
+  /* ---- demo2: dashboard filter cards ---- */
+  .stats .stat{border-top:3px solid transparent; cursor:pointer; transition:background .15s, transform .1s, box-shadow .15s; user-select:none;}
+  .stats .stat[data-filter="prem"]{border-top-color:#1A7068;}
+  .stats .stat[data-filter="kakao"]{border-top-color:#D7A027;}
+  .stats .stat[data-filter="welfare"]{border-top-color:#5A4B85;}
+  .stats .stat:hover{background:#FAFBFC; transform:translateY(-1px);}
+  .stats .stat.active[data-filter="all"]{outline:2px solid var(--main); outline-offset:-2px;}
+  .stats .stat.active[data-filter="prem"]{background:#E4EFED;}
+  .stats .stat.active[data-filter="prem"] .n{color:#125249;}
+  .stats .stat.active[data-filter="kakao"]{background:#FFF4D6;}
+  .stats .stat.active[data-filter="kakao"] .n{color:#7A5E14;}
+  .stats .stat.active[data-filter="welfare"]{background:#E8E4F1;}
+  .stats .stat.active[data-filter="welfare"] .n{color:#4C3D7A;}
+  /* ---- demo2: sub-tabs + service badges + placeholders ---- */
+  .subtabs{display:none; gap:6px; padding:10px 28px 0; max-width:1080px; margin:0 auto; width:100%; flex-wrap:wrap;}
+  .subtab{border:1px solid var(--line); background:#fff; color:var(--sub); padding:6px 14px;
+    border-radius:8px; font-size:12.5px; font-weight:600; cursor:pointer;}
+  .subtab.active{background:var(--main-l); color:var(--main-d); border-color:var(--main);}
+  .svc{font-size:11px; font-weight:800; padding:3px 9px; border-radius:7px; letter-spacing:.2px; white-space:nowrap;}
+  .svc.prem{background:#E4EFED; color:#125249;}        /* 프리미엄 인터뷰 = 메인 틸 */
+  .svc.kakao{background:#FFF4D6; color:#7A5E14;}       /* 카톡 30주 = 카카오 옐로 톤 */
+  .svc.wgrp{background:#E8E4F1; color:#4C3D7A;}        /* 복지관 집단 = 슬레이트 퍼플 */
+  .svc.wind{background:#F0E5DB; color:#7A4D2B;}        /* 복지관 개인 = 브라운 */
+  .svc-hint{display:inline-flex; align-items:center; gap:6px; font-size:12px; color:var(--sub);
+    background:#F4F6F7; padding:6px 11px; border-radius:8px; font-weight:600; margin-top:8px;}
+  .svc-hint b{color:var(--main-d); font-weight:800;}
+  .ph-card{padding:50px 28px; text-align:center;}
+  .ph-card .icon{font-size:42px; margin-bottom:14px;}
+  .ph-card h2{font-size:20px; font-weight:800; margin-bottom:10px;}
+  .ph-card p{color:var(--sub); font-size:13.5px; line-height:1.8; max-width:600px; margin:0 auto;}
+  .ph-card p b{color:var(--text);}
+  .ph-card .pill{display:inline-block; margin-top:18px; background:var(--main-l); color:var(--main-d);
+    font-size:11.5px; font-weight:800; padding:6px 16px; border-radius:999px;}
+  /* ---- demo2 Phase B: kakao 30-week ---- */
+  .kpis{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:18px;}
+  .kpi{background:#fff; border:1px solid var(--line); border-radius:14px; padding:14px 16px; border-top:3px solid #D7A027;}
+  .kpi .kn{font-size:24px; font-weight:800; color:#7A5E14; letter-spacing:-.5px;}
+  .kpi .kl{font-size:12.5px; color:var(--sub); margin-top:3px;}
+  .kpi .kl small{display:block; color:#9CA3A8; font-size:11px; margin-top:2px;}
+  .kpi.pass{border-top-color:var(--main);}
+  .kpi.pass .kn{color:var(--main-d);}
+  .kpi.pass .kl small{color:var(--main); font-weight:700;}
+  .kpi.muted{border-top-color:#D4D4D4;}
+  .kpi.muted .kn{color:var(--sub);}
+
+  .stage{margin-bottom:10px;}
+  .stage:last-child{margin-bottom:0;}
+  .stage-h{display:flex; align-items:center; gap:10px; font-size:13.5px; font-weight:700; margin-bottom:7px;}
+  .stage-h small{font-weight:500; color:var(--sub); font-size:12px;}
+  .stage-h .gate{margin-left:auto; background:var(--amber); color:#fff; font-size:11px; font-weight:800; padding:3px 10px; border-radius:999px;}
+  .weeks{display:flex; gap:6px; flex-wrap:wrap; padding:8px 10px; border-radius:10px;}
+  .wk{min-width:34px; height:34px; padding:0 8px; border-radius:8px; display:inline-flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; background:#fff; border:1px solid var(--line); color:var(--sub);}
+  .wk.done{color:#fff; border-color:transparent;}
+  .wk.current{background:#fff; color:var(--text); border:2px solid var(--amber); box-shadow:0 0 0 3px #FBF1DE;}
+  .stage-1 .weeks{background:#EFF6F2;}
+  .stage-2 .weeks{background:#FBF1DE;}
+  .stage-3 .weeks{background:#EFF2F8;}
+  .stage-4 .weeks{background:#F2EBF5;}
+  .stage-1 .wk.done{background:#3F9670;}
+  .stage-2 .wk.done{background:#C9871F;}
+  .stage-3 .wk.done{background:#4A6FA5;}
+  .stage-4 .wk.done{background:#7A5DA8;}
+  .stage-tag{font-size:11px; font-weight:800; padding:3px 9px; border-radius:7px;}
+  .stage-tag.s1{background:#DDEDE3; color:#2A6B40;}
+  .stage-tag.s2{background:#FAE5C2; color:#7A5E14;}
+  .stage-tag.s3{background:#DDE5F2; color:#2F4D7A;}
+  .stage-tag.s4{background:#E9DDF4; color:#4F2F7A;}
+
+  .qweek-cur, .qweek-next{padding:14px 16px; border-radius:12px; margin-bottom:12px;}
+  .qweek-cur{background:#FBF1DE; border:1px solid #EAD9BD;}
+  .qweek-next{background:#F4F6F7; border:1px solid var(--line);}
+  .qweek-next:last-child, .qweek-cur:last-child{margin-bottom:0;}
+  .qweek-tag-inline{display:inline-block; margin-bottom:8px;}
+  .qweek-text{font-size:16px; font-weight:800; margin:6px 0 8px; color:var(--text); line-height:1.5;}
+  .qweek-meta{font-size:12.5px; color:var(--sub); line-height:1.6;}
+  .qweek-meta b{color:var(--text);}
+  .qweek-h{font-size:11px; font-weight:800; color:var(--sub); margin-bottom:4px; letter-spacing:.5px;}
+  .qweek-actions{margin-top:11px; display:flex; gap:8px; flex-wrap:wrap;}
+  .qweek-actions .btn{font-size:12.5px; padding:7px 13px;}
+
+  .feed-row{padding:13px 0; border-bottom:1px dashed var(--line);}
+  .feed-row:first-of-type{padding-top:4px;}
+  .feed-row:last-of-type{border-bottom:none;}
+  .fr-h{font-size:13.5px; font-weight:800; margin-bottom:5px;}
+  .wbadge{font-size:11px; font-weight:800; background:var(--main-l); color:var(--main-d); padding:2px 9px; border-radius:7px; margin-right:8px;}
+  .fr-body{font-size:13px; color:var(--text); margin-bottom:5px; line-height:1.6;}
+  .fr-cmt{font-size:12px; color:var(--sub);}
+  .feed-stats{font-size:12.5px; color:var(--sub); margin-top:12px; padding-top:11px; border-top:1px solid var(--line);}
+  .feed-stats span{font-weight:700; color:var(--main-d);}
+
+  .redesign{background:#FAFBFB;}
+  .rd-body{font-size:13.5px; line-height:1.75; margin-bottom:12px;}
+  .rd-body b{color:var(--text);}
+  .rd-changes{background:#fff; border:1px solid var(--line); border-radius:10px; padding:6px 14px; margin-bottom:14px;}
+  .rd-change{font-size:12.5px; padding:8px 0; border-bottom:1px dashed var(--line); line-height:1.6;}
+  .rd-change:last-child{border-bottom:none;}
+  .rd-change .oldq{color:var(--sub); text-decoration:line-through;}
+  .rd-change .newq{color:var(--main-d); font-weight:700;}
+  .rd-actions{display:flex; gap:8px; flex-wrap:wrap;}
+  .rd-actions .btn{font-size:12.5px; padding:8px 16px;}
+  /* ---- demo2 Phase B+: clickable weeks + modals ---- */
+  .wk.done, .wk.current{cursor:pointer; transition:transform .1s, box-shadow .15s;}
+  .wk.done:hover, .wk.current:hover{transform:translateY(-1px); box-shadow:0 3px 8px rgba(0,0,0,.14);}
+  .modal-overlay{display:none; position:fixed; inset:0; background:rgba(20,30,40,.45); z-index:100;
+    align-items:flex-start; justify-content:center; padding:50px 20px 30px; overflow-y:auto;}
+  .modal-overlay.open{display:flex;}
+  .modal{background:#fff; border-radius:14px; max-width:680px; width:100%; padding:0; overflow:hidden;
+    box-shadow:0 12px 40px rgba(0,0,0,.18); font-family:inherit;}
+  .modal.lg{max-width:780px;}
+  .modal-h{display:flex; align-items:center; justify-content:space-between; padding:15px 22px; border-bottom:1px solid var(--line);}
+  .modal-h h3{font-size:16px; font-weight:800; display:flex; align-items:center; gap:8px;}
+  .modal-h h3 .dot{width:8px; height:8px; border-radius:2px; background:var(--main);}
+  .modal-close{background:#fff; border:none; cursor:pointer; font-size:20px; color:var(--sub); padding:2px 8px; line-height:1;}
+  .modal-close:hover{color:var(--text);}
+  .modal-body{padding:18px 22px; max-height:68vh; overflow-y:auto;}
+  .modal-foot{padding:13px 22px; border-top:1px solid var(--line); display:flex; gap:8px; justify-content:flex-end; flex-wrap:wrap; align-items:center;}
+  .modal-foot .btn{font-size:12.5px; padding:8px 16px;}
+
+  /* Week detail */
+  .wm-q{background:#FBF1DE; border:1px solid #EAD9BD; border-radius:10px; padding:14px 16px; margin-bottom:14px;}
+  .wm-q .stage-tag{display:inline-block; margin-bottom:6px;}
+  .wm-text{font-size:16px; font-weight:800; margin:6px 0 8px; line-height:1.5;}
+  .wm-meta{font-size:11.5px; color:var(--sub);}
+  .wm-sec{margin-bottom:14px;}
+  .wm-label{font-size:11px; font-weight:800; color:var(--sub); margin-bottom:6px; letter-spacing:.5px;}
+  .wm-ans{font-size:13.5px; line-height:1.75; color:var(--text); background:#FAFBFB; border-left:3px solid var(--main); padding:11px 14px; border-radius:6px;}
+  .wm-input{font-size:11.5px; color:var(--sub); margin-top:6px;}
+  .wm-att{background:#F4F6F7; border-radius:8px; padding:9px 13px; font-size:13px; color:var(--text); margin-bottom:14px;}
+  .wm-cmt{font-size:13px; color:var(--text); line-height:1.85; white-space:pre-line;}
+  .wm-status{display:inline-block; font-size:11px; font-weight:800; padding:3px 10px; border-radius:999px; background:var(--amber-l); color:var(--amber); margin-left:6px;}
+
+  /* Redesign workflow modal */
+  .rd-summary{background:#F4F6F7; border-radius:10px; padding:12px 14px; margin-bottom:14px; font-size:13px; line-height:1.7;}
+  .rd-summary b{color:var(--text);}
+  .rd-card{border:1px solid var(--line); border-radius:10px; padding:12px 14px; margin-bottom:10px; transition:background .15s, border-color .15s, opacity .15s;}
+  .rd-card.off{opacity:.45;}
+  .rd-card.off .rd-new{background:#F4F6F7; color:var(--sub);}
+  .rd-card-h{display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; font-size:13px;}
+  .rd-card-h .stage-tag{margin-left:6px;}
+  .rd-toggle{display:inline-flex; align-items:center; gap:6px; cursor:pointer; font-size:12px; font-weight:700; color:var(--main-d);}
+  .rd-toggle input{accent-color:var(--main); width:14px; height:14px;}
+  .rd-comp{display:flex; gap:10px; align-items:stretch; font-size:13px; line-height:1.55;}
+  .rd-comp > .rd-old, .rd-comp > .rd-new{flex:1;}
+  .rd-old{background:#F8F8F8; border-radius:8px; padding:9px 12px; color:var(--sub); text-decoration:line-through;}
+  .rd-arrow{align-self:center; font-weight:800; color:#9CC2BC; flex:0 0 auto; padding:0 2px;}
+  .rd-new{background:var(--main-l); border-radius:8px; padding:9px 12px; color:var(--main-d); font-weight:700;}
+  .rd-why{font-size:11.5px; color:var(--sub); margin-top:9px;}
+  .rd-count{font-size:12px; color:var(--sub); margin-right:auto; font-weight:700;}
+  .rd-count b{color:var(--main-d); font-size:13px;}
+  /* ---- demo2 Phase C: welfare 복지관 ---- */
+  .w-intro{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:18px;}
+  .w-type{border:1px solid var(--line); border-radius:14px; padding:18px 20px; background:#fff; border-top:3px solid transparent;}
+  .w-type.grp{border-top-color:#5A4B85;}
+  .w-type.ind{border-top-color:#9C6B3E;}
+  .w-type .wt-h{display:flex; align-items:center; gap:9px; margin-bottom:6px;}
+  .w-type .wt-h .wt-name{font-size:17px; font-weight:800;}
+  .w-type .wt-h .wt-en{font-size:11.5px; color:var(--sub); font-weight:700; letter-spacing:.5px;}
+  .w-type .wt-sub{font-size:12.5px; color:var(--sub); margin-bottom:12px;}
+  .w-type .wt-kv{font-size:12.5px; line-height:1.5;}
+  .w-type .wt-kv > div{display:flex; gap:8px; padding:5px 0; border-bottom:1px dashed var(--line);}
+  .w-type .wt-kv > div:last-child{border-bottom:none;}
+  .w-type .wt-kv .k{flex:0 0 52px; color:var(--sub); font-weight:700;}
+  .w-type .wt-kv .v{flex:1; color:var(--text);}
+  .w-type .wt-foot{margin-top:11px; font-size:12px; font-weight:700; padding:7px 11px; border-radius:8px;}
+  .w-type.grp .wt-foot{background:#E8E4F1; color:#4C3D7A;}
+  .w-type.ind .wt-foot{background:#F0E5DB; color:#7A4D2B;}
+
+  .wtag{font-size:11px; font-weight:800; padding:3px 9px; border-radius:7px;}
+  .wtag.grp{background:#E8E4F1; color:#4C3D7A;}
+  .wtag.ind{background:#F0E5DB; color:#7A4D2B;}
+
+  .w-toggle{display:inline-flex; gap:6px; background:#F4F6F7; padding:4px; border-radius:10px; margin-bottom:16px;}
+  .w-toggle button{border:none; background:transparent; color:var(--sub); font-size:13px; font-weight:700;
+    padding:7px 16px; border-radius:7px; cursor:pointer;}
+  .w-toggle button.active{background:#fff; box-shadow:0 1px 3px rgba(0,0,0,.08);}
+  .w-toggle button[data-curr="grp"].active{color:#4C3D7A;}
+  .w-toggle button[data-curr="ind"].active{color:#7A4D2B;}
+  .curr-pane{display:none;} .curr-pane.active{display:block;}
+  .curr{position:relative; padding-left:6px;}
+  .cw{display:flex; gap:14px; padding:11px 0; border-bottom:1px dashed var(--line); align-items:flex-start;}
+  .cw:last-child{border-bottom:none;}
+  .cw .cw-n{flex:0 0 46px; height:30px; border-radius:8px; display:flex; align-items:center; justify-content:center;
+    font-size:12px; font-weight:800;}
+  .curr.grp .cw-n{background:#E8E4F1; color:#4C3D7A;}
+  .curr.ind .cw-n{background:#F0E5DB; color:#7A4D2B;}
+  .cw .cw-body{flex:1; min-width:0;}
+  .cw .cw-t{font-size:14px; font-weight:800;}
+  .cw .cw-d{font-size:12.5px; color:var(--sub); margin-top:3px; line-height:1.55;}
+  .cw .cw-d b{color:var(--text); font-weight:700;}
+  .cw .cw-trig{font-size:11.5px; color:var(--main-d); margin-top:4px;}
+  .curr-note{font-size:12.5px; color:var(--sub); margin-top:14px; padding:11px 14px; background:#FAFBFB; border-radius:9px; line-height:1.6;}
+  .curr-note b{color:var(--text);}
+
+  .cases{display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
+  .case{border:1px solid var(--line); border-radius:12px; padding:15px 16px; background:#fff;}
+  .case .c-top{display:flex; align-items:center; justify-content:space-between; margin-bottom:9px;}
+  .case .c-flag{font-size:10.5px; font-weight:800; padding:3px 9px; border-radius:6px;}
+  .c-flag.bench{background:#EEF2F8; color:#2F4D7A;}
+  .c-flag.live{background:var(--main-l); color:var(--main-d);}
+  .c-flag.idea{background:#F6ECDB; color:var(--amber);}
+  .case .c-emoji{font-size:22px;}
+  .case .c-name{font-size:14px; font-weight:800; line-height:1.35; margin-bottom:4px;}
+  .case .c-meta{font-size:11.5px; color:var(--sub); margin-bottom:8px;}
+  .case .c-desc{font-size:12.5px; color:var(--text); line-height:1.6;}
+  /* ---- demo2: status + owner (dashboard) ---- */
+  .seg{display:inline-flex; gap:4px; background:#F4F6F7; padding:4px; border-radius:9px;}
+  .seg button{border:none; background:transparent; color:var(--sub); font-size:12.5px; font-weight:700; padding:6px 14px; border-radius:7px; cursor:pointer;}
+  .seg button.active{background:#fff; color:var(--main-d); box-shadow:0 1px 3px rgba(0,0,0,.08);}
+  .owner{display:inline-flex; align-items:center; gap:5px; font-size:12px; color:var(--sub); font-weight:600;}
+  .owner .oav{width:18px; height:18px; border-radius:50%; background:var(--main-l); color:var(--main-d); font-size:10px; font-weight:800; display:inline-flex; align-items:center; justify-content:center;}
+  .st-badge{font-size:11px; font-weight:800; padding:3px 10px; border-radius:999px;}
+  .st-badge.active{background:var(--main-l); color:var(--main-d);}
+  .st-badge.done{background:#ECEEF0; color:#6B7280;}
+  .pcard.is-done{opacity:.78;}
+  .pcard.is-done:hover{opacity:1;}
+
+  /* ---- welfare: 통합보드 두 줄 ---- */
+  .wboard-row{margin-bottom:20px;}
+  .wbr-head{display:flex; align-items:center; gap:10px; margin-bottom:11px; padding:9px 14px; border-radius:10px;}
+  .wbr-head.grp{background:#EEEBF5;}
+  .wbr-head.ind{background:#F3EAE0;}
+  .wbr-head .wbr-name{font-size:15px; font-weight:800;}
+  .wbr-head.grp .wbr-name{color:#4C3D7A;}
+  .wbr-head.ind .wbr-name{color:#7A4D2B;}
+  .wbr-head .wbr-desc{font-size:12px; color:var(--sub);}
+  .wbr-head .wbr-add{margin-left:auto; font-size:12px; font-weight:700; border:1px solid var(--line); background:#fff; color:var(--main); padding:5px 12px; border-radius:8px; cursor:pointer;}
+  .wprojs{display:grid; grid-template-columns:repeat(3,1fr); gap:12px;}
+  .wp-card{border:1px solid var(--line); border-radius:12px; padding:14px 15px; background:#fff; cursor:pointer; border-left:3px solid transparent; transition:box-shadow .15s, transform .1s;}
+  .wp-card:hover{transform:translateY(-1px); box-shadow:0 3px 12px rgba(0,0,0,.07);}
+  .wp-card.grp{border-left-color:#5A4B85;}
+  .wp-card.ind{border-left-color:#9C6B3E;}
+  .wp-top{display:flex; align-items:center; justify-content:space-between; margin-bottom:7px;}
+  .wp-name{font-size:14px; font-weight:800; line-height:1.3;}
+  .wp-meta{font-size:11.5px; color:var(--sub); margin-bottom:9px; line-height:1.5;}
+  .wp-foot{display:flex; align-items:center; justify-content:space-between; margin-top:9px;}
+  .wp-prog{flex:1; margin-right:10px;}
+  .wp-prog .bar{margin-top:0;}
+  .wp-pct{font-size:11.5px; font-weight:800; color:var(--main-d); white-space:nowrap;}
+
+  /* ---- welfare design: 집단형 어르신 명단 ---- */
+  .design-info{display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--line); border-radius:10px; overflow:hidden; margin-bottom:16px;}
+  .design-info > div{background:#fff; padding:12px 14px;}
+  .design-info .k{font-size:11px; color:var(--sub);}
+  .design-info .v{font-size:15px; font-weight:800; margin-top:2px;}
+  .elders{width:100%; border-collapse:separate; border-spacing:0; font-size:13px;}
+  .elders th{text-align:left; font-size:11.5px; color:var(--sub); font-weight:700; padding:8px 10px; border-bottom:1px solid var(--line);}
+  .elders td{padding:9px 10px; border-bottom:1px dashed var(--line); vertical-align:middle;}
+  .elders tr:last-child td{border-bottom:none;}
+  .elder-av{width:28px; height:28px; border-radius:8px; background:#EEEBF5; color:#4C3D7A; font-weight:800; font-size:12px; display:inline-flex; align-items:center; justify-content:center;}
+  .elder-name{font-weight:800;}
+  .elder-memo{font-size:12px; color:var(--sub); width:100%; border:1px solid transparent; background:transparent; padding:4px 6px; border-radius:6px; font-family:inherit; resize:none;}
+  .elder-memo:focus{border-color:var(--line); background:#FAFBFB; outline:none;}
+  .elder-del{background:#fff; border:1px solid var(--line); color:#C0392B; font-size:11px; font-weight:700; padding:4px 9px; border-radius:7px; cursor:pointer;}
+  .elder-del:hover{background:#FDF0EE;}
+  .elder-att{font-size:11px; color:var(--main-d); font-weight:700;}
+  .design-toggle{display:inline-flex; gap:6px; background:#F4F6F7; padding:4px; border-radius:10px; margin-bottom:18px;}
+  .design-toggle button{border:none; background:transparent; color:var(--sub); font-size:13px; font-weight:700; padding:8px 18px; border-radius:7px; cursor:pointer;}
+  .design-toggle button.active{background:#fff; box-shadow:0 1px 3px rgba(0,0,0,.08);}
+  .design-toggle button[data-d="grp"].active{color:#4C3D7A;}
+  .design-toggle button[data-d="ind"].active{color:#7A4D2B;}
+  .design-pane{display:none;} .design-pane.active{display:block;}
+  .addbar{margin-top:12px; display:flex; gap:8px; align-items:center;}
+  .addbar input{flex:1; border:1px solid var(--line); border-radius:8px; padding:9px 12px; font-size:13px; font-family:inherit;}
+  .addbar input.w-sm{flex:0 0 90px;}
+  /* ---- demo2 C+: design focus / cases list / bench detail ---- */
+  .focus-box{background:#FAFBFB; border:1px solid var(--line); border-radius:11px; padding:14px 16px;}
+  .focus-row{display:flex; gap:10px; align-items:flex-start; padding:8px 0; border-bottom:1px dashed var(--line);}
+  .focus-row:last-of-type{border-bottom:none;}
+  .focus-k{flex:0 0 88px; font-size:12px; font-weight:800; color:var(--main-d);}
+  .focus-v{flex:1; font-size:13px; color:var(--text); line-height:1.6;}
+  .focus-v[contenteditable]{outline:none; border-radius:6px; padding:1px 5px; margin:-1px -5px;}
+  .focus-v[contenteditable]:focus{background:#fff; box-shadow:inset 0 0 0 1px var(--main);}
+  .focus-edit{margin-left:auto;}
+  .focus-edit .btn{font-size:12px; padding:6px 13px;}
+  .editing .focus-v[contenteditable]{background:#fff; box-shadow:inset 0 0 0 1px var(--line);}
+
+  /* cases list */
+  .cases-bar{display:flex; gap:10px; align-items:center; margin-bottom:14px; flex-wrap:wrap;}
+  .cases-search{flex:1; min-width:180px; position:relative;}
+  .cases-search input{width:100%; border:1px solid var(--line); border-radius:9px; padding:9px 12px 9px 32px; font-size:13px; font-family:inherit;}
+  .cases-search::before{content:"🔍"; position:absolute; left:11px; top:50%; transform:translateY(-50%); font-size:12px; opacity:.5;}
+  .cases-sort{border:1px solid var(--line); border-radius:9px; padding:9px 12px; font-size:13px; font-family:inherit; color:var(--text); background:#fff;}
+  .cases-filter{display:inline-flex; gap:4px; background:#F4F6F7; padding:4px; border-radius:9px;}
+  .cases-filter button{border:none; background:transparent; color:var(--sub); font-size:12.5px; font-weight:700; padding:6px 13px; border-radius:7px; cursor:pointer;}
+  .cases-filter button.active{background:#fff; box-shadow:0 1px 3px rgba(0,0,0,.08); color:var(--main-d);}
+  table.case-table{width:100%; border-collapse:separate; border-spacing:0; font-size:13px;}
+  table.case-table thead th{text-align:left; font-size:11.5px; color:var(--sub); font-weight:700; padding:9px 12px; border-bottom:2px solid var(--line); cursor:pointer; white-space:nowrap;}
+  table.case-table thead th .arr{color:var(--main); font-size:10px;}
+  table.case-table tbody td{padding:12px; border-bottom:1px solid var(--line); vertical-align:top;}
+  table.case-table tbody tr:hover{background:#FAFBFB;}
+  .ct-type{font-size:10.5px; font-weight:800; padding:3px 8px; border-radius:6px; white-space:nowrap;}
+  .ct-type.grp{background:#E8E4F1; color:#4C3D7A;}
+  .ct-type.ind{background:#F0E5DB; color:#7A4D2B;}
+  .ct-name{font-weight:800; font-size:13.5px;}
+  .ct-org{font-size:12px; color:var(--sub); margin-top:2px;}
+  .ct-key{font-size:12px; color:var(--text); line-height:1.55;}
+  .ct-num{font-weight:700; white-space:nowrap;}
+  .cases-empty{text-align:center; color:var(--sub); font-size:13px; padding:30px;}
+
+  /* bench detail modal */
+  .bench-card{cursor:pointer; transition:transform .1s, box-shadow .15s;}
+  .bench-card:hover{transform:translateY(-1px); box-shadow:0 3px 12px rgba(0,0,0,.08);}
+  .bench-card .c-more{font-size:11.5px; color:var(--main); font-weight:700; margin-top:9px;}
+  .bm-hero{display:flex; align-items:center; gap:12px; margin-bottom:14px;}
+  .bm-hero .bm-emoji{font-size:34px;}
+  .bm-hero .bm-name{font-size:19px; font-weight:800;}
+  .bm-hero .bm-meta{font-size:12.5px; color:var(--sub); margin-top:2px;}
+  .bm-sec{margin-bottom:15px;}
+  .bm-sec h4{font-size:13px; font-weight:800; margin-bottom:6px; color:var(--main-d);}
+  .bm-sec p{font-size:13px; line-height:1.75; color:var(--text);}
+  .bm-stats{display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border-radius:10px; overflow:hidden; margin-bottom:15px;}
+  .bm-stats > div{background:#fff; padding:12px; text-align:center;}
+  .bm-stats .bn{font-size:17px; font-weight:800; color:var(--main-d);}
+  .bm-stats .bl{font-size:11px; color:var(--sub); margin-top:2px;}
+  .bm-take{background:var(--main-l); border-radius:10px; padding:12px 15px; font-size:13px; line-height:1.7; color:var(--main-d);}
+  .bm-take b{color:#0E3D37;}
+  /* ---- demo2 C+++: unified interaction language ---- */
+  /* 클릭하면 열리는 요소: pointer + hover + 화살표 표식(통일) */
+  .clickable{cursor:pointer; position:relative; transition:box-shadow .15s, transform .1s, border-color .15s, background .15s;}
+  .clickable:hover{border-color:var(--main); box-shadow:0 3px 12px rgba(26,112,104,.10);}
+  .go-arrow{color:var(--main); font-weight:800; font-size:13px; white-space:nowrap;}
+  .clickable:hover .go-arrow{transform:translateX(2px);}
+  /* 클릭 가능한 텍스트 링크(이동) */
+  .link-go{color:var(--main-d); font-weight:800; cursor:pointer; border-bottom:1px solid rgba(26,112,104,.35);}
+  .link-go:hover{border-bottom-color:var(--main); color:var(--main);}
+  .link-go::after{content:" ›"; color:var(--main); font-weight:800;}
+  /* 비클릭(표시 전용) 명시 */
+  .static-tag{cursor:default;}
+
+  /* 검색바 공통 (통일) */
+  .searchbar{display:flex; gap:10px; align-items:center; margin-bottom:16px; flex-wrap:wrap;}
+  .search-in{flex:1; min-width:200px; position:relative;}
+  .search-in input{width:100%; border:1px solid var(--line); border-radius:9px; padding:9px 12px 9px 34px; font-size:13px; font-family:inherit;}
+  .search-in input:focus{outline:none; border-color:var(--main); box-shadow:0 0 0 3px rgba(26,112,104,.08);}
+  .search-in::before{content:"🔍"; position:absolute; left:12px; top:50%; transform:translateY(-50%); font-size:12px; opacity:.5;}
+  .search-results{margin-top:-6px; margin-bottom:16px; border:1px solid var(--line); border-radius:10px; overflow:hidden; display:none;}
+  .search-results.show{display:block;}
+  .sr-item{display:flex; align-items:center; gap:10px; padding:10px 14px; border-bottom:1px solid var(--line); cursor:pointer; font-size:13px;}
+  .sr-item:last-child{border-bottom:none;}
+  .sr-item:hover{background:#F4F6F7;}
+  .sr-item.cur{background:var(--main-l);}
+  .sr-av{width:26px; height:26px; border-radius:7px; background:var(--main-l); color:var(--main-d); font-weight:800; font-size:11px; display:inline-flex; align-items:center; justify-content:center; flex-shrink:0;}
+  .sr-name{font-weight:800;}
+  .sr-meta{color:var(--sub); font-size:12px; margin-left:auto;}
+  .sr-empty{padding:14px; text-align:center; color:var(--sub); font-size:12.5px;}
+
+  /* bench 원문 링크 */
+  .bm-source{margin-top:16px; padding-top:13px; border-top:1px solid var(--line); font-size:12.5px; color:var(--sub);}
+  .bm-source a{color:var(--main-d); font-weight:700; text-decoration:none; border-bottom:1px solid rgba(26,112,104,.35);}
+  .bm-source a:hover{border-bottom-color:var(--main); color:var(--main);}
+  .bm-source a::after{content:" ↗"; font-size:11px;}
+  /* 클릭 가능 카드 hover 화살표(통일) */
+  #dash .pcard{position:relative;}
+  #dash .pcard .prog{position:relative;}
+  #dash .pcard::after{content:"›"; position:absolute; right:13px; top:50%; transform:translateY(-50%);
+    color:var(--main); font-weight:800; font-size:22px; opacity:0; transition:opacity .15s, transform .15s; pointer-events:none;}
+  #dash .pcard{padding-right:30px;}
+  #dash .pcard:hover::after{opacity:.7; transform:translateY(-50%) translateX(3px);}
+  .wp-card{padding-right:26px;}
+  .wp-card::after{content:"›"; position:absolute; right:11px; bottom:11px; color:var(--main);
+    font-weight:800; font-size:18px; opacity:0; transition:opacity .15s, transform .15s; pointer-events:none;}
+  .wp-card:hover::after{opacity:.7; transform:translateX(3px);}
+  /* ---- demo2: writing 집필 ---- */
+  .src-grid{display:grid; grid-template-columns:repeat(6,1fr); gap:1px; background:var(--line); border-radius:10px; overflow:hidden; margin-bottom:12px;}
+  .src-grid > div{background:#fff; padding:12px 10px; text-align:center;}
+  .src-grid .sn{font-size:18px; font-weight:800; color:var(--main-d);}
+  .src-grid .sl{font-size:11px; color:var(--sub); margin-top:2px;}
+  .chap-board{display:grid; grid-template-columns:240px 1fr; gap:16px; align-items:start;}
+  .chap-list{display:flex; flex-direction:column; gap:8px;}
+  .chap-item{border:1px solid var(--line); border-radius:10px; padding:11px 13px; cursor:pointer; transition:border-color .15s, background .15s;}
+  .chap-item:hover{border-color:var(--main); background:#FAFBFC;}
+  .chap-item.active{border-color:var(--main); background:var(--main-l);}
+  .chap-item .ci-top{display:flex; align-items:center; justify-content:space-between; gap:8px;}
+  .chap-item .ci-no{font-size:11px; font-weight:800; color:var(--sub);}
+  .chap-item .ci-title{font-size:13.5px; font-weight:800; margin-top:3px; line-height:1.35;}
+  .cst{font-size:10px; font-weight:800; padding:2px 7px; border-radius:6px; white-space:nowrap;}
+  .cst.done{background:var(--main-l); color:var(--main-d);}
+  .cst.review{background:var(--amber-l); color:var(--amber);}
+  .cst.draft{background:#ECEEF0; color:#6B7280;}
+  .cst.todo{background:#F4F6F7; color:#A9AEB2;}
+  .chap-body{border:1px solid var(--line); border-radius:12px; padding:18px 20px; background:#fff; min-height:240px;}
+  .cb-head{display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; padding-bottom:11px; border-bottom:1px solid var(--line);}
+  .cb-head .cb-t{font-size:16px; font-weight:800;}
+  .cb-head .cb-meta{font-size:11.5px; color:var(--sub); margin-top:2px;}
+  .cb-text{font-size:14px; line-height:1.9; color:var(--text); white-space:pre-line;}
+  .cb-tools{margin-top:16px; padding-top:14px; border-top:1px dashed var(--line); display:flex; gap:8px; flex-wrap:wrap;}
+  .cb-tools .btn{font-size:12px; padding:7px 13px;}
+  .ai-chip{display:inline-flex; align-items:center; gap:6px; background:#FAFBFB; border:1px solid var(--line); border-radius:8px; padding:7px 12px; font-size:12px; font-weight:700; color:var(--main-d); cursor:pointer;}
+  .ai-chip:hover{border-color:var(--main); background:var(--main-l);}
+
+  .style-toggle{display:inline-flex; gap:4px; background:#F4F6F7; padding:4px; border-radius:9px; margin-bottom:14px; flex-wrap:wrap;}
+  .style-toggle button{border:none; background:transparent; color:var(--sub); font-size:12.5px; font-weight:700; padding:7px 14px; border-radius:7px; cursor:pointer;}
+  .style-toggle button.active{background:#fff; color:var(--main-d); box-shadow:0 1px 3px rgba(0,0,0,.08);}
+  .style-out{font-size:14px; line-height:1.95; color:var(--text); background:#FAFBFB; border-left:3px solid var(--main); padding:14px 16px; border-radius:8px;}
+  .style-note{font-size:12px; color:var(--sub); margin-top:10px;}
+
+  .pub-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:14px;}
+  .cover{border:1px solid var(--line); border-radius:10px; overflow:hidden; cursor:pointer; transition:transform .1s, box-shadow .15s;}
+  .cover:hover{transform:translateY(-2px); box-shadow:0 4px 14px rgba(0,0,0,.10);}
+  .cover.sel{outline:2px solid var(--main); outline-offset:-2px;}
+  .cover-art{height:130px; display:flex; flex-direction:column; align-items:center; justify-content:center; color:#fff; text-align:center; padding:14px;}
+  .cover-art .cv-t{font-size:15px; font-weight:800; line-height:1.4;}
+  .cover-art .cv-s{font-size:11px; opacity:.85; margin-top:6px;}
+  .cover-cap{font-size:11px; color:var(--sub); padding:8px 10px; text-align:center;}
+  .pub-actions{display:flex; gap:8px; flex-wrap:wrap;}
+  .pub-actions .btn{font-size:12.5px; padding:8px 14px;}
+  /* ---- print (배포용 PDF) ---- */
+  @media print{
+    @page{ size:A4; margin:12mm; }
+    body{ background:#fff; }
+    .topbar{ position:static; box-shadow:none; }
+    .tabs{ display:none !important; }
+    .backlink, .note{ display:none !important; }
+    .view{ display:block !important; padding:0 !important; max-width:none !important; margin:0 !important; }
+    .view + .view{ break-before:page; page-break-before:always; }
+    .view::before{ content:attr(data-title); display:block; font-size:15px; font-weight:800;
+      color:#1A7068; border-bottom:2px solid #1A7068; padding-bottom:6px; margin:2px 0 16px; }
+    .card, .qsec, .pcard, .sec, .msg, .icard, .draft, .qsec-head{ break-inside:avoid; page-break-inside:avoid; }
+    .chatwrap{ display:block !important; }
+    .chatwrap > div:first-child{ margin-bottom:14px; }
+    .chat{ break-inside:auto !important; page-break-inside:auto !important; }
+    .composer{ display:none !important; }
+    .morebtn{ display:none !important; }
+    .editbtn, .editpanel{ display:none !important; }
+    .pcard:hover, .q:hover, .ckr:hover{ background:#fff; }
+  }
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="logo">LifeOS <span>당신 삶의 이야기</span></div>
+    <div class="spacer"></div>
+    <div class="who"><b>김작가</b> 님 · 1인 작가</div>
+    <div class="avatar">김</div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" data-group="dash" data-v="dash">대시보드</button>
+    <button class="tab" data-group="pre" data-v="chat">사전조사</button>
+    <button class="tab" data-group="kakao" data-v="kakao">카톡 30주</button>
+    <button class="tab" data-group="welfare" data-v="welfare-intro">복지관</button>
+    <button class="tab" data-group="writing" data-v="writing">집필</button>
+  </div>
+
+  <div class="subtabs" id="subPre">
+    <button class="subtab active" data-v="chat">자료수집 채팅</button>
+    <button class="subtab" data-v="report">인물진단 리포트</button>
+    <button class="subtab" data-v="questions">질문지 초안</button>
+  </div>
+
+  <div class="subtabs" id="subWelfare">
+    <button class="subtab active" data-v="welfare-intro">통합보드</button>
+    <button class="subtab" data-v="welfare-design">프로그램 설계</button>
+    <button class="subtab" data-v="welfare-cases">기존 사례</button>
+    <button class="subtab" data-v="welfare-bench">벤치마크</button>
+  </div>
+
+  <!-- ============ DASHBOARD ============ -->
+  <div class="wrap view active" id="dash" data-title="프로젝트 대시보드">
+    <div class="pagehead">
+      <h1>전체 프로젝트</h1>
+      <div class="seg" id="statusSeg">
+        <button data-status="all" class="active">전체</button>
+        <button data-status="active">진행 중</button>
+        <button data-status="done">완료</button>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="card stat active" data-filter="all"><div class="n">7</div><div class="l">전체 프로젝트<small style="display:block;color:#9CA3A8;font-size:10.5px;">진행 5 · 완료 2</small></div></div>
+      <div class="card stat" data-filter="prem"><div class="n">3</div><div class="l">프리미엄 인터뷰</div></div>
+      <div class="card stat" data-filter="kakao"><div class="n">2</div><div class="l">카톡 30주 구독</div></div>
+      <div class="card stat" data-filter="welfare"><div class="n">2</div><div class="l">복지관 회상요법</div></div>
+    </div>
+
+    <div class="projects">
+      <!-- project 1 (open report) -->
+      <div class="card pcard" id="openReport" data-svc="prem" data-status="active">
+        <div class="av">김</div>
+        <div class="info">
+          <div class="nm">김순일 님 <small>1948년생 · 여</small> <span class="svc prem">프리미엄 인터뷰</span></div>
+          <div class="meta"><span class="owner"><span class="oav">김</span>김작가</span> · 자료 23건 · 핵심 인물 5명 · 마지막 활동 2시간 전</div>
+          <div class="next">다음 할 일 — <b>학창시절 자료 보충 요청</b></div>
+          <div class="ai-tip">⌁ AI: 빈 영역 2곳이 채워지면 완성율 +14%p 예상</div>
+        </div>
+        <div class="prog">
+          <span class="st-badge active">진행 중</span>
+          <div class="pct" style="margin-top:8px;">68% <span>가족헌신형(잠정)</span></div>
+          <div class="bar"><i style="width:68%"></i></div>
+        </div>
+      </div>
+
+      <!-- project 2: 이건우 — 카톡 30주 구독 -->
+      <div class="card pcard" data-svc="kakao" data-status="active">
+        <div class="av">이</div>
+        <div class="info">
+          <div class="nm">이건우 님 <small>1952년생 · 남</small> <span class="svc kakao">카톡 30주 구독</span></div>
+          <div class="meta"><span class="owner"><span class="oav">이</span>이작가</span> · 8주차 진행 · 자녀(아들) 대리 · 응답률 75%</div>
+          <div class="next">다음 할 일 — <b>9주차 질문 발송 · 8주 관문 통과 축하 메시지</b></div>
+          <div class="ai-tip">⌁ AI: 8주 관문 통과(35% 기준) — 완주 가능성 ↑</div>
+        </div>
+        <div class="prog">
+          <span class="st-badge active">진행 중</span>
+          <div class="pct" style="margin-top:8px;">27% <span>30주 중</span></div>
+          <div class="bar"><i style="width:27%"></i></div>
+        </div>
+      </div>
+
+      <!-- project 3 -->
+      <div class="card pcard" data-svc="prem" data-status="active">
+        <div class="av">최</div>
+        <div class="info">
+          <div class="nm">최명희 님 <small>1945년생 · 여</small> <span class="svc prem">프리미엄 인터뷰</span></div>
+          <div class="meta"><span class="owner"><span class="oav">박</span>박직원</span> · 자료 31건 · 핵심 인물 7명 · 마지막 활동 3일 전</div>
+          <div class="next">다음 할 일 — <b>인터뷰 질문지 최종 검토</b></div>
+          <div class="ai-tip">⌁ AI: 질문지 28문항 생성 완료 · 인터뷰 준비됨</div>
+        </div>
+        <div class="prog">
+          <span class="st-badge active">진행 중</span>
+          <div class="pct" style="margin-top:8px;">82% <span>시대증언형</span></div>
+          <div class="bar"><i style="width:82%"></i></div>
+        </div>
+      </div>
+
+      <!-- project 4: 강동시니어복지관 — 복지관 집단형 -->
+      <div class="card pcard" data-svc="welfare" data-status="active">
+        <div class="av">복</div>
+        <div class="info">
+          <div class="nm">강동시니어복지관 <small>회상 프로그램 · 8명 그룹</small> <span class="svc wgrp">복지관 · 집단</span></div>
+          <div class="meta"><span class="owner"><span class="oav">이</span>이작가</span> · 집단 회상요법 3/10주차 · 출석 7/8명</div>
+          <div class="next">다음 할 일 — <b>‘가족 사진’ 주제 회상 질문지 준비</b></div>
+          <div class="ai-tip">⌁ AI: 정서 활성도 평균 ↑ · 회상 성공 질문 4개 축적</div>
+        </div>
+        <div class="prog">
+          <span class="st-badge active">진행 중</span>
+          <div class="pct" style="margin-top:8px;">30% <span>3/10주차</span></div>
+          <div class="bar"><i style="width:30%"></i></div>
+        </div>
+      </div>
+
+      <!-- project 5: 박순영 어르신 — 복지관 개인형 -->
+      <div class="card pcard" data-svc="welfare" data-status="active">
+        <div class="av">박</div>
+        <div class="info">
+          <div class="nm">박순영 어르신 <small>1944년생 · 여 · 한울요양원</small> <span class="svc wind">복지관 · 개인</span></div>
+          <div class="meta"><span class="owner"><span class="oav">김</span>김작가</span> · 1:1 5/12주차 · 자료 14건 · 사진·물건 매개</div>
+          <div class="next">다음 할 일 — <b>결혼 시기 사진 회상 세션</b></div>
+          <div class="ai-tip">⌁ AI: 라이프스토리북 챕터 3/6 윤곽 잡힘</div>
+        </div>
+        <div class="prog">
+          <span class="st-badge active">진행 중</span>
+          <div class="pct" style="margin-top:8px;">42% <span>라이프스토리북</span></div>
+          <div class="bar"><i style="width:42%"></i></div>
+        </div>
+      </div>
+
+      <!-- project 6: 완료 — 프리미엄 -->
+      <div class="card pcard is-done" data-svc="prem" data-status="done">
+        <div class="av">정</div>
+        <div class="info">
+          <div class="nm">정외순 님 <small>1940년생 · 여</small> <span class="svc prem">프리미엄 인터뷰</span></div>
+          <div class="meta"><span class="owner"><span class="oav">김</span>김작가</span> · 자서전 248쪽 발간 · 2025-12 완료</div>
+          <div class="next">결과물 — <b>『꽃밭에서 보낸 팔십 년』 가족 30부 전달</b></div>
+          <div class="ai-tip">⌁ 가족 만족도 5/5 · 추가 주문 10부</div>
+        </div>
+        <div class="prog">
+          <span class="st-badge done">완료</span>
+          <div class="pct" style="margin-top:8px;">100% <span>관계형</span></div>
+          <div class="bar"><i style="width:100%;background:#9CA3AF"></i></div>
+        </div>
+      </div>
+
+      <!-- project 7: 완료 — 카톡 30주 -->
+      <div class="card pcard is-done" data-svc="kakao" data-status="done">
+        <div class="av">한</div>
+        <div class="info">
+          <div class="nm">한정식 님 <small>1947년생 · 남</small> <span class="svc kakao">카톡 30주 구독</span></div>
+          <div class="meta"><span class="owner"><span class="oav">이</span>이작가</span> · 30주 완주 · 책 제작 완료 · 2025-11</div>
+          <div class="next">결과물 — <b>축약형 생애 기록 책자 발간</b></div>
+          <div class="ai-tip">⌁ 완주(30/30주) · 가족 댓글 누적 84건</div>
+        </div>
+        <div class="prog">
+          <span class="st-badge done">완료</span>
+          <div class="pct" style="margin-top:8px;">100% <span>30주 완주</span></div>
+          <div class="bar"><i style="width:100%;background:#9CA3AF"></i></div>
+        </div>
+      </div>
+    </div>
+    <div class="note">※ LifeOS demo2 — 통합 OS 시안 (Phase A). 김순일 님 카드를 클릭하면 사전조사 → 인물진단 리포트로 이동합니다. <b>카톡 30주 / 복지관 / 집필</b> 화면은 상단 탭에서 미리보기 가능 (Phase B·C에서 실제 빌드).</div>
+  </div>
+
+  <!-- ============ CHAT (STEP 1) ============ -->
+  <div class="wrap view" id="chat" data-title="STEP 1 · 자료수집 AI 채팅">
+    <span class="backlink" id="backBtn3">← 프로젝트 대시보드</span>
+
+    <div class="card rhead">
+      <div class="av">이</div>
+      <div style="flex:1">
+        <h1>이건우 님 · 자료 수집</h1>
+        <div class="sub">1952년생 · 남 · AI 코파일럿과 대화하며 어떤 자료를 요청할지 정리합니다</div>
+        <div class="tags">
+          <span class="tag main">완성율 34%</span>
+          <span class="tag line">유형 추정 중</span>
+          <span class="tag">자료 9건</span>
+        </div>
+        <div class="svc-hint">이 사전조사는 <span class="svc kakao">카톡 30주 구독</span>에 연결됩니다</div>
+      </div>
+    </div>
+
+    <div class="chatwrap">
+      <!-- left: checklist -->
+      <div>
+        <div class="card scard">
+          <div class="sh">요청 자료 체크리스트</div>
+          <div class="ckr done"><span class="bx">✓</span>어린 시절 가족사진<span class="st">받음</span></div>
+          <div class="ckr done"><span class="bx">✓</span>군복무 시기 사진·수첩<span class="st">받음</span></div>
+          <div class="ckr done"><span class="bx">✓</span>결혼사진<span class="st">받음</span></div>
+          <div class="ckr req"><span class="bx">↗</span>첫 직장 명함·사원증<span class="st amber">요청함</span></div>
+          <div class="ckr wait"><span class="bx">·</span>학창시절 사진·친구<span class="st sub">대기</span></div>
+          <div class="ckr wait"><span class="bx">·</span>자녀 출생 무렵 자료<span class="st sub">대기</span></div>
+          <div class="ckbar"><div class="ckbar-h"><span>수집 진행</span><b>3 / 6</b></div><div class="bar"><i style="width:50%"></i></div></div>
+        </div>
+        <div class="card scard" style="margin-top:14px;">
+          <div class="sh">완성율</div>
+          <div style="display:flex;align-items:center;gap:13px;">
+            <div style="font-size:30px;font-weight:800;color:var(--main-d);letter-spacing:-1px;">34%</div>
+            <div style="flex:1;">
+              <div class="bar"><i style="width:34%"></i></div>
+              <div style="font-size:11.5px;color:var(--sub);margin-top:6px;">자료가 더 들어오면<br>인물진단이 활성화됩니다</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- right: chat thread -->
+      <div class="card chat">
+        <div class="msg ai">
+          <div class="ava">AI</div>
+          <div>
+            <div class="ainame">LifeOS AI 코파일럿</div>
+            <div class="bubble ai">안녕하세요, 김작가님. <b>이건우 님</b> 프로젝트를 시작합니다. 먼저 어떤 자료부터 요청하면 좋을지 정리해 드릴게요.
+              <div class="icard">
+                <div class="ih">📋 1차 요청 자료 목록</div>
+                <div class="checkrow">· 어린 시절 가족사진 (부모·형제)</div>
+                <div class="checkrow">· 학창시절 사진이나 친구분 성함</div>
+                <div class="checkrow">· 군복무 시기 사진·수첩</div>
+                <div class="checkrow">· 첫 직장 명함·사원증·표창장</div>
+                <div class="checkrow">· 결혼사진과 신혼 시절 이야기</div>
+              </div>
+            </div>
+            <div class="bubble ai" style="margin-top:8px;">의뢰인(또는 가족)께 그대로 보내실 수 있는 메시지 초안도 만들어 두었습니다.
+              <div class="draft" style="margin-top:9px;">
+                <div class="dh">⌁ 의뢰인 전달용 메시지 초안</div>
+                <div class="dt">“아버님 자서전 준비를 위해 몇 가지 자료를 부탁드립니다. 어린 시절 가족사진, 군 복무 시절 사진, 결혼사진이 있으면 좋습니다. 사진이 없어도 괜찮습니다 — 그 시절 이야기를 편하게 들려주셔도 충분합니다.”</div>
+                <div class="da"><button class="btn" style="font-size:12px;padding:6px 12px;">복사</button><button class="btn ghost" style="font-size:12px;padding:6px 12px;">다듬기</button></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="msg me"><div class="bubble me">가족사진 5장이랑 군복무 사진 받아서 올렸어요. 결혼사진도요.</div></div>
+
+        <div class="msg ai">
+          <div class="ava">AI</div>
+          <div>
+            <div class="ainame">LifeOS AI 코파일럿</div>
+            <div class="bubble ai">자료 9건 확인했습니다. 가족·관계와 군복무 시기가 채워져 완성율이 <b>21% → 34%</b>로 올랐어요.
+              다만 <b>첫 직장 시기</b>와 <b>학창시절</b>이 비어 있습니다. 인물 유형을 더 정확히 보려면 이 두 곳을 보충하는 게 좋겠습니다.
+              <div class="icard">
+                <div class="ih">⚑ 다음 보충 요청 (우선순위)</div>
+                <div class="checkrow">1. 첫 직장 명함·사원증, 또는 어떤 일을 했는지</div>
+                <div class="checkrow">2. 학창시절 사진이나 단짝 친구분 성함</div>
+              </div>
+            </div>
+            <div class="bubble ai" style="margin-top:8px;">
+              <div class="draft" style="margin-top:0;">
+                <div class="dh">⌁ 보충 요청 메시지 초안</div>
+                <div class="dt">“아버님께서 처음 다니셨던 직장이 어디였는지, 명함이나 사원증이 남아 있는지 여쭤봐 주시겠어요? 학창 시절 사진이나 친구분 성함도 기억나시는 만큼 알려주시면 큰 도움이 됩니다.”</div>
+                <div class="da"><button class="btn" style="font-size:12px;padding:6px 12px;">복사</button><button class="btn ghost" style="font-size:12px;padding:6px 12px;">다듬기</button></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="composer">
+          <span class="clip">📎</span>
+          <input type="text" placeholder="메시지를 입력하거나 자료를 업로드하세요…" disabled>
+          <button class="btn" style="padding:9px 16px;">전송</button>
+        </div>
+      </div>
+    </div>
+    <div class="note">※ LifeOS 1단계 목업 — STEP 1 자료수집 AI 채팅 예시입니다.</div>
+  </div>
+
+  <!-- ============ REPORT ============ -->
+  <div class="wrap view" id="report" data-title="STEP 2 · 인물진단 리포트">
+    <span class="backlink" id="backBtn">← 프로젝트 대시보드</span>
+
+    <div class="card rhead">
+      <div class="av">김</div>
+      <div style="flex:1">
+        <h1>김순일 님 인물진단 리포트</h1>
+        <div class="sub">1948년생 (만 77세) · 여 · 경남 통영 출생 · 프로젝트 시작 12일째</div>
+        <div class="tags">
+          <span class="tag main" id="tagMain">가족헌신형 (주)</span>
+          <span class="tag line" id="tagSub">극복형 (부)</span>
+          <span class="tag">현재 단계 · 인물 진단</span>
+          <span class="tag">유형 신뢰도 높음</span>
+        </div>
+        <div class="svc-hint">이 사전조사는 <span class="svc prem">프리미엄 인터뷰</span>에 연결됩니다</div>
+      </div>
+    </div>
+
+    <!-- completion + key facts -->
+    <div class="grid2">
+      <div class="card ringbox">
+        <div class="ring">
+          <svg width="130" height="130">
+            <circle cx="65" cy="65" r="56" fill="none" stroke="#EDEFF1" stroke-width="11"/>
+            <circle cx="65" cy="65" r="56" fill="none" stroke="#1A7068" stroke-width="11"
+              stroke-linecap="round" stroke-dasharray="351.86" stroke-dashoffset="112.6"/>
+          </svg>
+          <div class="ctr"><div class="v">68%</div><div class="t">진단 완성율</div></div>
+        </div>
+        <div class="cap">자료가 더 들어올수록<br>완성율이 올라갑니다</div>
+      </div>
+      <div class="card" style="padding:20px 22px;">
+        <h2 style="font-size:15px;font-weight:800;margin-bottom:14px;">한눈에 보기</h2>
+        <div class="kv">
+          <div><div class="k">수집 자료</div><div class="v">23건</div></div>
+          <div><div class="k">핵심 인물</div><div class="v">5명</div></div>
+          <div><div class="k">핵심 사건</div><div class="v">8건</div></div>
+          <div><div class="k">충실한 영역 / 전체</div><div class="v">29 / 41칸</div></div>
+        </div>
+        <div style="margin-top:14px;font-size:13px;color:var(--sub);line-height:1.7;">
+          가족·관계와 가치관 영역의 단서가 풍부합니다. <b style="color:var(--text)">학창시절</b>과
+          <b style="color:var(--text)">청년기 일·생계</b>가 비어 있어, 이 두 곳을 보충하면 인터뷰 깊이가 크게 올라갑니다.
+        </div>
+      </div>
+    </div>
+
+    <!-- type analysis (editable) -->
+    <div class="card sec" id="typeSec">
+      <h2><span class="dot"></span>인생 서사 유형
+        <span class="tstate" id="typeState">AI 추정 · 잠정</span>
+        <button class="editbtn" id="typeEditBtn">유형 수정</button>
+      </h2>
+      <div class="typecur">
+        <span class="tcur main" id="curMain">주 · 가족헌신형</span>
+        <span class="tcur" id="curSub">부 · 극복형</span>
+      </div>
+      <div class="typebar"><div class="lab"><b>가족헌신형</b><span>72%</span></div><div class="tb"><i style="width:72%"></i></div></div>
+      <div class="typebar"><div class="lab"><b>극복형</b><span>58%</span></div><div class="tb"><i class="sec2" style="width:58%"></i></div></div>
+      <div class="typebar"><div class="lab"><b>관계형</b><span>41%</span></div><div class="tb"><i class="sec2" style="width:41%;opacity:.6"></i></div></div>
+      <div class="whybox"><b>AI 추정 근거</b> — 가족·관계·가치관 단서가 풍부, ‘남편 별세 후 네 자녀 양육’ 핵심 사건, 감정어 ‘헌신·그리움’ 빈도 높음.</div>
+      <div style="margin-top:12px;font-size:13.5px;line-height:1.7;background:var(--main-l);padding:13px 15px;border-radius:10px;">
+        <b>추천 서사 방향</b> — “가족을 위한 헌신과, 그 속에서 자신을 다시 일으킨 회복의 이야기”.
+        남편을 잃은 뒤 네 자녀를 지켜낸 중년기를 중심 축으로, 통영 피란민의 딸로 자란 유년기를 시대 배경으로 엮는 구조를 권장합니다.
+      </div>
+      <div class="editpanel" id="typeEdit">
+        <div class="eprow">
+          <div class="epf"><label>주(主) 유형</label>
+            <select id="selMain">
+              <option>성취형</option><option>관계형</option><option>극복형</option>
+              <option>기록형</option><option>시대증언형</option><option selected>가족헌신형</option>
+            </select>
+          </div>
+          <div class="epf"><label>부(副) 유형</label>
+            <select id="selSub">
+              <option>없음</option><option>성취형</option><option>관계형</option><option selected>극복형</option>
+              <option>기록형</option><option>시대증언형</option><option>가족헌신형</option>
+            </select>
+          </div>
+        </div>
+        <div class="epnote">⌁ 작가가 확정하면 AI가 자동으로 유형을 바꾸지 않습니다(이후엔 제안만).</div>
+        <div class="epbtns">
+          <button class="btn" id="typeSave">확정 · 잠금</button>
+          <button class="btn ghost" id="typeCancel">취소</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- chapters -->
+    <div class="card sec">
+      <h2><span class="dot"></span>추천 챕터 구조</h2>
+      <ol class="ch">
+        <li>피란민의 딸, 통영에서 <small>유년·성장 / 시대경험</small></li>
+        <li>열일곱, 서울로 올라오다 <small>청년·독립</small></li>
+        <li>결혼, 그리고 네 아이 <small>결혼·가정형성 / 사랑</small></li>
+        <li>남편을 떠나보내며 <small>중년 / 시련·전환점</small></li>
+        <li>다시 일어서다 — 시장에서의 20년 <small>중년 / 일·생계 · 가치관</small></li>
+        <li>손주들에게 남기는 말 <small>노년·현재 / 가치관</small></li>
+      </ol>
+    </div>
+
+    <!-- coverage heatmap -->
+    <div class="card sec">
+      <h2><span class="dot"></span>커버리지 매트릭스 — 어디가 채워졌나</h2>
+      <table class="heat">
+        <thead>
+          <tr>
+            <th class="rowh"></th>
+            <th>가족·<br>관계</th><th>일·<br>생계</th><th>사랑·<br>결혼</th><th>시련·<br>전환점</th><th>가치관</th><th>일상·<br>취미</th><th>시대<br>경험</th>
+          </tr>
+        </thead>
+        <tbody id="heatBody"></tbody>
+      </table>
+      <div class="legend">
+        <span><i class="l0"></i>미충족(보충 대상)</span>
+        <span><i class="l1"></i>얇음</span>
+        <span><i class="l2"></i>보통</span>
+        <span><i class="l3"></i>충실</span>
+        <span><i class="na"></i>해당 없음</span>
+      </div>
+    </div>
+
+    <!-- people / events / emotion -->
+    <div class="row wrap-row" style="margin-bottom:18px;">
+      <div class="card sec" style="flex:1; min-width:280px; margin-bottom:0;">
+        <h2><span class="dot"></span>핵심 인물</h2>
+        <div class="chips">
+          <span class="chip"><b>어머니</b> · 피란·가난을 함께</span>
+          <span class="chip"><b>남편(故)</b> · 1970 결혼, 1995 별세</span>
+          <span class="chip"><b>장남</b> · 가장 의지하는</span>
+          <span class="chip">큰딸</span><span class="chip">막내</span>
+        </div>
+        <h2 style="margin-top:18px;"><span class="dot"></span>감정 흐름 단서</h2>
+        <div class="chips">
+          <span class="chip">그리움</span><span class="chip">자부심</span>
+          <span class="chip">회한</span><span class="chip">감사</span>
+        </div>
+      </div>
+      <div class="card sec" style="flex:1; min-width:280px; margin-bottom:0;">
+        <h2><span class="dot"></span>핵심 사건 타임라인</h2>
+        <div class="tl">
+          <div class="ev"><span class="y">1951</span>1·4 후퇴, 통영으로 피란</div>
+          <div class="ev"><span class="y">1965</span>홀로 상경, 봉제공장 취직</div>
+          <div class="ev"><span class="y">1970</span>결혼, 첫 살림</div>
+          <div class="ev"><span class="y">1995</span>남편 별세 — 인생의 전환점</div>
+          <div class="ev"><span class="y">1996~</span>시장에서 반찬가게 시작</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- gap & request -->
+    <div class="card sec gapsec">
+      <h2><span class="dot"></span>부족한 영역 &amp; 다음 보충 요청</h2>
+      <div class="gaplist">
+        <span class="g">학창시절 — 전 영역</span>
+        <span class="g">청년·독립 × 일·생계</span>
+        <span class="g">노년 × 일상·취미</span>
+      </div>
+      <div class="draft">
+        <div class="dh">⌁ 의뢰인(가족) 전달용 메시지 초안 — 복사해서 보내세요</div>
+        <div class="dt">“어머니께서 중·고등학교 다니시던 무렵의 사진이나, 그때 단짝 친구분 성함이 혹시 남아 있을까요?
+        사진이 없어도 괜찮습니다 — 다니시던 학교나 자주 어울리던 친구 이야기만 들려주셔도 충분합니다.
+        그리고 서울 올라오신 뒤 첫 직장(봉제공장) 시절 이야기도 듣고 싶습니다.”</div>
+        <div class="da">
+          <button class="btn" style="font-size:12px;padding:7px 14px;">복사</button>
+          <button class="btn ghost" style="font-size:12px;padding:7px 14px;">문구 다듬기</button>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align:center; margin-top:6px;">
+      <button class="btn" id="toQuestions">인터뷰 질문지 초안 보기 →</button>
+    </div>
+    <div class="note">※ LifeOS 1단계 목업 — 예시 인물·데이터입니다.</div>
+  </div>
+
+  <!-- ============ QUESTIONS (STEP 3) ============ -->
+  <div class="wrap view" id="questions" data-title="STEP 3 · 인터뷰 질문지 초안">
+    <span class="backlink" id="backBtn2">← 인물진단 리포트</span>
+
+    <div class="card rhead">
+      <div class="av">김</div>
+      <div style="flex:1">
+        <h1>김순일 님 인터뷰 질문지 <span style="color:var(--sub);font-weight:600;font-size:15px;">(초안)</span></h1>
+        <div class="sub">가족헌신형 서사 기반 · AI 자동 생성 · 작가가 자유롭게 추가·수정·재배치할 수 있습니다</div>
+        <div class="tags">
+          <span class="tag main">초안 v1</span>
+          <span class="tag line">가족헌신형 기반</span>
+          <span class="tag">예상 인터뷰 2회차</span>
+        </div>
+        <div class="svc-hint">이 사전조사는 <span class="svc prem">프리미엄 인터뷰</span>에 연결됩니다 · 작가용 인터뷰 질문지</div>
+      </div>
+      <div class="qactions">
+        <button class="btn ghost">＋ 질문 추가</button>
+        <button class="btn ghost">↻ 재생성</button>
+        <button class="btn">내보내기</button>
+      </div>
+    </div>
+
+    <div class="qstats">
+      <div><div class="n">28</div><div class="l">총 문항</div></div>
+      <div><div class="n">6</div><div class="l">챕터(주제)</div></div>
+      <div><div class="n accent">7</div><div class="l">감정 회상 질문</div></div>
+      <div><div class="n accent">5</div><div class="l">보충 질문</div></div>
+      <div><div class="n">~2시간</div><div class="l">예상 소요</div></div>
+    </div>
+
+    <div class="qbanner">
+      <span class="ic">⚑</span>
+      <div>아직 이야기가 얇은 <b>학창시절·청년기 일·생계</b> 영역을 겨냥한 <b>보충 질문</b>을 우선 배치했습니다. 이 질문들의 답이 쌓이면 인물진단 완성율도 함께 올라갑니다.</div>
+    </div>
+
+    <!-- chapter 1 -->
+    <div class="card qsec">
+      <div class="qsec-head"><span class="cnum">1</span><div><div class="ctitle">피란민의 딸, 통영에서</div><div class="clabel">유년·성장 · 시대경험</div></div><span class="ccount">3문항</span></div>
+      <div class="qlist">
+        <div class="q"><div class="qnum">1</div><div class="qbody"><div class="qtext">가장 어릴 적, 통영 집을 떠올리면 어떤 장면이 먼저 떠오르세요?</div><div class="qtags"><span class="qt emo">♥ 감정 회상</span><span class="qt">유년·성장</span></div></div><div class="qact">⋮</div></div>
+        <div class="q"><div class="qnum">2</div><div class="qbody"><div class="qtext">1·4 후퇴 피란길에 대해 가족에게 들으신 이야기가 있나요? 어떻게 통영까지 오게 되셨어요?</div><div class="qtags"><span class="qt">시대경험</span><span class="qt">연대기</span></div></div><div class="qact">⋮</div></div>
+        <div class="q"><div class="qnum">3</div><div class="qbody"><div class="qtext">어린 시절 가족 중 가장 기억에 남는 분은 누구이고, 왜 그런가요?</div><div class="qtags"><span class="qt">가족·관계</span><span class="qt emo">♥ 감정 회상</span></div></div><div class="qact">⋮</div></div>
+      </div>
+    </div>
+
+    <!-- chapter 2 (gap) -->
+    <div class="card qsec">
+      <div class="qsec-head"><span class="cnum">2</span><div><div class="ctitle">열일곱, 서울로 올라오다</div><div class="clabel">청년·독립 · 보충 집중 구간</div></div><span class="ccount">3문항</span></div>
+      <div class="qlist">
+        <div class="q"><div class="qnum">4</div><div class="qbody"><div class="qtext">열일곱에 홀로 상경하기로 결심한 계기는 무엇이었나요?</div><div class="qtags"><span class="qt gap">⚑ 보충 질문</span><span class="qt">시련·전환점</span></div></div><div class="qact">⋮</div></div>
+        <div class="q"><div class="qnum">5</div><div class="qbody"><div class="qtext">처음 다닌 봉제공장은 어디였고, 하루 일과가 어땠는지 기억나세요?</div><div class="qtags"><span class="qt gap">⚑ 보충 질문</span><span class="qt">일·생계</span></div></div><div class="qact">⋮</div></div>
+        <div class="q"><div class="qnum">6</div><div class="qbody"><div class="qtext">그 시절 함께 일하거나 마음으로 의지했던 사람이 있었나요?</div><div class="qtags"><span class="qt gap">⚑ 보충 질문</span><span class="qt">가족·관계</span></div></div><div class="qact">⋮</div></div>
+      </div>
+    </div>
+
+    <!-- chapter 3 -->
+    <div class="card qsec">
+      <div class="qsec-head"><span class="cnum">3</span><div><div class="ctitle">결혼, 그리고 네 아이</div><div class="clabel">결혼·가정형성 · 사랑</div></div><span class="ccount">3문항</span></div>
+      <div class="qlist">
+        <div class="q"><div class="qnum">7</div><div class="qbody"><div class="qtext">남편분과는 어떻게 처음 만나게 되셨어요?</div><div class="qtags"><span class="qt">사랑·결혼</span><span class="qt emo">♥ 감정 회상</span><span class="qmat">📎 1970 결혼사진</span></div></div><div class="qact">⋮</div></div>
+        <div class="q"><div class="qnum">8</div><div class="qbody"><div class="qtext">결혼을 결심하게 된 결정적인 순간이 있었나요?</div><div class="qtags"><span class="qt">사랑·결혼</span></div></div><div class="qact">⋮</div></div>
+        <div class="q"><div class="qnum">9</div><div class="qbody"><div class="qtext">네 아이를 키우며 가장 힘들었던, 그리고 가장 행복했던 기억은 무엇인가요?</div><div class="qtags"><span class="qt">가족·관계</span><span class="qt emo">♥ 감정 회상</span></div></div><div class="qact">⋮</div></div>
+      </div>
+    </div>
+
+    <!-- chapter 4 -->
+    <div class="card qsec">
+      <div class="qsec-head"><span class="cnum">4</span><div><div class="ctitle">남편을 떠나보내며</div><div class="clabel">중년 · 시련·전환점</div></div><span class="ccount">2문항</span></div>
+      <div class="qlist">
+        <div class="q"><div class="qnum">10</div><div class="qbody"><div class="qtext">남편분을 떠나보내던 그해를 떠올리면 어떠세요? 천천히, 말씀하실 수 있는 만큼만 들려주세요.</div><div class="qtags"><span class="qt emo">♥ 감정 회상</span><span class="qt">민감 주제</span></div></div><div class="qact">⋮</div></div>
+        <div class="q"><div class="qnum">11</div><div class="qbody"><div class="qtext">그때 네 아이를 보며 마음속으로 어떤 다짐을 하셨나요?</div><div class="qtags"><span class="qt">가치관</span></div></div><div class="qact">⋮</div></div>
+      </div>
+    </div>
+
+    <!-- chapter 5 -->
+    <div class="card qsec">
+      <div class="qsec-head"><span class="cnum">5</span><div><div class="ctitle">다시 일어서다 — 시장에서의 20년</div><div class="clabel">중년 · 일·생계 · 가치관</div></div><span class="ccount">3문항</span></div>
+      <div class="qlist">
+        <div class="q"><div class="qnum">12</div><div class="qbody"><div class="qtext">반찬가게를 처음 시작하게 된 이야기를 들려주세요.</div><div class="qtags"><span class="qt">일·생계</span><span class="qt">연대기</span></div></div><div class="qact">⋮</div></div>
+        <div class="q"><div class="qnum">13</div><div class="qbody"><div class="qtext">장사하며 단골손님이나 시장 사람들과 잊지 못할 일이 있나요?</div><div class="qtags"><span class="qt">일상·취미</span><span class="qt">가족·관계</span></div></div><div class="qact">⋮</div></div>
+        <div class="q"><div class="qnum">14</div><div class="qbody"><div class="qtext">스스로 ‘나 참 잘 버텨왔다’ 싶은 순간이 있으셨어요?</div><div class="qtags"><span class="qt emo">♥ 감정 회상</span><span class="qt">자부심</span></div></div><div class="qact">⋮</div></div>
+      </div>
+    </div>
+
+    <!-- chapter 6 -->
+    <div class="card qsec">
+      <div class="qsec-head"><span class="cnum">6</span><div><div class="ctitle">손주들에게 남기는 말</div><div class="clabel">노년·현재 · 가치관</div></div><span class="ccount">2문항</span></div>
+      <div class="qlist">
+        <div class="q"><div class="qnum">15</div><div class="qbody"><div class="qtext">손주들에게 꼭 들려주고 싶은 인생의 한마디가 있다면요?</div><div class="qtags"><span class="qt">가치관</span></div></div><div class="qact">⋮</div></div>
+        <div class="q"><div class="qnum">16</div><div class="qbody"><div class="qtext">지금, 가장 감사한 것은 무엇인가요?</div><div class="qtags"><span class="qt emo">♥ 감정 회상</span></div></div><div class="qact">⋮</div></div>
+      </div>
+    </div>
+
+    <button class="morebtn">＋ 나머지 12문항 더 보기</button>
+    <div class="note">※ LifeOS 1단계 목업 — 예시 인물·질문입니다. 질문은 인물 유형과 빈 영역에 따라 자동 생성됩니다.</div>
+  </div>
+
+  <!-- ============ KAKAO 30주 ============ -->
+  <div class="wrap view" id="kakao" data-title="카톡 30주 구독">
+    <span class="backlink" id="backBtn4">← 대시보드</span>
+
+    <div class="searchbar">
+      <div class="search-in"><input type="text" id="kakaoSearch" placeholder="의뢰인 검색 (성함·신청 자녀·기관)…" autocomplete="off"></div>
+    </div>
+    <div class="search-results" id="kakaoResults"></div>
+
+    <div class="card rhead">
+      <div class="av">이</div>
+      <div style="flex:1">
+        <h1>이건우 님 · 카톡 30주 구독</h1>
+        <div class="sub">1952년생 · 남 · 신청자: 큰아들 이성준 · 시작 2026-04-09 · 종료 예정 2026-11-04</div>
+        <div class="tags">
+          <span class="tag main">8주차 진행 중</span>
+          <span class="tag line">자녀 대리 응답</span>
+          <span class="tag">8주 관문 통과 ✓</span>
+          <span class="tag">가족 참여 4명</span>
+        </div>
+        <div class="svc-hint">사전조사 결과 — <span class="svc kakao">카톡 30주 구독</span>에 반영됨 · 인물진단 잠정 유형: 가족헌신형</div>
+      </div>
+    </div>
+
+    <!-- KPI -->
+    <div class="kpis">
+      <div class="kpi"><div class="kn">75%</div><div class="kl">1주 응답률<small>목표 ≥70%</small></div></div>
+      <div class="kpi"><div class="kn">62%</div><div class="kl">4주 유지율<small>목표 ≥50%</small></div></div>
+      <div class="kpi pass"><div class="kn">38%</div><div class="kl">8주 유지율<small>관문 통과 ✓ (≥35%)</small></div></div>
+      <div class="kpi muted"><div class="kn">예상 28%</div><div class="kl">완주율<small>목표 ≥25%</small></div></div>
+    </div>
+
+    <!-- 30주 캘린더 -->
+    <div class="card sec">
+      <h2><span class="dot"></span>30주 캘린더 · 4단계 진행</h2>
+      <div class="stage stage-1">
+        <div class="stage-h"><span class="stage-tag s1">감각 기억</span> 1~4주 · 가벼운 진입</div>
+        <div class="weeks">
+          <span class="wk done">1</span><span class="wk done">2</span><span class="wk done">3</span><span class="wk done">4</span>
+        </div>
+      </div>
+      <div class="stage stage-2">
+        <div class="stage-h"><span class="stage-tag s2">정서 연결</span> 5~8주 · 8주 관문 구간<span class="gate">🚪 8주 관문 통과</span></div>
+        <div class="weeks">
+          <span class="wk done">5</span><span class="wk done">6</span><span class="wk done">7</span><span class="wk current">8</span>
+        </div>
+      </div>
+      <div class="stage stage-3">
+        <div class="stage-h"><span class="stage-tag s3">청춘 · 가족 · 일</span> 9~20주 · 깊은 서사 구간</div>
+        <div class="weeks">
+          <span class="wk">9</span><span class="wk">10</span><span class="wk">11</span><span class="wk">12</span><span class="wk">13</span><span class="wk">14</span><span class="wk">15</span><span class="wk">16</span><span class="wk">17</span><span class="wk">18</span><span class="wk">19</span><span class="wk">20</span>
+        </div>
+      </div>
+      <div class="stage stage-4">
+        <div class="stage-h"><span class="stage-tag s4">유산 메시지</span> 21~30주 · 책의 클라이맥스</div>
+        <div class="weeks">
+          <span class="wk">21</span><span class="wk">22</span><span class="wk">23</span><span class="wk">24</span><span class="wk">25</span><span class="wk">26</span><span class="wk">27</span><span class="wk">28</span><span class="wk">29</span><span class="wk">30</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 이번 주차 + 다음 추천 -->
+    <div class="card sec">
+      <h2><span class="dot"></span>이번 주차 질문 · 8주차</h2>
+      <div class="qweek-cur">
+        <span class="stage-tag s2 qweek-tag-inline">정서 연결 · 8주차</span>
+        <div class="qweek-text">“살면서 가장 외로웠던 순간은?”</div>
+        <div class="qweek-meta">발송 화요일 9시 · 응답 상태 — <b>음성 2:14 + 자녀 보충 텍스트 800자</b> (오늘 14:32 수신)</div>
+      </div>
+      <div class="qweek-next">
+        <span class="stage-tag s3 qweek-tag-inline">청춘 · 가족 · 일 · 9주차</span>
+        <div class="qweek-h">⌁ 다음(9주차) 추천 질문 — AI 제안</div>
+        <div class="qweek-text">“젊은 시절, 가장 무모했던 결정은 무엇이었나요?”</div>
+        <div class="qweek-meta">근거: 청춘 구간 진입 · 사진 트리거 추천 — <b>첫 직장 사진</b> · 가족 의사결정 키워드 부족</div>
+        <div class="qweek-actions">
+          <button class="btn ghost">질문 수정</button>
+          <button class="btn ghost">사진 트리거 첨부</button>
+          <button class="btn">화요일 발송 예약</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 가족 피드백 · 답변 아카이브 -->
+    <div class="card sec">
+      <h2><span class="dot"></span>가족 피드백 · 답변 아카이브</h2>
+      <div class="feed-row">
+        <div class="fr-h"><span class="wbadge">7주차</span> “처음 시집왔던 날” 답변</div>
+        <div class="fr-body">“…그 추운 11월 어머니 따라서 부엌에서 떨고 있었지…” (음성 2:14 · AI 자동 전사)</div>
+        <div class="fr-cmt">💬 둘째 딸 — “어머니가 그 이야기 저한테도 자주 하셨어요” · 손주 — 📷 결혼 당일 사진 첨부</div>
+      </div>
+      <div class="feed-row">
+        <div class="fr-h"><span class="wbadge">5주차</span> “가장 외로웠던 순간” 답변</div>
+        <div class="fr-body">“군 제대 후 첫 직장에서 동기들 다 떠나고 혼자 야근하던 그 겨울…” (큰아들 대리 입력 · 800자)</div>
+        <div class="fr-cmt">💬 큰아들 — “아버지 이 이야기 처음 듣네요. 한 번 더 자세히 물어볼게요.”</div>
+      </div>
+      <div class="feed-row">
+        <div class="fr-h"><span class="wbadge">3주차</span> “어릴 적 좋아한 음식” 답변</div>
+        <div class="fr-body">“외할머니가 해주신 청국장이 지금도 잊혀지지 않아…” (텍스트 직접 입력)</div>
+        <div class="fr-cmt">📷 외갓집 부엌 사진 1장 · 손주 — 💬 “저도 그 청국장 한 번 먹어보고 싶어요”</div>
+      </div>
+      <div class="feed-stats">
+        누적 — <span>음성 답변 4건</span> · <span>텍스트 답변 4건</span> · <span>사진 9장</span> · <span>가족 댓글 12건</span>
+      </div>
+    </div>
+
+    <!-- 응답 기반 설계 재조정 -->
+    <div class="card sec redesign">
+      <h2><span class="dot"></span>응답 기반 설계 재조정 (AI 제안)</h2>
+      <div class="rd-body">
+        <p>지금까지 8주 응답을 분석한 결과 — <b>‘어머니·둘째 딸·손주’ 같은 가족 키워드가 빈번(38회)</b>하게 등장한 반면 <b>‘일·직장’ 영역 일화는 비교적 적습니다(7회)</b>. 청춘·가족·일 구간(9~20주)을 가족 비중을 ↑로 재배치하고, 일 이야기는 큰아들 대리 답변으로 풀어내는 흐름을 권합니다.</p>
+      </div>
+      <div class="rd-changes">
+        <div class="rd-change"><span class="oldq">9주차 원안: “첫 직장에서 어떤 일을 하셨나요?”</span> → <span class="newq">“첫 직장 동료 중 가장 기억나는 사람은?”</span></div>
+        <div class="rd-change"><span class="oldq">12주차 원안: “직업적으로 가장 자랑스러웠던 일은?”</span> → <span class="newq">“가족에게 자랑스럽게 들려준 직장 이야기는?”</span></div>
+        <div class="rd-change"><span class="oldq">15주차 원안: “직장에서 가장 힘들었던 순간은?”</span> → <span class="newq">“그 시절 아내(자녀 어머니)에게 가장 미안했던 순간은?”</span></div>
+      </div>
+      <div class="rd-actions">
+        <button class="btn" id="rdApply">재설계 적용</button>
+        <button class="btn ghost">유지</button>
+        <button class="btn ghost">개별 검토</button>
+      </div>
+    </div>
+
+    <div class="note">※ LifeOS demo2 · 카톡 30주 구독 — 예시 데이터입니다.</div>
+  </div>
+
+  <!-- ============ WELFARE-INTRO 통합보드 ============ -->
+  <div class="wrap view" id="welfare-intro" data-title="복지관 · 통합보드">
+    <div class="pagehead">
+      <h1>복지관 회상요법 · 통합보드</h1>
+      <button class="btn">+ 기관 프로그램 개설</button>
+    </div>
+    <p class="muted" style="font-size:13px; margin:-6px 0 16px; line-height:1.7;">
+      <b style="color:#4C3D7A">집단형</b>과 <b style="color:#7A4D2B">개인형</b>은 <b style="color:var(--text)">전혀 다른 컨셉</b>입니다 —
+      집단형은 ‘여럿이 함께’ 진행자가 이끄는 그룹 활동, 개인형은 ‘한 분을 깊이’ 따라가 한 권의 책으로. 두 갈래를 따로 관리합니다. <span style="color:#9CA3A8;">(구상 단계 — 예시 데이터)</span>
+    </p>
+
+    <!-- 집단형 줄 -->
+    <div class="wboard-row">
+      <div class="wbr-head grp">
+        <span class="wbr-name">집단형 · GROUP</span>
+        <span class="wbr-desc">여럿이 함께 · 진행자 중심 · 참여 어르신 명단 관리</span>
+        <button class="wbr-add">+ 새 집단 프로그램</button>
+      </div>
+      <div class="wprojs">
+        <div class="wp-card grp" data-go="grp">
+          <div class="wp-top"><span class="wp-name">강동시니어복지관</span><span class="st-badge active">진행 중</span></div>
+          <div class="wp-meta">8명 그룹 · <span class="owner"><span class="oav">이</span>이작가</span> · 3/10주차</div>
+          <div class="wp-foot"><div class="wp-prog"><div class="bar"><i style="width:30%"></i></div></div><span class="wp-pct">30%</span></div>
+        </div>
+        <div class="wp-card grp" data-go="grp">
+          <div class="wp-top"><span class="wp-name">송파 데이케어센터</span><span class="st-badge active">진행 중</span></div>
+          <div class="wp-meta">6명 그룹 · <span class="owner"><span class="oav">박</span>박직원</span> · 5/8주차</div>
+          <div class="wp-foot"><div class="wp-prog"><div class="bar"><i style="width:62%"></i></div></div><span class="wp-pct">62%</span></div>
+        </div>
+        <div class="wp-card grp is-done" data-go="grp">
+          <div class="wp-top"><span class="wp-name">서초 실버대학</span><span class="st-badge done">완료</span></div>
+          <div class="wp-meta">10명 그룹 · <span class="owner"><span class="oav">이</span>이작가</span> · 8주 완료 · 기록집 발간</div>
+          <div class="wp-foot"><div class="wp-prog"><div class="bar"><i style="width:100%;background:#9CA3AF"></i></div></div><span class="wp-pct" style="color:#6B7280">100%</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 개인형 줄 -->
+    <div class="wboard-row">
+      <div class="wbr-head ind">
+        <span class="wbr-name">개인형 · 1:1</span>
+        <span class="wbr-desc">한 분을 1:1로 · 회차별 인터뷰 · 라이프스토리북 제작</span>
+        <button class="wbr-add">+ 새 개인 프로그램</button>
+      </div>
+      <div class="wprojs">
+        <div class="wp-card ind" data-go="ind">
+          <div class="wp-top"><span class="wp-name">박순영 어르신</span><span class="st-badge active">진행 중</span></div>
+          <div class="wp-meta">한울요양원 · <span class="owner"><span class="oav">김</span>김작가</span> · 5/12주차</div>
+          <div class="wp-foot"><div class="wp-prog"><div class="bar"><i style="width:42%"></i></div></div><span class="wp-pct">42%</span></div>
+        </div>
+        <div class="wp-card ind is-done" data-go="ind">
+          <div class="wp-top"><span class="wp-name">김복순 어르신</span><span class="st-badge done">완료</span></div>
+          <div class="wp-meta">행복요양원 · <span class="owner"><span class="oav">김</span>김작가</span> · 12주 완료 · 책 전달</div>
+          <div class="wp-foot"><div class="wp-prog"><div class="bar"><i style="width:100%;background:#9CA3AF"></i></div></div><span class="wp-pct" style="color:#6B7280">100%</span></div>
+        </div>
+        <div class="wp-card ind is-done" data-go="ind">
+          <div class="wp-top"><span class="wp-name">정해숙 어르신</span><span class="st-badge done">완료</span></div>
+          <div class="wp-meta">한울요양원 · <span class="owner"><span class="oav">박</span>박직원</span> · 10주 완료 · 책 전달</div>
+          <div class="wp-foot"><div class="wp-prog"><div class="bar"><i style="width:100%;background:#9CA3AF"></i></div></div><span class="wp-pct" style="color:#6B7280">100%</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 집단형 vs 개인형 비교 -->
+    <div class="card sec">
+      <h2><span class="dot"></span>집단형 vs 개인형 — 컨셉 비교</h2>
+      <div class="w-intro">
+        <div class="w-type grp">
+          <div class="wt-h"><span class="wt-name">집단형</span><span class="wt-en">GROUP</span> <span class="wtag grp">복지관 · 집단</span></div>
+          <div class="wt-sub">여럿이 함께 추억을 나누며 정서·사회성을 회복</div>
+          <div class="wt-kv">
+            <div><span class="k">대상</span><span class="v">복지관·주간보호 6~10명 그룹</span></div>
+            <div><span class="k">방식</span><span class="v">주제별 회상 세션, 주 1회 · 6~10주</span></div>
+            <div><span class="k">핵심</span><span class="v">참여 어르신 명단·인적사항 관리</span></div>
+            <div><span class="k">결과</span><span class="v">참여 경험 중심 · 회상 활동 기록집</span></div>
+          </div>
+          <div class="wt-foot">저단가 · 다수 참여 · 기관 정기 편성</div>
+        </div>
+        <div class="w-type ind">
+          <div class="wt-h"><span class="wt-name">개인형</span><span class="wt-en">1:1</span> <span class="wtag ind">복지관 · 개인</span></div>
+          <div class="wt-sub">한 분의 삶을 깊이 따라가 한 권의 책으로</div>
+          <div class="wt-kv">
+            <div><span class="k">대상</span><span class="v">요양시설·치매 초기 어르신 1:1</span></div>
+            <div><span class="k">방식</span><span class="v">회차별 인터뷰 · 사진·물건 매개 · 8~12주</span></div>
+            <div><span class="k">핵심</span><span class="v">인터뷰·카톡과 유사한 회차 진행</span></div>
+            <div><span class="k">결과</span><span class="v">개인 연대기 · 라이프스토리북(책)</span></div>
+          </div>
+          <div class="wt-foot">고단가 · 결과물(책) · 가족 만족도 높음</div>
+        </div>
+      </div>
+    </div>
+    <div class="note">※ LifeOS demo2 · 복지관 통합보드 — 카드를 클릭하면 프로그램 설계로 이동합니다.</div>
+  </div>
+
+  <!-- ============ WELFARE-DESIGN 프로그램 설계 ============ -->
+  <div class="wrap view" id="welfare-design" data-title="복지관 · 프로그램 설계">
+    <div class="pagehead">
+      <h1>프로그램 설계</h1>
+      <div class="design-toggle">
+        <button data-d="grp" class="active">집단형 설계</button>
+        <button data-d="ind">개인형 설계</button>
+      </div>
+    </div>
+
+    <div class="searchbar">
+      <div class="search-in"><input type="text" id="orgSearch" placeholder="기관·대상 검색 (복지관·요양원·어르신)…" autocomplete="off"></div>
+    </div>
+    <div class="search-results" id="orgResults"></div>
+
+    <!-- 집단형 설계 -->
+    <div class="design-pane active" id="designGrp">
+      <div class="card sec">
+        <h2><span class="dot"></span>프로그램 정보 · 강동시니어복지관
+          <button class="btn ghost focus-edit" data-edit="focusGrp" style="font-size:12px;padding:6px 13px;">설계 수정</button>
+        </h2>
+        <div class="design-info">
+          <div><div class="k">기관</div><div class="v">강동시니어복지관</div></div>
+          <div><div class="k">기간</div><div class="v">10주 (3주차)</div></div>
+          <div><div class="k">참여 인원</div><div class="v">8명</div></div>
+          <div><div class="k">담당</div><div class="v">이작가</div></div>
+        </div>
+        <div class="focus-box" id="focusGrp" style="margin-top:14px;">
+          <div class="focus-row"><div class="focus-k">🎯 프로그램 핵심</div><div class="focus-v" contenteditable="false">치매 중기 어르신 8명 그룹 대상. ‘정서 안정·사회적 상호작용·치매예방’이 1차 목표이며, 결과물(기록집)보다 매 세션의 참여 경험과 정서 활성화를 우선한다. 한 분이라도 소외되지 않도록 발언 기회를 돌아가며 배분하고, 회상이 잘 안 되는 어르신은 매개물(사진·물건·노래)로 접근한다. 8주 완주 시 그룹 단체 기록집을 제작해 가족·기관에 전달.</div></div>
+          <div class="focus-row"><div class="focus-k">⚑ 집중 사항</div><div class="focus-v" contenteditable="false">① 민감 주제 주의 — 이순례(실향민)·강성태(6.25 참전) 어르신은 상실·전쟁 기억이 있어 깊이 파기보다 정서 지지를 우선. 울먹임·침묵 시 다음 주제로 자연스럽게 전환. ② 활성화 자원 — 최금자·윤정애 어르신은 노래를 좋아해 세션 도입부 분위기 메이커로 활용. ③ 인지 편차 — 한말순·박무웅 어르신은 기억력 양호해 회상 마중물 역할, 이순례 어르신은 말수 적어 1:1 보조 진행자 배치.</div></div>
+          <div class="focus-row"><div class="focus-k">📌 진행 메모</div><div class="focus-v" contenteditable="false">출석 변동이 큼(주 7/8명) — 결석자 발생 대비 회상 트리거를 매 세션 2종 준비. 세션 후반 피로도 관리를 위해 50분 내 종료하고, 마지막 10분은 다 함께 정리·소감 나눔. 매 세션 종료 후 어르신별 정서 활성도·참여도를 5점 척도로 기록해 치매예방 효과 데이터(B2G 근거)로 축적.</div></div>
+          <div class="focus-row"><div class="focus-k">✅ 다음 세션</div><div class="focus-v" contenteditable="false">4주차 ‘청년과 일’ — 정복동(광부 출신)·강성태(군인 출신) 어르신의 직업 자부심 회상을 중심에 둔다. 옛 작업복·표창장·연장 사진을 트리거로 준비하고, 각자 ‘가장 자랑스러웠던 일’을 한 문장으로 말하는 활동으로 마무리.</div></div>
+        </div>
+        <div class="focus-edit" style="margin-top:10px; display:none;">
+          <button class="btn" data-save="focusGrp" style="font-size:12px;padding:7px 15px;">저장</button>
+        </div>
+      </div>
+
+      <div class="card sec">
+        <h2><span class="dot"></span>참여 어르신 관리 <span style="font-weight:600;color:var(--sub);font-size:12px;">(명단 추가·삭제 · 인적사항 메모)</span></h2>
+        <table class="elders" id="eldersTable">
+          <thead><tr><th style="width:140px;">어르신</th><th style="width:50px;">나이</th><th>인적사항 · 회상 메모</th><th style="width:64px;">자료</th><th style="width:54px;">관리</th></tr></thead>
+          <tbody>
+            <tr><td><span class="elder-av">김</span> <span class="elder-name">김영자</span></td><td>82</td><td><textarea class="elder-memo" rows="1">통영 출생 · 교사 출신 · 청력 약간 저하, 또박또박 말함</textarea></td><td><span class="elder-att">📷 3</span></td><td><button class="elder-del">삭제</button></td></tr>
+            <tr><td><span class="elder-av">박</span> <span class="elder-name">박무웅</span></td><td>79</td><td><textarea class="elder-memo" rows="1">농사 · 6남매 장남 · 거동 양호, 옛 농기구 이야기 좋아함</textarea></td><td><span class="elder-att">📷 2</span></td><td><button class="elder-del">삭제</button></td></tr>
+            <tr><td><span class="elder-av">이</span> <span class="elder-name">이순례</span></td><td>85</td><td><textarea class="elder-memo" rows="1">실향민 · 평양 출생 · 말수 적음, 고향 지도 보면 반응</textarea></td><td><span class="elder-att">📷 1</span></td><td><button class="elder-del">삭제</button></td></tr>
+            <tr><td><span class="elder-av">최</span> <span class="elder-name">최금자</span></td><td>77</td><td><textarea class="elder-memo" rows="1">시장 상인 30년 · 활달 · 분위기 메이커, 옛 노래 잘 부름</textarea></td><td><span class="elder-att">📷 4</span></td><td><button class="elder-del">삭제</button></td></tr>
+            <tr><td><span class="elder-av">정</span> <span class="elder-name">정복동</span></td><td>81</td><td><textarea class="elder-memo" rows="1">광부 출신 · 자부심 강함 · 표창장 보여주며 이야기</textarea></td><td><span class="elder-att">📷 2</span></td><td><button class="elder-del">삭제</button></td></tr>
+            <tr><td><span class="elder-av">한</span> <span class="elder-name">한말순</span></td><td>83</td><td><textarea class="elder-memo" rows="1">7남매 어머니 · 기억력 양호 · 자녀 양육 이야기 풍부</textarea></td><td><span class="elder-att">📷 5</span></td><td><button class="elder-del">삭제</button></td></tr>
+            <tr><td><span class="elder-av">윤</span> <span class="elder-name">윤정애</span></td><td>78</td><td><textarea class="elder-memo" rows="1">교회 권사 · 노래 좋아함 · 찬송가로 정서 활성화</textarea></td><td><span class="elder-att">📷 1</span></td><td><button class="elder-del">삭제</button></td></tr>
+            <tr><td><span class="elder-av">강</span> <span class="elder-name">강성태</span></td><td>80</td><td><textarea class="elder-memo" rows="1">군인 출신 · 6.25 참전 · 시대 증언 풍부, 사진첩 보유</textarea></td><td><span class="elder-att">📷 3</span></td><td><button class="elder-del">삭제</button></td></tr>
+          </tbody>
+        </table>
+        <div class="addbar">
+          <input type="text" id="elderName" placeholder="어르신 성함">
+          <input type="text" id="elderAge" class="w-sm" placeholder="나이">
+          <button class="btn" id="elderAdd">+ 명단 추가</button>
+        </div>
+      </div>
+
+      <div class="card sec">
+        <h2><span class="dot"></span>집단형 8주 커리큘럼</h2>
+        <div class="curr grp">
+          <div class="cw"><div class="cw-n">1주</div><div class="cw-body"><div class="cw-t">만남과 인사</div><div class="cw-d">자기소개·고향 이야기로 분위기 열기</div><div class="cw-trig">🎯 트리거: 이름표 · 고향 지도</div></div></div>
+          <div class="cw"><div class="cw-n">2주</div><div class="cw-body"><div class="cw-t">어린 시절</div><div class="cw-d">옛 놀이·먹거리 회상으로 감각 기억 자극</div><div class="cw-trig">🎯 트리거: 옛날 사진 · 전통 놀이 도구</div></div></div>
+          <div class="cw"><div class="cw-n">3주</div><div class="cw-body"><div class="cw-t">학창 시절</div><div class="cw-d">학교·친구 추억 나누기</div><div class="cw-trig">🎯 트리거: 교복 · 옛 교과서 · 교가</div></div></div>
+          <div class="cw"><div class="cw-n">4주</div><div class="cw-body"><div class="cw-t">청년과 일</div><div class="cw-d">첫 일·생계 이야기로 자부심 회복</div><div class="cw-trig">🎯 트리거: 옛 도구 · 작업복</div></div></div>
+          <div class="cw"><div class="cw-n">5주</div><div class="cw-body"><div class="cw-t">사랑과 결혼</div><div class="cw-d">만남·결혼 회상, 정서적 교류</div><div class="cw-trig">🎯 트리거: 결혼사진 · 옛 노래</div></div></div>
+          <div class="cw"><div class="cw-n">6주</div><div class="cw-body"><div class="cw-t">가족과 자녀</div><div class="cw-d">양육 이야기로 관계 기억 활성화</div><div class="cw-trig">🎯 트리거: 가족사진</div></div></div>
+          <div class="cw"><div class="cw-n">7주</div><div class="cw-body"><div class="cw-t">보람과 자부심</div><div class="cw-d">인생의 자랑을 함께 나누며 자존감 강화</div><div class="cw-trig">🎯 트리거: 표창·기념품</div></div></div>
+          <div class="cw"><div class="cw-n">8주</div><div class="cw-body"><div class="cw-t">마무리와 나눔</div><div class="cw-d">회고 공유 · 그룹 회상 활동 기록집 제작</div><div class="cw-trig">🎯 트리거: 단체 사진 촬영</div></div></div>
+        </div>
+        <div class="curr-note"><b>운영 메모</b> — 6주 단축형은 1·3·5·6·7·8주 중심으로 압축. 매 세션 끝에 <b>정서 활성도·참여도</b>를 기록해 치매예방 효과 데이터로 환류(B2G 근거).</div>
+      </div>
+    </div>
+
+    <!-- 개인형 설계 -->
+    <div class="design-pane" id="designInd">
+      <div class="card sec">
+        <h2><span class="dot"></span>대상 어르신 · 박순영 어르신
+          <button class="btn ghost focus-edit" data-edit="focusInd" style="font-size:12px;padding:6px 13px;">설계 수정</button>
+        </h2>
+        <div class="design-info">
+          <div><div class="k">대상</div><div class="v">박순영 (1944·여)</div></div>
+          <div><div class="k">기관</div><div class="v">한울요양원</div></div>
+          <div><div class="k">기간</div><div class="v">12주 (5주차)</div></div>
+          <div><div class="k">담당</div><div class="v">김작가</div></div>
+        </div>
+        <div class="focus-box" id="focusInd" style="margin-top:14px;">
+          <div class="focus-row"><div class="focus-k">🎯 프로그램 핵심</div><div class="focus-v" contenteditable="false">치매 초기 박순영 어르신(1944) 1:1 라이프스토리워크. ‘정체성 유지·가족 의사소통·기록물 제작’이 목표이며, 12주 후 라이프스토리북(책)을 가족에게 전달하는 결과물 중심으로 진행한다. 집단형과 달리 한 분의 생애를 시기순으로 깊이 따라가며, 사진·물건을 매개로 구체적 일화를 끌어내 챕터로 구성한다.</div></div>
+          <div class="focus-row"><div class="focus-k">⚑ 집중 사항</div><div class="focus-v" contenteditable="false">① 서사 방향 — 사전조사 인물 유형 ‘가족헌신형’으로, 자녀·남편 이야기에서 회상이 가장 깊고 감정이 풍부하다. 일·사회 영역은 단서가 얕으니 ‘남편/자녀에게 들려준 직장 이야기’처럼 가족 관점으로 우회 질문. ② 정서 — 남편(1995년 별세) 관련 주제는 깊은 회한이 있어 충분히 기다리고 다그치지 않는다. ③ 결과물 — 챕터 3/6 윤곽 잡힘, 사진 14건 확보. 가족(큰딸)이 사진·증언 적극 제공 중.</div></div>
+          <div class="focus-row"><div class="focus-k">📌 진행 메모</div><div class="focus-v" contenteditable="false">오후 2~4시 컨디션이 가장 좋음 — 세션은 이 시간대로 고정. 사진 매개 시 반응이 크므로 회차마다 관련 사진을 1~2장 사전 확보(가족 협조). 1회 40분을 넘기면 집중력이 떨어져 40분 내 종료. 전사·정리는 세션 직후 진행자가 즉시 메모로 보강.</div></div>
+          <div class="focus-row"><div class="focus-k">✅ 다음 세션</div><div class="focus-v" contenteditable="false">6주차 ‘사랑’ — 결혼사진을 매개로 남편과의 첫 만남·결혼 과정을 회상. ‘가족헌신형’ 핵심 구간이라 감정이 고조될 가능성이 높으니 충분히 기다리고, 눈물이 나면 멈추고 다독인 뒤 이어간다. 라이프스토리북 ‘사랑’ 챕터의 핵심 자료가 될 회차.</div></div>
+        </div>
+        <div class="focus-edit" style="margin-top:10px; display:none;">
+          <button class="btn" data-save="focusInd" style="font-size:12px;padding:7px 15px;">저장</button>
+        </div>
+        <div class="svc-hint" style="margin-top:14px;">개인형은 <span class="svc kakao">인터뷰·카톡 구독</span>과 유사한 회차 진행 모드 · 사전조사(인물진단)를 받아 시작</div>
+      </div>
+
+      <div class="card sec">
+        <h2><span class="dot"></span>이번 회차 · 5주차 (청년기)</h2>
+        <div class="qweek-cur">
+          <span class="wtag ind qweek-tag-inline">청년기 · 5주차</span>
+          <div class="qweek-text">“젊은 시절, 가장 빛났던 순간은 언제였나요?”</div>
+          <div class="qweek-meta">진행 — <b>음성 3:20 + 진행자 메모</b> · 🎯 매개 자료: 방직공장 시절 흑백사진</div>
+        </div>
+        <div class="qweek-next">
+          <span class="wtag ind qweek-tag-inline">사랑 · 6주차</span>
+          <div class="qweek-h">⌁ 다음(6주차) 추천 질문 — AI 제안</div>
+          <div class="qweek-text">“남편분과는 어떻게 처음 만나셨어요?”</div>
+          <div class="qweek-meta">근거: 사랑 구간 진입 · 매개 자료 추천 — <b>결혼사진</b> · 정체성·정서 회상 강화</div>
+          <div class="qweek-actions">
+            <button class="btn ghost">질문 수정</button>
+            <button class="btn ghost">매개 자료 첨부</button>
+            <button class="btn">다음 세션 준비</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card sec">
+        <h2><span class="dot"></span>전체 회차 · 12주 진행</h2>
+        <div class="curr ind">
+          <div class="cw"><div class="cw-n" style="background:#9C6B3E;color:#fff;">1✓</div><div class="cw-body"><div class="cw-t">라포 형성</div><div class="cw-d">관계 형성·기초 정보, 사전조사 연동 — <b>완료</b></div></div></div>
+          <div class="cw"><div class="cw-n" style="background:#9C6B3E;color:#fff;">2✓</div><div class="cw-body"><div class="cw-t">뿌리</div><div class="cw-d">출생·부모·가족 배경 — <b>완료</b></div></div></div>
+          <div class="cw"><div class="cw-n" style="background:#9C6B3E;color:#fff;">3✓</div><div class="cw-body"><div class="cw-t">유년기</div><div class="cw-d">자란 곳·놀이·음식 — <b>완료</b></div></div></div>
+          <div class="cw"><div class="cw-n" style="background:#9C6B3E;color:#fff;">4✓</div><div class="cw-body"><div class="cw-t">학창 시절</div><div class="cw-d">학교·친구·꿈 — <b>완료</b></div></div></div>
+          <div class="cw"><div class="cw-n" style="border:2px solid #9C6B3E;background:#fff;color:#7A4D2B;">5</div><div class="cw-body"><div class="cw-t">청년기 <span style="color:#7A4D2B;font-weight:800;font-size:11px;">진행 중</span></div><div class="cw-d">첫 독립·군대·첫 일</div></div></div>
+          <div class="cw"><div class="cw-n">6주</div><div class="cw-body"><div class="cw-t">사랑</div><div class="cw-d">연애·결혼 · 매개: 결혼사진</div></div></div>
+          <div class="cw"><div class="cw-n">7주</div><div class="cw-body"><div class="cw-t">가정</div><div class="cw-d">자녀·살림·일상</div></div></div>
+          <div class="cw"><div class="cw-n">8주</div><div class="cw-body"><div class="cw-t">일과 생계</div><div class="cw-d">직업·사회생활</div></div></div>
+          <div class="cw"><div class="cw-n">9주</div><div class="cw-body"><div class="cw-t">전환점</div><div class="cw-d">시련·위기·극복</div></div></div>
+          <div class="cw"><div class="cw-n">10주</div><div class="cw-body"><div class="cw-t">가치관</div><div class="cw-d">신념·삶의 지혜</div></div></div>
+          <div class="cw"><div class="cw-n">11주</div><div class="cw-body"><div class="cw-t">유산</div><div class="cw-d">가족에게 남기는 말</div></div></div>
+          <div class="cw"><div class="cw-n">12주</div><div class="cw-body"><div class="cw-t">완성</div><div class="cw-d">라이프스토리북 제작 · 가족에게 전달</div><div class="cw-trig">📖 결과물: 개인 연대기 책자</div></div></div>
+        </div>
+        <div class="curr-note"><b>운영 메모</b> — 사전조사(인물진단·6유형)를 받아 시작. 회차 질문은 <b>인물 유형별 매트릭스</b>로 자동 분기되며, 8주 단축형은 전환점·가치관·유산 구간을 통합.</div>
+      </div>
+    </div>
+    <div class="note">※ LifeOS demo2 · 프로그램 설계 — 예시 데이터입니다. 어르신 명단은 추가·삭제·메모 편집이 가능합니다.</div>
+  </div>
+
+  <!-- ============ WELFARE-CASES 기존 사례(완료) ============ -->
+  <div class="wrap view" id="welfare-cases" data-title="복지관 · 기존 사례">
+    <div class="pagehead"><h1>기존 사례 · 완료 프로젝트</h1></div>
+    <p class="muted" style="font-size:13px; margin:-6px 0 16px; line-height:1.7;">
+      완료된 회상요법 프로그램 아카이브 — 결과물·만족도·축적된 회상 데이터. 새 프로그램 설계 시 참고 자료로 재사용됩니다.
+    </p>
+    <div class="cases-bar">
+      <div class="cases-search"><input type="text" id="caseSearch" placeholder="기관·담당·핵심 검색…"></div>
+      <div class="cases-filter" id="caseFilter">
+        <button data-t="all" class="active">전체</button>
+        <button data-t="grp">집단형</button>
+        <button data-t="ind">개인형</button>
+      </div>
+      <select class="cases-sort" id="caseSort">
+        <option value="recent">최신순</option>
+        <option value="people">인원 많은순</option>
+        <option value="weeks">기간 긴순</option>
+        <option value="name">기관명순</option>
+      </select>
+    </div>
+    <div class="card sec" style="padding:8px 12px;">
+      <table class="case-table" id="caseTable">
+        <thead>
+          <tr>
+            <th data-sort="type">유형</th>
+            <th data-sort="name">기관 · 대상</th>
+            <th data-sort="people" style="text-align:center;">인원</th>
+            <th data-sort="weeks" style="text-align:center;">기간</th>
+            <th data-sort="recent" style="text-align:center;">시기</th>
+            <th>핵심 사항 요약</th>
+          </tr>
+        </thead>
+        <tbody id="caseBody"></tbody>
+      </table>
+      <div class="cases-empty" id="caseEmpty" style="display:none;">검색 결과가 없습니다.</div>
+    </div>
+    <div class="note">※ LifeOS demo2 · 완료 프로젝트 — 예시 데이터입니다. 헤더 클릭으로 정렬, 위에서 검색·필터.</div>
+  </div>
+
+  <!-- ============ WELFARE-BENCH 벤치마크 ============ -->
+  <div class="wrap view" id="welfare-bench" data-title="복지관 · 벤치마크">
+    <div class="pagehead"><h1>벤치마크 · 해외 검증 사례</h1></div>
+    <p class="muted" style="font-size:13px; margin:-6px 0 16px; line-height:1.7;">
+      일본·미국에서 시장으로 검증된 회상요법·생애기록 모델. 복지관 회상요법 설계의 근거이자 B2G 제안 자료입니다.
+    </p>
+    <div class="cases">
+      <div class="case bench-card" data-bm="lsw">
+        <div class="c-top"><span class="c-emoji">🇯🇵</span><span class="c-flag bench">일본</span></div>
+        <div class="c-name">라이프스토리워크</div>
+        <div class="c-meta">요양시설 표준 케어도구 (1992~)</div>
+        <div class="c-desc">사진·물건 매개 회상으로 개인 연대기 제작. 치매예방·정서안정 효과 근거 20년+ 축적.</div>
+        <div class="c-more">전문 보기 →</div>
+      </div>
+      <div class="case bench-card" data-bm="jibunshi">
+        <div class="c-top"><span class="c-emoji">🇯🇵</span><span class="c-flag bench">일본</span></div>
+        <div class="c-name">자분사(自分史)</div>
+        <div class="c-meta">종활(終活) 시장 정착 모델</div>
+        <div class="c-desc">자녀 선물 + 복지기관 납품 양면 시장. 노인대학·복지관 프로그램으로 제도화.</div>
+        <div class="c-more">전문 보기 →</div>
+      </div>
+      <div class="case bench-card" data-bm="storyworth">
+        <div class="c-top"><span class="c-emoji">🇺🇸</span><span class="c-flag bench">미국</span></div>
+        <div class="c-name">StoryWorth</div>
+        <div class="c-meta">가족 생애기록 구독 (연 $99)</div>
+        <div class="c-desc">12년간 100만 권 출판 · Trustpilot 만점 리뷰 5만+. 지불 수요를 입증한 선례.</div>
+        <div class="c-more">전문 보기 →</div>
+      </div>
+      <div class="case bench-card" data-bm="storycorps">
+        <div class="c-top"><span class="c-emoji">🇺🇸</span><span class="c-flag bench">미국</span></div>
+        <div class="c-name">StoryCorps</div>
+        <div class="c-meta">비영리 구술 아카이브</div>
+        <div class="c-desc">미국 의회도서관 영구 보존 구술 기록 프로젝트. 공공·기관 협력 아카이빙 대표 모델.</div>
+        <div class="c-more">전문 보기 →</div>
+      </div>
+      <div class="case bench-card" data-bm="b2g">
+        <div class="c-top"><span class="c-emoji">🏙</span><span class="c-flag idea">국내 확장</span></div>
+        <div class="c-name">지자체 생애사 아카이빙</div>
+        <div class="c-meta">B2G 확장 · 구상 단계</div>
+        <div class="c-desc">독립기념관·박물관 구술 아카이빙으로 확장. 지자체 예산 기반 대규모 집단 진행.</div>
+        <div class="c-more">전문 보기 →</div>
+      </div>
+    </div>
+    <div class="note">※ LifeOS demo2 · 벤치마크 — 공개 자료 기반 정리입니다. 카드를 클릭하면 전문이 열립니다.</div>
+  </div>
+
+  <!-- ============ WRITING 집필 ============ -->
+  <div class="wrap view" id="writing" data-title="집필">
+    <div class="pagehead">
+      <h1>집필 · 최명희 님</h1>
+      <button class="btn">원고 미리보기</button>
+    </div>
+
+    <div class="searchbar">
+      <div class="search-in"><input type="text" id="writeSearch" placeholder="집필 중인 의뢰인 검색…" autocomplete="off"></div>
+    </div>
+    <div class="search-results" id="writeResults"></div>
+
+    <!-- 원고 진행 + 자료 통합 (One Engine) -->
+    <div class="card sec">
+      <h2><span class="dot"></span>원고 진행 · 자료 통합 <span style="font-weight:600;color:var(--sub);font-size:12px;">(하나의 엔진으로 모든 자료를 잇는다)</span></h2>
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px;">
+        <div style="font-size:26px;font-weight:800;color:var(--main-d);">52%</div>
+        <div style="flex:1;"><div class="bar"><i style="width:52%"></i></div>
+          <div style="font-size:11.5px;color:var(--sub);margin-top:5px;">6개 챕터 중 2개 완성 · 1개 검토 중 · 1개 초안</div></div>
+      </div>
+      <div class="src-grid">
+        <div><div class="sn">4회</div><div class="sl">인터뷰</div></div>
+        <div><div class="sn">완료</div><div class="sl">음성 전사</div></div>
+        <div><div class="sn">31</div><div class="sl">사진 자료</div></div>
+        <div><div class="sn">7명</div><div class="sl">핵심 인물</div></div>
+        <div><div class="sn">8건</div><div class="sl">핵심 사건</div></div>
+        <div><div class="sn">시대증언형</div><div class="sl">서사 유형</div></div>
+      </div>
+      <div class="svc-hint">이 원고는 <span class="svc prem">프리미엄 인터뷰</span>로 수집한 자료 기반 · 카톡·복지관 자료도 같은 엔진에서 합쳐 집필됩니다</div>
+    </div>
+
+    <!-- 챕터 구성 -->
+    <div class="card sec">
+      <h2><span class="dot"></span>챕터 구성 <span style="font-weight:600;color:var(--sub);font-size:12px;">(챕터를 클릭하면 본문이 열립니다)</span></h2>
+      <div class="chap-board">
+        <div class="chap-list" id="chapList"></div>
+        <div class="chap-body" id="chapBody"></div>
+      </div>
+    </div>
+
+    <!-- 문체 변환 -->
+    <div class="card sec">
+      <h2><span class="dot"></span>문체 변환 <span style="font-weight:600;color:var(--sub);font-size:12px;">(같은 이야기, 다른 목소리)</span></h2>
+      <div class="style-toggle" id="styleToggle">
+        <button data-st="memoir" class="active">회고록체</button>
+        <button data-st="oral">담담한 구술체</button>
+        <button data-st="letter">편지체</button>
+        <button data-st="chrono">연대기형</button>
+      </div>
+      <div class="style-out" id="styleOut"></div>
+      <div class="style-note" id="styleNote"></div>
+    </div>
+
+    <!-- 출판 준비 -->
+    <div class="card sec">
+      <h2><span class="dot"></span>출판 준비</h2>
+      <div style="font-size:12.5px;color:var(--sub);margin-bottom:12px;">표지 시안 — 클릭해 선택</div>
+      <div class="pub-grid">
+        <div class="cover sel" data-cover="0">
+          <div class="cover-art" style="background:#2D3E50;"><div class="cv-t">격동의 한가운데서</div><div class="cv-s">최명희 생애 기록</div></div>
+          <div class="cover-cap">시안 A · 차분한 네이비</div>
+        </div>
+        <div class="cover" data-cover="1">
+          <div class="cover-art" style="background:#1A7068;"><div class="cv-t">나의 팔십 년</div><div class="cv-s">최명희 자서전</div></div>
+          <div class="cover-cap">시안 B · 틸 단색</div>
+        </div>
+        <div class="cover" data-cover="2">
+          <div class="cover-art" style="background:#7A4D2B;"><div class="cv-t">시대를 건너온<br>한 사람</div><div class="cv-s">최명희 구술 생애사</div></div>
+          <div class="cover-cap">시안 C · 따뜻한 브라운</div>
+        </div>
+      </div>
+      <div class="pub-actions">
+        <span class="ai-chip">🖼 사진 배치 추천</span>
+        <span class="ai-chip">✍ 캡션 정리</span>
+        <span class="ai-chip">📐 레이아웃 제안</span>
+        <button class="btn ghost">PDF 출력</button>
+        <button class="btn">POD 제작 파일 생성</button>
+      </div>
+    </div>
+
+    <div class="note">※ LifeOS demo2 · 집필 — 예시 데이터입니다. 자료는 인터뷰·카톡·복지관 등 모든 채널에서 하나의 엔진으로 합쳐집니다.</div>
+  </div>
+
+  <!-- ============ MODALS ============ -->
+  <div class="modal-overlay" id="weekModal" role="dialog" aria-modal="true">
+    <div class="modal">
+      <div class="modal-h">
+        <h3><span class="dot"></span>주차 <span id="wmWeek"></span> · <span id="wmStage"></span><span id="wmStatus"></span></h3>
+        <button class="modal-close" data-close="weekModal" aria-label="닫기">✕</button>
+      </div>
+      <div class="modal-body" id="wmBody"></div>
+      <div class="modal-foot">
+        <button class="btn ghost">질문 수정</button>
+        <button class="btn ghost">답변 보강 요청</button>
+        <button class="btn" data-close="weekModal">닫기</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="caseModal" role="dialog" aria-modal="true">
+    <div class="modal lg">
+      <div class="modal-h">
+        <h3><span class="dot"></span>프로그램 상세</h3>
+        <button class="modal-close" data-close="caseModal" aria-label="닫기">✕</button>
+      </div>
+      <div class="modal-body" id="caseDetailBody"></div>
+      <div class="modal-foot">
+        <button class="btn ghost">설계 복제해 새 프로그램</button>
+        <button class="btn" data-close="caseModal">닫기</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="bmModal" role="dialog" aria-modal="true">
+    <div class="modal lg">
+      <div class="modal-h">
+        <h3><span class="dot"></span>벤치마크 전문</h3>
+        <button class="modal-close" data-close="bmModal" aria-label="닫기">✕</button>
+      </div>
+      <div class="modal-body" id="bmBody"></div>
+      <div class="modal-foot">
+        <button class="btn" data-close="bmModal">닫기</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="rdModal" role="dialog" aria-modal="true">
+    <div class="modal lg">
+      <div class="modal-h">
+        <h3><span class="dot"></span>30주 재설계 — 적용 전 검토</h3>
+        <button class="modal-close" data-close="rdModal" aria-label="닫기">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="rd-summary">
+          <p>지금까지 8주 응답을 분석한 결과 — <b>‘어머니·둘째 딸·손주’ 같은 가족 키워드가 38회</b> 등장한 반면 <b>‘일·직장’ 영역 일화는 7회</b>로 적습니다. 청춘·가족·일 구간(9~20주) 12개 회차 중 <b>5개 회차</b>의 질문을 가족 비중 ↑로 재배치하기를 권합니다. 각 변경은 개별로 적용/보류 선택 가능합니다.</p>
+        </div>
+        <div class="rd-list" id="rdList">
+          <div class="rd-card">
+            <div class="rd-card-h"><div><b>9주차</b><span class="stage-tag s3">청춘·가족·일</span></div><label class="rd-toggle"><input type="checkbox" checked> 적용</label></div>
+            <div class="rd-comp"><div class="rd-old">"첫 직장에서 어떤 일을 하셨나요?"</div><div class="rd-arrow">→</div><div class="rd-new">"첫 직장 동료 중 가장 기억나는 사람은?"</div></div>
+            <div class="rd-why">⌁ 일 영역 응답률 낮음 — 관계 중심 질문으로 회상 트리거 강화</div>
+          </div>
+          <div class="rd-card">
+            <div class="rd-card-h"><div><b>11주차</b><span class="stage-tag s3">청춘·가족·일</span></div><label class="rd-toggle"><input type="checkbox" checked> 적용</label></div>
+            <div class="rd-comp"><div class="rd-old">"직장 동료와 갈등이 있었던 순간은?"</div><div class="rd-arrow">→</div><div class="rd-new">"직장에서 가족처럼 의지했던 사람은?"</div></div>
+            <div class="rd-why">⌁ 긍정·관계 키워드로 전환 — 응답 안정성 ↑</div>
+          </div>
+          <div class="rd-card">
+            <div class="rd-card-h"><div><b>12주차</b><span class="stage-tag s3">청춘·가족·일</span></div><label class="rd-toggle"><input type="checkbox" checked> 적용</label></div>
+            <div class="rd-comp"><div class="rd-old">"직업적으로 가장 자랑스러웠던 일은?"</div><div class="rd-arrow">→</div><div class="rd-new">"가족에게 자랑스럽게 들려준 직장 이야기는?"</div></div>
+            <div class="rd-why">⌁ 가족 청자 prism 도입 — 회상 깊이 향상</div>
+          </div>
+          <div class="rd-card">
+            <div class="rd-card-h"><div><b>15주차</b><span class="stage-tag s3">청춘·가족·일</span></div><label class="rd-toggle"><input type="checkbox" checked> 적용</label></div>
+            <div class="rd-comp"><div class="rd-old">"직장에서 가장 힘들었던 순간은?"</div><div class="rd-arrow">→</div><div class="rd-new">"그 시절 아내(자녀 어머니)에게 가장 미안했던 순간은?"</div></div>
+            <div class="rd-why">⌁ 정서 깊이 ↑ + 가족 관점 통합</div>
+          </div>
+          <div class="rd-card off">
+            <div class="rd-card-h"><div><b>18주차</b><span class="stage-tag s3">청춘·가족·일</span></div><label class="rd-toggle"><input type="checkbox"> 적용</label></div>
+            <div class="rd-comp"><div class="rd-old">"은퇴를 결정하기까지의 과정은?"</div><div class="rd-arrow">→</div><div class="rd-new">"자녀 결혼 무렵 가족이 가장 가까웠던 순간은?"</div></div>
+            <div class="rd-why">⌁ 후순위 검토 — 원안 유지도 가능</div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <span class="rd-count"><b id="rdSel">4</b>/5 선택됨</span>
+        <button class="btn ghost" data-close="rdModal">취소</button>
+        <button class="btn" id="rdConfirm">선택한 변경사항 적용</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+  // tab switching (top tabs + sub-tabs)
+  document.querySelectorAll('.tab').forEach(function(t){
+    t.addEventListener('click', function(){ showView(t.dataset.v); });
+  });
+  document.querySelectorAll('.subtab').forEach(function(t){
+    t.addEventListener('click', function(){ showView(t.dataset.v); });
+  });
+
+  // dashboard filter (service × status)
+  var svcFilter = 'all', statusFilter = 'all';
+  function applyDashFilter(){
+    document.querySelectorAll('#dash .projects .pcard').forEach(function(p){
+      var s = p.dataset.svc, st = p.dataset.status || 'active';
+      var svcMatch = (svcFilter==='all') || s===svcFilter;
+      var stMatch = (statusFilter==='all') || st===statusFilter;
+      p.style.display = (svcMatch && stMatch) ? '' : 'none';
+    });
+  }
+  document.querySelectorAll('#dash .stats .stat').forEach(function(c){
+    c.addEventListener('click', function(){
+      svcFilter = c.dataset.filter;
+      document.querySelectorAll('#dash .stats .stat').forEach(function(x){ x.classList.toggle('active', x.dataset.filter===svcFilter); });
+      applyDashFilter();
+    });
+  });
+  document.querySelectorAll('#statusSeg button').forEach(function(b){
+    b.addEventListener('click', function(){
+      statusFilter = b.dataset.status;
+      document.querySelectorAll('#statusSeg button').forEach(function(x){ x.classList.toggle('active', x===b); });
+      applyDashFilter();
+    });
+  });
+  document.getElementById('openReport').addEventListener('click', function(){ showView('report'); window.scrollTo(0,0); });
+  // 대시보드 카드 전체 클릭 라우팅 (클릭 가능 통일)
+  document.querySelectorAll('#dash .pcard').forEach(function(p){
+    if(p.id==='openReport') return;
+    p.addEventListener('click', function(){
+      var s = p.dataset.svc;
+      if(s==='kakao') showView('kakao');
+      else if(s==='welfare') showView('welfare-intro');
+      else showView('report');
+      window.scrollTo(0,0);
+    });
+  });
+  document.getElementById('backBtn').addEventListener('click', function(){ showView('dash'); window.scrollTo(0,0); });
+  document.getElementById('toQuestions').addEventListener('click', function(){ showView('questions'); window.scrollTo(0,0); });
+  document.getElementById('backBtn2').addEventListener('click', function(){ showView('report'); window.scrollTo(0,0); });
+  document.getElementById('backBtn3').addEventListener('click', function(){ showView('dash'); window.scrollTo(0,0); });
+  var bb4 = document.getElementById('backBtn4'); if(bb4) bb4.addEventListener('click', function(){ showView('dash'); window.scrollTo(0,0); });
+
+  // ---- modals ----
+  function openModal(id){var m=document.getElementById(id); if(m){m.classList.add('open'); document.body.style.overflow='hidden';}}
+  function closeModal(id){var m=document.getElementById(id); if(m){m.classList.remove('open'); document.body.style.overflow='';}}
+  document.querySelectorAll('[data-close]').forEach(function(b){ b.addEventListener('click', function(){ closeModal(b.dataset.close); }); });
+  document.querySelectorAll('.modal-overlay').forEach(function(o){ o.addEventListener('click', function(e){ if(e.target===o) closeModal(o.id); }); });
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape'){ document.querySelectorAll('.modal-overlay.open').forEach(function(o){ closeModal(o.id); }); } });
+
+  // ---- week detail (1~8주) ----
+  var WEEK_DATA = {
+    1:{stage:1,stageName:'감각 기억',q:'어릴 적 가장 좋아했던 음식은?',a:'외할머니가 해주신 청국장이 지금도 잊혀지지 않아. 흙벽 부엌에서 솥 끓는 소리가…',input:'텍스트 직접 입력 · 340자',date:'2026-04-14 화 21:14',att:'📷 외갓집 부엌 사진 1장',cmt:'💬 손주 — "그 청국장 저도 한 번 먹어보고 싶어요"'},
+    2:{stage:1,stageName:'감각 기억',q:'어릴 적 살던 집의 풍경은?',a:'초가집 마당에 큰 감나무가 있었지. 가을 되면 동네 아이들이 다 모였어…',input:'음성 1:48 · AI 자동 전사',date:'2026-04-21 화 20:32',att:'—',cmt:'💬 큰아들 — "아버지 초가집 이야기 자세히 듣고 싶어요"'},
+    3:{stage:1,stageName:'감각 기억',q:'어릴 적 자주 듣던 어머니의 말씀은?',a:'"건우야, 사람은 빚지지 말고 살아라." 그 말이 평생 따라다녔어…',input:'텍스트 직접 입력 · 520자',date:'2026-04-28 화 22:05',att:'—',cmt:'💬 둘째 딸 — "저도 어머니께 그 말 자주 들었어요"'},
+    4:{stage:1,stageName:'감각 기억',q:'어릴 적 친한 친구 중 가장 기억나는 사람은?',a:'옆집 정수. 같이 산에 가서 도토리 줍고 도랑에서 가재 잡고…',input:'자녀(큰아들) 대리 입력 · 280자',date:'2026-05-05 화 19:50',att:'—',cmt:'💬 큰아들 — "정수 아저씨 지금도 살아계신지 여쭤볼게요"'},
+    5:{stage:2,stageName:'정서 연결',q:'살면서 가장 부끄러웠던 순간은?',a:'중학교 때 어머니께 거짓말하고 친구 따라 먼 데까지 갔던 일… 들켜서 매를 맞고도 어머니 우는 얼굴이 잊혀지지 않아',input:'음성 2:30 · AI 자동 전사',date:'2026-05-12 화 21:14',att:'—',cmt:'💬 작은딸 — "아버지 인간미 있으셔서 좋아요"'},
+    6:{stage:2,stageName:'정서 연결',q:'가장 두려웠던 순간은?',a:'큰아들 태어날 때 산모 위급하다는 말 듣고 병원 복도에서 다리가 풀렸어…',input:'텍스트 직접 입력 · 610자',date:'2026-05-19 화 22:18',att:'📷 큰아들 백일 사진',cmt:'💬 큰아들 — "그때 이야기 처음 듣네요"'},
+    7:{stage:2,stageName:'정서 연결',q:'어머니께 가장 미안했던 순간은?',a:'그 추운 11월에 어머니 부엌에서 떨고 계셨는데도 나는 따뜻한 방에서 책을 보고 있었어…',input:'음성 2:14 · AI 자동 전사',date:'2026-05-26 화 20:42',att:'📷 어머니 사진 1장',cmt:'💬 둘째 딸 — "어머니가 그 이야기 저한테도 자주 하셨어요"\n💬 손주 — 📷 결혼 당일 사진 첨부'},
+    8:{stage:2,stageName:'정서 연결',q:'살면서 가장 외로웠던 순간은?',a:'(전사 진행 중) 군 제대 후 첫 직장에서 동기들 다 떠나고 혼자 야근하던 그 겨울…',input:'음성 2:14 + 자녀 보충 텍스트 800자',date:'2026-06-02 화 — 진행 중',att:'—',cmt:'(가족 피드백 대기)',status:'진행 중'}
+  };
+  function escHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+  document.querySelectorAll('.wk.done, .wk.current').forEach(function(w){
+    w.addEventListener('click', function(){
+      var n = parseInt(w.textContent.trim(),10);
+      var d = WEEK_DATA[n]; if(!d) return;
+      document.getElementById('wmWeek').textContent = n;
+      document.getElementById('wmStage').textContent = d.stageName;
+      document.getElementById('wmStatus').innerHTML = d.status ? '<span class="wm-status">'+escHtml(d.status)+'</span>' : '';
+      var html = '<div class="wm-q"><span class="stage-tag s'+d.stage+'">'+escHtml(d.stageName)+'</span>'+
+        '<div class="wm-text">"'+escHtml(d.q)+'"</div>'+
+        '<div class="wm-meta">'+escHtml(d.date)+'</div></div>'+
+        '<div class="wm-sec"><div class="wm-label">답변</div>'+
+          '<div class="wm-ans">"'+escHtml(d.a)+'"</div>'+
+          '<div class="wm-input">'+escHtml(d.input)+'</div></div>'+
+        (d.att && d.att !== '—' ? '<div class="wm-att">'+escHtml(d.att)+'</div>' : '')+
+        '<div class="wm-sec"><div class="wm-label">가족 피드백</div>'+
+          '<div class="wm-cmt">'+escHtml(d.cmt)+'</div></div>';
+      document.getElementById('wmBody').innerHTML = html;
+      openModal('weekModal');
+    });
+  });
+
+  // ---- redesign workflow ----
+  var rdApply = document.getElementById('rdApply'); if(rdApply) rdApply.addEventListener('click', function(){ openModal('rdModal'); });
+  var rdList = document.getElementById('rdList');
+  if(rdList){
+    rdList.addEventListener('change', function(){
+      var n = rdList.querySelectorAll('input[type=checkbox]:checked').length;
+      document.getElementById('rdSel').textContent = n;
+      rdList.querySelectorAll('.rd-card').forEach(function(c){
+        var on = c.querySelector('input[type=checkbox]').checked;
+        c.classList.toggle('off', !on);
+      });
+    });
+  }
+  var rdConfirm = document.getElementById('rdConfirm'); if(rdConfirm) rdConfirm.addEventListener('click', function(){
+    var n = rdList ? rdList.querySelectorAll('input[type=checkbox]:checked').length : 0;
+    closeModal('rdModal');
+    alert(n+'개 변경사항이 적용됐습니다. (목업)');
+  });
+
+  // ---- welfare design toggle (집단형/개인형 설계) ----
+  function setDesign(d){
+    document.querySelectorAll('.design-toggle button').forEach(function(x){ x.classList.toggle('active', x.dataset.d===d); });
+    var g = document.getElementById('designGrp'), i = document.getElementById('designInd');
+    if(g) g.classList.toggle('active', d==='grp');
+    if(i) i.classList.toggle('active', d==='ind');
+  }
+  document.querySelectorAll('.design-toggle button').forEach(function(b){
+    b.addEventListener('click', function(){ setDesign(b.dataset.d); });
+  });
+
+  // ---- welfare board cards → 프로그램 설계 이동 ----
+  document.querySelectorAll('.wp-card').forEach(function(c){
+    c.addEventListener('click', function(){ setDesign(c.dataset.go || 'grp'); showView('welfare-design'); window.scrollTo(0,0); });
+  });
+
+  // ---- 설계 핵심·집중사항 수정 ----
+  document.querySelectorAll('.focus-edit[data-edit]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var box = document.getElementById(btn.dataset.edit);
+      var saveBar = box.parentElement.querySelector('.focus-edit:not([data-edit])');
+      box.classList.add('editing');
+      box.querySelectorAll('.focus-v').forEach(function(v){ v.setAttribute('contenteditable','true'); });
+      box.querySelector('.focus-v').focus();
+      btn.style.display = 'none';
+      if(saveBar) saveBar.style.display = 'block';
+    });
+  });
+  document.querySelectorAll('.btn[data-save]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var box = document.getElementById(btn.dataset.save);
+      box.classList.remove('editing');
+      box.querySelectorAll('.focus-v').forEach(function(v){ v.setAttribute('contenteditable','false'); });
+      var editBtn = box.parentElement.querySelector('.focus-edit[data-edit]');
+      if(editBtn) editBtn.style.display = '';
+      btn.parentElement.style.display = 'none';
+    });
+  });
+
+  // ---- 기존 사례 리스트 (검색·정렬·필터) ----
+  var CASES = [
+    {type:'grp', name:'서초 실버대학', org:'복지관 그룹', people:10, weeks:8, year:2025, owner:'이작가',
+      key:'8주 집단 회상요법 완주 후 10명 참여 어르신의 회상을 모아 그룹 활동 기록집을 발간하고 기관·가족에 전달했다.\n참여 만족도 4.6/5, 정서 활성도 평균 28%↑를 기록했으며 회상 성공 질문 11개를 LifeOS에 축적해 다음 프로그램에 재사용한다.',
+      result:'그룹 활동 기록집 1권(80쪽) · 참여 어르신 10명', goal:'정서 안정·사회적 상호작용·치매예방',
+      outcome:'참여 만족도 4.6/5 · 정서 활성도 평균 28%↑ · 출석률 86% · 기관 재의뢰 확정',
+      note:'노래·사진 트리거가 특히 효과적이었음. 인지 편차 큰 그룹은 보조 진행자 1인 추가 배치 권장.'},
+    {type:'grp', name:'노원 데이케어센터', org:'주간보호 그룹', people:8, weeks:6, year:2025, owner:'박직원',
+      key:'주간보호센터 어르신 8명을 대상으로 단축형 6주 파일럿을 진행해 운영 모델의 실효성을 검증했다.\n프로그램 종료 후 기관 재계약으로 이어졌고, 이 과정에서 진행자 표준 매뉴얼 v1을 도출해 신규 진행자 온보딩에 활용하고 있다.',
+      result:'간이 회상 기록 · 진행자 매뉴얼 v1', goal:'단축형 운영 모델 검증·기관 재계약',
+      outcome:'6주 완주 · 기관 재계약 성사 · 진행자 매뉴얼 v1 도출',
+      note:'6주는 감각·정서·가족·자부심 중심으로 압축. 주간보호 특성상 매주 출석 안정적.'},
+    {type:'ind', name:'김복순 어르신', org:'행복요양원', people:1, weeks:12, year:2025, owner:'김작가',
+      key:'치매 초기 어르신을 12주간 1:1로 따라가며 사진·물건 매개 인터뷰로 생애를 구성, 라이프스토리북 96쪽을 제작해 가족에게 전달했다.\n완성된 책을 받은 자녀가 “어머니를 다시 알게 됐다”고 평했고 가족 만족도 5/5를 기록, 추가 가족 주문으로 이어졌다.',
+      result:'라이프스토리북 96쪽 · 가족 전달본 5부', goal:'정체성 유지·가족 의사소통·기록물',
+      outcome:'가족 만족도 5/5 · 자녀 추가 주문 · 기관 사례로 채택',
+      note:'사진 매개 반응이 매우 큼. 가족(자녀)의 적극적 사진·증언 제공이 품질을 끌어올린 핵심.'},
+    {type:'ind', name:'정해숙 어르신', org:'한울요양원', people:1, weeks:10, year:2024, owner:'박직원',
+      key:'요양원 입소 어르신을 대상으로 단축형 10주 라이프스토리북을 제작했다.\n치매가 진행 중인 상황에서도 정체성 유지와 정서 안정에 긍정적 효과가 있었다는 기관 피드백을 받았으며, 개인형 운영의 초기 레퍼런스가 됐다.',
+      result:'라이프스토리북 72쪽', goal:'정체성 유지·정서 안정',
+      outcome:'기관 긍정 피드백 · 개인형 초기 레퍼런스 확보',
+      note:'치매 진행으로 회차당 시간을 30분으로 단축. 같은 질문 반복 시 매개물로 환기.'}
+  ];
+  var caseBody = document.getElementById('caseBody');
+  if(caseBody){
+    var cSort='recent', cFilter='all', cQuery='';
+    function escH(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+    function renderCases(){
+      var rows = CASES.filter(function(c){
+        if(cFilter!=='all' && c.type!==cFilter) return false;
+        if(cQuery){ var hay=(c.name+' '+c.org+' '+c.owner+' '+c.key).toLowerCase(); if(hay.indexOf(cQuery)<0) return false; }
+        return true;
+      });
+      rows.sort(function(a,b){
+        if(cSort==='people') return b.people-a.people;
+        if(cSort==='weeks') return b.weeks-a.weeks;
+        if(cSort==='name') return a.name.localeCompare(b.name,'ko');
+        return b.year-a.year; // recent
+      });
+      caseBody.innerHTML = rows.map(function(c){
+        var tlabel = c.type==='grp' ? '집단형' : '개인형';
+        var idx = CASES.indexOf(c);
+        var keyLines = escH(c.key).split('\n').map(function(l){return '<div>'+l+'</div>';}).join('');
+        return '<tr>'+
+          '<td><span class="ct-type '+c.type+'">'+tlabel+'</span></td>'+
+          '<td><span class="ct-name link-go" data-case="'+idx+'">'+escH(c.name)+'</span><div class="ct-org">'+escH(c.org)+' · 담당 '+escH(c.owner)+'</div></td>'+
+          '<td style="text-align:center;"><span class="ct-num">'+(c.people===1?'1:1':c.people+'명')+'</span></td>'+
+          '<td style="text-align:center;"><span class="ct-num">'+c.weeks+'주</span></td>'+
+          '<td style="text-align:center;"><span class="ct-num">'+c.year+'</span></td>'+
+          '<td><div class="ct-key">'+keyLines+'</div></td>'+
+        '</tr>';
+      }).join('');
+      caseBody.querySelectorAll('.link-go[data-case]').forEach(function(lnk){
+        lnk.addEventListener('click', function(){ openCaseDetail(CASES[parseInt(lnk.dataset.case,10)]); });
+      });
+      document.getElementById('caseEmpty').style.display = rows.length ? 'none' : 'block';
+    }
+    document.getElementById('caseSearch').addEventListener('input', function(e){ cQuery=e.target.value.trim().toLowerCase(); renderCases(); });
+    document.getElementById('caseSort').addEventListener('change', function(e){ cSort=e.target.value; renderCases(); });
+    document.querySelectorAll('#caseFilter button').forEach(function(b){
+      b.addEventListener('click', function(){ cFilter=b.dataset.t; document.querySelectorAll('#caseFilter button').forEach(function(x){x.classList.toggle('active',x===b);}); renderCases(); });
+    });
+    document.querySelectorAll('#caseTable thead th[data-sort]').forEach(function(th){
+      th.addEventListener('click', function(){ cSort=th.dataset.sort; document.getElementById('caseSort').value = (['recent','people','weeks','name'].indexOf(cSort)>=0?cSort:'recent'); renderCases(); });
+    });
+    renderCases();
+  }
+
+  // ---- 기존 사례 상세 모달 ----
+  function openCaseDetail(c){
+    if(!c) return;
+    function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+    var tlabel = c.type==='grp' ? '집단형 · 완료' : '개인형 · 완료';
+    var tcls = c.type==='grp' ? 'grp' : 'ind';
+    var keyHtml = esc(c.key).split('\n').map(function(l){return '<p>'+l+'</p>';}).join('');
+    var html =
+      '<div class="bm-hero"><span class="bm-emoji">'+(c.type==='grp'?'🏛':'🏥')+'</span>'+
+        '<div><div class="bm-name">'+esc(c.name)+' <span class="ct-type '+tcls+'" style="vertical-align:middle;">'+tlabel+'</span></div>'+
+        '<div class="bm-meta">'+esc(c.org)+' · 담당 '+esc(c.owner)+' · '+c.year+'</div></div></div>'+
+      '<div class="bm-stats">'+
+        '<div><div class="bn">'+(c.people===1?'1:1':c.people+'명')+'</div><div class="bl">대상</div></div>'+
+        '<div><div class="bn">'+c.weeks+'주</div><div class="bl">진행 기간</div></div>'+
+        '<div><div class="bn">'+c.year+'</div><div class="bl">완료 연도</div></div>'+
+      '</div>'+
+      '<div class="bm-sec"><h4>프로그램 목표</h4><p>'+esc(c.goal)+'</p></div>'+
+      '<div class="bm-sec"><h4>핵심 사항</h4>'+keyHtml+'</div>'+
+      '<div class="bm-sec"><h4>결과물</h4><p>'+esc(c.result)+'</p></div>'+
+      '<div class="bm-sec"><h4>성과</h4><p>'+esc(c.outcome)+'</p></div>'+
+      '<div class="bm-take">📝 진행 메모 — '+esc(c.note)+'</div>';
+    document.getElementById('caseDetailBody').innerHTML = html;
+    openModal('caseModal');
+  }
+
+  // ---- 벤치마크 전문 모달 ----
+  var BENCH = {
+    lsw:{emoji:'🇯🇵', name:'라이프스토리워크 (Life Story Work)', meta:'일본 · 요양시설 표준 케어도구 (1992~)',
+      stats:[['20년+','효과 연구 축적'],['전국','요양시설 보급'],['1:1','개인 연대기']],
+      sections:[
+        ['개요','일본 요양·복지 현장에서 생애기록을 ‘케어 도구’로 사용하는 표준 기법. 사진·물건·음악을 매개로 어르신의 기억을 끌어내 개인 연대기(라이프스토리북)로 구성한다.'],
+        ['방식','훈련된 진행자가 사진첩·옛 물건·노래 등 매개물을 활용해 1:1 또는 소그룹으로 회상을 유도. 8~12주에 걸쳐 생애를 시기별로 따라가며 기록한다.'],
+        ['효과 근거','회상요법(Reminiscence Therapy)의 치매예방·정서안정 효과가 1992년 이후 다수 연구로 축적. 인지 자극·우울 완화·자존감 회복에 긍정적이라는 임상 근거 보유.']
+      ],
+      take:'한국 복지관 회상요법의 <b>검증된 직접 선례</b> — 진행자 훈련·매개물 활용·시기별 커리큘럼 구조를 그대로 벤치마킹할 수 있다.',
+      sources:[['Reminiscence therapy for dementia (Cochrane Review)','https://www.cochrane.org/CD001120/reminiscence-therapy-for-dementia'],['Life Story Work — Dementia UK','https://www.dementiauk.org/']]},
+    jibunshi:{emoji:'🇯🇵', name:'자분사 (自分史, じぶんし)', meta:'일본 · 종활(終活) 시장 정착 모델',
+      stats:[['양면','B2C+B2B 시장'],['노인대학','프로그램 제도화'],['종활','문화로 정착']],
+      sections:[
+        ['개요','‘자기 자신의 역사’를 뜻하는 자분사는 일본에서 자녀 선물용 + 복지기관 납품용 양면 시장으로 정착한 생애기록 모델. 종활(인생 마무리 준비) 문화의 일부.'],
+        ['시장 구조','민간은 자녀가 부모에게 선물하는 B2C, 공공은 노인대학·복지관·요양시설 프로그램으로 편성되는 B2B/B2G. 두 시장이 서로를 강화한다.'],
+        ['포지셔닝','‘AI 자서전’이 아니라 가족 기억보존·세대 전승으로 포지셔닝. 정서·인지·가족관계 개선 프로그램으로 받아들여진다.']
+      ],
+      take:'우리의 <b>3채널 모델(프리미엄·카톡·복지관)이 곧 자분사의 양면 시장 구조</b>와 일치 — 일본은 이미 제도화로 검증했다.',
+      sources:[['自分史 — Wikipedia (日本語)','https://ja.wikipedia.org/wiki/自分史'],['終活 — Wikipedia (日本語)','https://ja.wikipedia.org/wiki/終活']]},
+    storyworth:{emoji:'🇺🇸', name:'StoryWorth', meta:'미국 · 가족 생애기록 구독 (연 $99)',
+      stats:[['100만 권+','누적 출판'],['$150~200만','연 매출(10인팀)'],['5만+','만점 리뷰']],
+      sections:[
+        ['개요','매주 이메일로 질문을 보내고, 1년간 쌓인 답변을 책으로 묶어주는 가족 생애기록 구독 서비스. 2013년 설립, 소규모 팀으로 수익성 유지.'],
+        ['모델','주력 요금제 연 $109. 추가 도서·업그레이드 포함 실결제액 $130~220. 12년간 100만 권 출판으로 ‘가족 기록에 돈을 낸다’는 지불 수요를 입증.'],
+        ['시사점','질문→누적→책 전환 구조가 우리의 카톡 30주 구독과 동일. 다만 StoryWorth는 셀프 입력이라 고령자 접근성·깊이에서 한계 — 우리의 ‘사람이 끌어내는 기록’이 차별점.']
+      ],
+      take:'카톡 30주 구독의 <b>해외 검증판</b> — 시장 존재는 입증됐고, 우리는 고령자 접근성(카톡)·깊이(인터뷰)로 빈틈을 공략한다.',
+      sources:[['StoryWorth 공식 사이트','https://welcome.storyworth.com/'],['StoryWorth — Wikipedia','https://en.wikipedia.org/wiki/StoryWorth']]},
+    storycorps:{emoji:'🇺🇸', name:'StoryCorps', meta:'미국 · 비영리 구술 아카이브',
+      stats:[['의회도서관','영구 보존'],['64만+','녹음 기록'],['비영리','공공 협력']],
+      sections:[
+        ['개요','2003년 시작된 미국 최대 구술사 프로젝트. 일반인의 인터뷰를 녹음·보존하며, 미국 의회도서관에 영구 아카이빙된다.'],
+        ['방식','부스·이동형 녹음·앱을 통해 두 사람이 마주 앉아 대화를 녹음. 공공기관·학교·커뮤니티와 협력해 대규모로 구술을 수집한다.'],
+        ['시사점','구술 기록의 공공적 가치와 아카이빙 모델을 보여줌. 지자체·박물관 생애사 아카이빙(B2G 확장)의 참고 모델.']
+      ],
+      take:'B2G 구술 아카이빙 확장의 <b>공공 모델 레퍼런스</b> — 기관 협력·대규모 수집·영구 보존 구조를 참고한다.',
+      sources:[['StoryCorps 공식 사이트','https://storycorps.org/'],['StoryCorps — Wikipedia','https://en.wikipedia.org/wiki/StoryCorps']]},
+    b2g:{emoji:'🏙', name:'지자체 생애사 아카이빙 (국내 확장)', meta:'B2G 확장 · 구상 단계',
+      stats:[['지자체','예산 기반'],['박물관','구술 아카이빙'],['대규모','집단 진행']],
+      sections:[
+        ['개요','독립기념관·박물관·지자체의 구술 아카이빙 사업으로 복지관 회상요법을 확장하는 구상. 지역 어르신의 생애사를 기록·보존하는 공공 프로젝트.'],
+        ['기회','지자체 예산 기반의 안정적 B2G 매출. 향토사·실향민·산업화 세대 증언 등 공공적 가치가 높아 예산 편성 명분이 분명하다.'],
+        ['전제','S1·S2(개인·복지관)에서 레퍼런스·데이터·진행자 풀을 먼저 쌓은 뒤 진입. 기존 플레이어가 있는 영역이라 차별화된 운영 표준(LifeOS)이 무기.']
+      ],
+      take:'아직 <b>구상 단계</b> — 복지관 집단형 실적이 쌓인 뒤 진입할 향후 확장 목표다.',
+      sources:[['국립중앙박물관 구술 아카이브','https://www.museum.go.kr/'],['한국구술사학회','http://www.koha.or.kr/']]}
+  };
+  document.querySelectorAll('.bench-card').forEach(function(c){
+    c.addEventListener('click', function(){
+      var d = BENCH[c.dataset.bm]; if(!d) return;
+      var srcHtml = (d.sources && d.sources.length)
+        ? '<div class="bm-source">🔗 원문 · 참고 자료<br>'+d.sources.map(function(s){return '<a href="'+s[1]+'" target="_blank" rel="noopener">'+s[0]+'</a>';}).join(' &nbsp;·&nbsp; ')+'</div>'
+        : '';
+      var html = '<div class="bm-hero"><span class="bm-emoji">'+d.emoji+'</span><div><div class="bm-name">'+d.name+'</div><div class="bm-meta">'+d.meta+'</div></div></div>'+
+        '<div class="bm-stats">'+d.stats.map(function(s){return '<div><div class="bn">'+s[0]+'</div><div class="bl">'+s[1]+'</div></div>';}).join('')+'</div>'+
+        d.sections.map(function(s){return '<div class="bm-sec"><h4>'+s[0]+'</h4><p>'+s[1]+'</p></div>';}).join('')+
+        '<div class="bm-take">💡 '+d.take+'</div>'+
+        srcHtml;
+      document.getElementById('bmBody').innerHTML = html;
+      openModal('bmModal');
+    });
+  });
+
+  // ---- 카톡 의뢰인 검색 ----
+  var KAKAO_CLIENTS = [
+    {key:'이건우', name:'이건우 님', meta:'8주차 진행 · 신청 이성준(아들)', cur:true},
+    {key:'한정식', name:'한정식 님', meta:'30주 완주 · 완료', cur:false},
+    {key:'정외순', name:'정외순 님', meta:'프리미엄 인터뷰 · 완료', cur:false},
+    {key:'윤복자', name:'윤복자 님', meta:'카톡 12주차 · 신청 윤미라(딸)', cur:false},
+    {key:'오태식', name:'오태식 님', meta:'카톡 3주차 · 신청 오현우(아들)', cur:false}
+  ];
+  function bindSearch(inputId, resultsId, data, getHay, render, onPick){
+    var input = document.getElementById(inputId); if(!input) return;
+    var box = document.getElementById(resultsId);
+    function show(q){
+      q = q.trim().toLowerCase();
+      if(!q){ box.classList.remove('show'); box.innerHTML=''; return; }
+      var hits = data.filter(function(d){ return getHay(d).toLowerCase().indexOf(q)>=0; });
+      box.innerHTML = hits.length ? hits.map(render).join('') : '<div class="sr-empty">검색 결과가 없습니다.</div>';
+      box.classList.add('show');
+      box.querySelectorAll('.sr-item[data-k]').forEach(function(it){
+        it.addEventListener('click', function(){ onPick(it.dataset.k); box.classList.remove('show'); input.value=''; });
+      });
+    }
+    input.addEventListener('input', function(e){ show(e.target.value); });
+    input.addEventListener('focus', function(e){ if(e.target.value) show(e.target.value); });
+  }
+  bindSearch('kakaoSearch', 'kakaoResults', KAKAO_CLIENTS,
+    function(d){ return d.key+' '+d.meta; },
+    function(d){ return '<div class="sr-item'+(d.cur?' cur':'')+'" data-k="'+d.key+'"><span class="sr-av">'+d.key.charAt(0)+'</span><span class="sr-name">'+d.name+'</span><span class="sr-meta">'+d.meta+(d.cur?' · 현재':'')+'</span></div>'; },
+    function(k){ if(k==='이건우'){ window.scrollTo(0,0); } else { alert(k+' 의뢰인 — 데모에서는 이건우 님만 상세 데이터가 있습니다.'); } }
+  );
+
+  // ---- 프로그램 설계 기관 검색 ----
+  var DESIGN_ORGS = [
+    {key:'강동시니어복지관', name:'강동시니어복지관', meta:'집단형 · 8명 · 진행', go:'grp', cur:true},
+    {key:'송파 데이케어센터', name:'송파 데이케어센터', meta:'집단형 · 6명 · 진행', go:'grp', cur:false},
+    {key:'박순영 어르신', name:'박순영 어르신', meta:'개인형 · 한울요양원 · 진행', go:'ind', cur:false},
+    {key:'서초 실버대학', name:'서초 실버대학', meta:'집단형 · 완료', go:'grp', cur:false}
+  ];
+  bindSearch('orgSearch', 'orgResults', DESIGN_ORGS,
+    function(d){ return d.key+' '+d.meta; },
+    function(d){ var ti=d.go==='grp'?'집단':'개인'; return '<div class="sr-item'+(d.cur?' cur':'')+'" data-k="'+d.key+'"><span class="sr-av">'+ti+'</span><span class="sr-name">'+d.name+'</span><span class="sr-meta">'+d.meta+(d.cur?' · 현재':'')+'</span></div>'; },
+    function(k){ var o=DESIGN_ORGS.filter(function(x){return x.key===k;})[0]; if(o){ setDesign(o.go); window.scrollTo(0,0); if(!o.cur && o.key!=='강동시니어복지관' && o.key!=='박순영 어르신'){ /* demo: only current ones have data */ } } }
+  );
+
+  // ---- 집필: 챕터 보드 ----
+  var CHAPTERS = [
+    {no:'1장', title:'식민지의 끝에서', status:'done', meta:'유년·성장 / 시대경험 · 완성',
+     text:'내가 태어난 1945년, 세상은 끝과 시작이 한꺼번에 찾아온 해였다.\n해방의 함성을 나는 기억하지 못한다. 다만 어머니가 들려준 그날의 이야기 — 골목마다 사람들이 쏟아져 나와 울고 웃던 그 장면이, 마치 내가 직접 본 것처럼 마음에 새겨져 있다.'},
+    {no:'2장', title:'피란길의 소녀', status:'done', meta:'유년 / 시련·전환점 · 완성',
+     text:'여섯 살의 겨울, 우리 가족은 짐을 이고 남쪽으로 걸었다.\n발이 얼어 감각이 없었지만, 어머니 등에 업힌 동생을 보며 나는 울지 않았다. 그때 처음으로, 내가 더 이상 어린아이가 아니라는 것을 알았다.'},
+    {no:'3장', title:'공장에서 보낸 청춘', status:'review', meta:'청년·독립 / 일·생계 · 검토 중',
+     text:'열일곱 살, 나는 서울행 기차에 올랐다.\n영등포 방직공장의 기계 소리는 밤낮을 가리지 않았지만, 그 소음 속에서 나는 처음으로 내 손으로 돈을 벌었다. 첫 월급을 받던 날, 나는 어머니의 한복 한 벌을 떠올렸다.'},
+    {no:'4장', title:'결혼, 그리고 가족', status:'draft', meta:'결혼·가정형성 / 사랑 · 초안',
+     text:'(초안) 스물셋에 중매로 그이를 만났다. 말수가 적은 사람이었지만, 나는 그 눈빛에서 성실함을 보았다…'},
+    {no:'5장', title:'격동의 한가운데서', status:'todo', meta:'중년 / 시대증언 · 미착수',
+     text:'(아직 집필 전입니다) 인터뷰 4회차에서 수집한 산업화·격동기 증언을 바탕으로 구성 예정.'},
+    {no:'6장', title:'다시 쓰는 편지', status:'todo', meta:'노년·현재 / 가치관 · 미착수',
+     text:'(아직 집필 전입니다) 마지막 인터뷰의 ‘자녀에게 남기는 말’을 클라이맥스로 배치 예정.'}
+  ];
+  var STLABEL = {done:'완성', review:'검토 중', draft:'초안', todo:'미착수'};
+  var chapList = document.getElementById('chapList');
+  if(chapList){
+    chapList.innerHTML = CHAPTERS.map(function(c,i){
+      return '<div class="chap-item'+(i===2?' active':'')+'" data-ch="'+i+'">'+
+        '<div class="ci-top"><span class="ci-no">'+c.no+'</span><span class="cst '+c.status+'">'+STLABEL[c.status]+'</span></div>'+
+        '<div class="ci-title">'+c.title+'</div></div>';
+    }).join('');
+    var chapBody = document.getElementById('chapBody');
+    function showChap(i){
+      var c = CHAPTERS[i];
+      chapList.querySelectorAll('.chap-item').forEach(function(x){ x.classList.toggle('active', x.dataset.ch==String(i)); });
+      chapBody.innerHTML = '<div class="cb-head"><div><div class="cb-t">'+c.no+'. '+c.title+'</div><div class="cb-meta">'+c.meta+'</div></div><span class="cst '+c.status+'">'+STLABEL[c.status]+'</span></div>'+
+        '<div class="cb-text">'+c.text.replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</div>'+
+        '<div class="cb-tools"><span class="ai-chip">⌁ 문맥 기반 문장 추천</span><span class="ai-chip">📑 챕터 구조 제안</span><span class="ai-chip">🔁 반복 표현 보정</span><span class="ai-chip">🌊 회고 흐름 정리</span></div>';
+    }
+    chapList.querySelectorAll('.chap-item').forEach(function(it){
+      it.addEventListener('click', function(){ showChap(parseInt(it.dataset.ch,10)); });
+    });
+    showChap(2);
+  }
+
+  // ---- 집필: 문체 변환 ----
+  var STYLES = {
+    memoir:{text:'열일곱 살, 나는 서울행 기차에 올랐다. 영등포 방직공장의 기계 소리는 밤낮을 가리지 않았지만, 그 소음 속에서 나는 처음으로 내 손으로 돈을 벌었다. 첫 월급을 받던 날, 나는 어머니의 한복 한 벌을 떠올렸다.', note:'문어체·서정적 — 출판 자서전에 가장 널리 쓰이는 문체.'},
+    oral:{text:'열일곱에 서울 올라가서 영등포 방직공장 다녔어. 기계 소리가 밤낮없이 시끄러웠지. 그래도 그때 처음 내 손으로 돈을 벌어봤어. 첫 월급 타던 날, 어머니 한복 한 벌이 제일 먼저 생각나더라고.', note:'구어체·1인칭 — 어르신의 목소리를 그대로 살린 따뜻한 문체.'},
+    letter:{text:'얘들아, 너희 엄마가 열일곱에 서울 방직공장에 갔던 이야기를 아니? 밤낮으로 울리던 기계 소리 속에서, 나는 처음으로 내 손으로 돈을 벌었단다. 첫 월급을 받던 날 가장 먼저 떠오른 건, 너희 외할머니의 한복 한 벌이었어.', note:'편지체 — 자녀·손주에게 직접 건네는 형식. 유산 메시지 챕터에 적합.'},
+    chrono:{text:'1962년, 17세. 상경하여 서울 영등포 방직공장에 취업. 주야 2교대 근무 환경에서 첫 임금을 수령. 첫 급여로 모친의 한복을 마련하고자 함.', note:'연대기형 — 사실·연도 중심. 기업 사사(社史)나 기록 보존용에 적합.'}
+  };
+  var styleOut = document.getElementById('styleOut');
+  function setStyle(s){
+    document.querySelectorAll('#styleToggle button').forEach(function(b){ b.classList.toggle('active', b.dataset.st===s); });
+    styleOut.textContent = STYLES[s].text;
+    document.getElementById('styleNote').textContent = '⌁ ' + STYLES[s].note;
+  }
+  if(styleOut){
+    document.querySelectorAll('#styleToggle button').forEach(function(b){ b.addEventListener('click', function(){ setStyle(b.dataset.st); }); });
+    setStyle('memoir');
+  }
+
+  // ---- 집필: 표지 선택 ----
+  document.querySelectorAll('.cover').forEach(function(cv){
+    cv.addEventListener('click', function(){ document.querySelectorAll('.cover').forEach(function(x){ x.classList.toggle('sel', x===cv); }); });
+  });
+
+  // ---- 집필: 의뢰인 검색 ----
+  var WRITE_CLIENTS = [
+    {key:'최명희', name:'최명희 님', meta:'집필 52% · 시대증언형', cur:true},
+    {key:'정외순', name:'정외순 님', meta:'발간 완료 · 관계형', cur:false},
+    {key:'한정식', name:'한정식 님', meta:'카톡 30주 책 제작 완료', cur:false}
+  ];
+  bindSearch('writeSearch', 'writeResults', WRITE_CLIENTS,
+    function(d){ return d.key+' '+d.meta; },
+    function(d){ return '<div class="sr-item'+(d.cur?' cur':'')+'" data-k="'+d.key+'"><span class="sr-av">'+d.key.charAt(0)+'</span><span class="sr-name">'+d.name+'</span><span class="sr-meta">'+d.meta+(d.cur?' · 현재':'')+'</span></div>'; },
+    function(k){ if(k!=='최명희'){ alert(k+' — 데모에서는 최명희 님만 집필 데이터가 있습니다.'); } window.scrollTo(0,0); }
+  );
+
+  // ---- 어르신 명단 추가/삭제 ----
+  var eldersTable = document.getElementById('eldersTable');
+  if(eldersTable){
+    var tbody = eldersTable.querySelector('tbody');
+    function bindDel(btn){ btn.addEventListener('click', function(){ var tr=btn.closest('tr'); if(tr) tr.remove(); }); }
+    tbody.querySelectorAll('.elder-del').forEach(bindDel);
+    var addBtn = document.getElementById('elderAdd');
+    if(addBtn) addBtn.addEventListener('click', function(){
+      var nm = document.getElementById('elderName').value.trim();
+      var age = document.getElementById('elderAge').value.trim();
+      if(!nm){ document.getElementById('elderName').focus(); return; }
+      var tr = document.createElement('tr');
+      var first = nm.charAt(0);
+      tr.innerHTML = '<td><span class="elder-av">'+first+'</span> <span class="elder-name">'+nm+'</span></td>'+
+        '<td>'+(age||'-')+'</td>'+
+        '<td><textarea class="elder-memo" rows="1" placeholder="인적사항·회상 메모 입력"></textarea></td>'+
+        '<td><span class="elder-att">📷 0</span></td>'+
+        '<td><button class="elder-del">삭제</button></td>';
+      tbody.appendChild(tr);
+      bindDel(tr.querySelector('.elder-del'));
+      document.getElementById('elderName').value=''; document.getElementById('elderAge').value='';
+      document.getElementById('elderName').focus();
+    });
+  }
+
+  // type edit (report)
+  (function(){
+    var sec = document.getElementById('typeSec'); if(!sec) return;
+    var panel = document.getElementById('typeEdit');
+    document.getElementById('typeEditBtn').addEventListener('click', function(){ panel.classList.toggle('open'); });
+    document.getElementById('typeCancel').addEventListener('click', function(){ panel.classList.remove('open'); });
+    document.getElementById('typeSave').addEventListener('click', function(){
+      var m = document.getElementById('selMain').value;
+      var s = document.getElementById('selSub').value;
+      document.getElementById('curMain').textContent = '주 · ' + m;
+      document.getElementById('tagMain').textContent = m + ' (주)';
+      var curSub = document.getElementById('curSub'), tagSub = document.getElementById('tagSub');
+      if(s === '없음'){ curSub.style.display = 'none'; tagSub.style.display = 'none'; }
+      else { curSub.style.display = ''; tagSub.style.display = '';
+             curSub.textContent = '부 · ' + s; tagSub.textContent = s + ' (부)'; }
+      var st = document.getElementById('typeState');
+      st.textContent = '작가 확정 · 잠금 🔒'; st.classList.add('locked');
+      panel.classList.remove('open');
+    });
+  })();
+  var GROUP = {dash:'dash', chat:'pre', report:'pre', questions:'pre', kakao:'kakao',
+    'welfare-intro':'welfare', 'welfare-design':'welfare', 'welfare-cases':'welfare', 'welfare-bench':'welfare',
+    writing:'writing'};
+  function showView(v){
+    var g = GROUP[v] || 'dash';
+    document.querySelectorAll('.view').forEach(function(el){ el.classList.toggle('active', el.id===v); });
+    document.querySelectorAll('.tab').forEach(function(el){ el.classList.toggle('active', el.dataset.group===g); });
+    document.querySelectorAll('.subtab').forEach(function(el){ el.classList.toggle('active', el.dataset.v===v); });
+    var sp = document.getElementById('subPre'); if(sp) sp.style.display = (g==='pre') ? 'flex' : 'none';
+    var sw = document.getElementById('subWelfare'); if(sw) sw.style.display = (g==='welfare') ? 'flex' : 'none';
+  }
+
+  // heatmap data (0=빈,1=얇음,2=보통,3=충실, -1=해당없음)
+  var rows = ['유년·성장','학창시절','청년·독립','결혼·가정형성','중년·전성기','노년·현재'];
+  var data = [
+    [3,0,-1,2,2,1,3],
+    [1,0,0,1,1,0,1],
+    [2,1,1,1,1,1,2],
+    [3,1,3,2,2,2,1],
+    [3,2,2,3,3,2,1],
+    [3,0,1,1,3,2,1]
+  ];
+  var cls = {'-1':'na','0':'l0','1':'l1','2':'l2','3':'l3'};
+  var marks = {'-1':'—','0':'','1':'','2':'','3':''};
+  var body = document.getElementById('heatBody');
+  rows.forEach(function(r,ri){
+    var tr = document.createElement('tr');
+    tr.innerHTML = '<th class="rowh">'+r+'</th>';
+    data[ri].forEach(function(v){
+      var td = document.createElement('td');
+      td.className = cls[v];
+      td.textContent = marks[v];
+      tr.appendChild(td);
+    });
+    body.appendChild(tr);
+  });
+</script>
+</body>
+</html>
