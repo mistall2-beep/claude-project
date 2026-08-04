@@ -8,6 +8,7 @@
 
 | 프로젝트 | 폴더 | 설명 | 링크 |
 |---|---|---|---|
+| ◍ **Life CareOS** | [`/lifecareos`](lifecareos/) | 복지관·지자체 내부의 Private AI가 흩어진 기록을 한 사람에 대한 이해(Life Care Profile)로 바꾸는 돌봄 운영체제. 6개 제품·순환 구조·근거 추적 인터랙티브 데모 | [제품소개](https://mistall2-beep.github.io/claude-project/lifecareos/) · [운영콘솔](https://mistall2-beep.github.io/claude-project/lifecareos/app.html) |
 | 🐾 **Pet Lifebook** | [`/pet-lifebook`](pet-lifebook/) | 반려동물의 흩어진 기억(사진·영상·음성·GPS·진료기록)을 AI가 읽어 한 권의 라이프북으로 엮는 Pet Memory OS | [제품소개](https://mistall2-beep.github.io/claude-project/pet-lifebook/) · [사용자화면](https://mistall2-beep.github.io/claude-project/pet-lifebook/app.html) · [브로셔](https://mistall2-beep.github.io/claude-project/pet-lifebook/brochure.html) |
 | 💼 **알바ink** | [`/albaink`](albaink/) | 구인·구직(알바) 매칭 데모 — 구직자/구인자/관리자 + 모바일 앱 | [앱](https://mistall2-beep.github.io/claude-project/albaink/app.html) · [관리자](https://mistall2-beep.github.io/claude-project/albaink/admin.html) |
 
@@ -17,6 +18,7 @@
 claude-project/
 ├─ index.html            # 프로젝트 허브(랜딩)
 ├─ app.html, brochure.html  # (옛 링크 호환) → pet-lifebook/* 로 자동 이동
+├─ lifecareos/           # ◍ Life CareOS — index.html(소개) app.html(운영 콘솔)
 ├─ pet-lifebook/         # 🐾 Pet Lifebook
 │  ├─ index.html app.html brochure.html comparison.html
 │  └─ assets/{haru, brochure}/

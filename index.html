@@ -25,15 +25,17 @@
     border-radius:20px;padding:26px;box-shadow:0 2px 6px rgba(40,30,15,.05),0 18px 40px rgba(40,30,15,.08);
     transition:transform .14s ease,box-shadow .2s ease;position:relative;overflow:hidden}
   .proj:hover{transform:translateY(-3px);box-shadow:0 30px 60px rgba(40,30,15,.16)}
+  .proj .cover-link{position:absolute;inset:0;z-index:1}
   .proj .ic{width:54px;height:54px;border-radius:15px;display:flex;align-items:center;justify-content:center;font-size:27px}
   .proj.pl .ic{background:linear-gradient(135deg,#1f9e8a,#e8804a)}
   .proj.ab .ic{background:linear-gradient(135deg,#3056d3,#6f8bff)}
+  .proj.lc .ic{background:linear-gradient(135deg,#0f6b5f,#1fae93)}
   .proj h2{font-size:21px;font-weight:800;margin:16px 0 6px}
   .proj p{font-size:14px;color:var(--muted)}
   .proj .tags{margin-top:14px;display:flex;flex-wrap:wrap;gap:7px}
   .proj .tags span{font-size:11.5px;font-weight:700;color:#46505f;background:#f2efe7;border:1px solid var(--line);padding:4px 10px;border-radius:999px}
   .proj .go{position:absolute;right:22px;top:26px;color:#c9bfae;font-size:22px}
-  .sub-links{margin-top:14px;display:flex;gap:8px;flex-wrap:wrap}
+  .sub-links{margin-top:14px;display:flex;gap:8px;flex-wrap:wrap;position:relative;z-index:2}
   .sub-links a{font-size:12.5px;font-weight:700;color:#0f6f60;background:#e6f6f2;border:1px solid #cfe9e2;padding:6px 11px;border-radius:999px;text-decoration:none}
   footer{margin-top:46px;color:var(--muted);font-size:12.5px;border-top:1px solid var(--line);padding-top:20px}
   @media(max-width:640px){.grid{grid-template-columns:1fr}}
@@ -46,19 +48,34 @@
     <p class="lead">이 저장소(<b>claude-project</b>)에 모인 데모들입니다. 각 프로젝트는 폴더로 분리되어 독립적으로 동작합니다.</p>
 
     <div class="grid">
-      <a class="proj pl" href="pet-lifebook/index.html">
+      <article class="proj lc">
+        <a class="cover-link" href="lifecareos/index.html" aria-label="Life CareOS 제품소개 열기"></a>
+        <span class="go">↗</span>
+        <div class="ic">◍</div>
+        <h2>Life CareOS</h2>
+        <p>복지관·지자체 내부의 Private AI가 흩어진 기록을 한 사람에 대한 이해로 바꾸는 돌봄 운영체제.</p>
+        <div class="tags"><span>Private AI</span><span>돌봄 OS</span><span>6개 제품</span><span>공공복지</span></div>
+        <div class="sub-links">
+          <a href="lifecareos/app.html">🖥️ 운영 콘솔</a>
+          <a href="lifecareos/index.html">📄 제품소개</a>
+        </div>
+      </article>
+
+      <article class="proj pl">
+        <a class="cover-link" href="pet-lifebook/index.html" aria-label="Pet Lifebook 제품소개 열기"></a>
         <span class="go">↗</span>
         <div class="ic">🐾</div>
         <h2>Pet Lifebook</h2>
         <p>흩어진 기억을 올리면, AI가 반려동물의 삶을 한 권의 이야기로 엮는 Pet Memory OS.</p>
         <div class="tags"><span>제품 소개</span><span>모바일·PC 데모</span><span>멀티모달</span><span>라이프북</span></div>
-        <div class="sub-links" onclick="event.preventDefault?null:null">
+        <div class="sub-links">
           <a href="pet-lifebook/app.html">📱 사용자 화면</a>
           <a href="pet-lifebook/brochure.html">📄 브로셔</a>
         </div>
-      </a>
+      </article>
 
-      <a class="proj ab" href="albaink/index.html">
+      <article class="proj ab">
+        <a class="cover-link" href="albaink/index.html" aria-label="알바ink 제품소개 열기"></a>
         <span class="go">↗</span>
         <div class="ic">💼</div>
         <h2>알바ink</h2>
@@ -68,7 +85,7 @@
           <a href="albaink/app.html">📱 앱</a>
           <a href="albaink/admin.html">🛠️ 관리자</a>
         </div>
-      </a>
+      </article>
     </div>
 
     <footer>

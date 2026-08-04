@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Life CareOS · 돌봄 운영 콘솔 (데모)</title>
+<meta name="description" content="복지관·지자체 내부에서 동작하는 Private AI 돌봄 운영체제 — 사회복지사용 인터랙티브 데모."/>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin/>
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"/>
+<style>
+  :root{
+    --ink:#15211f; --ink2:#3a4a47; --muted:#687874; --faint:#93a29e;
+    --line:#e3e9e6; --line2:#eef2f0; --bg:#f4f7f5; --panel:#ffffff;
+    --teal:#0f6b5f; --teal-d:#0a5147; --teal-soft:#e3f3ef; --teal-ring:#bfe4db;
+    --amber:#c67b1e; --amber-soft:#fbf0dd;
+    --rose:#b5493f; --rose-soft:#f8e6e3;
+    --blue:#2f6db3; --blue-soft:#e6eef8;
+    --violet:#6b52a3; --violet-soft:#efeafa;
+    --ok:#1f8a5b; --ok-soft:#e2f4ea;
+    --shadow:0 1px 2px rgba(20,40,35,.05), 0 10px 30px rgba(20,40,35,.07);
+    --shadow-lg:0 24px 60px rgba(20,40,35,.16);
+    --r:14px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%}
+  body{
+    color:var(--ink); background:var(--bg);
+    font-family:"Pretendard",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+    -webkit-font-smoothing:antialiased; letter-spacing:-.01em; line-height:1.55;
+    display:flex; flex-direction:column; height:100vh; overflow:hidden;
+  }
+  button{font-family:inherit; cursor:pointer}
+  .mono{font-variant-numeric:tabular-nums}
+
+  /* ===== Top bar ===== */
+  .topbar{flex:0 0 auto; display:flex; align-items:center; gap:14px; height:58px; padding:0 18px;
+    background:var(--panel); border-bottom:1px solid var(--line); z-index:40}
+  .brand{display:flex; align-items:center; gap:10px; font-weight:900; letter-spacing:-.03em; font-size:16.5px}
+  .brand .mark{width:30px; height:30px; border-radius:9px; background:linear-gradient(135deg,var(--teal),#1fae93);
+    display:flex; align-items:center; justify-content:center; color:#fff; font-size:16px; box-shadow:0 4px 12px rgba(15,107,95,.35)}
+  .brand b{color:var(--teal)}
+  .org{margin-left:4px; padding:5px 11px; border:1px solid var(--line); border-radius:999px; font-size:12.5px;
+    font-weight:700; color:var(--ink2); background:var(--bg); display:flex; align-items:center; gap:7px}
+  .org .dot{width:7px;height:7px;border-radius:50%;background:var(--ok)}
+  .spacer{flex:1}
+  .topbar .date{font-size:12.5px; color:var(--muted); font-weight:600}
+  .topbar .home{font-size:12.5px; font-weight:800; color:var(--teal); text-decoration:none; padding:7px 12px;
+    border:1px solid var(--teal-ring); border-radius:999px; background:var(--teal-soft)}
+  .who{display:flex; align-items:center; gap:9px}
+  .who .av{width:32px;height:32px;border-radius:50%;background:var(--teal-soft);color:var(--teal-d);
+    display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;border:1px solid var(--teal-ring)}
+  .who .t{font-size:12.5px; line-height:1.25}
+  .who .t b{font-weight:800} .who .t span{color:var(--muted); font-size:11px}
+
+  /* ===== Layout ===== */
+  .shell{flex:1; display:flex; min-height:0}
+  .rail{flex:0 0 234px; background:var(--panel); border-right:1px solid var(--line); display:flex; flex-direction:column; overflow-y:auto}
+  .rail .cap{font-size:10.5px; font-weight:800; letter-spacing:.09em; color:var(--faint); text-transform:uppercase; padding:16px 18px 7px}
+  .navitem{display:flex; align-items:center; gap:11px; padding:10px 16px; margin:1px 10px; border-radius:11px;
+    color:var(--ink2); font-weight:700; font-size:13.5px; border:1px solid transparent; position:relative}
+  .navitem:hover{background:var(--bg)}
+  .navitem.on{background:var(--teal-soft); color:var(--teal-d); border-color:var(--teal-ring)}
+  .navitem .pn{width:24px;height:24px;border-radius:7px;background:var(--bg); border:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center; font-size:11px; font-weight:900; color:var(--muted); flex:0 0 auto}
+  .navitem.on .pn{background:#fff;color:var(--teal);border-color:var(--teal-ring)}
+  .navitem .ic{font-size:16px}
+  .navitem .sub{display:block; font-size:11px; font-weight:600; color:var(--faint); margin-top:1px}
+  .navitem.on .sub{color:var(--teal)}
+  .navitem .badge{position:absolute; right:12px; top:50%; transform:translateY(-50%); background:var(--rose); color:#fff;
+    font-size:10.5px; font-weight:800; min-width:18px; height:18px; padding:0 5px; border-radius:999px; display:flex; align-items:center; justify-content:center}
+  .rail .loop{margin:14px 12px 16px; padding:12px 13px; background:linear-gradient(135deg,#0e2b26,#123f37); color:#dff3ee;
+    border-radius:13px; font-size:11.5px; line-height:1.5}
+  .rail .loop b{color:#7fe8d2; font-weight:800}
+  .rail .foot{margin-top:auto; padding:14px 18px; font-size:10.5px; color:var(--faint); border-top:1px solid var(--line2)}
+
+  .main{flex:1; min-width:0; overflow-y:auto; padding:22px 26px 60px}
+  .view{display:none} .view.on{display:block; animation:fade .25s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  .vhead{display:flex; align-items:flex-end; justify-content:space-between; gap:16px; margin-bottom:4px}
+  .vhead .eyebrow{font-size:11px; font-weight:800; letter-spacing:.1em; color:var(--teal); text-transform:uppercase}
+  .vhead h1{font-size:23px; font-weight:900; letter-spacing:-.03em; margin:5px 0 2px}
+  .vhead p{margin:0; color:var(--muted); font-size:13.5px}
+  .vhead .pill{font-size:11.5px; font-weight:800; color:var(--muted); background:var(--panel); border:1px solid var(--line);
+    padding:6px 12px; border-radius:999px}
+
+  .card{background:var(--panel); border:1px solid var(--line); border-radius:var(--r); box-shadow:var(--shadow)}
+  .grid{display:grid; gap:14px}
+
+  /* ===== Decision Agent (dashboard) ===== */
+  .kpis{display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin:16px 0 18px}
+  .kpi{padding:15px 16px}
+  .kpi .n{font-size:27px; font-weight:900; letter-spacing:-.03em; line-height:1}
+  .kpi .l{font-size:12px; color:var(--muted); font-weight:700; margin-top:6px}
+  .kpi .d{font-size:11px; color:var(--faint); margin-top:3px}
+  .kpi.p .n{color:var(--rose)} .kpi.t .n{color:var(--teal)} .kpi.a .n{color:var(--amber)} .kpi.b .n{color:var(--blue)}
+
+  .queue{overflow:hidden}
+  .qhead{display:flex; align-items:center; justify-content:space-between; padding:14px 18px; border-bottom:1px solid var(--line2)}
+  .qhead h3{margin:0; font-size:15px; font-weight:800}
+  .qhead .filters{display:flex; gap:6px}
+  .chip{font-size:12px; font-weight:700; color:var(--muted); background:var(--bg); border:1px solid var(--line);
+    padding:6px 11px; border-radius:999px}
+  .chip.on{background:var(--teal-soft); color:var(--teal-d); border-color:var(--teal-ring)}
+
+  .case{display:grid; grid-template-columns:auto 1fr auto; gap:14px; align-items:center; padding:14px 18px; border-bottom:1px solid var(--line2)}
+  .case:last-child{border-bottom:0}
+  .case:hover{background:#fbfdfc}
+  .case .av{width:44px;height:44px;border-radius:12px; display:flex;align-items:center;justify-content:center;
+    font-weight:900; font-size:15px; color:#fff; flex:0 0 auto}
+  .case .who2{min-width:0}
+  .case .nm{font-weight:800; font-size:14.5px; display:flex; align-items:center; gap:8px; flex-wrap:wrap}
+  .case .meta{font-size:11.5px; color:var(--faint); font-weight:600}
+  .ptype{font-size:11px; font-weight:800; padding:2px 8px; border-radius:999px}
+  .signal{margin-top:6px; font-size:12.5px; color:var(--ink2); display:flex; align-items:center; gap:7px}
+  .signal .s-ic{flex:0 0 auto}
+  .sugg{margin-top:8px; display:flex; align-items:center; gap:8px; flex-wrap:wrap}
+  .sugg .lab{font-size:10.5px; font-weight:800; color:var(--teal); background:var(--teal-soft); border:1px solid var(--teal-ring);
+    padding:3px 8px; border-radius:6px; letter-spacing:.02em}
+  .sugg .txt{font-size:13px; font-weight:700}
+  .case .prio{display:flex; flex-direction:column; align-items:flex-end; gap:8px}
+  .prio .tag{font-size:11px; font-weight:900; padding:5px 11px; border-radius:999px}
+  .prio-1{background:var(--rose-soft); color:var(--rose)} .prio-2{background:var(--amber-soft); color:var(--amber)}
+  .prio-3{background:var(--blue-soft); color:var(--blue)}
+  .acts{display:flex; gap:6px}
+  .btn{font-size:12px; font-weight:800; padding:7px 12px; border-radius:9px; border:1px solid var(--line); background:var(--panel); color:var(--ink2)}
+  .btn:hover{border-color:var(--teal-ring)}
+  .btn.pri{background:var(--teal); color:#fff; border-color:var(--teal)}
+  .btn.pri:hover{background:var(--teal-d)}
+  .btn.mini{padding:5px 10px; font-size:11.5px}
+  .case.done{opacity:.55}
+  .case.done .prio .tag{background:var(--ok-soft); color:var(--ok)}
+
+  .disclaimer{margin:14px 2px 0; font-size:12px; color:var(--muted); display:flex; gap:8px; align-items:flex-start}
+  .disclaimer b{color:var(--ink2)}
+
+  /* ===== Person picker (shared) ===== */
+  .personbar{display:flex; gap:8px; overflow-x:auto; padding:2px 2px 12px; margin-bottom:4px}
+  .pchip{flex:0 0 auto; display:flex; align-items:center; gap:9px; padding:8px 13px 8px 8px; border-radius:999px;
+    border:1px solid var(--line); background:var(--panel); font-weight:700; font-size:13px; color:var(--ink2)}
+  .pchip .av{width:28px;height:28px;border-radius:50%;color:#fff;font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center}
+  .pchip.on{border-color:var(--teal); box-shadow:0 0 0 3px var(--teal-soft)}
+  .pchip small{color:var(--faint); font-weight:600; font-size:11px}
+
+  /* ===== Profile (9 axes) ===== */
+  .axgrid{display:grid; grid-template-columns:repeat(3,1fr); gap:13px}
+  .ax{padding:14px 15px; position:relative; overflow:hidden}
+  .ax h4{margin:0; font-size:13.5px; font-weight:800; display:flex; align-items:center; gap:8px}
+  .ax h4 .ic{width:26px;height:26px;border-radius:8px;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:14px}
+  .ax .axdesc{font-size:11px; color:var(--faint); margin:2px 0 10px 34px}
+  .ax.risk h4 .ic{background:var(--rose-soft)} .ax.strength h4 .ic{background:var(--ok-soft)}
+  .ax ul{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:7px}
+  .ax li{font-size:12.5px; color:var(--ink2); line-height:1.4; padding-left:14px; position:relative}
+  .ax li::before{content:""; position:absolute; left:2px; top:7px; width:5px; height:5px; border-radius:50%; background:var(--teal-ring)}
+  .ax.risk li::before{background:#e6b0aa} .ax.strength li::before{background:#a7dcc0}
+  .ax li .ev{display:inline-flex; align-items:center; gap:3px; margin-left:6px; font-size:10.5px; font-weight:700;
+    color:var(--blue); background:var(--blue-soft); border:1px solid #cfe0f5; padding:1px 6px; border-radius:6px; cursor:pointer; white-space:nowrap}
+  .ax li .ai{margin-left:5px; font-size:10px; font-weight:800; color:var(--violet); background:var(--violet-soft); padding:1px 5px; border-radius:5px}
+  .ax .fill{position:absolute; right:13px; top:14px; font-size:11px; font-weight:800; color:var(--muted)}
+  .ax.empty{border-style:dashed; background:#fbfdfc}
+  .ax.empty .miss{font-size:12px; color:var(--amber); font-weight:700; padding-left:2px}
+
+  .cover{display:flex; gap:14px; align-items:center; flex-wrap:wrap; padding:16px 18px; margin-bottom:16px}
+  .ring{--p:0; width:74px;height:74px;border-radius:50%; flex:0 0 auto;
+    background:conic-gradient(var(--teal) calc(var(--p)*1%), var(--line) 0); display:flex; align-items:center; justify-content:center}
+  .ring i{width:56px;height:56px;border-radius:50%;background:var(--panel);display:flex;flex-direction:column;align-items:center;justify-content:center;font-style:normal}
+  .ring b{font-size:19px; font-weight:900; color:var(--teal-d); line-height:1}
+  .ring span{font-size:9.5px; color:var(--muted); font-weight:700}
+  .cover .ctxt h3{margin:0 0 2px; font-size:15px; font-weight:800}
+  .cover .ctxt p{margin:0; font-size:12.5px; color:var(--muted)}
+  .cover .cbars{flex:1; min-width:240px; display:grid; grid-template-columns:repeat(3,1fr); gap:6px 14px}
+  .cbar{font-size:11px}
+  .cbar .r{display:flex; justify-content:space-between; color:var(--ink2); font-weight:700; margin-bottom:3px}
+  .cbar .track{height:6px; background:var(--line2); border-radius:99px; overflow:hidden}
+  .cbar .val{height:100%; background:var(--teal); border-radius:99px; transition:width .6s ease}
+  .cbar.low .val{background:var(--amber)}
+
+  /* ===== Persona ===== */
+  .persona-hero{display:grid; grid-template-columns:1.1fr 1fr; gap:14px; margin-bottom:16px}
+  .ptype-card{padding:20px 22px}
+  .ptype-card .tt{font-size:11px; font-weight:800; color:var(--faint); letter-spacing:.08em; text-transform:uppercase}
+  .ptype-card .big{font-size:30px; font-weight:900; letter-spacing:-.03em; margin:6px 0 3px}
+  .ptype-card .sub{font-size:13px; color:var(--muted)}
+  .ptype-card .second{margin-top:14px; font-size:12.5px; color:var(--ink2)}
+  .ptype-card .second b{color:var(--teal-d)}
+  .basis{padding:18px 20px}
+  .basis h4{margin:0 0 10px; font-size:13px; font-weight:800}
+  .basis ul{margin:0; padding-left:18px; font-size:12.5px; color:var(--ink2); display:flex; flex-direction:column; gap:6px}
+  .typebank{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:16px}
+  .tb{padding:12px 14px; border-radius:12px; border:1px solid var(--line); background:var(--panel); font-size:12px}
+  .tb.on{border-color:var(--teal); background:var(--teal-soft)}
+  .tb b{font-size:13px; display:block; margin-bottom:3px} .tb.on b{color:var(--teal-d)}
+  .tb span{color:var(--muted)}
+  .warnbox{padding:14px 16px; background:var(--amber-soft); border:1px solid #e9d4a8; border-radius:12px; font-size:12.5px; color:#7a521a}
+  .warnbox b{color:#5f3f12}
+
+  /* ===== Question Agent ===== */
+  .flowline{display:flex; align-items:stretch; gap:0; margin:16px 0 20px; overflow-x:auto}
+  .fl{flex:1; min-width:130px; padding:13px 14px; background:var(--panel); border:1px solid var(--line); position:relative}
+  .fl:first-child{border-radius:12px 0 0 12px} .fl:last-child{border-radius:0 12px 12px 0}
+  .fl:not(:last-child){border-right:0}
+  .fl .n{font-size:10px; font-weight:800; color:var(--teal); letter-spacing:.05em}
+  .fl .t{font-size:12.5px; font-weight:800; margin:3px 0 2px} .fl .d{font-size:11px; color:var(--muted)}
+  .fl .arw{position:absolute; right:-9px; top:50%; transform:translateY(-50%); z-index:2; width:18px;height:18px;border-radius:50%;
+    background:var(--teal); color:#fff; display:flex; align-items:center; justify-content:center; font-size:11px}
+  .fl:last-child .arw{display:none}
+
+  .qwrap{display:grid; grid-template-columns:1.15fr .85fr; gap:14px}
+  .qlist{padding:6px}
+  .q{padding:15px 16px; border-radius:12px; border:1px solid var(--line2); margin:8px; background:var(--panel)}
+  .q .qtop{display:flex; align-items:center; gap:8px; margin-bottom:8px}
+  .q .qax{font-size:10.5px; font-weight:800; padding:3px 8px; border-radius:6px; background:var(--bg); color:var(--muted)}
+  .q .qwhy{font-size:11px; color:var(--faint); font-weight:600}
+  .q .qtext{font-size:15px; font-weight:800; letter-spacing:-.02em; line-height:1.4}
+  .q .qhint{font-size:12px; color:var(--muted); margin-top:6px}
+  .q .qact{margin-top:12px; display:flex; gap:8px; align-items:center}
+  .q textarea{width:100%; margin-top:10px; border:1px solid var(--line); border-radius:10px; padding:10px 12px; font-family:inherit;
+    font-size:13px; resize:vertical; min-height:62px; color:var(--ink); background:var(--bg)}
+  .q textarea:focus{outline:none; border-color:var(--teal-ring); background:#fff}
+  .q.answered{background:var(--ok-soft); border-color:#bfe3cf}
+  .q.answered .qtext{color:var(--teal-d)}
+  .qside{padding:18px 20px; height:fit-content; position:sticky; top:0}
+  .qside h4{margin:0 0 4px; font-size:13px; font-weight:800}
+  .qside .big{font-size:40px; font-weight:900; color:var(--teal); letter-spacing:-.03em; line-height:1; margin:10px 0 2px}
+  .qside .track{height:9px; background:var(--line2); border-radius:99px; overflow:hidden; margin:10px 0}
+  .qside .track .val{height:100%; background:linear-gradient(90deg,var(--teal),#1fae93); border-radius:99px; transition:width .7s cubic-bezier(.2,.8,.2,1)}
+  .qside .note{font-size:12px; color:var(--muted); line-height:1.5}
+  .qside .gain{font-size:12px; font-weight:800; color:var(--ok); margin-top:8px; height:16px}
+
+  /* ===== Starter (upload) ===== */
+  .drop{padding:32px 24px; border:2px dashed var(--teal-ring); border-radius:16px; background:var(--teal-soft);
+    text-align:center; margin-bottom:16px}
+  .drop .ttl{font-size:20px; font-weight:900; letter-spacing:-.03em}
+  .drop .sub{font-size:13px; color:var(--teal-d); margin:6px 0 16px; opacity:.85}
+  .filerow{display:flex; gap:8px; flex-wrap:wrap; justify-content:center; margin-bottom:14px}
+  .filetag{font-size:12px; font-weight:700; color:var(--ink2); background:#fff; border:1px solid var(--teal-ring);
+    padding:7px 12px; border-radius:10px; display:flex; align-items:center; gap:7px}
+  .procgrid{display:grid; grid-template-columns:repeat(5,1fr); gap:10px; margin:16px 0}
+  .pstep{padding:13px; border-radius:12px; border:1px solid var(--line); background:var(--panel); text-align:center; position:relative; opacity:.4; transition:.3s}
+  .pstep.act{opacity:1; border-color:var(--teal-ring); box-shadow:var(--shadow)}
+  .pstep .pi{font-size:22px} .pstep .pt{font-size:12px; font-weight:800; margin-top:5px} .pstep .pd{font-size:10.5px; color:var(--muted); margin-top:2px}
+  .starter-out{display:none}
+  .classrow{display:grid; grid-template-columns:auto 1fr auto; gap:12px; align-items:center; padding:11px 14px; border-bottom:1px solid var(--line2)}
+  .classrow:last-child{border:0}
+  .classrow .fic{width:34px;height:34px;border-radius:9px;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:16px}
+  .classrow .fn{font-size:13px; font-weight:700} .classrow .fmeta{font-size:11px; color:var(--faint)}
+  .classrow .to{font-size:12px; font-weight:800; color:var(--teal-d); background:var(--teal-soft); border:1px solid var(--teal-ring); padding:5px 10px; border-radius:8px}
+
+  /* ===== Archive ===== */
+  .tl{position:relative; margin:8px 0 0 8px; padding-left:26px}
+  .tl::before{content:""; position:absolute; left:6px; top:6px; bottom:6px; width:2px; background:var(--line)}
+  .tlitem{position:relative; padding:0 0 20px}
+  .tlitem::before{content:""; position:absolute; left:-26px; top:3px; width:12px;height:12px;border-radius:50%;
+    background:var(--panel); border:3px solid var(--teal)}
+  .tlitem .yr{font-size:12px; font-weight:900; color:var(--teal)}
+  .tlitem .ev2{font-size:13.5px; font-weight:700; margin:1px 0} .tlitem .src{font-size:11px; color:var(--faint)}
+  .book{display:grid; grid-template-columns:150px 1fr; gap:18px; padding:20px; align-items:center}
+  .bookcover{aspect-ratio:3/4; border-radius:10px; background:linear-gradient(150deg,#0e2b26,#15584c);
+    color:#eafaf5; padding:16px; display:flex; flex-direction:column; justify-content:space-between; box-shadow:var(--shadow-lg)}
+  .bookcover .bt{font-size:16px; font-weight:900; line-height:1.25} .bookcover .bs{font-size:11px; opacity:.8}
+  .bookcover .bn{font-size:11px; opacity:.7}
+  .exp{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:16px}
+  .expcard{padding:15px 17px}
+  .expcard h4{margin:0 0 5px; font-size:14px; font-weight:800; display:flex; align-items:center; gap:8px}
+  .expcard p{margin:0; font-size:12.5px; color:var(--muted)}
+
+  /* ===== Evidence modal ===== */
+  .modal{position:fixed; inset:0; background:rgba(15,33,29,.5); backdrop-filter:blur(3px); display:none;
+    align-items:center; justify-content:center; z-index:100; padding:20px}
+  .modal.on{display:flex; animation:fade .18s ease}
+  .modal .box{background:var(--panel); border-radius:16px; max-width:520px; width:100%; box-shadow:var(--shadow-lg); overflow:hidden}
+  .modal .mh{padding:16px 20px; border-bottom:1px solid var(--line2); display:flex; align-items:center; justify-content:between; gap:10px}
+  .modal .mh .mt{font-weight:800; font-size:14px; flex:1} .modal .mh b{color:var(--teal)}
+  .modal .x{border:0; background:var(--bg); width:30px;height:30px;border-radius:8px; font-size:16px; color:var(--muted)}
+  .modal .mb{padding:20px}
+  .modal .srcdoc{font-size:12px; font-weight:800; color:var(--muted); margin-bottom:10px}
+  .modal .quote{background:var(--bg); border-left:3px solid var(--teal); border-radius:0 8px 8px 0; padding:14px 16px;
+    font-size:14px; line-height:1.6; color:var(--ink)}
+  .modal .quote mark{background:var(--teal-soft); color:var(--teal-d); font-weight:800; padding:1px 3px; border-radius:4px}
+  .modal .link{margin-top:14px; font-size:12px; color:var(--muted); display:flex; align-items:center; gap:8px}
+  .modal .link .a{font-weight:800; color:var(--ink2)}
+
+  /* toast */
+  .toast{position:fixed; bottom:22px; left:50%; transform:translateX(-50%) translateY(20px); opacity:0;
+    background:#12312b; color:#eafaf5; font-size:13px; font-weight:700; padding:11px 18px; border-radius:11px;
+    box-shadow:var(--shadow-lg); z-index:120; transition:.3s; pointer-events:none; max-width:90vw}
+  .toast.on{opacity:1; transform:translateX(-50%) translateY(0)}
+
+  @media(max-width:920px){
+    .rail{position:fixed; left:0; top:58px; bottom:0; z-index:50; transform:translateX(-100%); transition:.25s; box-shadow:var(--shadow-lg)}
+    .rail.open{transform:none}
+    .menu{display:flex!important}
+    .kpis{grid-template-columns:repeat(2,1fr)} .axgrid,.procgrid,.typebank{grid-template-columns:1fr 1fr}
+    .persona-hero,.qwrap,.book{grid-template-columns:1fr} .exp{grid-template-columns:1fr}
+    .case{grid-template-columns:auto 1fr; } .case .prio{grid-column:2; align-items:flex-start}
+  }
+  .menu{display:none; width:36px;height:36px;border-radius:9px;border:1px solid var(--line);background:var(--panel);
+    align-items:center;justify-content:center;font-size:17px}
+  @media(max-width:560px){.kpis{grid-template-columns:1fr 1fr}.axgrid,.procgrid,.typebank{grid-template-columns:1fr}.main{padding:16px 14px 60px}}
+  @media(max-width:720px){
+    .topbar{gap:9px; padding:0 12px}
+    .org, .topbar .date, .who .t{display:none}
+    .brand{font-size:15px}
+    .topbar .home{padding:6px 10px}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <button class="menu" onclick="document.getElementById('rail').classList.toggle('open')">☰</button>
+  <div class="brand"><span class="mark">◍</span> Life<b>Care</b>OS</div>
+  <div class="org"><span class="dot"></span> 햇살종합사회복지관 · 내부망</div>
+  <div class="spacer"></div>
+  <span class="date" id="today">2026. 8. 4. (화)</span>
+  <a class="home" href="../index.html">← 프로젝트 허브</a>
+  <div class="who">
+    <div class="av">서</div>
+    <div class="t"><b>서지연</b> 사회복지사<br><span>맞춤돌봄팀 · 담당 148명</span></div>
+  </div>
+</div>
+
+<div class="shell">
+  <!-- Sidebar -->
+  <nav class="rail" id="rail">
+    <div class="cap">6 Products · 하나의 프로파일</div>
+    <a class="navitem on" data-view="decision" onclick="go('decision')">
+      <span class="pn">P5</span><span class="ic">✅</span>
+      <span>Decision Agent<span class="sub">오늘의 돌봄 추천</span></span>
+      <span class="badge" id="nav-badge">5</span>
+    </a>
+    <a class="navitem" data-view="profile" onclick="go('profile')">
+      <span class="pn">P2</span><span class="ic">🧩</span>
+      <span>Profile Agent<span class="sub">9개 축 통합 프로파일</span></span>
+    </a>
+    <a class="navitem" data-view="persona" onclick="go('persona')">
+      <span class="pn">P3</span><span class="ic">🧭</span>
+      <span>Persona Agent<span class="sub">인물 진단 리포트</span></span>
+    </a>
+    <a class="navitem" data-view="question" onclick="go('question')">
+      <span class="pn">P4</span><span class="ic">💬</span>
+      <span>Question Agent<span class="sub">적응형 질문 추천</span></span>
+    </a>
+    <a class="navitem" data-view="starter" onclick="go('starter')">
+      <span class="pn">P1</span><span class="ic">📥</span>
+      <span>Life Care Starter<span class="sub">자료 수집·자동 분류</span></span>
+    </a>
+    <a class="navitem" data-view="archive" onclick="go('archive')">
+      <span class="pn">P6</span><span class="ic">📖</span>
+      <span>Life Archive<span class="sub">생애 기록·Life Book</span></span>
+    </a>
+
+    <div class="loop">
+      <b>↻ 순환 구조</b><br>
+      P5의 실행 결과가 P1으로 다시 들어갑니다. 추천이 실행·기록되면 프로파일이 갱신되고, 다음 추천이 정확해집니다.
+    </div>
+    <div class="foot">Private AI Care Agent · 원문은 기관 내부에 머물고, 중앙에는 비식별 성과만 전송됩니다.<br>데모 데이터 — 실제 개인정보 아님.</div>
+  </nav>
+
+  <!-- Main -->
+  <main class="main" id="main">
+
+    <!-- ===== P5 Decision Agent ===== -->
+    <section class="view on" id="v-decision">
+      <div class="vhead">
+        <div>
+          <div class="eyebrow">Product 5 · Decision Agent</div>
+          <h1>오늘, 누구에게 무엇을 먼저 할 것인가</h1>
+          <p>담당 148명 중 시스템이 신호를 감지한 대상자입니다. 우선순위와 제안을 확인하고 실행하세요.</p>
+        </div>
+        <span class="pill">최근 동기화 · 오늘 07:40</span>
+      </div>
+
+      <div class="kpis">
+        <div class="card kpi p"><div class="n" id="k-urgent">2</div><div class="l">우선 확인 필요</div><div class="d">고립·미참여 신호</div></div>
+        <div class="card kpi t"><div class="n mono">148</div><div class="l">담당 대상자</div><div class="d">프로파일 관리 중</div></div>
+        <div class="card kpi a"><div class="n mono">73<span style="font-size:16px">%</span></div><div class="l">평균 프로파일 완성율</div><div class="d">결손 항목 자동 탐지</div></div>
+        <div class="card kpi b"><div class="n mono" id="k-done">0</div><div class="l">오늘 처리한 제안</div><div class="d">실행·기록 완료</div></div>
+      </div>
+
+      <div class="card queue">
+        <div class="qhead">
+          <h3>오늘의 우선순위 큐</h3>
+          <div class="filters">
+            <button class="chip on" onclick="filterCases(this,'all')">전체</button>
+            <button class="chip" onclick="filterCases(this,'1')">긴급</button>
+            <button class="chip" onclick="filterCases(this,'open')">미처리</button>
+          </div>
+        </div>
+        <div id="caseList"></div>
+      </div>
+
+      <div class="disclaimer">
+        <span>ℹ️</span><div><b>제안은 제안일 뿐입니다.</b> 실행 여부와 최종 판단은 언제나 담당 사회복지사가 합니다. AI는 의학적 진단·치료 판단을 하지 않습니다.</div>
+      </div>
+    </section>
+
+    <!-- ===== P2 Profile Agent ===== -->
+    <section class="view" id="v-profile">
+      <div class="vhead">
+        <div>
+          <div class="eyebrow">Product 2 · Profile Agent</div>
+          <h1>9개 축으로 정리된 한 사람</h1>
+          <p>흩어진 기록을 돌봄 현장이 실제로 쓸 수 있는 형태로 구조화합니다. 각 항목은 <b>원문 근거</b>와 연결됩니다.</p>
+        </div>
+        <span class="pill" id="prof-updated">—</span>
+      </div>
+      <div id="personbar-profile" class="personbar"></div>
+      <div class="card cover" id="coverBox"></div>
+      <div class="axgrid" id="axGrid"></div>
+    </section>
+
+    <!-- ===== P3 Persona Agent ===== -->
+    <section class="view" id="v-persona">
+      <div class="vhead">
+        <div>
+          <div class="eyebrow">Product 3 · Persona Agent</div>
+          <h1>이 사람은 어떤 사람인가</h1>
+          <p>유형은 라벨이 아니라 제안입니다. AI는 추정할 뿐, 확정은 담당자가 합니다.</p>
+        </div>
+        <span class="pill" id="persona-conf">—</span>
+      </div>
+      <div id="personbar-persona" class="personbar"></div>
+      <div class="persona-hero" id="personaHero"></div>
+      <div class="typebank" id="typeBank"></div>
+      <div class="warnbox">⚠️ <b>낙인 방지 원칙</b> — 부정적 낙인이 될 수 있는 표현은 서식에서 배제됩니다. 담당자가 유형을 확정하면 이후 AI는 자동으로 바꾸지 않고 제안만 합니다.</div>
+    </section>
+
+    <!-- ===== P4 Question Agent ===== -->
+    <section class="view" id="v-question">
+      <div class="vhead">
+        <div>
+          <div class="eyebrow">Product 4 · Question Agent</div>
+          <h1>무엇을 물을지 고민하는 시간이 사라집니다</h1>
+          <p>같은 질문이 모두에게 맞지 않습니다. 프로파일의 빈 곳을 채우는 <b>다음 질문</b>을 추천합니다.</p>
+        </div>
+        <span class="pill">답변 → 프로파일 환류</span>
+      </div>
+      <div id="personbar-question" class="personbar"></div>
+      <div class="flowline">
+        <div class="fl"><div class="n">INPUT</div><div class="t">현재 프로파일</div><div class="d">비어 있는 영역·유형</div><div class="arw">›</div></div>
+        <div class="fl"><div class="n">INPUT</div><div class="t">오늘 상황</div><div class="d">최근 활동·컨디션</div><div class="arw">›</div></div>
+        <div class="fl"><div class="n">INPUT</div><div class="t">지난 대화</div><div class="d">반응이 좋았던 주제</div><div class="arw">›</div></div>
+        <div class="fl"><div class="n">ENGINE</div><div class="t">질문 추천</div><div class="d">이 사람에게 맞는 질문</div><div class="arw">›</div></div>
+        <div class="fl"><div class="n">LOOP ↻</div><div class="t">프로파일 갱신</div><div class="d">완성율 상승</div></div>
+      </div>
+      <div class="qwrap">
+        <div class="card qlist" id="qList"></div>
+        <div class="card qside">
+          <h4>프로파일 완성율</h4>
+          <div class="big"><span id="q-pct">0</span>%</div>
+          <div class="track"><div class="val" id="q-bar" style="width:0%"></div></div>
+          <div class="gain" id="q-gain"></div>
+          <p class="note">질문은 답을 얻는 수단이자 데이터를 모으는 도구입니다. 답변이 쌓이면 완성율이 오르고, <b>다음 질문이 더 정확해집니다.</b> 채워진 정보는 Decision Agent 추천에 즉시 반영됩니다.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== P1 Life Care Starter ===== -->
+    <section class="view" id="v-starter">
+      <div class="vhead">
+        <div>
+          <div class="eyebrow">Product 1 · Life Care Starter</div>
+          <h1>정리하지 마세요. 그냥 모두 올리세요.</h1>
+          <p>PDF도, 손글씨 사진도, 음성도 그대로 받습니다. 분류·이름 붙이기·순서 맞추기는 AI가 합니다.</p>
+        </div>
+        <span class="pill">자료는 기관을 떠나지 않습니다</span>
+      </div>
+
+      <div class="card drop">
+        <div class="ttl">📂 자료를 여기에 올리세요</div>
+        <div class="sub">상담일지 · 진료기록 · 사진 · 음성 · 편지 — 형식을 묻지 않습니다</div>
+        <div class="filerow" id="fileRow"></div>
+        <button class="btn pri" id="startBtn" onclick="runStarter()">▶ 샘플 자료 8건 올리고 AI 분류 실행</button>
+      </div>
+
+      <div class="procgrid" id="procGrid">
+        <div class="pstep" data-s="0"><div class="pi">📥</div><div class="pt">수집</div><div class="pd">기관 연동·업로드</div></div>
+        <div class="pstep" data-s="1"><div class="pi">🔤</div><div class="pt">형식 해석</div><div class="pd">문서·이미지·음성→텍스트</div></div>
+        <div class="pstep" data-s="2"><div class="pi">🔎</div><div class="pt">개체 인식</div><div class="pd">인물·장소·시점·사건</div></div>
+        <div class="pstep" data-s="3"><div class="pi">🕰</div><div class="pt">시간 정렬</div><div class="pd">생애 순서·중복 제거</div></div>
+        <div class="pstep" data-s="4"><div class="pi">🗂</div><div class="pt">영역 분류</div><div class="pd">9개 축 자동 배정</div></div>
+      </div>
+
+      <div class="card starter-out" id="starterOut">
+        <div class="qhead"><h3>분류 결과 — 이말순 어르신 자료 8건</h3><span class="chip on">비식별 처리 완료</span></div>
+        <div id="classList"></div>
+      </div>
+      <div class="disclaimer" style="margin-top:16px">
+        <span>🔒</span><div><b>중앙에는 비식별화된 운영 성과만 전달됩니다.</b> 진료·상담 원문과 개인식별정보는 외부로 전송되지 않고, 분류·추출은 기관 내부에서 수행됩니다.</div>
+      </div>
+    </section>
+
+    <!-- ===== P6 Life Archive ===== -->
+    <section class="view" id="v-archive">
+      <div class="vhead">
+        <div>
+          <div class="eyebrow">Product 6 · Life Archive</div>
+          <h1>시간이 지날수록 쌓입니다</h1>
+          <p>돌봄 이력과 생애 기록이 한 사람의 아카이브가 됩니다. 가족에게 한 권으로, 지역사회에 생애 기록으로.</p>
+        </div>
+        <span class="pill">이말순 어르신 · 1938–</span>
+      </div>
+      <div class="grid" style="grid-template-columns:1.15fr .85fr; gap:14px" id="archiveGrid">
+        <div class="card" style="padding:18px 20px">
+          <h4 style="margin:0 0 6px;font-size:14px;font-weight:800">🕰 Timeline — 생애 사건과 돌봄 이력</h4>
+          <div class="tl" id="timeline"></div>
+        </div>
+        <div>
+          <div class="card book">
+            <div class="bookcover">
+              <div><div class="bs">LIFE BOOK</div><div class="bt">이말순의<br>여든여덟 해</div></div>
+              <div class="bn">햇살복지관 · 2026 · 가족 소장용</div>
+            </div>
+            <div>
+              <h4 style="margin:0 0 6px;font-size:14px;font-weight:800">📖 Life Story → Life Book</h4>
+              <p style="margin:0 0 10px;font-size:12.5px;color:var(--muted)">구조화된 자료가 서사로 재구성되어, 가족 전달용 기록물(인쇄·디지털)로 완성됩니다.</p>
+              <button class="btn pri mini" onclick="toast('데모 — Life Book 미리보기는 준비 중입니다')">한 권 미리보기</button>
+            </div>
+          </div>
+          <div class="exp">
+            <div class="card expcard"><h4>👪 가족에게</h4><p>부모의 삶이 한 권으로 남습니다. 기억은 사라져도 기록은 남아 손주 세대까지 전달됩니다.</p></div>
+            <div class="card expcard"><h4>🏙 지역사회에</h4><p>한 세대의 구술 기록이 지역 아카이브가 됩니다. 지자체 생애사 사업과 직접 연결됩니다.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- Evidence modal -->
+<div class="modal" id="evModal" onclick="if(event.target===this)closeEv()">
+  <div class="box">
+    <div class="mh"><div class="mt" id="ev-title">근거 추적</div><button class="x" onclick="closeEv()">×</button></div>
+    <div class="mb">
+      <div class="srcdoc" id="ev-src"></div>
+      <div class="quote" id="ev-quote"></div>
+      <div class="link"><span>🔗</span><span class="a">프로파일 항목</span> ← 이 문장에서 자동 추출 · 담당자 검증 가능</div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============ DATA ============ */
+const AXES = [
+  {key:'time',label:'시간',ic:'🕰',desc:'생애 흐름과 전환점'},
+  {key:'relation',label:'관계',ic:'👥',desc:'핵심 인물과 지지망'},
+  {key:'health',label:'건강',ic:'🩺',desc:'질환·기능·복약 이력'},
+  {key:'personality',label:'성격',ic:'🌱',desc:'대화 성향과 반응 방식'},
+  {key:'routine',label:'생활패턴',ic:'🌤',desc:'하루 리듬·선호 시간대'},
+  {key:'social',label:'사회참여',ic:'🎪',desc:'활동 이력과 참여 성향'},
+  {key:'values',label:'가치관',ic:'💎',desc:'자부심·신념·남기고 싶은 말'},
+  {key:'risk',label:'위험요인',ic:'⚠️',desc:'고립·우울·인지 저하 신호'},
+  {key:'strength',label:'강점',ic:'✨',desc:'활용 가능한 자원과 역량'},
+];
+const AXMAP = Object.fromEntries(AXES.map(a=>[a.key,a]));
+
+const TYPES = [
+  {k:'사회참여형',d:'모임과 활동에서 에너지를 얻음'},
+  {k:'가족중심형',d:'가족 이야기에서 회상이 가장 깊음'},
+  {k:'독립형',d:'스스로 결정하고 도움 요청을 꺼림'},
+  {k:'신중형',d:'낯선 자극에 조심스럽게 접근'},
+  {k:'리더형',d:'집단에서 분위기를 이끄는 역할'},
+  {k:'조용한 지원형',d:'말수는 적으나 관계를 챙김'},
+];
+
+// evidence: {text, ai?} ai=AI 추론 표시. src = {doc, quote, mark}
+function E(text, doc, quote, mark, ai){return {text, src:{doc,quote,mark}, ai:!!ai};}
+function P(text){return {text};} // no evidence yet
+
+const PEOPLE = [
+  {
+    id:'kim', name:'김순자', age:82, sex:'여', color:'#0f6b5f',
+    type:'사회참여형', type2:'리더형', conf:81,
+    basis:['복지관 프로그램 참여율 상위 10% (출결 기록)','집단 세션에서 진행자가 "분위기를 이끈다" 3회 관찰','상담일지 — "사람들과 있을 때 가장 편하다" 직접 진술'],
+    signal:{ic:'📉',text:'최근 프로그램 미참여 3회 연속 (평소 주 3회 참여)'},
+    sugg:{lab:'상담 권장',text:'우선 확인 · 미참여 사유 상담'}, prio:1,
+    updated:'오늘 07:40',
+    axes:{
+      time:[E('1944년 부산 출생, 6·25 때 피란','2023 초기상담일지 1p','"부산에서 태어나 여섯 살에 전쟁을 겪었다"','전쟁'),E('1968년 결혼, 3남매','가족 대화 기록','',),P('은퇴 시점 미확인')],
+      relation:[E('큰딸이 주 1회 방문','생활지원사 방문일지 5회','"큰따님이 매주 다녀가심"','매주'),E('복지관 친구 모임 "목요회" 소속','프로그램 참여기록')],
+      health:[E('고혈압·무릎 관절염, 복약 중','건강검진 기록 2025','"고혈압으로 약 복용 중"','고혈압'),P('최근 낙상 여부 미확인')],
+      personality:[E('말이 많고 표현이 분명함','집단 세션 관찰메모','"의견을 또렷하게 말한다"',null,true)],
+      routine:[E('오전 활동 선호, 오후엔 피곤해함','상담일지','"오후엔 기운이 없다"','오후')],
+      social:[E('노래교실·서예반 5년 개근','복지관 출결 기록','','',),E('경로당 회장 역임','회상 인터뷰')],
+      values:[E('"사람은 어울려 살아야 한다"','회상 인터뷰 2024','"사람은 서로 어울려 살아야 제맛이지"','어울려')],
+      risk:[E('최근 미참여 — 위축·우울 신호 가능','활동 로그',null,null,true)],
+      strength:[E('리더십·사교성, 신입 회원 챙김','진행자 기록','"신입을 먼저 챙긴다"','챙긴다')],
+    },
+    questions:[
+      {ax:'risk',why:'최근 미참여 사유 확인 필요',text:'요즘 목요회 모임에 안 나오셨던데, 혹시 불편한 일이 있으셨어요?',hint:'위험요인·관계 축 보강',gain:6},
+      {ax:'health',why:'낙상 여부 결손',text:'요즘 무릎은 좀 어떠세요? 걷다가 넘어질 뻔한 적은 없으셨나요?',hint:'건강 축 보강',gain:5},
+      {ax:'time',why:'은퇴 시점 결손',text:'경로당 회장은 언제까지 맡으셨어요?',hint:'시간 축 보강',gain:4},
+    ],
+    timeline:[]
+  },
+  {
+    id:'park', name:'박영수', age:78, sex:'남', color:'#2f6db3',
+    type:'가족중심형', type2:'신중형', conf:68,
+    basis:['최근 3회 대화에서 손주 언급 12회 (대화 로그)','회상 인터뷰 — 가족 사진에서 가장 오래 머묾','"자식 농사가 제일"이라는 표현 반복'],
+    signal:{ic:'💬',text:'최근 대화에서 손주 언급 증가 (3주간 12회)'},
+    sugg:{lab:'프로그램 추천',text:'가족 참여형 프로그램 추천'}, prio:2,
+    updated:'오늘 07:40',
+    axes:{
+      time:[E('1948년 경북 안동 출생','초기상담일지','"안동 시골에서 자랐다"','안동'),E('1970년대 서울 상경, 시장 상인','회상 인터뷰','"동대문 시장에서 30년 장사했다"','30년')],
+      relation:[E('아들 둘, 손주 넷','가족관계 기록'),E('손주 이야기에 표정이 밝아짐','대화 로그',null,null,true)],
+      health:[E('당뇨 관리 중, 최근 수치 안정','건강기록 2025','"당화혈색소 6.8, 안정적"','당뇨')],
+      personality:[E('처음엔 말이 없다가 익숙해지면 이야기 많음','진행자 기록',null,null,true)],
+      routine:[P('하루 리듬 정보 부족')],
+      social:[E('바둑을 좋아하나 참여는 소극적','상담일지','"바둑은 좋아하는데 나서기는 싫다"','바둑')],
+      values:[E('"자식 농사가 제일 큰 농사"','회상 인터뷰','"자식 농사가 제일 큰 농사지"','자식 농사')],
+      risk:[P('사회적 고립 신호 관찰 필요')],
+      strength:[E('상인 시절 대인 경험·계산 능력','회상 인터뷰',null,null,true)],
+    },
+    questions:[
+      {ax:'relation',why:'손주 언급 증가 — 가족 축 심화',text:'손주들 이야기를 많이 하시던데, 요즘 자주 만나세요?',hint:'관계 축 보강',gain:6},
+      {ax:'routine',why:'생활패턴 결손',text:'하루를 보통 어떻게 보내세요? 아침엔 주로 뭘 하시나요?',hint:'생활패턴 축 신규',gain:7},
+      {ax:'risk',why:'고립 신호 확인',text:'혼자 계실 때 적적하진 않으세요? 말벗은 누가 되어 주시나요?',hint:'위험요인 축 보강',gain:5},
+    ],
+    timeline:[]
+  },
+  {
+    id:'lee', name:'이말순', age:88, sex:'여', color:'#6b52a3',
+    type:'조용한 지원형', type2:'신중형', conf:74,
+    basis:['자원봉사자에게 먼저 간식을 건넨 기록 4회','말수는 적으나 세션 끝까지 자리 지킴','텃밭 활동 후 표정·발화 증가 관찰'],
+    signal:{ic:'🌱',text:'원예 활동 선호 확인됨 (텃밭 세션 후 발화 3배 증가)'},
+    sugg:{lab:'배정 검토',text:'텃밭 프로그램 배정 검토'}, prio:3,
+    updated:'어제 18:20',
+    axes:{
+      time:[E('1938년 전남 해남 출생, 평생 농사','회상 인터뷰 3p','"해남서 나서 평생 논밭만 봤다"','평생'),E('1980년대 남편과 사별','상담일지')],
+      relation:[E('딸 한 명, 타지 거주 · 월 1회 통화','생활지원사 방문일지','"따님은 멀리 있어 전화만"','전화만')],
+      health:[E('경도 인지저하 소견, 보행 가능','건강검진 2025','"경도인지장애(MCI) 소견"','경도인지'),E('백내장 수술 이력','병원 기록')],
+      personality:[E('말수 적고 조용함, 관계는 살뜰히 챙김','진행자 기록','"조용하지만 옆 사람을 챙긴다"','챙긴다')],
+      routine:[E('이른 아침형, 흙 만지는 일 좋아함','관찰메모','"새벽에 일어나 마당을 살핀다"','새벽')],
+      social:[E('집단 활동엔 소극, 텃밭엔 적극','프로그램 반응 기록',null,null,true)],
+      values:[E('"땅은 거짓말을 안 한다"','회상 인터뷰','"땅은 거짓말을 안 하지"','거짓말을 안')],
+      risk:[E('타지 가족·인지저하 — 고립 위험군','종합 평가',null,null,true)],
+      strength:[E('평생의 원예·작물 지식, 손재주','회상 인터뷰','"모종을 보면 살지 죽을지 안다"','모종')],
+    },
+    questions:[
+      {ax:'social',why:'텃밭 선호 심화',text:'텃밭에서 어떤 걸 길러보고 싶으세요?',hint:'사회참여·강점 축 보강',gain:5},
+      {ax:'values',why:'가치관 심화',text:'평생 농사지으시면서 가장 보람됐던 순간은 언제였어요?',hint:'가치관 축 보강',gain:6},
+      {ax:'relation',why:'가족 접촉 빈도 확인',text:'따님하고는 요즘 얼마나 자주 통화하세요?',hint:'관계 축 보강',gain:4},
+    ],
+    timeline:[
+      {yr:'1938',ev:'전남 해남 출생',src:'회상 인터뷰'},
+      {yr:'1958',ev:'혼인, 시댁에서 농사 시작',src:'구술 증언'},
+      {yr:'1985',ev:'남편 사별, 홀로 농사와 자녀 양육',src:'상담일지'},
+      {yr:'2019',ev:'딸 권유로 도시 이주',src:'가족 대화'},
+      {yr:'2024',ev:'햇살복지관 등록, 텃밭 프로그램 참여',src:'복지관 출결'},
+      {yr:'2026',ev:'경도인지장애 소견 · 맞춤돌봄 대상 편입',src:'건강검진'},
+    ]
+  },
+  {
+    id:'jung', name:'정복동', age:80, sex:'남', color:'#c67b1e',
+    type:'독립형', type2:'신중형', conf:41,
+    basis:['도움 제안에 "괜찮다" 반복 (상담일지 5회)','프로그램 참여는 있으나 개인 정보 공개 최소','자료 대부분이 행정 기록에 한정'],
+    signal:{ic:'🕳',text:'프로파일 결손 항목 다수 (완성율 41% · 6개 축 비어 있음)'},
+    sugg:{lab:'세션 배정',text:'다음 회상 세션 우선 배정'}, prio:2,
+    updated:'3일 전',
+    axes:{
+      time:[E('1946년 강원 출생','주민등록·초기상담','"강원도 산골 출신"','강원')],
+      relation:[P('가족 관계 정보 부족 — 확인 필요')],
+      health:[E('전립선 질환 경과관찰','병원 기록')],
+      personality:[E('말을 아끼고 도움을 사양함','상담일지','"괜찮다는 말을 자주 한다"','괜찮다',true)],
+      routine:[],
+      social:[E('장기 프로그램에 가끔 참여','출결 기록')],
+      values:[],
+      risk:[E('정보 공개 최소 — 관계망 파악 어려움','종합 평가',null,null,true)],
+      strength:[],
+    },
+    questions:[
+      {ax:'relation',why:'가족 관계 전면 결손',text:'명절 같은 때는 주로 누구와 보내세요?',hint:'관계 축 신규',gain:8},
+      {ax:'routine',why:'생활패턴 결손',text:'요즘 하루 중 가장 기다려지는 시간이 있으세요?',hint:'생활패턴 축 신규',gain:8},
+      {ax:'strength',why:'강점 축 비어 있음',text:'예전에 무슨 일을 하셨어요? 제일 자신 있으셨던 게 뭐예요?',hint:'강점·시간 축 신규',gain:9},
+      {ax:'values',why:'가치관 축 비어 있음',text:'살면서 꼭 지키려고 하신 게 있다면 뭘까요?',hint:'가치관 축 신규',gain:7},
+    ],
+    timeline:[]
+  },
+  {
+    id:'choi', name:'최금례', age:85, sex:'여', color:'#b5493f',
+    type:'신중형', type2:'가족중심형', conf:70,
+    basis:['야간 통화 빈도 증가 (통화 로그 3주 추이)','"밤에 잠이 안 온다" 진술 반복','자녀 연락 빈도 감소와 시점 겹침'],
+    signal:{ic:'🌙',text:'야간 통화 빈도 증가 · 불면 호소 — 고립·불안 신호'},
+    sugg:{lab:'방문 상향',text:'생활지원사 방문 우선순위 상향'}, prio:1,
+    updated:'오늘 07:40',
+    axes:{
+      time:[E('1941년 충남 출생','초기상담'),E('1990년대 남편 사업 실패·이후 홀로 생계','회상 인터뷰','"그 뒤로 혼자 다 짊어졌다"','혼자')],
+      relation:[E('아들 해외 거주 · 연락 뜸해짐','생활지원사 일지','"아들이 외국에 있어 연락이 뜸하다"','뜸하다')],
+      health:[E('불면·불안, 심장약 복용','건강기록','"밤에 잠들기 어렵다"','불면'),E('경증 우울 평가','정서 평가')],
+      personality:[E('조심스럽고 걱정이 많음','상담일지',null,null,true)],
+      routine:[E('밤에 깨어 있는 시간 많음','통화 로그','"새벽 2시에 전화가 온다"','새벽 2시')],
+      social:[E('낮 프로그램 참여는 꾸준','출결 기록')],
+      values:[E('"자식한테 짐이 되기 싫다"','상담일지','"자식한테 짐 되는 게 제일 싫다"','짐이 되기')],
+      risk:[E('야간 고립·불면·우울 — 우선 관찰 대상','종합 평가',null,null,true)],
+      strength:[E('오랜 이웃 관계, 낮 활동 성실','관찰메모')],
+    },
+    questions:[
+      {ax:'risk',why:'야간 불안 원인 확인',text:'밤에 잠이 잘 안 오실 때, 주로 어떤 생각이 드세요?',hint:'위험요인 축 보강',gain:6},
+      {ax:'relation',why:'가족 접촉 상황 확인',text:'아드님하고는 요즘 어떻게 연락하고 지내세요?',hint:'관계 축 보강',gain:5},
+      {ax:'social',why:'낮 활동 확장 여지',text:'낮에 복지관에서 제일 마음 편한 시간은 언제예요?',hint:'사회참여 축 보강',gain:4},
+    ],
+    timeline:[]
+  },
+];
+
+const STARTER_FILES = [
+  {ic:'📄',fn:'초기상담일지_2023.pdf',meta:'PDF · 4p',to:'시간 · 관계'},
+  {ic:'🖼',fn:'가족사진_해남농장.jpg',meta:'이미지 · 손글씨 뒷면',to:'시간 · 가치관'},
+  {ic:'🎙',fn:'회상인터뷰_1회차.m4a',meta:'음성 · 32분',to:'가치관 · 강점'},
+  {ic:'🏥',fn:'건강검진결과_2025.pdf',meta:'PDF · 진료정보',to:'건강 🔒'},
+  {ic:'📝',fn:'생활지원사_방문일지.xlsx',meta:'엑셀 · 12회분',to:'관계 · 생활패턴'},
+  {ic:'🖼',fn:'상장_모범농가.jpg',meta:'이미지',to:'강점'},
+  {ic:'📋',fn:'프로그램_출결기록.csv',meta:'CSV',to:'사회참여'},
+  {ic:'✉️',fn:'딸이_보낸_편지.jpg',meta:'이미지 · 손글씨',to:'관계'},
+];
+
+/* ============ STATE ============ */
+let curPerson = 'lee';
+let doneCases = new Set();
+
+/* ============ HELPERS ============ */
+const $ = s=>document.querySelector(s);
+function initials(n){return n.slice(-2);}
+function personById(id){return PEOPLE.find(p=>p.id===id);}
+function completion(p){
+  let filled=0; AXES.forEach(a=>{ if((p.axes[a.key]||[]).length) filled++; });
+  // weight by richness
+  let pts=0,max=AXES.length*3;
+  AXES.forEach(a=>{ pts+=Math.min(3,(p.axes[a.key]||[]).length); });
+  return Math.round(pts/max*100);
+}
+function toast(msg){const t=$('#toast'); t.textContent=msg; t.classList.add('on'); clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('on'),2600);}
+
+/* ============ NAV ============ */
+function go(view){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));
+  $('#v-'+view).classList.add('on');
+  document.querySelectorAll('.navitem').forEach(n=>n.classList.toggle('on', n.dataset.view===view));
+  $('#rail').classList.remove('open');
+  $('#main').scrollTop=0;
+  if(view==='profile') renderProfile();
+  if(view==='persona') renderPersona();
+  if(view==='question') renderQuestion();
+  if(view==='archive') renderArchive();
+}
+
+/* ============ P5 DECISION ============ */
+function renderCases(filter='all'){
+  const list=$('#caseList'); list.innerHTML='';
+  PEOPLE.forEach(p=>{
+    if(filter==='1' && p.prio!==1) return;
+    if(filter==='open' && doneCases.has(p.id)) return;
+    const done=doneCases.has(p.id);
+    const tName=TYPES.find(t=>t.k===p.type);
+    const el=document.createElement('div');
+    el.className='case'+(done?' done':''); el.dataset.prio=p.prio;
+    el.innerHTML=`
+      <div class="av" style="background:${p.color}">${initials(p.name)}</div>
+      <div class="who2">
+        <div class="nm">${p.name} <span style="color:var(--faint);font-weight:600;font-size:12px">${p.age}·${p.sex}</span>
+          <span class="ptype" style="background:${p.color}1a;color:${p.color}">${p.type}</span></div>
+        <div class="signal"><span class="s-ic">${p.signal.ic}</span><span>${p.signal.text}</span></div>
+        <div class="sugg"><span class="lab">${p.sugg.lab}</span><span class="txt">${p.sugg.text}</span></div>
+      </div>
+      <div class="prio">
+        <span class="tag prio-${p.prio}">${done?'✓ 처리됨':(p.prio===1?'긴급':p.prio===2?'권장':'검토')}</span>
+        <div class="acts">
+          <button class="btn mini" onclick="openPerson('${p.id}','profile')">프로파일</button>
+          ${done?'':`<button class="btn pri mini" onclick="acceptCase('${p.id}')">실행·기록</button>`}
+        </div>
+      </div>`;
+    list.appendChild(el);
+  });
+}
+function filterCases(btn,f){document.querySelectorAll('.filters .chip').forEach(c=>c.classList.remove('on'));btn.classList.add('on');renderCases(f);}
+function acceptCase(id){
+  doneCases.add(id);
+  $('#k-done').textContent=doneCases.size;
+  const p=personById(id);
+  renderCases(document.querySelector('.filters .chip.on')?.textContent==='긴급'?'1':document.querySelector('.filters .chip.on')?.textContent==='미처리'?'open':'all');
+  toast(`✓ ${p.name} — "${p.sugg.text}" 실행 기록됨 · 프로파일에 반영됩니다 (P5→P1)`);
+}
+function openPerson(id,view){curPerson=id; go(view); syncPersonBars();}
+
+/* ============ PERSON BARS ============ */
+function buildPersonBar(hostId,onpick){
+  const host=$(hostId); host.innerHTML='';
+  PEOPLE.forEach(p=>{
+    const b=document.createElement('button');
+    b.className='pchip'+(p.id===curPerson?' on':'');
+    b.onclick=()=>{curPerson=p.id; onpick();};
+    b.innerHTML=`<span class="av" style="background:${p.color}">${initials(p.name)}</span>${p.name} <small>${p.age}·${p.sex}</small>`;
+    host.appendChild(b);
+  });
+}
+function syncPersonBars(){
+  document.querySelectorAll('.personbar .pchip').forEach(()=>{});
+}
+
+/* ============ P2 PROFILE ============ */
+function renderProfile(){
+  buildPersonBar('#personbar-profile', renderProfile);
+  const p=personById(curPerson);
+  const pct=completion(p);
+  $('#prof-updated').textContent='갱신 '+p.updated;
+  // cover / coverage matrix
+  const cov=$('#coverBox');
+  let bars='';
+  AXES.forEach(a=>{
+    const n=(p.axes[a.key]||[]).length; const v=Math.min(100,n/3*100);
+    bars+=`<div class="cbar ${v<34?'low':''}"><div class="r"><span>${a.label}</span><span>${n?Math.round(v)+'%':'비어있음'}</span></div><div class="track"><div class="val" style="width:${v}%"></div></div></div>`;
+  });
+  cov.innerHTML=`
+    <div class="ring" style="--p:${pct}"><i><b>${pct}%</b><span>완성율</span></i></div>
+    <div class="ctxt"><h3>${p.name} 어르신 · 진단 커버리지</h3><p>9개 축 중 ${AXES.filter(a=>(p.axes[a.key]||[]).length).length}개 축에 정보 축적 · 결손 항목은 Question Agent로 보충</p></div>
+    <div class="cbars">${bars}</div>`;
+  // axes grid
+  const grid=$('#axGrid'); grid.innerHTML='';
+  AXES.forEach(a=>{
+    const items=p.axes[a.key]||[];
+    const el=document.createElement('div');
+    const cls=a.key==='risk'?'risk':a.key==='strength'?'strength':'';
+    el.className='card ax '+cls+(items.length?'':' empty');
+    let inner=`<h4><span class="ic">${a.ic}</span>${a.label}</h4><div class="axdesc">${a.desc}</div>`;
+    if(!items.length){
+      inner+=`<div class="miss">▢ 정보 부족 — 다음 질문에서 보충 제안</div>`;
+    }else{
+      inner+='<ul>'+items.map((it,i)=>{
+        let ev='';
+        if(it.src&&it.src.quote) ev=`<span class="ev" onclick="showEv('${p.id}','${a.key}',${i})">🔗 근거</span>`;
+        else if(it.src) ev=`<span class="ev" style="cursor:default;background:var(--bg);color:var(--muted);border-color:var(--line)">${it.src.doc}</span>`;
+        const ai=it.ai?'<span class="ai">AI 추론</span>':'';
+        return `<li>${it.text}${ai}${ev}</li>`;
+      }).join('')+'</ul>';
+    }
+    el.innerHTML=inner;
+    grid.appendChild(el);
+  });
+}
+function showEv(pid,axk,i){
+  const p=personById(pid); const it=p.axes[axk][i]; const s=it.src;
+  $('#ev-title').innerHTML=`근거 추적 — <b>${AXMAP[axk].label}</b> 축`;
+  $('#ev-src').textContent='📄 '+s.doc;
+  let q=(s.quote||it.text).replace(/^["“]|["”]$/g,'');
+  if(s.mark) q=q.replace(s.mark, '<mark>'+s.mark+'</mark>');
+  $('#ev-quote').innerHTML='“'+q+'”';
+  $('#evModal').classList.add('on');
+}
+function closeEv(){$('#evModal').classList.remove('on');}
+
+/* ============ P3 PERSONA ============ */
+function renderPersona(){
+  buildPersonBar('#personbar-persona', renderPersona);
+  const p=personById(curPerson);
+  $('#persona-conf').textContent='진단 완성율 '+completion(p)+'% · 신뢰도 '+p.conf+'%';
+  const hero=$('#personaHero');
+  const t1=TYPES.find(t=>t.k===p.type), t2=TYPES.find(t=>t.k===p.type2);
+  hero.innerHTML=`
+    <div class="card ptype-card">
+      <div class="tt">주 유형 (Primary)</div>
+      <div class="big" style="color:${p.color}">${p.type}</div>
+      <div class="sub">${t1?t1.d:''}</div>
+      <div class="second">부 유형 (Secondary) · <b>${p.type2}</b> — ${t2?t2.d:''}</div>
+    </div>
+    <div class="card basis">
+      <h4>🔎 추정 근거</h4>
+      <ul>${p.basis.map(b=>`<li>${b}</li>`).join('')}</ul>
+    </div>`;
+  const bank=$('#typeBank'); bank.innerHTML='';
+  TYPES.forEach(t=>{
+    const on=(t.k===p.type||t.k===p.type2);
+    bank.innerHTML+=`<div class="tb${on?' on':''}"><b>${t.k}${t.k===p.type?' · 주':t.k===p.type2?' · 부':''}</b><span>${t.d}</span></div>`;
+  });
+}
+
+/* ============ P4 QUESTION ============ */
+function renderQuestion(){
+  buildPersonBar('#personbar-question', renderQuestion);
+  const p=personById(curPerson);
+  const pct=completion(p);
+  $('#q-pct').textContent=pct; $('#q-bar').style.width=pct+'%'; $('#q-gain').textContent='';
+  const list=$('#qList'); list.innerHTML='';
+  if(!p.questions.length){
+    list.innerHTML='<div style="padding:26px;text-align:center;color:var(--muted)">추천 질문을 모두 반영했습니다. 프로파일이 갱신되었습니다. ↻</div>';
+    return;
+  }
+  p.questions.forEach((q,i)=>{
+    const el=document.createElement('div'); el.className='q'; el.dataset.i=i;
+    el.innerHTML=`
+      <div class="qtop"><span class="qax">${AXMAP[q.ax].ic} ${AXMAP[q.ax].label} 축</span><span class="qwhy">추천 이유 · ${q.why}</span></div>
+      <div class="qtext">"${q.text}"</div>
+      <div class="qhint">↳ ${q.hint} · 예상 완성율 +${q.gain}%p</div>
+      <textarea placeholder="어르신 답변을 기록하세요… (데모: 아무 내용이나 입력해도 됩니다)"></textarea>
+      <div class="qact"><button class="btn pri mini" onclick="answerQ('${p.id}',${i},this)">답변 기록 · 프로파일 반영</button>
+        <span style="font-size:11.5px;color:var(--faint)">기록하면 완성율이 오르고 다음 추천이 조정됩니다</span></div>`;
+    list.appendChild(el);
+  });
+}
+function answerQ(pid,i,btn){
+  const p=personById(pid);
+  const card=btn.closest('.q');
+  const ta=card.querySelector('textarea');
+  const ans=(ta.value||'').trim() || '(현장에서 기록됨)';
+  const q=p.questions[i];
+  // push into profile
+  if(!p.axes[q.ax]) p.axes[q.ax]=[];
+  p.axes[q.ax].push(E(ans.slice(0,60)+(ans.length>60?'…':''), '오늘 상담 기록(P4)', ans, null, false));
+  card.classList.add('answered');
+  card.querySelector('.qact').innerHTML='<span style="font-size:12.5px;font-weight:800;color:var(--ok)">✓ 프로파일에 반영됨 · Decision Agent 추천 갱신</span>';
+  ta.setAttribute('disabled','');
+  // update bar with animation
+  const before=parseInt($('#q-pct').textContent,10);
+  const after=completion(p);
+  $('#q-pct').textContent=after; $('#q-bar').style.width=after+'%';
+  $('#q-gain').textContent = after>before? `▲ +${after-before}%p 상승 — 다음 질문이 더 정확해집니다`:'';
+  toast(`↻ ${p.name} · ${AXMAP[q.ax].label} 축 보강 → 완성율 ${after}% (P4→P2→P5 환류)`);
+}
+
+/* ============ P1 STARTER ============ */
+function seedFileRow(){
+  const r=$('#fileRow'); r.innerHTML='';
+  STARTER_FILES.slice(0,4).forEach(f=>{r.innerHTML+=`<span class="filetag">${f.ic} ${f.fn}</span>`;});
+  r.innerHTML+=`<span class="filetag" style="border-style:dashed;color:var(--faint)">+ 4건 더</span>`;
+}
+function runStarter(){
+  const btn=$('#startBtn'); btn.disabled=true; btn.textContent='분류 중…';
+  const steps=document.querySelectorAll('#procGrid .pstep');
+  steps.forEach(s=>s.classList.remove('act'));
+  let i=0;
+  const tick=setInterval(()=>{
+    if(i>0) steps[i-1].classList.remove('act');
+    if(i<steps.length){steps[i].classList.add('act'); i++;}
+    else{
+      clearInterval(tick);
+      steps.forEach(s=>s.classList.add('act'));
+      showStarterOut();
+      btn.disabled=false; btn.textContent='▶ 다시 실행';
+    }
+  },520);
+}
+function showStarterOut(){
+  const out=$('#starterOut'); out.style.display='block';
+  const cl=$('#classList'); cl.innerHTML='';
+  STARTER_FILES.forEach((f,idx)=>{
+    setTimeout(()=>{
+      const row=document.createElement('div'); row.className='classrow';
+      row.style.opacity=0; row.style.transition='.3s';
+      row.innerHTML=`<div class="fic">${f.ic}</div>
+        <div><div class="fn">${f.fn}</div><div class="fmeta">${f.meta}</div></div>
+        <div class="to">→ ${f.to}</div>`;
+      cl.appendChild(row);
+      requestAnimationFrame(()=>row.style.opacity=1);
+      if(idx===STARTER_FILES.length-1) toast('✓ 8건 자동 분류 완료 · 9개 축에 배정 · 진료정보는 🔒 내부 보관');
+    }, idx*260);
+  });
+  out.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+/* ============ P6 ARCHIVE ============ */
+function renderArchive(){
+  const p=personById('lee');
+  const tl=$('#timeline'); tl.innerHTML='';
+  p.timeline.forEach(t=>{
+    tl.innerHTML+=`<div class="tlitem"><div class="yr">${t.yr}</div><div class="ev2">${t.ev}</div><div class="src">근거 · ${t.src}</div></div>`;
+  });
+}
+
+/* ============ INIT ============ */
+(function init(){
+  renderCases();
+  seedFileRow();
+  // today
+  try{
+    const d=new Date();
+    const wd=['일','월','화','수','목','금','토'][d.getDay()];
+    $('#today').textContent=`${d.getFullYear()}. ${d.getMonth()+1}. ${d.getDate()}. (${wd})`;
+  }catch(e){}
+})();
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeEv();});
+</script>
+</body>
+</html>
