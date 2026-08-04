@@ -3,788 +3,455 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LifeOS — Demo Project</title>
-<meta name="description" content="자료수집 → 인물진단 → 질문지까지, AI 코파일럿이 작가의 인터뷰 준비를 돕습니다. 클릭해보는 4화면 시안.">
+<title>LifeOS — 자서전 집필 지원 OS</title>
+<meta name="description" content="삶을 정리하고 기록하는 자서전 집필 지원 OS. One Engine · Two Products · Manager. AI가 대신 쓰는 도구가 아니라, 인터뷰어가 잘 듣고 잘 정리하도록 돕는 지원 도구.">
 <meta property="og:type" content="website">
-<meta property="og:title" content="LifeOS — Demo Project">
-<meta property="og:description" content="자료수집 → 인물진단 → 질문지까지, AI 코파일럿이 작가의 인터뷰 준비를 돕습니다. 클릭해보는 4화면 시안.">
+<meta property="og:title" content="LifeOS — 자서전 집필 지원 OS">
+<meta property="og:description" content="삶을 정리하고 기록하는 자서전 집필 지원 OS. One Engine · Two Products · Manager.">
 <meta property="og:url" content="https://mistall2-beep.github.io/claude-project/lifeos/">
 <meta property="og:image" content="https://mistall2-beep.github.io/claude-project/lifeos/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:locale" content="ko_KR">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="LifeOS — Demo Project">
-<meta name="twitter:description" content="자료수집 → 인물진단 → 질문지까지, AI 코파일럿이 작가의 인터뷰 준비를 돕습니다. 클릭해보는 4화면 시안.">
 <meta name="twitter:image" content="https://mistall2-beep.github.io/claude-project/lifeos/og.png">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 <style>
   :root{
-    --main:#1A7068; --main-d:#125249; --main-l:#E4EFED;
-    --text:#2C2C2C; --sub:#7A7A7A; --line:#E6E8EA; --bg:#F4F6F7;
-    --amber:#BE7B2C; --amber-l:#F6ECDB; --green:#2E7D52; --green-l:#E3F0E8;
+    --main:#1A7068; --main-d:#0F4A44; --main-l:#E4EFED; --main-r:#BFDDD7;
+    --text:#20302E; --text2:#41514E; --sub:#6F7D7A; --faint:#96A29F;
+    --line:#E1E7E5; --line2:#EDF1F0; --bg:#F4F6F7; --panel:#fff;
+    --amber:#B5701F; --amber-l:#F7EEDD; --green:#2E7D52; --green-l:#E3F0E8;
+    --shadow:0 1px 2px rgba(15,50,45,.05),0 14px 36px rgba(15,50,45,.07);
+    --shadow-lg:0 30px 70px rgba(10,50,44,.16);
   }
   *{box-sizing:border-box; margin:0; padding:0;}
-  body{font-family:"Malgun Gothic","Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif;
-    background:var(--bg); color:var(--text); line-height:1.55; -webkit-font-smoothing:antialiased;}
-  /* top bar */
-  .topbar{background:#fff; border-bottom:1px solid var(--line); height:58px; display:flex;
-    align-items:center; padding:0 28px; gap:14px; position:sticky; top:0; z-index:10;}
-  .logo{font-weight:800; font-size:20px; color:var(--main); letter-spacing:-.3px;}
-  .logo span{color:var(--text); font-weight:600; font-size:14px; margin-left:2px;}
-  .topbar .spacer{flex:1;}
-  .who{font-size:13px; color:var(--sub);}
-  .who b{color:var(--text);}
-  .avatar{width:30px; height:30px; border-radius:50%; background:var(--main-l); color:var(--main);
-    display:flex; align-items:center; justify-content:center; font-weight:700; font-size:13px;}
-  /* tabs */
-  .tabs{display:flex; gap:8px; padding:18px 28px 0; max-width:1080px; margin:0 auto; width:100%;}
-  .tab{border:1px solid var(--line); background:#fff; color:var(--sub); padding:9px 18px;
-    border-radius:999px; font-size:14px; font-weight:600; cursor:pointer;}
-  .tab.active{background:var(--main); color:#fff; border-color:var(--main);}
-  .wrap{max-width:1080px; margin:0 auto; padding:22px 28px 60px;}
-  .view{display:none;} .view.active{display:block;}
-  /* generic */
-  .row{display:flex; gap:18px;} .row.wrap-row{flex-wrap:wrap;}
-  .card{background:#fff; border:1px solid var(--line); border-radius:14px;}
-  .pagehead{display:flex; align-items:center; justify-content:space-between; margin:6px 0 16px;}
-  .pagehead h1{font-size:21px; font-weight:800; letter-spacing:-.4px;}
-  .btn{background:var(--main); color:#fff; border:none; border-radius:9px; padding:9px 16px;
-    font-size:13.5px; font-weight:700; cursor:pointer;}
-  .btn.ghost{background:#fff; color:var(--main); border:1px solid var(--main);}
-  .muted{color:var(--sub);}
-  .badge{display:inline-block; font-size:11.5px; font-weight:700; padding:3px 10px; border-radius:999px;}
-  .b-collect{background:var(--amber-l); color:var(--amber);}
-  .b-diag{background:var(--main-l); color:var(--main-d);}
-  .b-q{background:var(--green-l); color:var(--green);}
-  /* stat strip */
-  .stats{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:20px;}
-  .stat{padding:16px 18px;}
-  .stat .n{font-size:26px; font-weight:800; letter-spacing:-.5px;}
-  .stat .l{font-size:12.5px; color:var(--sub); margin-top:2px;}
-  .stat .n.accent{color:var(--main);}
-  /* project cards */
-  .projects{display:flex; flex-direction:column; gap:14px;}
-  .pcard{display:flex; align-items:center; gap:20px; padding:18px 20px; cursor:pointer;}
-  .pcard:hover{border-color:var(--main); box-shadow:0 2px 12px rgba(26,112,104,.07);}
-  .pcard .av{width:46px; height:46px; border-radius:12px; background:var(--main-l); color:var(--main-d);
-    display:flex; align-items:center; justify-content:center; font-weight:800; font-size:17px; flex-shrink:0;}
-  .pcard .info{flex:1; min-width:0;}
-  .pcard .nm{font-size:16px; font-weight:800;}
-  .pcard .nm small{font-weight:500; color:var(--sub); font-size:12.5px; margin-left:6px;}
-  .pcard .meta{font-size:12.5px; color:var(--sub); margin-top:3px;}
-  .pcard .next{font-size:12.5px; margin-top:7px;}
-  .pcard .next b{color:var(--main-d);}
-  .pcard .prog{width:170px; flex-shrink:0;}
-  .pcard .prog .pct{font-size:13px; font-weight:800; display:flex; justify-content:space-between;}
-  .pcard .prog .pct span{color:var(--sub); font-weight:600; font-size:11.5px;}
-  .bar{height:7px; border-radius:99px; background:#EDEFF1; margin-top:5px; overflow:hidden;}
-  .bar > i{display:block; height:100%; border-radius:99px; background:var(--main);}
-  .ai-tip{font-size:11.5px; color:var(--amber); margin-top:3px;}
-  /* report */
-  .backlink{font-size:13px; color:var(--main); cursor:pointer; margin-bottom:12px; display:inline-block;}
-  .rhead{display:flex; align-items:flex-start; gap:18px; padding:22px 24px; margin-bottom:18px;}
-  .rhead .av{width:60px; height:60px; border-radius:16px; background:var(--main-l); color:var(--main-d);
-    display:flex; align-items:center; justify-content:center; font-weight:800; font-size:22px; flex-shrink:0;}
-  .rhead h1{font-size:23px; font-weight:800; letter-spacing:-.5px;}
-  .rhead .sub{font-size:13.5px; color:var(--sub); margin-top:3px;}
-  .rhead .tags{margin-top:9px; display:flex; gap:7px; flex-wrap:wrap;}
-  .tag{font-size:12px; font-weight:700; padding:4px 11px; border-radius:8px; background:#F3F4F5; color:var(--text);}
-  .tag.main{background:var(--main); color:#fff;}
-  .tag.line{background:#fff; border:1px solid var(--main); color:var(--main);}
-  .grid2{display:grid; grid-template-columns:300px 1fr; gap:18px; margin-bottom:18px;}
-  .sec{padding:20px 22px; margin-bottom:18px;}
-  .sec h2{font-size:15px; font-weight:800; margin-bottom:14px; padding-bottom:9px;
-    border-bottom:1px solid var(--line); display:flex; align-items:center; gap:8px;}
-  .sec h2 .dot{width:8px; height:8px; border-radius:2px; background:var(--main);}
-  /* ring */
-  .ringbox{display:flex; flex-direction:column; align-items:center; justify-content:center; padding:24px;}
-  .ring{position:relative; width:130px; height:130px;}
-  .ring svg{transform:rotate(-90deg);}
-  .ring .ctr{position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center;}
-  .ring .ctr .v{font-size:30px; font-weight:800; color:var(--main-d); letter-spacing:-1px;}
-  .ring .ctr .t{font-size:11.5px; color:var(--sub);}
-  .ringbox .cap{margin-top:10px; font-size:12.5px; color:var(--sub); text-align:center;}
-  .kv{display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--line); border-radius:10px; overflow:hidden;}
-  .kv > div{background:#fff; padding:13px 14px;}
-  .kv .k{font-size:11.5px; color:var(--sub);}
-  .kv .v{font-size:18px; font-weight:800; margin-top:2px;}
-  /* type bars */
-  .typebar{margin-bottom:11px;}
-  .typebar .lab{display:flex; justify-content:space-between; font-size:13px; margin-bottom:4px;}
-  .typebar .lab b{font-weight:700;} .typebar .lab span{color:var(--sub); font-size:12px;}
-  .tb{height:9px; background:#EDEFF1; border-radius:99px; overflow:hidden;}
-  .tb > i{display:block; height:100%; background:var(--main); border-radius:99px;}
-  .tb > i.sec2{background:#9CC2BC;}
-  /* chapters */
-  ol.ch{list-style:none; counter-reset:c;}
-  ol.ch li{counter-increment:c; padding:9px 0 9px 40px; position:relative; border-bottom:1px dashed var(--line); font-size:14px;}
-  ol.ch li:last-child{border-bottom:none;}
-  ol.ch li::before{content:counter(c); position:absolute; left:0; top:8px; width:26px; height:26px;
-    background:var(--main-l); color:var(--main-d); border-radius:8px; font-weight:800; font-size:12.5px;
-    display:flex; align-items:center; justify-content:center;}
-  ol.ch li small{color:var(--sub); font-weight:500; margin-left:8px; font-size:12px;}
-  /* heatmap */
-  .heat{border-collapse:separate; border-spacing:4px; width:100%;}
-  .heat th{font-size:11px; font-weight:700; color:var(--sub); padding:4px; text-align:center; vertical-align:bottom;}
-  .heat th.rowh{text-align:right; padding-right:8px; white-space:nowrap; color:var(--text); width:96px;}
-  .heat td{height:34px; border-radius:6px; text-align:center; font-size:11px; color:#fff; font-weight:700;}
-  .l0{background:#F0F1F2; border:1px dashed #D4D7DA; color:#B8BCBF;}
-  .l1{background:rgba(26,112,104,.22); color:var(--main-d);}
-  .l2{background:rgba(26,112,104,.55);}
-  .l3{background:rgba(26,112,104,.9);}
-  .na{background:#FAFBFB; color:#C8CCce;}
-  .legend{display:flex; gap:14px; align-items:center; margin-top:12px; font-size:11.5px; color:var(--sub); flex-wrap:wrap;}
-  .legend i{display:inline-block; width:14px; height:14px; border-radius:3px; vertical-align:-2px; margin-right:4px;}
-  /* chips & timeline */
-  .chips{display:flex; gap:8px; flex-wrap:wrap;}
-  .chip{background:#F3F4F5; border-radius:8px; padding:6px 12px; font-size:13px;}
-  .chip b{color:var(--main-d);}
-  .tl{position:relative; padding-left:18px;}
-  .tl::before{content:""; position:absolute; left:4px; top:4px; bottom:4px; width:2px; background:var(--line);}
-  .tl .ev{position:relative; padding:0 0 13px 14px; font-size:13.5px;}
-  .tl .ev::before{content:""; position:absolute; left:-17px; top:5px; width:10px; height:10px;
-    border-radius:50%; background:var(--main); border:2px solid #fff;}
-  .tl .ev .y{font-weight:800; color:var(--main-d); margin-right:8px;}
-  /* gap / request */
-  .gapsec{border:1px solid var(--amber); background:#FFFCF6;}
-  .gapsec h2{border-color:#EAD9BD;} .gapsec h2 .dot{background:var(--amber);}
-  .gaplist{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:14px;}
-  .gaplist .g{background:var(--amber-l); color:var(--amber); font-size:12.5px; font-weight:700;
-    padding:6px 12px; border-radius:8px;}
-  .draft{background:#fff; border:1px dashed #E0D3BB; border-radius:10px; padding:14px 16px; margin-top:6px;}
-  .draft .dh{font-size:12px; color:var(--amber); font-weight:800; margin-bottom:6px;}
-  .draft .dt{font-size:13.5px; color:var(--text); line-height:1.7;}
-  .draft .da{margin-top:11px; display:flex; gap:8px;}
-  .draft .da button{font-size:12px; padding:6px 12px; border-radius:7px; cursor:pointer;}
-  .note{font-size:11px; color:#A9AEB2; text-align:center; margin-top:26px;}
-  /* ---- questions (step 3) ---- */
-  .qactions{display:flex; gap:8px; align-items:flex-start;}
-  .qactions .btn{font-size:12.5px; padding:8px 13px;}
-  .qstats{display:grid; grid-template-columns:repeat(5,1fr); gap:1px; background:var(--line);
-    border-radius:12px; overflow:hidden; margin-bottom:16px;}
-  .qstats > div{background:#fff; padding:13px 14px; text-align:center;}
-  .qstats .n{font-size:21px; font-weight:800; letter-spacing:-.5px;}
-  .qstats .n.accent{color:var(--main);}
-  .qstats .l{font-size:11.5px; color:var(--sub); margin-top:2px;}
-  .qbanner{display:flex; gap:10px; background:#FFFCF6; border:1px solid #EAD9BD; border-radius:12px;
-    padding:13px 16px; font-size:13px; line-height:1.65; margin-bottom:18px;}
-  .qbanner .ic{color:var(--amber); font-weight:800;}
-  .qsec{margin-bottom:16px; overflow:hidden;}
-  .qsec-head{display:flex; align-items:center; gap:12px; padding:15px 18px; border-bottom:1px solid var(--line);}
-  .qsec-head .cnum{width:28px; height:28px; border-radius:8px; background:var(--main); color:#fff;
-    font-weight:800; font-size:13px; display:flex; align-items:center; justify-content:center; flex-shrink:0;}
-  .qsec-head .ctitle{font-size:15px; font-weight:800;}
-  .qsec-head .clabel{font-size:11.5px; color:var(--sub); margin-top:1px;}
-  .qsec-head .ccount{margin-left:auto; font-size:12px; color:var(--sub); font-weight:700;}
-  .qlist{padding:4px 8px;}
-  .q{display:flex; gap:13px; align-items:flex-start; padding:13px 10px; border-bottom:1px dashed var(--line);}
-  .q:last-child{border-bottom:none;}
-  .q:hover{background:#FAFBFB;}
-  .qnum{width:24px; height:24px; border-radius:50%; background:#F0F1F2; color:var(--sub);
-    font-size:12px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px;}
-  .qbody{flex:1; min-width:0;}
-  .qtext{font-size:14.5px; line-height:1.55;}
-  .qtags{margin-top:7px; display:flex; gap:6px; flex-wrap:wrap; align-items:center;}
-  .qt{font-size:11px; font-weight:700; padding:3px 9px; border-radius:7px; background:#F1F2F3; color:var(--sub);}
-  .qt.emo{background:var(--main-l); color:var(--main-d);}
-  .qt.gap{background:var(--amber-l); color:var(--amber);}
-  .qmat{font-size:11.5px; color:var(--sub);}
-  .qact{color:#C2C6C9; font-size:18px; cursor:pointer; padding:0 4px; flex-shrink:0; line-height:1;}
-  .morebtn{display:block; width:100%; text-align:center; background:#fff; border:1px dashed var(--line);
-    color:var(--main); border-radius:10px; padding:11px; font-size:13px; font-weight:700; cursor:pointer;}
-  /* ---- chat (step 1) ---- */
-  .chatwrap{display:grid; grid-template-columns:290px 1fr; gap:18px; align-items:start;}
-  .scard{padding:16px 18px;}
-  .scard .sh{font-size:13px; font-weight:800; margin-bottom:12px;}
-  .ckr{display:flex; align-items:center; gap:9px; font-size:13px; padding:7px 0; border-bottom:1px dashed var(--line);}
-  .ckr:last-of-type{border-bottom:none;}
-  .ckr .bx{width:20px; height:20px; border-radius:6px; display:flex; align-items:center; justify-content:center;
-    font-size:12px; font-weight:800; flex-shrink:0;}
-  .ckr.done .bx{background:var(--main); color:#fff;}
-  .ckr.req .bx{background:var(--amber-l); color:var(--amber);}
-  .ckr.wait .bx{background:#F0F1F2; color:#B8BCBF;}
-  .ckr .st{margin-left:auto; font-size:11px; font-weight:700; color:var(--main);}
-  .ckr .st.amber{color:var(--amber);} .ckr .st.sub{color:var(--sub);}
-  .ckbar{margin-top:13px;}
-  .ckbar-h{display:flex; justify-content:space-between; font-size:11.5px; color:var(--sub); margin-bottom:5px;}
-  .ckbar-h b{color:var(--text);}
-  .chat{padding:18px; display:flex; flex-direction:column;}
-  .msg{display:flex; gap:10px; max-width:88%; margin-bottom:14px;}
-  .msg.ai{align-self:flex-start;}
-  .msg.me{align-self:flex-end;}
-  .msg .ava{width:30px; height:30px; border-radius:9px; background:var(--main-l); color:var(--main-d);
-    font-size:11px; font-weight:800; display:flex; align-items:center; justify-content:center; flex-shrink:0;}
-  .ainame{font-size:11px; color:var(--sub); font-weight:700; margin-bottom:4px;}
-  .bubble{font-size:13.5px; line-height:1.62; padding:11px 14px; border-radius:13px;}
-  .bubble.ai{background:#F4F6F7; border-top-left-radius:3px;}
-  .bubble.me{background:var(--main); color:#fff; border-top-right-radius:3px;}
-  .icard{background:#fff; border:1px solid var(--line); border-radius:10px; padding:11px 13px; margin-top:9px;}
-  .icard .ih{font-weight:800; font-size:12.5px; margin-bottom:7px;}
-  .checkrow{font-size:13px; padding:3px 0; line-height:1.5;}
-  .composer{display:flex; gap:10px; align-items:center; border-top:1px solid var(--line); padding:13px 4px 2px; margin-top:6px;}
-  .composer .clip{font-size:17px; color:var(--sub);}
-  .composer input{flex:1; border:1px solid var(--line); border-radius:9px; padding:10px 13px; font-size:13.5px;
-    font-family:inherit; color:var(--text); background:#FAFBFB;}
-  /* ---- type edit (report) ---- */
-  .editbtn{margin-left:auto; background:#fff; border:1px solid var(--main); color:var(--main);
-    font-size:12px; font-weight:700; padding:5px 12px; border-radius:8px; cursor:pointer;}
-  .tstate{font-size:11.5px; font-weight:700; padding:3px 10px; border-radius:999px;
-    background:var(--main-l); color:var(--main-d); margin-left:6px;}
-  .tstate.locked{background:#FBEFD9; color:var(--amber);}
-  .typecur{display:flex; gap:8px; margin-bottom:14px;}
-  .tcur{font-size:12.5px; font-weight:700; padding:5px 12px; border-radius:8px; background:#F3F4F5; color:var(--text);}
-  .tcur.main{background:var(--main); color:#fff;}
-  .whybox{margin-top:13px; font-size:12.5px; line-height:1.65; color:var(--sub);
-    border-left:3px solid var(--line); padding:2px 0 2px 12px;}
-  .whybox b{color:var(--text);}
-  .editpanel{display:none; margin-top:14px; border:1px solid var(--line); border-radius:12px;
-    padding:16px; background:#FAFBFB;}
-  .editpanel.open{display:block;}
-  .eprow{display:flex; gap:14px;}
-  .epf{flex:1;}
-  .epf label{display:block; font-size:11.5px; color:var(--sub); font-weight:700; margin-bottom:5px;}
-  .epf select{width:100%; border:1px solid var(--line); border-radius:8px; padding:9px 11px;
-    font-size:13.5px; font-family:inherit; color:var(--text); background:#fff;}
-  .epnote{font-size:11.5px; color:var(--amber); margin:12px 0;}
-  .epbtns{display:flex; gap:8px;}
-  .epbtns .btn{font-size:12.5px; padding:8px 16px;}
-  /* ---- print (배포용 PDF) ---- */
-  @media print{
-    @page{ size:A4; margin:12mm; }
-    body{ background:#fff; }
-    .topbar{ position:static; box-shadow:none; }
-    .tabs{ display:none !important; }
-    .backlink, .note{ display:none !important; }
-    .view{ display:block !important; padding:0 !important; max-width:none !important; margin:0 !important; }
-    .view + .view{ break-before:page; page-break-before:always; }
-    .view::before{ content:attr(data-title); display:block; font-size:15px; font-weight:800;
-      color:#1A7068; border-bottom:2px solid #1A7068; padding-bottom:6px; margin:2px 0 16px; }
-    .card, .qsec, .pcard, .sec, .msg, .icard, .draft, .qsec-head{ break-inside:avoid; page-break-inside:avoid; }
-    .chatwrap{ display:block !important; }
-    .chatwrap > div:first-child{ margin-bottom:14px; }
-    .chat{ break-inside:auto !important; page-break-inside:auto !important; }
-    .composer{ display:none !important; }
-    .morebtn{ display:none !important; }
-    .editbtn, .editpanel{ display:none !important; }
-    .pcard:hover, .q:hover, .ckr:hover{ background:#fff; }
-  }
+  body{color:var(--text); background:var(--bg);
+    font-family:"Pretendard","Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",system-ui,sans-serif;
+    line-height:1.6; -webkit-font-smoothing:antialiased; letter-spacing:-.015em;}
+  a{color:inherit;}
+  .mono{font-variant-numeric:tabular-nums;}
+  .wrap{max-width:1080px; margin:0 auto; padding:0 24px;}
+
+  /* nav */
+  nav{position:sticky; top:0; z-index:40; background:rgba(244,246,247,.82); backdrop-filter:blur(10px); border-bottom:1px solid var(--line);}
+  nav .row{display:flex; align-items:center; gap:14px; height:60px;}
+  .logo{display:flex; align-items:baseline; gap:7px; font-weight:800; font-size:20px; color:var(--main); letter-spacing:-.4px; text-decoration:none;}
+  .logo span{color:var(--sub); font-weight:600; font-size:13px;}
+  nav .sp{flex:1;}
+  nav .lk{font-size:13.5px; font-weight:700; color:var(--sub); text-decoration:none; padding:8px 10px;}
+  nav .lk:hover{color:var(--text);}
+  .cta{font-size:13.5px; font-weight:800; color:#fff; background:var(--main); padding:9px 16px; border-radius:999px; text-decoration:none; box-shadow:0 6px 16px rgba(26,112,104,.28);}
+  .cta:hover{background:var(--main-d);}
+  @media(max-width:760px){nav .lk{display:none;}}
+
+  /* hero */
+  .hero{position:relative; overflow:hidden; padding:76px 0 58px;
+    background:
+      radial-gradient(820px 440px at 84% -14%, rgba(46,125,82,.12), transparent 60%),
+      radial-gradient(760px 420px at 4% 6%, rgba(26,112,104,.14), transparent 62%);}
+  .badge{display:inline-flex; align-items:center; gap:8px; font-size:12px; font-weight:800; letter-spacing:.06em; color:var(--main-d); background:var(--main-l); border:1px solid var(--main-r); padding:7px 14px; border-radius:999px;}
+  .hero h1{font-size:clamp(32px,5.6vw,54px); font-weight:800; letter-spacing:-.04em; line-height:1.14; margin:20px 0 0;}
+  .hero h1 .g{background:linear-gradient(120deg,var(--main),#2ba392); -webkit-background-clip:text; background-clip:text; color:transparent;}
+  .hero .tag{margin-top:16px; font-size:clamp(14px,1.9vw,17px); font-weight:700; color:var(--main-d);}
+  .hero .tag b{color:var(--amber);}
+  .hero .lead{margin-top:16px; font-size:clamp(14px,2vw,17px); color:var(--text2); max-width:640px;}
+  .hero .lead b{color:var(--text); font-weight:700;}
+  .btns{display:flex; gap:12px; flex-wrap:wrap; margin-top:30px;}
+  .btn-lg{font-size:15px; font-weight:800; padding:14px 24px; border-radius:14px; text-decoration:none; display:inline-flex; align-items:center; gap:9px;}
+  .btn-p{color:#fff; background:var(--main); box-shadow:var(--shadow);}
+  .btn-p:hover{background:var(--main-d); transform:translateY(-1px);}
+  .btn-s{color:var(--text2); background:var(--panel); border:1px solid var(--line);}
+  .btn-s:hover{border-color:var(--main-r);}
+  .heronote{margin-top:15px; font-size:12.5px; color:var(--faint);}
+
+  section{padding:58px 0;}
+  .eyebrow{font-size:12px; font-weight:800; letter-spacing:.12em; color:var(--main); text-transform:uppercase;}
+  h2{font-size:clamp(23px,3.5vw,33px); font-weight:800; letter-spacing:-.035em; margin:10px 0 6px;}
+  .sub{color:var(--sub); font-size:15px; max-width:660px; margin:0;}
+  .panel-sec{background:var(--panel); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+
+  /* definition */
+  .defbox{margin-top:26px; display:grid; grid-template-columns:1.15fr .85fr; gap:16px;}
+  .defcard{background:var(--panel); border:1px solid var(--line); border-radius:18px; padding:26px 28px; box-shadow:var(--shadow);}
+  .defcard .q{font-size:20px; font-weight:800; letter-spacing:-.02em; line-height:1.4;}
+  .defcard p{margin-top:12px; font-size:14px; color:var(--text2);}
+  .defcard .no{color:var(--amber); font-weight:700;} .defcard .yes{color:var(--main); font-weight:700;}
+  .defcard.dark{background:linear-gradient(150deg,#0f3b36,#16564d); color:#e9f6f3; border:0;}
+  .defcard.dark .q{color:#fff;} .defcard.dark .hl{color:#7fe6d5;}
+  .defcard.dark p{color:#c4e2dc;}
+  @media(max-width:760px){.defbox{grid-template-columns:1fr;}}
+
+  /* market 3-tier */
+  .tiers{display:grid; grid-template-columns:1fr 1.15fr 1fr; gap:14px; margin-top:28px;}
+  .tier{background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:20px; box-shadow:var(--shadow);}
+  .tier.mid{border:2px solid var(--main); box-shadow:0 0 0 4px var(--main-l), var(--shadow);}
+  .tier .lv{width:30px; height:30px; border-radius:9px; display:flex; align-items:center; justify-content:center; font-weight:900; color:#fff; font-size:14px;}
+  .tier.hi .lv{background:#8a949a;} .tier.mid .lv{background:var(--main);} .tier.lo .lv{background:#c0a24a;}
+  .tier h3{font-size:16px; font-weight:800; margin:12px 0 2px;}
+  .tier .price{font-size:13px; font-weight:800; color:var(--main-d);}
+  .tier.hi .price{color:var(--sub);} .tier.lo .price{color:var(--sub);}
+  .tier ul{list-style:none; margin:12px 0 0; display:flex; flex-direction:column; gap:6px;}
+  .tier li{font-size:12.5px; color:var(--text2); padding-left:15px; position:relative;}
+  .tier li::before{content:""; position:absolute; left:2px; top:8px; width:5px; height:5px; border-radius:50%; background:var(--main-r);}
+  .tier.mid li::before{background:var(--main);}
+  .tier .cap{margin-top:12px; font-size:11px; font-weight:800; letter-spacing:.03em; color:var(--faint);}
+  .tier.mid .cap{color:var(--main); }
+  .tier .flag{display:inline-block; margin-top:12px; font-size:11.5px; font-weight:800; color:#fff; background:var(--main); padding:4px 11px; border-radius:999px;}
+  @media(max-width:760px){.tiers{grid-template-columns:1fr;}}
+
+  /* stats row */
+  .stats{display:grid; grid-template-columns:repeat(4,1fr); gap:13px; margin-top:22px;}
+  .st{background:var(--panel); border:1px solid var(--line); border-radius:15px; padding:18px; box-shadow:var(--shadow);}
+  .st .n{font-size:29px; font-weight:900; letter-spacing:-.03em; color:var(--main-d);}
+  .st .n small{font-size:15px; font-weight:800;}
+  .st .l{font-size:12.5px; font-weight:700; margin-top:5px;}
+  .st .d{font-size:11px; color:var(--faint); margin-top:2px;}
+  @media(max-width:680px){.stats{grid-template-columns:1fr 1fr;}}
+
+  /* macro / generic 3-col */
+  .three{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:26px;}
+  .mc{background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:20px; box-shadow:var(--shadow);}
+  .mc .k{width:32px;height:32px;border-radius:9px; background:var(--main-l); color:var(--main-d); display:flex; align-items:center; justify-content:center; font-weight:900; font-size:14px;}
+  .mc h3{font-size:15px; font-weight:800; margin:11px 0 6px;}
+  .mc ul{list-style:none; display:flex; flex-direction:column; gap:5px;}
+  .mc li{font-size:12.5px; color:var(--text2); padding-left:14px; position:relative;}
+  .mc li::before{content:"·"; position:absolute; left:3px; top:0; color:var(--main); font-weight:900;}
+  .mc .arw{margin-top:10px; font-size:12px; font-weight:800; color:var(--main-d);}
+  @media(max-width:760px){.three{grid-template-columns:1fr;}}
+
+  /* products */
+  .engine{margin-top:26px; background:linear-gradient(135deg,#0f3b36,#164f47); color:#dff2ee; border-radius:18px; padding:22px 24px;}
+  .engine .t{font-size:12px; font-weight:800; letter-spacing:.08em; color:#7fe6d5;}
+  .engine .items{margin-top:8px; display:flex; flex-wrap:wrap; gap:8px;}
+  .engine .items span{font-size:12px; font-weight:600; color:#cfeae4; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.14); padding:5px 11px; border-radius:999px;}
+  .engine .d{margin-top:12px; font-size:12.5px; color:#a9d6cd;}
+  .prods{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:14px;}
+  .prod{background:var(--panel); border:1px solid var(--line); border-radius:18px; padding:22px; box-shadow:var(--shadow); position:relative;}
+  .prod.core{border:2px solid var(--main); box-shadow:0 0 0 4px var(--main-l), var(--shadow);}
+  .prod .pill{position:absolute; top:16px; right:16px; font-size:10.5px; font-weight:800; color:#fff; background:var(--amber); padding:3px 9px; border-radius:999px;}
+  .prod .ic{width:46px; height:46px; border-radius:13px; display:flex; align-items:center; justify-content:center; font-size:22px; color:#fff;}
+  .prod.s .ic{background:linear-gradient(135deg,#1A7068,#2ba392);} .prod.i .ic{background:linear-gradient(135deg,#B5701F,#d89a44);} .prod.m .ic{background:linear-gradient(135deg,#2E7D52,#57a97b);}
+  .prod h3{font-size:18px; font-weight:800; margin:13px 0 3px;}
+  .prod .role{font-size:12px; font-weight:700; color:var(--sub);}
+  .prod ul{list-style:none; margin:12px 0 0; display:flex; flex-direction:column; gap:6px;}
+  .prod li{font-size:12.5px; color:var(--text2); padding-left:15px; position:relative;}
+  .prod li::before{content:""; position:absolute; left:2px; top:8px; width:5px;height:5px; border-radius:50%; background:var(--main-r);}
+  @media(max-width:760px){.prods{grid-template-columns:1fr;}}
+
+  /* interview modes */
+  .modes{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:26px;}
+  .mode{border-radius:16px; padding:20px; border:1px solid var(--line); background:var(--panel); box-shadow:var(--shadow);}
+  .mode .badge2{font-size:11px; font-weight:900; color:#fff; padding:4px 10px; border-radius:999px; display:inline-block;}
+  .mode.f .badge2{background:var(--main);} .mode.g .badge2{background:var(--amber);} .mode.s .badge2{background:#324b47;}
+  .mode h3{font-size:15px; font-weight:800; margin:11px 0 5px;}
+  .mode p{font-size:12.5px; color:var(--text2);}
+  .signals{margin-top:16px; background:var(--panel); border:1px solid var(--line); border-radius:16px; overflow:hidden; box-shadow:var(--shadow);}
+  .signals .sh{padding:13px 18px; border-bottom:1px solid var(--line2); font-weight:800; font-size:13.5px;}
+  .sigrow{display:grid; grid-template-columns:1.1fr 1.2fr 1.4fr; gap:12px; padding:11px 18px; border-bottom:1px solid var(--line2); font-size:12.5px;}
+  .sigrow:last-child{border-bottom:0;}
+  .sigrow .a{font-weight:800; color:var(--main-d);} .sigrow .b{color:var(--amber); font-weight:700;} .sigrow .c{color:var(--text2);}
+  @media(max-width:760px){.modes{grid-template-columns:1fr;} .sigrow{grid-template-columns:1fr; gap:3px; padding:12px 16px;} .sigrow .a{font-size:13px;}}
+
+  /* workflow */
+  .flow{display:grid; grid-template-columns:repeat(7,1fr); gap:0; margin-top:26px; overflow-x:auto;}
+  .fl{position:relative; padding:14px 12px; background:var(--panel); border:1px solid var(--line); min-width:118px;}
+  .fl:first-child{border-radius:12px 0 0 12px;} .fl:last-child{border-radius:0 12px 12px 0;} .fl:not(:last-child){border-right:0;}
+  .fl.hot{background:var(--amber-l); border-color:#e6d2a8;}
+  .fl .n{font-size:10px; font-weight:900; color:var(--main); letter-spacing:.03em;}
+  .fl .t{font-size:13px; font-weight:800; margin:4px 0 2px;}
+  .fl .d{font-size:11px; color:var(--sub);}
+  .fl .arw{position:absolute; right:-8px; top:50%; transform:translateY(-50%); z-index:2; width:16px;height:16px; border-radius:50%; background:var(--main); color:#fff; display:flex; align-items:center; justify-content:center; font-size:10px;}
+  .fl:last-child .arw{display:none;}
+  .flnote{margin-top:14px; font-size:12.5px; color:var(--text2); background:var(--amber-l); border:1px solid #e6d2a8; border-radius:12px; padding:13px 16px;}
+  .flnote b{color:#7a4e14;}
+
+  /* data policy */
+  .dtwo{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:26px;}
+  .dcard{background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:20px 22px; box-shadow:var(--shadow);}
+  .dcard h3{font-size:15px; font-weight:800; margin-bottom:12px; display:flex; align-items:center; gap:8px;}
+  .grade{display:grid; grid-template-columns:auto 1fr; gap:8px 12px; align-items:center; font-size:12.5px;}
+  .grade .g{font-weight:800; color:#fff; padding:3px 9px; border-radius:7px; text-align:center; font-size:11px; white-space:nowrap;}
+  .grade .g1{background:#a5453b;} .grade .g2{background:var(--amber);} .grade .g3{background:var(--green);}
+  .grade .desc{color:var(--text2);}
+  .policy-hl{font-size:16px; font-weight:800; color:var(--main-d); line-height:1.5;}
+  .policy-hl .mk{background:var(--main-l); padding:1px 5px; border-radius:5px;}
+  .dcard p{font-size:12.5px; color:var(--sub); margin-top:10px;}
+  @media(max-width:760px){.dtwo{grid-template-columns:1fr;}}
+
+  /* value before/after */
+  .ba{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:26px;}
+  .bacard{background:var(--panel); border:1px solid var(--line); border-radius:16px; overflow:hidden; box-shadow:var(--shadow);}
+  .bacard.after{border:2px solid var(--main);}
+  .bacard .bh{padding:14px 18px; font-weight:800; font-size:14px; border-bottom:1px solid var(--line2);}
+  .bacard.before .bh{color:var(--sub);} .bacard.after .bh{color:var(--main-d); background:var(--main-l);}
+  .barow{display:flex; justify-content:space-between; align-items:center; padding:10px 18px; border-bottom:1px solid var(--line2); font-size:12.5px;}
+  .barow:last-child{border-bottom:0;}
+  .barow .lab{color:var(--text2);} .barow .val{font-weight:800; color:var(--text);}
+  .bacard.after .barow .val{color:var(--main-d);}
+  .barow.total{background:#fafbfb; font-size:13px;} .barow.total .val{font-size:15px;}
+  @media(max-width:680px){.ba{grid-template-columns:1fr;}}
+
+  /* vision */
+  .vis{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:26px;}
+  .vc{border-radius:16px; padding:22px; position:relative; overflow:hidden;}
+  .vc.v1{background:var(--panel); border:1px solid var(--line); box-shadow:var(--shadow);}
+  .vc.v2{background:var(--main-l); border:1px solid var(--main-r);}
+  .vc.v3{background:linear-gradient(150deg,#0f3b36,#164f47); color:#e9f6f3;}
+  .vc .step{font-size:12px; font-weight:900; color:var(--main);}
+  .vc.v3 .step{color:#7fe6d5;}
+  .vc h3{font-size:18px; font-weight:800; margin:6px 0 6px;}
+  .vc p{font-size:12.5px; color:var(--text2);} .vc.v3 p{color:#c4e2dc;}
+  .vc .kpi{margin-top:12px; font-size:11.5px; font-weight:800; color:var(--main-d);} .vc.v3 .kpi{color:#7fe6d5;}
+  .vc .when{font-size:11px; color:var(--faint); font-weight:700;} .vc.v3 .when{color:#8fcabf;}
+  @media(max-width:760px){.vis{grid-template-columns:1fr;}}
+
+  /* cta band */
+  .band{background:var(--panel); border:1px solid var(--line); border-radius:24px; padding:44px 34px; text-align:center; box-shadow:var(--shadow-lg);}
+  .band h2{margin:0 0 8px;}
+  .band p{color:var(--sub); font-size:15px; max-width:560px; margin:0 auto 22px;}
+
+  footer{padding:38px 0 60px; color:var(--faint); font-size:12.5px; border-top:1px solid var(--line); margin-top:10px;}
+  footer b{color:var(--text2);}
+  footer a{color:var(--main); text-decoration:none; font-weight:700;}
 </style>
 </head>
 <body>
-  <div class="topbar">
-    <div class="logo">LifeOS <span>Studio</span></div>
-    <div class="spacer"></div>
-    <div class="who"><b>김작가</b> 님 · 1인 작가</div>
-    <div class="avatar">김</div>
+
+<nav>
+  <div class="wrap row">
+    <a class="logo" href="index.html">LifeOS <span>라이프 오에스</span></a>
+    <div class="sp"></div>
+    <a class="lk" href="#why">왜 지금</a>
+    <a class="lk" href="#product">제품</a>
+    <a class="lk" href="#interview">차별점</a>
+    <a class="lk" href="#vision">비전</a>
+    <a class="cta" href="lifeos-demo/index.html">▶ 데모 열기</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="badge">BUSINESS PLAN · v1.0</span>
+    <h1>삶을 정리하고 기록하는<br><span class="g">자서전 집필 지원 OS</span></h1>
+    <p class="tag">One Engine · Two Products · Manager &nbsp;—&nbsp; <b>Interview Layer</b>가 핵심 차별점</p>
+    <p class="lead">LifeOS는 인터뷰어·작가·가족이 한 사람의 삶을 깊이 있게 기록하도록 돕습니다.
+      <b>AI가 자서전을 대신 쓰는 도구가 아니라, 인터뷰어가 잘 듣고 잘 정리하도록 돕는 지원 도구</b>입니다.</p>
+    <div class="btns">
+      <a class="btn-lg btn-p" href="lifeos-demo/index.html">▶ LifeOS 데모 체험</a>
+      <a class="btn-lg btn-s" href="#product">제품 살펴보기</a>
+    </div>
+    <div class="heronote">삶을 정리하고 기록하는 자서전 집필 지원 OS · 사업계획서 v1.0 요약 · 데모는 예시 데이터입니다</div>
+  </div>
+</header>
+
+<!-- DEFINITION -->
+<section><div class="wrap">
+  <div class="eyebrow">Product Definition</div>
+  <h2>집필은 마지막 단계다</h2>
+  <p class="sub">좋은 자서전은 글쓰기 실력보다 <b>그 이전 과정의 품질</b>이 결정합니다. LifeOS는 집필 이전 과정을 체계화합니다.</p>
+  <div class="defbox">
+    <div class="defcard">
+      <div class="q">자서전 완성도를 결정하는 <span class="yes">5가지 사전 과정</span></div>
+      <p>① 인생 서사 유형 식별 · ② 자료·사진·증언 수집 · ③ 인터뷰 질문지 설계 · ④ 자료의 의미적 연결 · ⑤ 현장 인터뷰 진행</p>
+      <p><span class="no">✕ AI가 대신 쓰는 도구</span>가 아니라 &nbsp;<span class="yes">✓ 잘 듣고 잘 정리하도록 돕는 지원 도구</span></p>
+    </div>
+    <div class="defcard dark">
+      <div class="q">한 줄 정의</div>
+      <p><span class="hl">인터뷰어·작가·가족</span>이 한 사람의 삶을 깊이 있게 기록할 수 있도록 돕는 <span class="hl">자서전 집필 지원 OS</span>.</p>
+    </div>
+  </div>
+</div></section>
+
+<!-- WHY NOW -->
+<section id="why" class="panel-sec"><div class="wrap">
+  <div class="eyebrow">Why Now</div>
+  <h2>지금 자서전 시장에는 '중간'이 없다</h2>
+  <p class="sub">고가 시장은 공급이 부족하고, 저가 AI 시장은 품질이 부족합니다. 표준화된 중간대는 아직 아무도 잡지 못했습니다.</p>
+  <div class="tiers">
+    <div class="tier hi">
+      <div class="lv">H</div>
+      <h3>고급 자서전</h3>
+      <div class="price">₩500만 ~ 3,000만+</div>
+      <ul><li>작가 역량 편차 큼</li><li>6개월~1년 소요</li><li>작가 수 = 공급 상한</li><li>확장 불가 구조</li></ul>
+      <div class="cap">공급 부족</div>
+    </div>
+    <div class="tier mid">
+      <div class="lv">M</div>
+      <h3>중간 시장 <span style="font-size:12px;color:var(--sub);font-weight:700;">(미개척)</span></h3>
+      <div class="price">₩100만 ~ 400만</div>
+      <ul><li>작가 편차 최소화 가능</li><li>납기 2개월 이내</li><li>1인 동시 5건 처리</li><li>확장 가능한 구조</li></ul>
+      <span class="flag">→ LifeOS 타깃</span>
+    </div>
+    <div class="tier lo">
+      <div class="lv">L</div>
+      <h3>AI 자동 자서전</h3>
+      <div class="price">₩5만 ~ 50만</div>
+      <ul><li>인터뷰 없음 → 표면적</li><li>감정·맥락 소실</li><li>"내 이야기"가 아닌 느낌</li><li>재구매 의향 낮음</li></ul>
+      <div class="cap">품질 부족</div>
+    </div>
   </div>
 
-  <div class="tabs">
-    <button class="tab active" data-v="dash">프로젝트 대시보드</button>
-    <button class="tab" data-v="chat">자료수집 채팅</button>
-    <button class="tab" data-v="report">인물진단 리포트</button>
-    <button class="tab" data-v="questions">질문지 초안</button>
+  <div class="stats">
+    <div class="st"><div class="n mono">120<small>h</small></div><div class="l">프로젝트 1건 소요</div><div class="d">기존 방식 기준</div></div>
+    <div class="st"><div class="n mono">58<small>%</small></div><div class="l">반복 노동 비중</div><div class="d">녹취·타이핑·정리</div></div>
+    <div class="st"><div class="n mono">2~3<small>건</small></div><div class="l">연간 처리 한계</div><div class="d">1인 프리랜서</div></div>
+    <div class="st"><div class="n mono">3,000<small>만</small></div><div class="l">연 매출 천장</div><div class="d">더 벌려면 더 일해야</div></div>
   </div>
 
-  <!-- ============ DASHBOARD ============ -->
-  <div class="wrap view active" id="dash" data-title="프로젝트 대시보드">
-    <div class="pagehead">
-      <h1>내 프로젝트</h1>
-      <button class="btn">+ 새 프로젝트</button>
+  <div class="three">
+    <div class="mc"><div class="k">A</div><h3>AI 전사·요약 성숙</h3><ul><li>대규모 STT 공개</li><li>한국어 LLM 상용화</li><li>온디바이스 추론 가능</li></ul><div class="arw">→ 진입 장벽 사상 최저</div></div>
+    <div class="mc"><div class="k">B</div><h3>고령화 · 기록 수요</h3><ul><li>베이비부머 은퇴</li><li>"선물로 만드는 자서전"</li><li>지자체 구술사 증가</li></ul><div class="arw">→ 수요 확실히 성장 중</div></div>
+    <div class="mc"><div class="k">C</div><h3>시장 표준화 부재</h3><ul><li>시장 소규모·분산</li><li>중간대 통합 도구 없음</li><li>3년 내 대기업 진입 예상</li></ul><div class="arw">→ 선점의 창: 지금~24개월</div></div>
+  </div>
+</div></section>
+
+<!-- PRODUCT -->
+<section id="product"><div class="wrap">
+  <div class="eyebrow">Architecture</div>
+  <h2>One Engine · Two Products · Manager</h2>
+  <p class="sub">모든 자료가 하나의 생애 아카이브로 연결되고, 그 위에서 세 개의 제품이 동작합니다.</p>
+
+  <div class="engine">
+    <div class="t">◆ ONE ENGINE — 공통 데이터 엔진</div>
+    <div class="items">
+      <span>사진</span><span>영상</span><span>음성</span><span>인터뷰 기록</span><span>문서</span><span>인물 프로파일</span><span>타임라인</span><span>원고</span><span>출판 레이아웃</span>
     </div>
-
-    <div class="stats">
-      <div class="card stat"><div class="n">3</div><div class="l">진행 중 프로젝트</div></div>
-      <div class="card stat"><div class="n">1</div><div class="l">자료 수집 단계</div></div>
-      <div class="card stat"><div class="n accent">1</div><div class="l">인물 진단 단계</div></div>
-      <div class="card stat"><div class="n">1</div><div class="l">질문지 준비 완료</div></div>
-    </div>
-
-    <div class="projects">
-      <!-- project 1 (open report) -->
-      <div class="card pcard" id="openReport">
-        <div class="av">김</div>
-        <div class="info">
-          <div class="nm">김순일 님 <small>1948년생 · 여</small></div>
-          <div class="meta">자료 23건 · 핵심 인물 5명 · 마지막 활동 2시간 전</div>
-          <div class="next">다음 할 일 — <b>학창시절 자료 보충 요청</b></div>
-          <div class="ai-tip">⌁ AI: 빈 영역 2곳이 채워지면 완성율 +14%p 예상</div>
-        </div>
-        <div class="prog">
-          <span class="badge b-diag">인물 진단</span>
-          <div class="pct" style="margin-top:8px;">68% <span>가족헌신형(잠정)</span></div>
-          <div class="bar"><i style="width:68%"></i></div>
-        </div>
-      </div>
-
-      <!-- project 2 -->
-      <div class="card pcard">
-        <div class="av">이</div>
-        <div class="info">
-          <div class="nm">이건우 님 <small>1952년생 · 남</small></div>
-          <div class="meta">자료 9건 · 핵심 인물 2명 · 마지막 활동 어제</div>
-          <div class="next">다음 할 일 — <b>직장 시기 명함·사진 요청</b></div>
-          <div class="ai-tip">⌁ AI: 청년·중년기 일·생계 영역이 비어 있습니다</div>
-        </div>
-        <div class="prog">
-          <span class="badge b-collect">자료 수집</span>
-          <div class="pct" style="margin-top:8px;">34% <span>유형 추정 중</span></div>
-          <div class="bar"><i style="width:34%"></i></div>
-        </div>
-      </div>
-
-      <!-- project 3 -->
-      <div class="card pcard">
-        <div class="av">최</div>
-        <div class="info">
-          <div class="nm">최명희 님 <small>1945년생 · 여</small></div>
-          <div class="meta">자료 31건 · 핵심 인물 7명 · 마지막 활동 3일 전</div>
-          <div class="next">다음 할 일 — <b>인터뷰 질문지 최종 검토</b></div>
-          <div class="ai-tip">⌁ AI: 질문지 28문항 생성 완료 · 인터뷰 준비됨</div>
-        </div>
-        <div class="prog">
-          <span class="badge b-q">질문지 준비</span>
-          <div class="pct" style="margin-top:8px;">82% <span>시대증언형</span></div>
-          <div class="bar"><i style="width:82%"></i></div>
-        </div>
-      </div>
-    </div>
-    <div class="note">※ LifeOS 1단계 목업 — 예시 데이터입니다. 카드(김순일 님)를 클릭하면 인물진단 리포트로 이동합니다.</div>
+    <div class="d">Memory Archive · Profile Engine · Interview Planner · Writing Assistant · Publishing Studio — 하나의 생애 아카이브로 연결</div>
   </div>
 
-  <!-- ============ CHAT (STEP 1) ============ -->
-  <div class="wrap view" id="chat" data-title="STEP 1 · 자료수집 AI 채팅">
-    <span class="backlink" id="backBtn3">← 프로젝트 대시보드</span>
-
-    <div class="card rhead">
-      <div class="av">이</div>
-      <div style="flex:1">
-        <h1>이건우 님 · 자료 수집</h1>
-        <div class="sub">1952년생 · 남 · AI 코파일럿과 대화하며 어떤 자료를 요청할지 정리합니다</div>
-        <div class="tags">
-          <span class="tag main">완성율 34%</span>
-          <span class="tag line">유형 추정 중</span>
-          <span class="tag">자료 9건</span>
-        </div>
-      </div>
+  <div class="prods">
+    <div class="prod s core">
+      <div class="ic">🖥️</div>
+      <h3>LifeOS Studio</h3>
+      <div class="role">집필·정리·출판 중심 · 메인 작업 공간</div>
+      <ul><li>자서전 작가</li><li>대필 에이전시</li><li>가족 기록 진행자</li><li>시니어 본인·출판사</li></ul>
     </div>
-
-    <div class="chatwrap">
-      <!-- left: checklist -->
-      <div>
-        <div class="card scard">
-          <div class="sh">요청 자료 체크리스트</div>
-          <div class="ckr done"><span class="bx">✓</span>어린 시절 가족사진<span class="st">받음</span></div>
-          <div class="ckr done"><span class="bx">✓</span>군복무 시기 사진·수첩<span class="st">받음</span></div>
-          <div class="ckr done"><span class="bx">✓</span>결혼사진<span class="st">받음</span></div>
-          <div class="ckr req"><span class="bx">↗</span>첫 직장 명함·사원증<span class="st amber">요청함</span></div>
-          <div class="ckr wait"><span class="bx">·</span>학창시절 사진·친구<span class="st sub">대기</span></div>
-          <div class="ckr wait"><span class="bx">·</span>자녀 출생 무렵 자료<span class="st sub">대기</span></div>
-          <div class="ckbar"><div class="ckbar-h"><span>수집 진행</span><b>3 / 6</b></div><div class="bar"><i style="width:50%"></i></div></div>
-        </div>
-        <div class="card scard" style="margin-top:14px;">
-          <div class="sh">완성율</div>
-          <div style="display:flex;align-items:center;gap:13px;">
-            <div style="font-size:30px;font-weight:800;color:var(--main-d);letter-spacing:-1px;">34%</div>
-            <div style="flex:1;">
-              <div class="bar"><i style="width:34%"></i></div>
-              <div style="font-size:11.5px;color:var(--sub);margin-top:6px;">자료가 더 들어오면<br>인물진단이 활성화됩니다</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- right: chat thread -->
-      <div class="card chat">
-        <div class="msg ai">
-          <div class="ava">AI</div>
-          <div>
-            <div class="ainame">LifeOS AI 코파일럿</div>
-            <div class="bubble ai">안녕하세요, 김작가님. <b>이건우 님</b> 프로젝트를 시작합니다. 먼저 어떤 자료부터 요청하면 좋을지 정리해 드릴게요.
-              <div class="icard">
-                <div class="ih">📋 1차 요청 자료 목록</div>
-                <div class="checkrow">· 어린 시절 가족사진 (부모·형제)</div>
-                <div class="checkrow">· 학창시절 사진이나 친구분 성함</div>
-                <div class="checkrow">· 군복무 시기 사진·수첩</div>
-                <div class="checkrow">· 첫 직장 명함·사원증·표창장</div>
-                <div class="checkrow">· 결혼사진과 신혼 시절 이야기</div>
-              </div>
-            </div>
-            <div class="bubble ai" style="margin-top:8px;">의뢰인(또는 가족)께 그대로 보내실 수 있는 메시지 초안도 만들어 두었습니다.
-              <div class="draft" style="margin-top:9px;">
-                <div class="dh">⌁ 의뢰인 전달용 메시지 초안</div>
-                <div class="dt">“아버님 자서전 준비를 위해 몇 가지 자료를 부탁드립니다. 어린 시절 가족사진, 군 복무 시절 사진, 결혼사진이 있으면 좋습니다. 사진이 없어도 괜찮습니다 — 그 시절 이야기를 편하게 들려주셔도 충분합니다.”</div>
-                <div class="da"><button class="btn" style="font-size:12px;padding:6px 12px;">복사</button><button class="btn ghost" style="font-size:12px;padding:6px 12px;">다듬기</button></div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="msg me"><div class="bubble me">가족사진 5장이랑 군복무 사진 받아서 올렸어요. 결혼사진도요.</div></div>
-
-        <div class="msg ai">
-          <div class="ava">AI</div>
-          <div>
-            <div class="ainame">LifeOS AI 코파일럿</div>
-            <div class="bubble ai">자료 9건 확인했습니다. 가족·관계와 군복무 시기가 채워져 완성율이 <b>21% → 34%</b>로 올랐어요.
-              다만 <b>첫 직장 시기</b>와 <b>학창시절</b>이 비어 있습니다. 인물 유형을 더 정확히 보려면 이 두 곳을 보충하는 게 좋겠습니다.
-              <div class="icard">
-                <div class="ih">⚑ 다음 보충 요청 (우선순위)</div>
-                <div class="checkrow">1. 첫 직장 명함·사원증, 또는 어떤 일을 했는지</div>
-                <div class="checkrow">2. 학창시절 사진이나 단짝 친구분 성함</div>
-              </div>
-            </div>
-            <div class="bubble ai" style="margin-top:8px;">
-              <div class="draft" style="margin-top:0;">
-                <div class="dh">⌁ 보충 요청 메시지 초안</div>
-                <div class="dt">“아버님께서 처음 다니셨던 직장이 어디였는지, 명함이나 사원증이 남아 있는지 여쭤봐 주시겠어요? 학창 시절 사진이나 친구분 성함도 기억나시는 만큼 알려주시면 큰 도움이 됩니다.”</div>
-                <div class="da"><button class="btn" style="font-size:12px;padding:6px 12px;">복사</button><button class="btn ghost" style="font-size:12px;padding:6px 12px;">다듬기</button></div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="composer">
-          <span class="clip">📎</span>
-          <input type="text" placeholder="메시지를 입력하거나 자료를 업로드하세요…" disabled>
-          <button class="btn" style="padding:9px 16px;">전송</button>
-        </div>
-      </div>
+    <div class="prod i">
+      <div class="pill">핵심 차별점</div>
+      <div class="ic">🎧</div>
+      <h3>LifeOS Interview</h3>
+      <div class="role">인터뷰 현장 지원 앱</div>
+      <ul><li>3단계 주의 분산 모드</li><li>이어폰 귀속 알림</li><li>실시간 STT + 질문 추천</li><li>누락 주제 자동 탐지</li></ul>
     </div>
-    <div class="note">※ LifeOS 1단계 목업 — STEP 1 자료수집 AI 채팅 예시입니다.</div>
+    <div class="prod m">
+      <div class="ic">📊</div>
+      <h3>LifeOS Manager</h3>
+      <div class="role">다중 프로젝트 관리 대시보드</div>
+      <ul><li>에이전시 대표</li><li>기업 사사 담당자</li><li>지자체 생애사 담당자</li><li>6가지 뷰 제공</li></ul>
+    </div>
   </div>
+</div></section>
 
-  <!-- ============ REPORT ============ -->
-  <div class="wrap view" id="report" data-title="STEP 2 · 인물진단 리포트">
-    <span class="backlink" id="backBtn">← 프로젝트 대시보드</span>
-
-    <div class="card rhead">
-      <div class="av">김</div>
-      <div style="flex:1">
-        <h1>김순일 님 인물진단 리포트</h1>
-        <div class="sub">1948년생 (만 77세) · 여 · 경남 통영 출생 · 프로젝트 시작 12일째</div>
-        <div class="tags">
-          <span class="tag main" id="tagMain">가족헌신형 (주)</span>
-          <span class="tag line" id="tagSub">극복형 (부)</span>
-          <span class="tag">현재 단계 · 인물 진단</span>
-          <span class="tag">유형 신뢰도 높음</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- completion + key facts -->
-    <div class="grid2">
-      <div class="card ringbox">
-        <div class="ring">
-          <svg width="130" height="130">
-            <circle cx="65" cy="65" r="56" fill="none" stroke="#EDEFF1" stroke-width="11"/>
-            <circle cx="65" cy="65" r="56" fill="none" stroke="#1A7068" stroke-width="11"
-              stroke-linecap="round" stroke-dasharray="351.86" stroke-dashoffset="112.6"/>
-          </svg>
-          <div class="ctr"><div class="v">68%</div><div class="t">진단 완성율</div></div>
-        </div>
-        <div class="cap">자료가 더 들어올수록<br>완성율이 올라갑니다</div>
-      </div>
-      <div class="card" style="padding:20px 22px;">
-        <h2 style="font-size:15px;font-weight:800;margin-bottom:14px;">한눈에 보기</h2>
-        <div class="kv">
-          <div><div class="k">수집 자료</div><div class="v">23건</div></div>
-          <div><div class="k">핵심 인물</div><div class="v">5명</div></div>
-          <div><div class="k">핵심 사건</div><div class="v">8건</div></div>
-          <div><div class="k">충실한 영역 / 전체</div><div class="v">29 / 41칸</div></div>
-        </div>
-        <div style="margin-top:14px;font-size:13px;color:var(--sub);line-height:1.7;">
-          가족·관계와 가치관 영역의 단서가 풍부합니다. <b style="color:var(--text)">학창시절</b>과
-          <b style="color:var(--text)">청년기 일·생계</b>가 비어 있어, 이 두 곳을 보충하면 인터뷰 깊이가 크게 올라갑니다.
-        </div>
-      </div>
-    </div>
-
-    <!-- type analysis (editable) -->
-    <div class="card sec" id="typeSec">
-      <h2><span class="dot"></span>인생 서사 유형
-        <span class="tstate" id="typeState">AI 추정 · 잠정</span>
-        <button class="editbtn" id="typeEditBtn">유형 수정</button>
-      </h2>
-      <div class="typecur">
-        <span class="tcur main" id="curMain">주 · 가족헌신형</span>
-        <span class="tcur" id="curSub">부 · 극복형</span>
-      </div>
-      <div class="typebar"><div class="lab"><b>가족헌신형</b><span>72%</span></div><div class="tb"><i style="width:72%"></i></div></div>
-      <div class="typebar"><div class="lab"><b>극복형</b><span>58%</span></div><div class="tb"><i class="sec2" style="width:58%"></i></div></div>
-      <div class="typebar"><div class="lab"><b>관계형</b><span>41%</span></div><div class="tb"><i class="sec2" style="width:41%;opacity:.6"></i></div></div>
-      <div class="whybox"><b>AI 추정 근거</b> — 가족·관계·가치관 단서가 풍부, ‘남편 별세 후 네 자녀 양육’ 핵심 사건, 감정어 ‘헌신·그리움’ 빈도 높음.</div>
-      <div style="margin-top:12px;font-size:13.5px;line-height:1.7;background:var(--main-l);padding:13px 15px;border-radius:10px;">
-        <b>추천 서사 방향</b> — “가족을 위한 헌신과, 그 속에서 자신을 다시 일으킨 회복의 이야기”.
-        남편을 잃은 뒤 네 자녀를 지켜낸 중년기를 중심 축으로, 통영 피란민의 딸로 자란 유년기를 시대 배경으로 엮는 구조를 권장합니다.
-      </div>
-      <div class="editpanel" id="typeEdit">
-        <div class="eprow">
-          <div class="epf"><label>주(主) 유형</label>
-            <select id="selMain">
-              <option>성취형</option><option>관계형</option><option>극복형</option>
-              <option>기록형</option><option>시대증언형</option><option selected>가족헌신형</option>
-            </select>
-          </div>
-          <div class="epf"><label>부(副) 유형</label>
-            <select id="selSub">
-              <option>없음</option><option>성취형</option><option>관계형</option><option selected>극복형</option>
-              <option>기록형</option><option>시대증언형</option><option>가족헌신형</option>
-            </select>
-          </div>
-        </div>
-        <div class="epnote">⌁ 작가가 확정하면 AI가 자동으로 유형을 바꾸지 않습니다(이후엔 제안만).</div>
-        <div class="epbtns">
-          <button class="btn" id="typeSave">확정 · 잠금</button>
-          <button class="btn ghost" id="typeCancel">취소</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- chapters -->
-    <div class="card sec">
-      <h2><span class="dot"></span>추천 챕터 구조</h2>
-      <ol class="ch">
-        <li>피란민의 딸, 통영에서 <small>유년·성장 / 시대경험</small></li>
-        <li>열일곱, 서울로 올라오다 <small>청년·독립</small></li>
-        <li>결혼, 그리고 네 아이 <small>결혼·가정형성 / 사랑</small></li>
-        <li>남편을 떠나보내며 <small>중년 / 시련·전환점</small></li>
-        <li>다시 일어서다 — 시장에서의 20년 <small>중년 / 일·생계 · 가치관</small></li>
-        <li>손주들에게 남기는 말 <small>노년·현재 / 가치관</small></li>
-      </ol>
-    </div>
-
-    <!-- coverage heatmap -->
-    <div class="card sec">
-      <h2><span class="dot"></span>커버리지 매트릭스 — 어디가 채워졌나</h2>
-      <table class="heat">
-        <thead>
-          <tr>
-            <th class="rowh"></th>
-            <th>가족·<br>관계</th><th>일·<br>생계</th><th>사랑·<br>결혼</th><th>시련·<br>전환점</th><th>가치관</th><th>일상·<br>취미</th><th>시대<br>경험</th>
-          </tr>
-        </thead>
-        <tbody id="heatBody"></tbody>
-      </table>
-      <div class="legend">
-        <span><i class="l0"></i>미충족(보충 대상)</span>
-        <span><i class="l1"></i>얇음</span>
-        <span><i class="l2"></i>보통</span>
-        <span><i class="l3"></i>충실</span>
-        <span><i class="na"></i>해당 없음</span>
-      </div>
-    </div>
-
-    <!-- people / events / emotion -->
-    <div class="row wrap-row" style="margin-bottom:18px;">
-      <div class="card sec" style="flex:1; min-width:280px; margin-bottom:0;">
-        <h2><span class="dot"></span>핵심 인물</h2>
-        <div class="chips">
-          <span class="chip"><b>어머니</b> · 피란·가난을 함께</span>
-          <span class="chip"><b>남편(故)</b> · 1970 결혼, 1995 별세</span>
-          <span class="chip"><b>장남</b> · 가장 의지하는</span>
-          <span class="chip">큰딸</span><span class="chip">막내</span>
-        </div>
-        <h2 style="margin-top:18px;"><span class="dot"></span>감정 흐름 단서</h2>
-        <div class="chips">
-          <span class="chip">그리움</span><span class="chip">자부심</span>
-          <span class="chip">회한</span><span class="chip">감사</span>
-        </div>
-      </div>
-      <div class="card sec" style="flex:1; min-width:280px; margin-bottom:0;">
-        <h2><span class="dot"></span>핵심 사건 타임라인</h2>
-        <div class="tl">
-          <div class="ev"><span class="y">1951</span>1·4 후퇴, 통영으로 피란</div>
-          <div class="ev"><span class="y">1965</span>홀로 상경, 봉제공장 취직</div>
-          <div class="ev"><span class="y">1970</span>결혼, 첫 살림</div>
-          <div class="ev"><span class="y">1995</span>남편 별세 — 인생의 전환점</div>
-          <div class="ev"><span class="y">1996~</span>시장에서 반찬가게 시작</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- gap & request -->
-    <div class="card sec gapsec">
-      <h2><span class="dot"></span>부족한 영역 &amp; 다음 보충 요청</h2>
-      <div class="gaplist">
-        <span class="g">학창시절 — 전 영역</span>
-        <span class="g">청년·독립 × 일·생계</span>
-        <span class="g">노년 × 일상·취미</span>
-      </div>
-      <div class="draft">
-        <div class="dh">⌁ 의뢰인(가족) 전달용 메시지 초안 — 복사해서 보내세요</div>
-        <div class="dt">“어머니께서 중·고등학교 다니시던 무렵의 사진이나, 그때 단짝 친구분 성함이 혹시 남아 있을까요?
-        사진이 없어도 괜찮습니다 — 다니시던 학교나 자주 어울리던 친구 이야기만 들려주셔도 충분합니다.
-        그리고 서울 올라오신 뒤 첫 직장(봉제공장) 시절 이야기도 듣고 싶습니다.”</div>
-        <div class="da">
-          <button class="btn" style="font-size:12px;padding:7px 14px;">복사</button>
-          <button class="btn ghost" style="font-size:12px;padding:7px 14px;">문구 다듬기</button>
-        </div>
-      </div>
-    </div>
-
-    <div style="text-align:center; margin-top:6px;">
-      <button class="btn" id="toQuestions">인터뷰 질문지 초안 보기 →</button>
-    </div>
-    <div class="note">※ LifeOS 1단계 목업 — 예시 인물·데이터입니다.</div>
+<!-- INTERVIEW LAYER -->
+<section id="interview" class="panel-sec"><div class="wrap">
+  <div class="eyebrow">Core Differentiation</div>
+  <h2>Interview Layer — 시장 유일의 현장 UX</h2>
+  <p class="sub">인터뷰 현장은 자서전 품질을 결정하지만, 아무도 표준화하지 않은 영역입니다. LifeOS는 이 현장을 설계합니다.</p>
+  <div class="modes">
+    <div class="mode f"><span class="badge2">FULL · 전체</span><h3>모든 기능 노출</h3><p>인터뷰 시작 전·메모 작성 시 사용하는 전체 모드.</p></div>
+    <div class="mode g"><span class="badge2">GLANCE · 힐끔</span><h3>1줄 키워드 · 0.5초 시선</h3><p>의뢰인이 화면을 봐도 내용을 식별할 수 없습니다.</p></div>
+    <div class="mode s"><span class="badge2">SCREEN-OFF · 무화면</span><h3>화면 꺼짐 · 감지는 계속</h3><p>이어폰 진동·음성 신호로만 인터뷰어에게 전달.</p></div>
   </div>
-
-  <!-- ============ QUESTIONS (STEP 3) ============ -->
-  <div class="wrap view" id="questions" data-title="STEP 3 · 인터뷰 질문지 초안">
-    <span class="backlink" id="backBtn2">← 인물진단 리포트</span>
-
-    <div class="card rhead">
-      <div class="av">김</div>
-      <div style="flex:1">
-        <h1>김순일 님 인터뷰 질문지 <span style="color:var(--sub);font-weight:600;font-size:15px;">(초안)</span></h1>
-        <div class="sub">가족헌신형 서사 기반 · AI 자동 생성 · 작가가 자유롭게 추가·수정·재배치할 수 있습니다</div>
-        <div class="tags">
-          <span class="tag main">초안 v1</span>
-          <span class="tag line">가족헌신형 기반</span>
-          <span class="tag">예상 인터뷰 2회차</span>
-        </div>
-      </div>
-      <div class="qactions">
-        <button class="btn ghost">＋ 질문 추가</button>
-        <button class="btn ghost">↻ 재생성</button>
-        <button class="btn">내보내기</button>
-      </div>
-    </div>
-
-    <div class="qstats">
-      <div><div class="n">28</div><div class="l">총 문항</div></div>
-      <div><div class="n">6</div><div class="l">챕터(주제)</div></div>
-      <div><div class="n accent">7</div><div class="l">감정 회상 질문</div></div>
-      <div><div class="n accent">5</div><div class="l">보충 질문</div></div>
-      <div><div class="n">~2시간</div><div class="l">예상 소요</div></div>
-    </div>
-
-    <div class="qbanner">
-      <span class="ic">⚑</span>
-      <div>아직 이야기가 얇은 <b>학창시절·청년기 일·생계</b> 영역을 겨냥한 <b>보충 질문</b>을 우선 배치했습니다. 이 질문들의 답이 쌓이면 인물진단 완성율도 함께 올라갑니다.</div>
-    </div>
-
-    <!-- chapter 1 -->
-    <div class="card qsec">
-      <div class="qsec-head"><span class="cnum">1</span><div><div class="ctitle">피란민의 딸, 통영에서</div><div class="clabel">유년·성장 · 시대경험</div></div><span class="ccount">3문항</span></div>
-      <div class="qlist">
-        <div class="q"><div class="qnum">1</div><div class="qbody"><div class="qtext">가장 어릴 적, 통영 집을 떠올리면 어떤 장면이 먼저 떠오르세요?</div><div class="qtags"><span class="qt emo">♥ 감정 회상</span><span class="qt">유년·성장</span></div></div><div class="qact">⋮</div></div>
-        <div class="q"><div class="qnum">2</div><div class="qbody"><div class="qtext">1·4 후퇴 피란길에 대해 가족에게 들으신 이야기가 있나요? 어떻게 통영까지 오게 되셨어요?</div><div class="qtags"><span class="qt">시대경험</span><span class="qt">연대기</span></div></div><div class="qact">⋮</div></div>
-        <div class="q"><div class="qnum">3</div><div class="qbody"><div class="qtext">어린 시절 가족 중 가장 기억에 남는 분은 누구이고, 왜 그런가요?</div><div class="qtags"><span class="qt">가족·관계</span><span class="qt emo">♥ 감정 회상</span></div></div><div class="qact">⋮</div></div>
-      </div>
-    </div>
-
-    <!-- chapter 2 (gap) -->
-    <div class="card qsec">
-      <div class="qsec-head"><span class="cnum">2</span><div><div class="ctitle">열일곱, 서울로 올라오다</div><div class="clabel">청년·독립 · 보충 집중 구간</div></div><span class="ccount">3문항</span></div>
-      <div class="qlist">
-        <div class="q"><div class="qnum">4</div><div class="qbody"><div class="qtext">열일곱에 홀로 상경하기로 결심한 계기는 무엇이었나요?</div><div class="qtags"><span class="qt gap">⚑ 보충 질문</span><span class="qt">시련·전환점</span></div></div><div class="qact">⋮</div></div>
-        <div class="q"><div class="qnum">5</div><div class="qbody"><div class="qtext">처음 다닌 봉제공장은 어디였고, 하루 일과가 어땠는지 기억나세요?</div><div class="qtags"><span class="qt gap">⚑ 보충 질문</span><span class="qt">일·생계</span></div></div><div class="qact">⋮</div></div>
-        <div class="q"><div class="qnum">6</div><div class="qbody"><div class="qtext">그 시절 함께 일하거나 마음으로 의지했던 사람이 있었나요?</div><div class="qtags"><span class="qt gap">⚑ 보충 질문</span><span class="qt">가족·관계</span></div></div><div class="qact">⋮</div></div>
-      </div>
-    </div>
-
-    <!-- chapter 3 -->
-    <div class="card qsec">
-      <div class="qsec-head"><span class="cnum">3</span><div><div class="ctitle">결혼, 그리고 네 아이</div><div class="clabel">결혼·가정형성 · 사랑</div></div><span class="ccount">3문항</span></div>
-      <div class="qlist">
-        <div class="q"><div class="qnum">7</div><div class="qbody"><div class="qtext">남편분과는 어떻게 처음 만나게 되셨어요?</div><div class="qtags"><span class="qt">사랑·결혼</span><span class="qt emo">♥ 감정 회상</span><span class="qmat">📎 1970 결혼사진</span></div></div><div class="qact">⋮</div></div>
-        <div class="q"><div class="qnum">8</div><div class="qbody"><div class="qtext">결혼을 결심하게 된 결정적인 순간이 있었나요?</div><div class="qtags"><span class="qt">사랑·결혼</span></div></div><div class="qact">⋮</div></div>
-        <div class="q"><div class="qnum">9</div><div class="qbody"><div class="qtext">네 아이를 키우며 가장 힘들었던, 그리고 가장 행복했던 기억은 무엇인가요?</div><div class="qtags"><span class="qt">가족·관계</span><span class="qt emo">♥ 감정 회상</span></div></div><div class="qact">⋮</div></div>
-      </div>
-    </div>
-
-    <!-- chapter 4 -->
-    <div class="card qsec">
-      <div class="qsec-head"><span class="cnum">4</span><div><div class="ctitle">남편을 떠나보내며</div><div class="clabel">중년 · 시련·전환점</div></div><span class="ccount">2문항</span></div>
-      <div class="qlist">
-        <div class="q"><div class="qnum">10</div><div class="qbody"><div class="qtext">남편분을 떠나보내던 그해를 떠올리면 어떠세요? 천천히, 말씀하실 수 있는 만큼만 들려주세요.</div><div class="qtags"><span class="qt emo">♥ 감정 회상</span><span class="qt">민감 주제</span></div></div><div class="qact">⋮</div></div>
-        <div class="q"><div class="qnum">11</div><div class="qbody"><div class="qtext">그때 네 아이를 보며 마음속으로 어떤 다짐을 하셨나요?</div><div class="qtags"><span class="qt">가치관</span></div></div><div class="qact">⋮</div></div>
-      </div>
-    </div>
-
-    <!-- chapter 5 -->
-    <div class="card qsec">
-      <div class="qsec-head"><span class="cnum">5</span><div><div class="ctitle">다시 일어서다 — 시장에서의 20년</div><div class="clabel">중년 · 일·생계 · 가치관</div></div><span class="ccount">3문항</span></div>
-      <div class="qlist">
-        <div class="q"><div class="qnum">12</div><div class="qbody"><div class="qtext">반찬가게를 처음 시작하게 된 이야기를 들려주세요.</div><div class="qtags"><span class="qt">일·생계</span><span class="qt">연대기</span></div></div><div class="qact">⋮</div></div>
-        <div class="q"><div class="qnum">13</div><div class="qbody"><div class="qtext">장사하며 단골손님이나 시장 사람들과 잊지 못할 일이 있나요?</div><div class="qtags"><span class="qt">일상·취미</span><span class="qt">가족·관계</span></div></div><div class="qact">⋮</div></div>
-        <div class="q"><div class="qnum">14</div><div class="qbody"><div class="qtext">스스로 ‘나 참 잘 버텨왔다’ 싶은 순간이 있으셨어요?</div><div class="qtags"><span class="qt emo">♥ 감정 회상</span><span class="qt">자부심</span></div></div><div class="qact">⋮</div></div>
-      </div>
-    </div>
-
-    <!-- chapter 6 -->
-    <div class="card qsec">
-      <div class="qsec-head"><span class="cnum">6</span><div><div class="ctitle">손주들에게 남기는 말</div><div class="clabel">노년·현재 · 가치관</div></div><span class="ccount">2문항</span></div>
-      <div class="qlist">
-        <div class="q"><div class="qnum">15</div><div class="qbody"><div class="qtext">손주들에게 꼭 들려주고 싶은 인생의 한마디가 있다면요?</div><div class="qtags"><span class="qt">가치관</span></div></div><div class="qact">⋮</div></div>
-        <div class="q"><div class="qnum">16</div><div class="qbody"><div class="qtext">지금, 가장 감사한 것은 무엇인가요?</div><div class="qtags"><span class="qt emo">♥ 감정 회상</span></div></div><div class="qact">⋮</div></div>
-      </div>
-    </div>
-
-    <button class="morebtn">＋ 나머지 12문항 더 보기</button>
-    <div class="note">※ LifeOS 1단계 목업 — 예시 인물·질문입니다. 질문은 인물 유형과 빈 영역에 따라 자동 생성됩니다.</div>
+  <div class="signals">
+    <div class="sh">🎧 이어폰 귀속 알림 체계</div>
+    <div class="sigrow"><div class="a">주제 이탈</div><div class="b">진동 1회 + 저음량 음성</div><div class="c">자연스럽게 주제 전환</div></div>
+    <div class="sigrow"><div class="a">감정 고조</div><div class="b">진동 2회 (짧게, 무음)</div><div class="c">침묵 유지 · 깊이 파고들 타이밍</div></div>
+    <div class="sigrow"><div class="a">누락 주제</div><div class="b">저음량 음성</div><div class="c">"군복무 시기 없어요" → 자연스럽게 유도</div></div>
+    <div class="sigrow"><div class="a">30분 경과</div><div class="b">진동 1회</div><div class="c">선택적 휴식 제안</div></div>
   </div>
+</div></section>
 
-<script>
-  // tab switching
-  document.querySelectorAll('.tab').forEach(function(t){
-    t.addEventListener('click', function(){ showView(t.dataset.v); });
-  });
-  document.getElementById('openReport').addEventListener('click', function(){ showView('report'); window.scrollTo(0,0); });
-  document.getElementById('backBtn').addEventListener('click', function(){ showView('dash'); window.scrollTo(0,0); });
-  document.getElementById('toQuestions').addEventListener('click', function(){ showView('questions'); window.scrollTo(0,0); });
-  document.getElementById('backBtn2').addEventListener('click', function(){ showView('report'); window.scrollTo(0,0); });
-  document.getElementById('backBtn3').addEventListener('click', function(){ showView('dash'); window.scrollTo(0,0); });
+<!-- WORKFLOW -->
+<section><div class="wrap">
+  <div class="eyebrow">Workflow</div>
+  <h2>자서전 제작 워크플로우 7단계</h2>
+  <p class="sub">각 단계는 독립된 결과물을 산출하고, 그 결과물이 다음 단계의 입력이 됩니다. Phase 04만 현장 선택적 사용.</p>
+  <div class="flow">
+    <div class="fl"><div class="n">PHASE 01</div><div class="t">자료 수집</div><div class="d">삶의 흔적</div><div class="arw">›</div></div>
+    <div class="fl"><div class="n">PHASE 02</div><div class="t">인물 진단</div><div class="d">서사 유형 식별</div><div class="arw">›</div></div>
+    <div class="fl"><div class="n">PHASE 03</div><div class="t">사전 준비</div><div class="d">질문지 설계</div><div class="arw">›</div></div>
+    <div class="fl hot"><div class="n">PHASE 04</div><div class="t">인터뷰 지원</div><div class="d">현장 보조 앱</div><div class="arw">›</div></div>
+    <div class="fl"><div class="n">PHASE 05</div><div class="t">집필 준비</div><div class="d">전사·정리·태깅</div><div class="arw">›</div></div>
+    <div class="fl"><div class="n">PHASE 06</div><div class="t">집필 지원</div><div class="d">문맥·문체 지원</div><div class="arw">›</div></div>
+    <div class="fl"><div class="n">PHASE 07</div><div class="t">출판 지원</div><div class="d">POD·PDF 생성</div></div>
+  </div>
+  <div class="flnote"><b>Phase 04를 왜 별도 앱으로 분리했나</b> — 인터뷰 현장은 화면·시선·집중 관리가 필요해 다른 기능을 노출하면 오히려 방해가 됩니다. 그래서 Interview는 Studio와 분리된 별도 모바일 앱으로 제공됩니다.</div>
+</div></section>
 
-  // type edit (report)
-  (function(){
-    var sec = document.getElementById('typeSec'); if(!sec) return;
-    var panel = document.getElementById('typeEdit');
-    document.getElementById('typeEditBtn').addEventListener('click', function(){ panel.classList.toggle('open'); });
-    document.getElementById('typeCancel').addEventListener('click', function(){ panel.classList.remove('open'); });
-    document.getElementById('typeSave').addEventListener('click', function(){
-      var m = document.getElementById('selMain').value;
-      var s = document.getElementById('selSub').value;
-      document.getElementById('curMain').textContent = '주 · ' + m;
-      document.getElementById('tagMain').textContent = m + ' (주)';
-      var curSub = document.getElementById('curSub'), tagSub = document.getElementById('tagSub');
-      if(s === '없음'){ curSub.style.display = 'none'; tagSub.style.display = 'none'; }
-      else { curSub.style.display = ''; tagSub.style.display = '';
-             curSub.textContent = '부 · ' + s; tagSub.textContent = s + ' (부)'; }
-      var st = document.getElementById('typeState');
-      st.textContent = '작가 확정 · 잠금 🔒'; st.classList.add('locked');
-      panel.classList.remove('open');
-    });
-  })();
-  function showView(v){
-    document.querySelectorAll('.view').forEach(function(el){ el.classList.toggle('active', el.id===v); });
-    document.querySelectorAll('.tab').forEach(function(el){ el.classList.toggle('active', el.dataset.v===v); });
-  }
+<!-- DATA POLICY -->
+<section class="panel-sec"><div class="wrap">
+  <div class="eyebrow">Data Policy</div>
+  <h2>신뢰의 표준을 만든다</h2>
+  <p class="sub">의뢰인이 가장 걱정하는 것은 "내 이야기가 어디로 흘러가는가"입니다. 이 정책 하나가 계약 성사율을 실질적으로 높입니다.</p>
+  <div class="dtwo">
+    <div class="dcard">
+      <h3>🔒 데이터 3등급 민감도 분류</h3>
+      <div class="grade">
+        <div class="g g1">1등급 극비</div><div class="desc">건강·병력, 재정, 법적 분쟁 · <b>본인 + 지정 1인</b></div>
+        <div class="g g2">2등급 민감</div><div class="desc">직장 갈등, 타인 실명, 미공개 사업 · <b>본인 + 담당 작가</b></div>
+        <div class="g g3">3등급 일반</div><div class="desc">타임라인, 수상이력, 학력 · <b>본인 + 작가 + 관리자</b></div>
+      </div>
+    </div>
+    <div class="dcard">
+      <h3>🛡️ AI 학습 비사용 정책</h3>
+      <div class="policy-hl">"의뢰인 데이터를 <span class="mk">AI 학습에 쓰지 않는</span> 자서전 플랫폼"</div>
+      <p>계약서 표준 조항으로 명시해 에이전시가 의뢰인 설득에 활용할 수 있게 합니다. 계약 종료 4가지 시나리오(완료·중도 해지·에이전시 폐업·의뢰인 사망)별 처리 절차가 사전 정의되어 자동 실행됩니다.</p>
+    </div>
+  </div>
+</div></section>
 
-  // heatmap data (0=빈,1=얇음,2=보통,3=충실, -1=해당없음)
-  var rows = ['유년·성장','학창시절','청년·독립','결혼·가정형성','중년·전성기','노년·현재'];
-  var data = [
-    [3,0,-1,2,2,1,3],
-    [1,0,0,1,1,0,1],
-    [2,1,1,1,1,1,2],
-    [3,1,3,2,2,2,1],
-    [3,2,2,3,3,2,1],
-    [3,0,1,1,3,2,1]
-  ];
-  var cls = {'-1':'na','0':'l0','1':'l1','2':'l2','3':'l3'};
-  var marks = {'-1':'—','0':'','1':'','2':'','3':''};
-  var body = document.getElementById('heatBody');
-  rows.forEach(function(r,ri){
-    var tr = document.createElement('tr');
-    tr.innerHTML = '<th class="rowh">'+r+'</th>';
-    data[ri].forEach(function(v){
-      var td = document.createElement('td');
-      td.className = cls[v];
-      td.textContent = marks[v];
-      tr.appendChild(td);
-    });
-    body.appendChild(tr);
-  });
-</script>
+<!-- VALUE -->
+<section><div class="wrap">
+  <div class="eyebrow">Value</div>
+  <h2>비용이 아니라 수입 증가 도구</h2>
+  <p class="sub">같은 시간에 매출 2배, 집필 비중은 유지합니다. 구독료는 프로젝트 1건 추가 수주로 즉시 회수됩니다.</p>
+  <div class="ba">
+    <div class="bacard before">
+      <div class="bh">LifeOS 없이 — 현재</div>
+      <div class="barow"><span class="lab">사전 준비 · 자료 수집</span><span class="val mono">20h</span></div>
+      <div class="barow"><span class="lab">인터뷰 (이동 포함)</span><span class="val mono">20h</span></div>
+      <div class="barow"><span class="lab">녹취 타이핑 · 정리</span><span class="val mono">30h</span></div>
+      <div class="barow"><span class="lab">집필 (핵심 역량)</span><span class="val mono">50h</span></div>
+      <div class="barow total"><span class="lab">합계 · 연 매출</span><span class="val mono">120h · ₩3,000만 (연 3건)</span></div>
+    </div>
+    <div class="bacard after">
+      <div class="bh">LifeOS 도입 후</div>
+      <div class="barow"><span class="lab">사전 준비 (AI 기획)</span><span class="val mono">5h</span></div>
+      <div class="barow"><span class="lab">인터뷰 (Live Guide)</span><span class="val mono">15h</span></div>
+      <div class="barow"><span class="lab">정리 (자동 전사·요약)</span><span class="val mono">5h</span></div>
+      <div class="barow"><span class="lab">집필 (핵심 역량)</span><span class="val mono">20h</span></div>
+      <div class="barow total"><span class="lab">합계 · 연 매출</span><span class="val mono">45h · ₩6,000만 (연 6+건)</span></div>
+    </div>
+  </div>
+</div></section>
+
+<!-- VISION -->
+<section id="vision" class="panel-sec"><div class="wrap">
+  <div class="eyebrow">Vision</div>
+  <h2>자서전 도구를 넘어 기억 인프라로</h2>
+  <p class="sub">LifeOS는 자서전 도구로 시작하지만, 목적지는 사람의 기억을 보존·전승하는 생애 기록 인프라입니다.</p>
+  <div class="vis">
+    <div class="vc v1"><div class="step">STAGE 1</div><div class="when">Month 1 ~ 18</div><h3>자서전</h3><p>개인의 삶을 한 권의 책으로. 프리랜서 작가와 B2C 고객을 위한 도구. 중간 시장 가격 공백 선점.</p><div class="kpi">KPI · 프로젝트 50건 · NPS 40+</div></div>
+    <div class="vc v2"><div class="step">STAGE 2</div><div class="when">Month 19 ~ 36</div><h3>생애 기록 플랫폼</h3><p>기업·기관·지자체 구술사 아카이빙까지. Interview Layer가 핵심 엔진. 데이터 네트워크 효과 발현.</p><div class="kpi">KPI · 에이전시 100개사 · B2B 10건</div></div>
+    <div class="vc v3"><div class="step">STAGE 3</div><div class="when">Year 4+</div><h3>디지털 유산 관리</h3><p>병원·장례·법률 기관과 연계한 생애 기록 관리. 디지털 유언장·기억 아카이브·AI 메모리 인프라.</p><div class="kpi">KPI · API 파트너 10개사 · ARR ₩50억</div></div>
+  </div>
+</div></section>
+
+<!-- BAND -->
+<section><div class="wrap">
+  <div class="band">
+    <div class="eyebrow">One Engine · Two Products · Manager</div>
+    <h2>인터뷰 현장에서 출판까지, 하나의 OS로</h2>
+    <p>AI가 대신 쓰는 자서전이 아니라, 인터뷰어가 잘 듣고 잘 정리하도록 돕는 지원 도구. LifeOS 데모에서 직접 확인해 보세요.</p>
+    <a class="btn-lg btn-p" href="lifeos-demo/index.html">▶ LifeOS 데모 열기</a>
+  </div>
+</div></section>
+
+<footer><div class="wrap">
+  <b>LifeOS</b> · 삶을 정리하고 기록하는 자서전 집필 지원 OS · 사업계획서 v1.0 기반 소개<br>
+  이 페이지는 소개용 <b>데모</b>이며, 인물·데이터는 예시입니다. · <a href="lifeos-demo/index.html">데모 열기</a>
+</div></footer>
+
 </body>
 </html>
