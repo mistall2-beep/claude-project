@@ -4,16 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BriefOS — 조직 커뮤니케이션을 1페이지로 재정의하는 AI SaaS</title>
-<meta name="description" content="긴 보고서·공지·회의 자료를 AI가 독자 관점에서 재구조화해 1페이지로 압축하고, 실제 읽힘 데이터를 측정해 조직의 커뮤니케이션 구조 자체를 지속 개선하는 B2B SaaS. 짧고 명확한 커뮤니케이션이 조직의 실행력을 바꿉니다.">
+<meta name="description" content="모든 보고와 공지를 1페이지로. 긴 보고서·공지·회의 자료를 AI가 독자 관점에서 재구조화해 1페이지로 압축하고, 실제 읽힘 데이터를 측정해 조직의 커뮤니케이션 구조 자체를 지속 개선하는 B2B SaaS.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="BriefOS — 조직 커뮤니케이션을 1페이지로 재정의하는 AI SaaS">
-<meta property="og:description" content="문장을 고치지 않습니다. 조직의 의사결정 구조를 바꿉니다. AI 압축 엔진 · 한국형 템플릿 · 읽힘 데이터 분석 · 협업툴 네이티브 연동.">
+<meta property="og:description" content="우리는 문장을 고치지 않습니다. 조직의 의사결정 구조를 바꿉니다. AI 구조 재설계 · 한국형 템플릿 · 읽힘 데이터 · 협업툴 네이티브 연동.">
 <meta property="og:url" content="https://mistall2-beep.github.io/claude-project/briefos/">
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 <style>
   :root{
-    --main:#3538CD; --main-d:#23268C; --main-l:#EEF0FC; --main-r:#CFD4F5;
+    --main:#3538CD; --main-d:#23268C; --main-l:#EEF0FC; --main-r:#CFD4F5; --main-soft:#F4F5FD;
     --text:#1B1E2B; --text2:#3B4050; --sub:#6A7086; --faint:#98A0B4;
     --line:#E6E8F1; --line2:#EFF1F7; --bg:#F5F6FB; --panel:#fff;
     --amber:#B5701F; --amber-l:#F8EEDC; --amber-r:#E9D3AC;
@@ -40,7 +40,7 @@
   nav .lk:hover{color:var(--text);}
   .cta{font-size:13.5px; font-weight:800; color:#fff; background:var(--main); padding:9px 16px; border-radius:999px; text-decoration:none; box-shadow:0 6px 16px rgba(53,56,205,.28);}
   .cta:hover{background:var(--main-d);}
-  @media(max-width:820px){nav .lk{display:none;}}
+  @media(max-width:900px){nav .lk{display:none;}}
 
   /* hero */
   .hero{position:relative; overflow:hidden; padding:76px 0 58px;
@@ -79,11 +79,27 @@
   .harrow{width:44px; height:44px; border-radius:50%; background:var(--main); color:#fff; display:flex; align-items:center; justify-content:center; font-size:20px; font-weight:900; box-shadow:0 8px 20px rgba(53,56,205,.35);}
   @media(max-width:760px){.heroviz{grid-template-columns:1fr; gap:10px;} .harrow{transform:rotate(90deg); margin:0 auto;}}
 
-  section{padding:58px 0;}
+  section{padding:56px 0;}
   .eyebrow{font-size:12px; font-weight:800; letter-spacing:.12em; color:var(--main); text-transform:uppercase;}
-  h2{font-size:clamp(23px,3.5vw,33px); font-weight:800; letter-spacing:-.035em; margin:10px 0 6px;}
-  .sub{color:var(--sub); font-size:15px; max-width:680px; margin:0;}
+  .part{font-size:11px; font-weight:900; letter-spacing:.14em; color:var(--faint); text-transform:uppercase; margin-bottom:6px;}
+  h2{font-size:clamp(23px,3.5vw,33px); font-weight:800; letter-spacing:-.035em; margin:6px 0 6px;}
+  .sub{color:var(--sub); font-size:15px; max-width:700px; margin:0;}
   .panel-sec{background:var(--panel); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+
+  /* executive summary */
+  .exec{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:26px;}
+  .ex{background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:20px; box-shadow:var(--shadow);}
+  .ex .t{font-size:11px; font-weight:900; letter-spacing:.05em; color:var(--main); text-transform:uppercase; margin-bottom:8px;}
+  .ex p{font-size:13px; color:var(--text2);}
+  @media(max-width:820px){.exec{grid-template-columns:1fr 1fr;}}
+  @media(max-width:520px){.exec{grid-template-columns:1fr;}}
+  .execkpi{display:grid; grid-template-columns:repeat(5,1fr); gap:12px; margin-top:14px;}
+  .ek{background:linear-gradient(150deg,#20255f,#33378f); color:#e9ebfb; border-radius:14px; padding:16px 14px; text-align:center;}
+  .ek .n{font-size:22px; font-weight:900; letter-spacing:-.03em; color:#fff;}
+  .ek .l{font-size:11px; color:#aab0ee; font-weight:700; margin-top:3px;}
+  @media(max-width:820px){.execkpi{grid-template-columns:repeat(2,1fr);} .execkpi .ek:last-child{grid-column:1/-1;}}
+  .qbar{margin-top:16px; font-size:clamp(16px,2.4vw,21px); font-weight:800; letter-spacing:-.02em; color:var(--text); border-left:4px solid var(--main); padding:6px 0 6px 16px;}
+  .qbar .mk{color:var(--main);}
 
   /* problem stats */
   .pgrid{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:28px;}
@@ -95,7 +111,7 @@
   @media(max-width:760px){.pgrid{grid-template-columns:1fr 1fr;}}
   .concl{margin-top:20px; background:linear-gradient(135deg,#20255f,#31358f); color:#e7e9fb; border-radius:18px; padding:24px 26px; display:grid; grid-template-columns:1fr auto; gap:20px; align-items:center;}
   .concl .t{font-size:16px; font-weight:800; color:#fff; margin-bottom:6px;}
-  .concl p{font-size:13px; color:#c8ccf2; max-width:640px;}
+  .concl p{font-size:13px; color:#c8ccf2; max-width:660px;}
   .concl .kpi{text-align:right; white-space:nowrap;}
   .concl .kpi .n{font-size:34px; font-weight:900; letter-spacing:-.03em; color:#fff;}
   .concl .kpi .l{font-size:11px; color:#aab0ee; font-weight:700;}
@@ -120,24 +136,6 @@
   .insight{margin-top:16px; font-size:14px; color:var(--main-d); background:var(--main-l); border:1px solid var(--main-r); border-radius:14px; padding:16px 18px; line-height:1.6;}
   .insight b{color:var(--main-d);}
 
-  /* market size */
-  .som{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:28px;}
-  .somc{border-radius:16px; padding:22px; position:relative; overflow:hidden;}
-  .somc.t3{background:var(--panel); border:1px solid var(--line); box-shadow:var(--shadow);}
-  .somc.t2{background:var(--main-l); border:1px solid var(--main-r);}
-  .somc.t1{background:linear-gradient(150deg,#20255f,#33378f); color:#e9ebfb;}
-  .somc .lab{font-size:12px; font-weight:900; letter-spacing:.05em;}
-  .somc.t3 .lab{color:var(--sub);} .somc.t2 .lab{color:var(--main);} .somc.t1 .lab{color:#9ea4ee;}
-  .somc .amt{font-size:27px; font-weight:900; letter-spacing:-.03em; margin:8px 0 6px;}
-  .somc.t3 .amt{color:var(--text);} .somc.t2 .amt{color:var(--main-d);} .somc.t1 .amt{color:#fff;}
-  .somc .desc{font-size:12.5px;} .somc.t3 .desc, .somc.t2 .desc{color:var(--text2);} .somc.t1 .desc{color:#c3c7f0;}
-  @media(max-width:760px){.som{grid-template-columns:1fr;}}
-  .kadv{display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-top:14px;}
-  .kadv .a{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:16px; box-shadow:var(--shadow);}
-  .kadv .a h4{font-size:13px; font-weight:800; margin-bottom:6px; color:var(--main-d);}
-  .kadv .a p{font-size:11.5px; color:var(--text2);}
-  @media(max-width:760px){.kadv{grid-template-columns:1fr 1fr;}}
-
   /* solution pillars */
   .quote{margin-top:26px; font-size:clamp(18px,2.6vw,24px); font-weight:800; letter-spacing:-.02em; line-height:1.45; color:var(--text);}
   .quote .mk{color:var(--main);}
@@ -150,24 +148,58 @@
   @media(max-width:820px){.pillars{grid-template-columns:1fr 1fr;}}
   @media(max-width:480px){.pillars{grid-template-columns:1fr;}}
 
+  /* AS-IS / TO-BE */
+  .abcmp{display:grid; grid-template-columns:1fr auto 1fr; gap:16px; align-items:stretch; margin-top:20px;}
+  .abc{border-radius:16px; padding:20px 22px; border:1px solid var(--line);}
+  .abc.as{background:var(--panel); box-shadow:var(--shadow);}
+  .abc.to{background:linear-gradient(150deg,#20255f,#33378f); color:#e9ebfb; border:0;}
+  .abc .lb{font-size:11px; font-weight:900; letter-spacing:.08em;}
+  .abc.as .lb{color:var(--sub);} .abc.to .lb{color:#9ea4ee;}
+  .abc .m{font-size:18px; font-weight:800; margin:8px 0 4px; letter-spacing:-.02em;}
+  .abc.as .m{color:var(--text);} .abc.to .m{color:#fff;}
+  .abc .d{font-size:12.5px;} .abc.as .d{color:var(--text2);} .abc.to .d{color:#c3c7f0;}
+  .abarrow{align-self:center; width:40px; height:40px; border-radius:50%; background:var(--main); color:#fff; display:flex; align-items:center; justify-content:center; font-size:18px; font-weight:900;}
+  @media(max-width:680px){.abcmp{grid-template-columns:1fr;} .abarrow{transform:rotate(90deg); margin:0 auto;}}
+
+  /* generic step flow (product usage / tech) */
+  .flow{display:grid; gap:0; margin-top:24px; overflow-x:auto;}
+  .flow.n5{grid-template-columns:repeat(5,1fr);}
+  .fl{position:relative; padding:16px 14px; background:var(--panel); border:1px solid var(--line); min-width:150px;}
+  .fl:first-child{border-radius:12px 0 0 12px;} .fl:last-child{border-radius:0 12px 12px 0;} .fl:not(:last-child){border-right:0;}
+  .fl .n{font-size:10px; font-weight:900; color:var(--main); letter-spacing:.04em;}
+  .fl .t{font-size:13.5px; font-weight:800; margin:5px 0 3px;}
+  .fl .d{font-size:11.5px; color:var(--sub); line-height:1.45;}
+  .fl .arw{position:absolute; right:-9px; top:50%; transform:translateY(-50%); z-index:2; width:18px; height:18px; border-radius:50%; background:var(--main); color:#fff; display:flex; align-items:center; justify-content:center; font-size:11px;}
+  .fl:last-child .arw{display:none;}
+  @media(max-width:860px){.flow.n5{grid-template-columns:1fr; gap:8px;} .fl{border-radius:12px !important; border-right:1px solid var(--line) !important;} .fl .arw{display:none;}}
+  /* usage flow compact (product) */
+  .uflow{display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-top:24px;}
+  .uf{flex:1; min-width:130px; background:var(--main-l); border:1px solid var(--main-r); border-radius:12px; padding:12px 14px; font-size:12.5px; font-weight:800; color:var(--main-d); text-align:center;}
+  .uarw{color:var(--main); font-weight:900; font-size:16px;}
+  @media(max-width:680px){.uflow{flex-direction:column;} .uf{width:100%;} .uarw{transform:rotate(90deg);}}
+
   /* product features */
   .feat{display:grid; grid-template-columns:repeat(2,1fr); gap:14px; margin-top:26px;}
   .fc{background:var(--panel); border:1px solid var(--line); border-radius:18px; padding:22px; box-shadow:var(--shadow); display:grid; grid-template-columns:auto 1fr; gap:16px;}
   .fc .no{width:44px; height:44px; border-radius:12px; background:var(--main); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:17px;}
   .fc .tag2{font-size:10.5px; font-weight:900; letter-spacing:.06em; color:var(--main); text-transform:uppercase;}
   .fc h3{font-size:16px; font-weight:800; margin:2px 0 6px;}
-  .fc .lead2{font-size:12.5px; color:var(--sub); margin-bottom:10px;}
-  .fc ul{list-style:none; display:flex; flex-direction:column; gap:5px;}
-  .fc li{font-size:12.5px; color:var(--text2); padding-left:15px; position:relative;}
-  .fc li::before{content:""; position:absolute; left:2px; top:8px; width:5px; height:5px; border-radius:50%; background:var(--main-r);}
+  .fc p{font-size:12.5px; color:var(--text2);}
   @media(max-width:760px){.feat{grid-template-columns:1fr;}}
-  .platnote{margin-top:14px; font-size:12.5px; color:var(--text2); background:var(--main-l); border:1px solid var(--main-r); border-radius:12px; padding:13px 16px;}
+
+  /* three-up cards (tech advantages) */
+  .three{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:16px;}
+  .mc{background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:20px; box-shadow:var(--shadow);}
+  .mc .k{width:34px; height:34px; border-radius:10px; background:var(--main-l); color:var(--main-d); display:flex; align-items:center; justify-content:center; font-weight:900; font-size:15px;}
+  .mc h3{font-size:14.5px; font-weight:800; margin:11px 0 6px;}
+  .mc p{font-size:12.5px; color:var(--text2);}
+  @media(max-width:760px){.three{grid-template-columns:1fr;}}
 
   /* comparison table */
   .cmp{margin-top:26px; overflow-x:auto; border:1px solid var(--line); border-radius:16px; box-shadow:var(--shadow); background:var(--panel);}
   table.ctbl{width:100%; border-collapse:collapse; min-width:720px; font-size:12.5px;}
   table.ctbl th, table.ctbl td{padding:12px 14px; text-align:left; border-bottom:1px solid var(--line2); vertical-align:top;}
-  table.ctbl thead th{font-size:12px; font-weight:800; color:var(--sub); background:#FAFBFE; position:sticky; top:0;}
+  table.ctbl thead th{font-size:12px; font-weight:800; color:var(--sub); background:#FAFBFE;}
   table.ctbl thead th.us{color:#fff; background:var(--main);}
   table.ctbl tbody th{font-weight:800; color:var(--text); white-space:nowrap;}
   table.ctbl td{color:var(--text2);}
@@ -175,6 +207,40 @@
   table.ctbl tr:last-child td, table.ctbl tr:last-child th{border-bottom:0;}
   .cmpnote{margin-top:14px; font-size:13px; color:var(--text2); background:#FAFBFE; border:1px solid var(--line); border-radius:12px; padding:14px 16px;}
   .cmpnote b{color:var(--main-d);}
+
+  /* market size */
+  .som{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:28px;}
+  .somc{border-radius:16px; padding:22px; position:relative; overflow:hidden;}
+  .somc.t3{background:var(--panel); border:1px solid var(--line); box-shadow:var(--shadow);}
+  .somc.t2{background:var(--main-l); border:1px solid var(--main-r);}
+  .somc.t1{background:linear-gradient(150deg,#20255f,#33378f); color:#e9ebfb;}
+  .somc .lab{font-size:12px; font-weight:900; letter-spacing:.05em;}
+  .somc.t3 .lab{color:var(--sub);} .somc.t2 .lab{color:var(--main);} .somc.t1 .lab{color:#9ea4ee;}
+  .somc .amt{font-size:27px; font-weight:900; letter-spacing:-.03em; margin:8px 0 6px;}
+  .somc.t3 .amt{color:var(--text);} .somc.t2 .amt{color:var(--main-d);} .somc.t1 .amt{color:#fff;}
+  .somc .desc{font-size:12.5px;} .somc.t3 .desc, .somc.t2 .desc{color:var(--text2);} .somc.t1 .desc{color:#c3c7f0;}
+  .somc .cagr{position:absolute; top:16px; right:16px; font-size:11px; font-weight:900; color:#fff; background:rgba(255,255,255,.16); padding:3px 9px; border-radius:999px;}
+  @media(max-width:760px){.som{grid-template-columns:1fr;}}
+  .kadv{display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-top:14px;}
+  .kadv .a{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:16px; box-shadow:var(--shadow);}
+  .kadv .a h4{font-size:13px; font-weight:800; margin-bottom:6px; color:var(--main-d);}
+  .kadv .a p{font-size:11.5px; color:var(--text2);}
+  @media(max-width:760px){.kadv{grid-template-columns:1fr 1fr;}}
+
+  /* target customer segments */
+  .segs{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:26px;}
+  .seg{background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:22px; box-shadow:var(--shadow); position:relative;}
+  .seg.mid{border:2px solid var(--main); box-shadow:0 0 0 4px var(--main-l), var(--shadow);}
+  .seg .st{font-size:11px; font-weight:900; letter-spacing:.05em; color:var(--main); text-transform:uppercase;}
+  .seg h3{font-size:16px; font-weight:800; margin:7px 0 2px;}
+  .seg .sz{font-size:12px; font-weight:700; color:var(--amber); margin-bottom:11px;}
+  .seg ul{list-style:none; display:flex; flex-direction:column; gap:6px;}
+  .seg li{font-size:12.5px; color:var(--text2); padding-left:15px; position:relative;}
+  .seg li::before{content:""; position:absolute; left:2px; top:8px; width:5px; height:5px; border-radius:50%; background:var(--main-r);}
+  .seg .own{margin-top:12px; font-size:11.5px; font-weight:800; color:var(--main-d); background:var(--main-l); border-radius:8px; padding:7px 10px;}
+  @media(max-width:820px){.segs{grid-template-columns:1fr;}}
+  .segnote{margin-top:16px; font-size:12.5px; color:var(--text2); background:var(--amber-l); border:1px solid var(--amber-r); border-radius:12px; padding:13px 16px;}
+  .segnote b{color:#7a4e14;}
 
   /* business model layers */
   .layer{margin-top:22px;}
@@ -217,54 +283,68 @@
 
   /* roadmap */
   .road{margin-top:26px; overflow-x:auto; border:1px solid var(--line); border-radius:16px; box-shadow:var(--shadow); background:var(--panel);}
-  table.rtbl{width:100%; border-collapse:collapse; min-width:820px; font-size:12px;}
-  table.rtbl th, table.rtbl td{border-bottom:1px solid var(--line2); border-right:1px solid var(--line2); padding:9px 6px; text-align:center;}
-  table.rtbl thead .yr{font-weight:900; color:var(--main-d); background:#FAFBFE; font-size:12.5px;}
-  table.rtbl thead .q{font-weight:700; color:var(--sub); background:#FAFBFE; font-size:11px;}
+  table.rtbl{width:100%; border-collapse:collapse; min-width:760px; font-size:12px;}
+  table.rtbl th, table.rtbl td{border-bottom:1px solid var(--line2); border-right:1px solid var(--line2); padding:10px 8px; text-align:center;}
+  table.rtbl thead .q{font-weight:800; color:var(--main-d); background:#FAFBFE; font-size:12px;}
   table.rtbl tbody th{text-align:left; font-weight:800; color:var(--text); white-space:nowrap; background:#FAFBFE; padding-left:14px;}
-  table.rtbl .bar{color:#fff; font-weight:800; font-size:10.5px; border-radius:6px; padding:5px 4px; white-space:nowrap;}
+  table.rtbl .bar{color:#fff; font-weight:800; font-size:10.5px; border-radius:6px; padding:6px 5px; white-space:nowrap;}
   table.rtbl .b-main{background:var(--main);} table.rtbl .b-amber{background:var(--amber);} table.rtbl .b-green{background:var(--green);} table.rtbl .b-slate{background:#54607a;}
   table.rtbl td:last-child, table.rtbl th:last-child{border-right:0;}
-  .milestone{margin-top:14px; font-size:12.5px; color:var(--text2); background:var(--main-l); border:1px solid var(--main-r); border-radius:12px; padding:13px 16px;}
-  .milestone b{color:var(--main-d);}
+  .milestone{margin-top:14px; display:grid; grid-template-columns:repeat(3,1fr); gap:12px;}
+  .ms{background:var(--main-l); border:1px solid var(--main-r); border-radius:12px; padding:14px 16px;}
+  .ms .y{font-size:12px; font-weight:900; color:var(--main);}
+  .ms p{font-size:12px; color:var(--text2); margin-top:3px;}
+  @media(max-width:760px){.milestone{grid-template-columns:1fr;}}
 
   /* financials */
   .fin{display:grid; grid-template-columns:1.3fr .7fr; gap:16px; margin-top:26px;}
   .fintbl{overflow-x:auto; border:1px solid var(--line); border-radius:16px; box-shadow:var(--shadow); background:var(--panel);}
   table.ftbl{width:100%; border-collapse:collapse; min-width:420px; font-size:12.5px;}
-  table.ftbl th, table.ftbl td{padding:10px 14px; border-bottom:1px solid var(--line2); text-align:right;}
+  table.ftbl th, table.ftbl td{padding:11px 14px; border-bottom:1px solid var(--line2); text-align:right;}
   table.ftbl thead th{font-weight:800; color:var(--main-d); background:#FAFBFE;}
   table.ftbl thead th:first-child, table.ftbl tbody th{text-align:left; font-weight:700; color:var(--text2); white-space:nowrap;}
   table.ftbl tbody th{background:#FAFBFE;}
   table.ftbl tr.sum td, table.ftbl tr.sum th{font-weight:900; color:var(--text); background:#FCFCFE;}
   table.ftbl tr.op td, table.ftbl tr.op th{font-weight:900; color:var(--main-d); background:var(--main-l);}
   table.ftbl tr:last-child td, table.ftbl tr:last-child th{border-bottom:0;}
-  table.ftbl .neg{color:var(--rose);}
+  table.ftbl .neg{color:var(--rose);} table.ftbl .pos{color:var(--green);}
   .finkpi{display:flex; flex-direction:column; gap:12px;}
-  .fk{background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:18px 20px; box-shadow:var(--shadow);}
-  .fk .n{font-size:26px; font-weight:900; letter-spacing:-.03em; color:var(--main-d);}
-  .fk .l{font-size:12.5px; font-weight:700; margin-top:3px;}
+  .fk{background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:16px 20px; box-shadow:var(--shadow);}
+  .fk .n{font-size:22px; font-weight:900; letter-spacing:-.03em; color:var(--main-d);}
+  .fk .l{font-size:12.5px; font-weight:700; margin-top:2px;}
   .fk .d{font-size:11px; color:var(--faint);}
   @media(max-width:820px){.fin{grid-template-columns:1fr;}}
   .finnote{margin-top:14px; font-size:12.5px; color:var(--text2);}
 
-  /* investment ask */
-  .askbox{margin-top:26px; display:grid; grid-template-columns:.8fr 1.2fr; gap:16px;}
-  .askhero{background:linear-gradient(150deg,#20255f,#33378f); color:#e9ebfb; border-radius:18px; padding:26px; display:flex; flex-direction:column; justify-content:center;}
-  .askhero .r{font-size:12px; font-weight:900; letter-spacing:.08em; color:#9ea4ee;}
-  .askhero .amt{font-size:46px; font-weight:900; letter-spacing:-.03em; color:#fff; margin:6px 0 4px;}
-  .askhero .l{font-size:13px; color:#c3c7f0;}
-  .askhero .val{margin-top:14px; font-size:12px; color:#aab0ee; border-top:1px solid rgba(255,255,255,.14); padding-top:12px;}
-  .use{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
-  .u{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:16px; box-shadow:var(--shadow);}
-  .u .pct{font-size:22px; font-weight:900; color:var(--main-d); letter-spacing:-.02em;}
-  .u .pct small{font-size:12px; color:var(--sub); font-weight:800; margin-left:6px;}
-  .u h4{font-size:13px; font-weight:800; margin-top:4px;}
-  .u .bar{height:5px; border-radius:3px; background:var(--main-l); margin-top:8px; overflow:hidden;}
-  .u .bar i{display:block; height:100%; background:var(--main); border-radius:3px;}
-  @media(max-width:760px){.askbox{grid-template-columns:1fr;} .use{grid-template-columns:1fr 1fr;}}
+  /* organization */
+  .orgteams{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:26px;}
+  .ot{background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:18px; box-shadow:var(--shadow);}
+  .ot h3{font-size:14px; font-weight:800;}
+  .ot .grow{font-size:19px; font-weight:900; color:var(--main-d); letter-spacing:-.02em; margin:6px 0 1px;}
+  .ot .gl{font-size:10.5px; color:var(--faint); font-weight:700;}
+  .ot p{font-size:11.5px; color:var(--text2); margin-top:9px;}
+  @media(max-width:820px){.orgteams{grid-template-columns:1fr 1fr;}}
+  .orgrow{display:grid; grid-template-columns:1.3fr .7fr; gap:16px; margin-top:16px;}
+  .hires{background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:18px 20px; box-shadow:var(--shadow);}
+  .hires h4{font-size:13px; font-weight:800; margin-bottom:10px; color:var(--main-d);}
+  .hires .hi{display:flex; gap:10px; padding:8px 0; border-bottom:1px dashed var(--line2); font-size:12.5px;}
+  .hires .hi:last-child{border-bottom:0;}
+  .hires .hi b{color:var(--text); font-weight:800; white-space:nowrap;}
+  .hires .hi span{color:var(--sub);}
+  .talent{background:var(--main-l); border:1px solid var(--main-r); border-radius:16px; padding:18px 20px;}
+  .talent h4{font-size:13px; font-weight:800; color:var(--main-d); margin-bottom:10px;}
+  .talent ul{list-style:none; display:flex; flex-direction:column; gap:7px;}
+  .talent li{font-size:12px; color:var(--text2); padding-left:15px; position:relative;}
+  .talent li::before{content:""; position:absolute; left:2px; top:7px; width:5px; height:5px; border-radius:50%; background:var(--main);}
+  @media(max-width:820px){.orgrow{grid-template-columns:1fr;}}
 
-  /* vision / conclusion */
+  /* risk */
+  .risknote{margin-top:14px; font-size:13px; color:var(--main-d); background:var(--main-l); border:1px solid var(--main-r); border-radius:12px; padding:14px 16px;}
+  .risknote b{color:var(--main-d);}
+  .imp{font-size:11px; font-weight:900; padding:3px 9px; border-radius:999px; white-space:nowrap;}
+  .imp.hi{color:#fff; background:var(--rose);} .imp.mid{color:#fff; background:var(--amber);}
+
+  /* vision */
   .vis{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:26px;}
   .vc{border-radius:16px; padding:22px; position:relative; overflow:hidden;}
   .vc.v1{background:var(--panel); border:1px solid var(--line); box-shadow:var(--shadow);}
@@ -292,20 +372,21 @@
   <div class="wrap row">
     <a class="logo" href="index.html">BriefOS <span>브리프오에스</span></a>
     <div class="sp"></div>
+    <a class="lk" href="#summary">요약</a>
     <a class="lk" href="#problem">문제</a>
     <a class="lk" href="#solution">솔루션</a>
     <a class="lk" href="#product">제품</a>
+    <a class="lk" href="#tech">기술</a>
     <a class="lk" href="#model">수익모델</a>
-    <a class="lk" href="#invest">투자</a>
     <a class="cta" href="demo/index.html">▶ 데모 열기</a>
   </div>
 </nav>
 
 <header class="hero">
   <div class="wrap">
-    <span class="badge">BUSINESS PLAN · v0.2 · 2026.04</span>
-    <h1>조직 커뮤니케이션을<br><span class="g">1페이지로 재정의</span>하는 AI SaaS</h1>
-    <p class="tag">AI 구조 재설계 · 한국형 템플릿 · 읽힘 데이터 &nbsp;—&nbsp; <b>커뮤니케이션 구조 자체를 바꾸는 OS</b></p>
+    <span class="badge">BUSINESS PLAN · 2026</span>
+    <h1>모든 보고와 공지를<br><span class="g">1페이지로</span></h1>
+    <p class="tag">조직 커뮤니케이션을 1페이지로 재정의하는 AI SaaS &nbsp;—&nbsp; <b>커뮤니케이션 구조 자체를 바꾸는 OS</b></p>
     <p class="lead">긴 보고서·공지·회의 자료를 <b>AI가 독자 관점에서 재구조화</b>해 1페이지로 압축하고,
       실제 <b>읽힘 데이터</b>를 측정해 조직의 커뮤니케이션 구조를 지속 개선합니다.
       우리는 문장을 고치지 않습니다 — 조직의 <b>의사결정 구조</b>를 바꿉니다.</p>
@@ -313,11 +394,11 @@
       <a class="btn-lg btn-p" href="demo/index.html">▶ BriefOS 데모 체험</a>
       <a class="btn-lg btn-s" href="#product">제품 살펴보기</a>
     </div>
-    <div class="heronote">조직 커뮤니케이션 운영체제 · 사업계획서 v0.2 요약 · 데모는 예시 데이터입니다</div>
+    <div class="heronote">조직 커뮤니케이션 운영체제 · 사업계획서 2026 요약 · 데모는 예시 데이터입니다</div>
 
     <div class="heroviz">
       <div class="hv b">
-        <div class="hh"><span>기존 보고서</span><span>10장+</span></div>
+        <div class="hh"><span>기존 보고서</span><span>10장 · 3일</span></div>
         <div class="bd">
           <div class="ln"></div><div class="ln"></div><div class="ln"></div><div class="ln"></div>
           <div class="ln"></div><div class="ln"></div><div class="ln"></div>
@@ -326,7 +407,7 @@
       </div>
       <div class="harrow">→</div>
       <div class="hv a">
-        <div class="hh"><span>BriefOS · 1PAGE</span><span>AI 구조 재설계</span></div>
+        <div class="hh"><span>BriefOS · 1PAGE</span><span>30분 작성</span></div>
         <div class="bd">
           <div class="k">3줄 요약</div>
           <h4>3분기 신제품 출시, 목표 대비 92% 달성</h4>
@@ -339,98 +420,136 @@
   </div>
 </header>
 
+<!-- EXECUTIVE SUMMARY -->
+<section id="summary" class="panel-sec"><div class="wrap">
+  <div class="eyebrow">Executive Summary</div>
+  <h2>한국 기업의 커뮤니케이션 구조를 재설계하는 AI SaaS</h2>
+  <p class="sub">문제부터 목표까지, BriefOS 사업의 핵심을 한눈에 정리했습니다.</p>
+  <div class="exec">
+    <div class="ex"><div class="t">문제</div><p>보고서는 길고 공지는 읽히지 않는다. 도구는 늘었지만 커뮤니케이션 구조는 그대로다.</p></div>
+    <div class="ex"><div class="t">솔루션</div><p>모든 보고·공지를 1페이지로 재설계하는 AI 커뮤니케이션 OS. 문장이 아닌 구조를 바꾼다.</p></div>
+    <div class="ex"><div class="t">시장 검증</div><p>Axios HQ가 동일 개념으로 2년 내 ARR $10M·기업가치 $100M 달성 — PMF가 이미 증명된 시장.</p></div>
+    <div class="ex"><div class="t">차별화</div><p>한국어·직급 문화 특화 AI, 국내 협업툴 네이티브 연동, 읽힘 데이터 기반 최적화.</p></div>
+    <div class="ex"><div class="t">수익 모델</div><p>SaaS 구독(월 30~80만원) + 조직 진단·코칭 서비스 하이브리드. 서비스 매출 40% 유지.</p></div>
+    <div class="ex"><div class="t">목표</div><p>3년 내 도입 200개사 · ARR 30억원 · NRR 85% 이상, Y3 영업이익 흑자 전환.</p></div>
+  </div>
+  <div class="execkpi">
+    <div class="ek"><div class="n mono">30억원</div><div class="l">3년 내 ARR</div></div>
+    <div class="ek"><div class="n mono">200개사</div><div class="l">도입 기업</div></div>
+    <div class="ek"><div class="n mono">85%+</div><div class="l">NRR</div></div>
+    <div class="ek"><div class="n mono">40%</div><div class="l">서비스 매출 비중</div></div>
+    <div class="ek"><div class="n mono">Y3</div><div class="l">손익분기 흑자 전환</div></div>
+  </div>
+  <div class="qbar">“우리는 문장을 고치지 않습니다. <span class="mk">조직의 의사결정 구조</span>를 바꿉니다.”</div>
+</div></section>
+
 <!-- PROBLEM -->
-<section id="problem" class="panel-sec"><div class="wrap">
+<section id="problem"><div class="wrap">
+  <div class="part">Part 1 · 사업 개요</div>
   <div class="eyebrow">Problem</div>
   <h2>기업 커뮤니케이션은 여전히 비효율적이다</h2>
-  <p class="sub">보고서는 길고, 공지는 읽히지 않으며, 핵심 메시지는 전달되지 않습니다. 커뮤니케이션 문제는 곧 조직 성과 문제입니다.</p>
+  <p class="sub">보고서는 길고, 공지는 읽히지 않으며, 핵심 메시지는 전달되지 않습니다. 문제는 '도구'가 아니라 '구조'에 있습니다.</p>
   <div class="pgrid">
     <div class="pcard"><div class="num">1</div><h3>보고서는 길고<br>읽히지 않는다</h3><div class="big mono">10장+</div><div class="d">평균 보고서 분량 · 실제 읽히는 것은 첫 2장</div></div>
-    <div class="pcard"><div class="num">2</div><h3>핵심 메시지가<br>전달되지 않는다</h3><div class="big mono">47<small>%</small></div><div class="d">수신자가 공지 내용을 당일 내 망각</div></div>
+    <div class="pcard"><div class="num">2</div><h3>핵심 메시지가<br>전달되지 않는다</h3><div class="big mono">47<small>%</small></div><div class="d">수신자가 공지 내용을 당일 중 망각</div></div>
     <div class="pcard"><div class="num">3</div><h3>의사결정이<br>지연된다</h3><div class="big mono">6.3<small>h</small></div><div class="d">불필요한 회의로 주당 낭비되는 시간</div></div>
     <div class="pcard"><div class="num">4</div><h3>반복 보고가<br>증가한다</h3><div class="big mono">3.2<small>회</small></div><div class="d">동일 내용 재보고 · 월 평균 발생 횟수</div></div>
   </div>
   <div class="concl">
     <div>
-      <div class="t">결론 : 커뮤니케이션 문제 = 조직 성과 문제</div>
-      <p>McKinsey 연구에 따르면 커뮤니케이션 효율을 높이면 생산성을 20~25% 향상시킬 수 있습니다. 그러나 대부분의 기업은 협업 '도구'만 도입할 뿐, 커뮤니케이션 <b style="color:#fff">구조 자체</b>는 바꾸지 않습니다.</p>
+      <div class="t">문제의 원인은 '도구'가 아니라 '커뮤니케이션 구조' 자체에 있다</div>
+      <p>McKinsey 연구에 따르면 커뮤니케이션 효율 개선만으로 조직 생산성은 20~25% 향상될 수 있습니다. 그러나 대부분의 기업은 협업 '도구'만 도입할 뿐, 보고와 공지가 만들어지는 <b style="color:#fff">구조 자체</b>는 그대로 둡니다. 결국 도구는 늘어나는데 읽히지 않는 문서도 함께 늘어나는 악순환이 반복됩니다.</p>
     </div>
     <div class="kpi"><div class="n mono">20~25%</div><div class="l">커뮤니케이션 개선을 통한<br>생산성 향상 잠재력</div></div>
   </div>
 </div></section>
 
 <!-- MARKET VALIDATION -->
-<section><div class="wrap">
+<section class="panel-sec"><div class="wrap">
   <div class="eyebrow">Market Validation</div>
   <h2>짧고 명확한 커뮤니케이션 시장은 이미 검증되었다</h2>
   <p class="sub">Axios HQ가 SaaS + 교육/컨설팅 하이브리드 모델로 빠르게 PMF를 달성하며 시장의 존재를 증명했습니다.</p>
   <div class="axios">
     <div class="h"><b>Axios HQ</b> <span>SaaS + 교육/컨설팅 하이브리드 · 빠른 PMF 달성</span></div>
     <div class="axstats">
-      <div class="axst"><div class="n mono">$10M+</div><div class="l">2년 내 달성 ARR</div></div>
-      <div class="axst"><div class="n mono">600+</div><div class="l">확보 고객사</div></div>
-      <div class="axst"><div class="n mono">$20M</div><div class="l">누적 투자 유치</div></div>
-      <div class="axst"><div class="n mono">$100M</div><div class="l">기업가치 (2023)</div></div>
+      <div class="axst"><div class="n mono">$10M+</div><div class="l">2년 내 ARR</div></div>
+      <div class="axst"><div class="n mono">600+</div><div class="l">고객사</div></div>
+      <div class="axst"><div class="n mono">$20M</div><div class="l">누적 투자</div></div>
+      <div class="axst"><div class="n mono">$100M</div><div class="l">기업가치</div></div>
     </div>
   </div>
   <div class="cases">
-    <div class="case"><div class="co">American Airlines</div><div class="ind">항공업 · 전사 커뮤니케이션 품질 개선</div><p>조직 메시지 정렬 및 일관성 향상, 임직원 참여도 및 이해도 증가.</p></div>
-    <div class="case"><div class="co">TAUC</div><div class="ind">건설업 조합 · 회원사 뉴스레터 커뮤니케이션</div><p>뉴스레터 제작 시간 50% 단축, 커뮤니케이션 효율성 대폭 향상.</p></div>
+    <div class="case"><div class="co">American Airlines</div><div class="ind">항공업 · 전사 커뮤니케이션 품질 개선</div><p>조직 메시지 정렬 및 일관성 향상, 임직원 이해도 증가.</p></div>
+    <div class="case"><div class="co">TAUC</div><div class="ind">건설업 조합 · 회원사 정기 커뮤니케이션</div><p>뉴스레터 제작 시간 50% 단축, 커뮤니케이션 효율 개선.</p></div>
   </div>
-  <div class="insight">💡 <b>핵심 인사이트</b> — Axios HQ가 '커뮤니케이션을 잘 쓰게 만드는 SaaS'를 증명했다면, BriefOS는 <b>'커뮤니케이션 구조 자체를 운영 시스템으로 바꾸는 SaaS'</b>입니다.</div>
-</div></section>
-
-<!-- MARKET SIZE -->
-<section class="panel-sec"><div class="wrap">
-  <div class="eyebrow">Market Size</div>
-  <h2>거대한 시장, 구조적 기회</h2>
-  <p class="sub">글로벌 기업 커뮤니케이션 SaaS 시장의 성장에, 한국 시장 특화 기회가 더해집니다.</p>
-  <div class="som">
-    <div class="somc t1"><div class="lab">TAM</div><div class="amt mono">$420억</div><div class="desc">글로벌 기업 커뮤니케이션 SaaS (2027E)</div></div>
-    <div class="somc t2"><div class="lab">SAM</div><div class="amt mono">약 $50억</div><div class="desc">아시아·한국어권 기업 커뮤니케이션</div></div>
-    <div class="somc t3"><div class="lab">SOM</div><div class="amt mono">₩300억</div><div class="desc">국내 중견·대기업·공공 (3~5년)</div></div>
-  </div>
-  <div class="kadv">
-    <div class="a"><h4>한국 기업 특화</h4><p>Axios HQ 진출 불가 영역 · 한국어 AI + 직급·경어 문화 반영</p></div>
-    <div class="a"><h4>공공 · 금융 진입</h4><p>ISMS-P 인증 후 나라장터 조달 등록 가능</p></div>
-    <div class="a"><h4>데이터 네트워크 효과</h4><p>고객 보고 데이터 축적 → AI 품질 향상 → 복제 불가</p></div>
-    <div class="a"><h4>글로벌 확장성</h4><p>동남아 한국계 기업 대상 SaaS 공급으로 확장 가능</p></div>
-  </div>
+  <div class="insight">💡 Axios HQ는 <b>'잘 쓰게 만드는 SaaS'</b>를 증명했습니다. BriefOS는 <b>'쓰는 방식 자체를 바꾸는 SaaS'</b>입니다.</div>
 </div></section>
 
 <!-- SOLUTION -->
 <section id="solution"><div class="wrap">
   <div class="eyebrow">Solution</div>
   <h2>BriefOS — 커뮤니케이션 방식을 바꾸는 OS</h2>
-  <p class="sub">단순한 문서 작성 도구가 아닌, 조직의 커뮤니케이션 구조 자체를 재설계하는 플랫폼입니다.</p>
+  <p class="sub">문서 작성 도구가 아니라, 조직의 커뮤니케이션 구조를 재설계하는 플랫폼입니다.</p>
   <div class="quote">“우리는 문장을 고치지 않습니다.<br><span class="mk">조직의 의사결정 구조</span>를 바꿉니다.”</div>
   <div class="pillars">
-    <div class="pil a"><div class="ic">AI</div><h3>AI 구조 재설계</h3><p>단순 요약이 아니라 메시지의 구조 자체를 독자 관점에서 재정의. 핵심 결론 → 근거 → 의사결정 포인트 순으로 자동 재배열.</p></div>
-    <div class="pil b"><div class="ic">KR</div><h3>한국형 템플릿</h3><p>3줄 보고 · 1페이지 보고 · 임원 보고 포맷 · 주간 리포트. 한국 조직의 직급 체계와 경어 문화를 반영한 표준 포맷.</p></div>
-    <div class="pil c"><div class="ic">DA</div><h3>읽힘 데이터 분석</h3><p>읽은 시간 · 집중 구간 · 반응 데이터를 측정해 어떤 메시지가 실제로 전달되었는지 확인하고 지속 최적화.</p></div>
-    <div class="pil d"><div class="ic">IN</div><h3>협업툴 네이티브 연동</h3><p>카카오워크 · 네이버웍스 · 잔디 · 그룹웨어 · 이메일과 1-click 연동. 기존 업무 환경을 바꾸지 않고 그대로 적용.</p></div>
+    <div class="pil a"><div class="ic">AI</div><h3>AI 구조 재설계</h3><p>단순 요약이 아닌 메시지 구조 자체를 독자 관점에서 재정의.</p></div>
+    <div class="pil b"><div class="ic">KR</div><h3>한국형 템플릿</h3><p>3줄 보고 · 1페이지 보고 · 임원 보고 포맷 · 주간 리포트.</p></div>
+    <div class="pil c"><div class="ic">DA</div><h3>읽힘 데이터 분석</h3><p>읽은 시간 · 집중 구간 · 반응 데이터로 커뮤니케이션 최적화.</p></div>
+    <div class="pil d"><div class="ic">IN</div><h3>협업툴 네이티브 연동</h3><p>카카오워크 · 네이버웍스 · 그룹웨어 · 이메일 기존 환경 유지.</p></div>
+  </div>
+  <div class="abcmp">
+    <div class="abc as"><div class="lb">AS-IS</div><div class="m">10장 보고서 · 3일 작성</div><div class="d">읽히는 건 첫 2장 · 핵심 메시지가 뒤에 묻힘</div></div>
+    <div class="abarrow">→</div>
+    <div class="abc to"><div class="lb">TO-BE</div><div class="m">1페이지 · 30분 작성</div><div class="d">핵심 의사결정 포인트를 상단에 배치</div></div>
   </div>
 </div></section>
 
 <!-- PRODUCT -->
 <section id="product" class="panel-sec"><div class="wrap">
+  <div class="part">Part 2 · 제품 및 기술</div>
   <div class="eyebrow">Product</div>
-  <h2>핵심 기능 — AI 압축 엔진부터 데이터 분석까지</h2>
-  <p class="sub">조직 커뮤니케이션의 전 주기(작성 → 배포 → 측정 → 개선)를 커버하는 통합 기능입니다.</p>
+  <h2>핵심 기능 — AI 압축 엔진부터 분석까지</h2>
+  <p class="sub">조직 커뮤니케이션 전 주기를 커버하는 통합 기능 구성입니다.</p>
   <div class="feat">
-    <div class="fc"><div class="no">01</div><div><div class="tag2">AI Core</div><h3>AI 보고서 압축 엔진</h3><p class="lead2">긴 문서를 입력하면 핵심을 자동 추출해 1페이지로 재구성합니다.</p><ul><li>3줄 요약 자동 생성</li><li>핵심 Bullet 추출</li><li>의사결정 포인트 도출</li><li>한국어 경어·직급 반영</li></ul></div></div>
-    <div class="fc"><div class="no">02</div><div><div class="tag2">Templates</div><h3>한국형 템플릿 시스템</h3><p class="lead2">한국 조직의 보고 문화에 맞춘 표준 포맷을 제공합니다.</p><ul><li>3줄 보고 / 1페이지 보고</li><li>임원 보고 포맷</li><li>주간·월간 리포트</li><li>조직별 커스터마이즈</li></ul></div></div>
-    <div class="fc"><div class="no">03</div><div><div class="tag2">Analytics</div><h3>커뮤니케이션 분석</h3><p class="lead2">공지와 보고가 실제로 읽혔는지 데이터로 확인합니다.</p><ul><li>읽은 시간·스크롤 깊이</li><li>메시지 집중도 측정</li><li>팀·직급별 전달 효율</li><li>개선 리포트 자동 발행</li></ul></div></div>
-    <div class="fc"><div class="no">04</div><div><div class="tag2">Integration</div><h3>협업툴 네이티브 연동</h3><p class="lead2">기존 워크플로우를 유지한 채 1-click으로 연결합니다.</p><ul><li>카카오워크 · 네이버웍스</li><li>잔디 · 사내 그룹웨어</li><li>이메일 · 뉴스레터</li><li>SSO 및 권한 연동</li></ul></div></div>
+    <div class="fc"><div class="no">01</div><div><div class="tag2">AI Core</div><h3>AI 보고서 압축 엔진</h3><p>긴 문서를 입력하면 ① 3줄 요약 ② 핵심 Bullet ③ 의사결정 포인트를 자동 추출. 한국어 경어·직급 문화를 반영해 재작성합니다.</p></div></div>
+    <div class="fc"><div class="no">02</div><div><div class="tag2">Templates</div><h3>한국형 템플릿 시스템</h3><p>3줄 보고 / 1페이지 보고 / 임원 보고 / 주간 리포트 포맷 제공. 조직 문화와 결재 라인에 맞춰 커스터마이즈할 수 있습니다.</p></div></div>
+    <div class="fc"><div class="no">03</div><div><div class="tag2">Analytics</div><h3>커뮤니케이션 분석</h3><p>공지 읽은 시간 · 스크롤 깊이 · 메시지 집중도 측정. 팀·직급별 정보 전달 효율을 데이터로 확인합니다.</p></div></div>
+    <div class="fc"><div class="no">04</div><div><div class="tag2">Integration</div><h3>협업툴 네이티브 연동</h3><p>카카오워크 · 네이버웍스 · 잔디 · 그룹웨어 · 이메일 1-click 연동. 기존 워크플로우를 그대로 유지합니다.</p></div></div>
   </div>
-  <div class="platnote">모든 기능은 <b>웹 · 모바일 · 협업툴 내부</b>에서 동일하게 동작하며, <b>온프레미스 및 프라이빗 클라우드</b> 배포를 지원합니다.</div>
+  <div class="uflow">
+    <div class="uf">문서 업로드</div><span class="uarw">›</span>
+    <div class="uf">AI 구조 분석</div><span class="uarw">›</span>
+    <div class="uf">1페이지 재설계</div><span class="uarw">›</span>
+    <div class="uf">협업툴 배포</div><span class="uarw">›</span>
+    <div class="uf">읽힘 데이터 수집</div>
+  </div>
+</div></section>
+
+<!-- TECHNOLOGY -->
+<section id="tech"><div class="wrap">
+  <div class="eyebrow">Technology</div>
+  <h2>한국어 조직 커뮤니케이션에 특화된 AI</h2>
+  <p class="sub">범용 요약 모델이 아닌, 한국 기업의 보고 문법을 학습한 <b>구조 재설계 엔진</b>입니다.</p>
+  <div class="flow n5">
+    <div class="fl"><div class="n">STEP 1</div><div class="t">원문 입력</div><div class="d">보고서·공지·회의록 다양한 포맷 수용</div><div class="arw">›</div></div>
+    <div class="fl"><div class="n">STEP 2</div><div class="t">구조 분석</div><div class="d">주장·근거·요청사항 문서 역할 자동 분해</div><div class="arw">›</div></div>
+    <div class="fl"><div class="n">STEP 3</div><div class="t">구조 재설계</div><div class="d">독자·직급별 우선순위로 메시지 순서 재배치</div><div class="arw">›</div></div>
+    <div class="fl"><div class="n">STEP 4</div><div class="t">한국형 렌더링</div><div class="d">경어·결재 라인 반영, 1페이지 포맷 생성</div><div class="arw">›</div></div>
+    <div class="fl"><div class="n">STEP 5</div><div class="t">피드백 학습</div><div class="d">읽힘 데이터 재학습, 조직별 모델 개인화</div><div class="arw">›</div></div>
+  </div>
+  <div class="three">
+    <div class="mc"><div class="k">데</div><h3>한국어 보고 데이터셋</h3><p>국내 기업 보고·공지 문서를 구조 단위로 라벨링. 경어·직급·결재 맥락을 반영한 학습 데이터는 글로벌 모델이 확보하기 어려운 자산입니다.</p></div>
+    <div class="mc"><div class="k">추</div><h3>경량화 추론 구조</h3><p>문서 유형별 라우팅으로 대형 모델 호출을 최소화. 캐싱·파인튜닝 병행으로 건당 추론 원가를 지속 절감합니다.</p></div>
+    <div class="mc"><div class="k">보</div><h3>보안 · 온프레미스 대응</h3><p>문서 비식별화 처리 후 처리하며, 금융·공공 대상 온프레미스 배포 옵션 제공. ISMS-P 인증을 Y1 내 추진합니다.</p></div>
+  </div>
 </div></section>
 
 <!-- COMPETITION -->
-<section><div class="wrap">
+<section class="panel-sec"><div class="wrap">
+  <div class="part">Part 3 · 시장 및 경쟁</div>
   <div class="eyebrow">Competitive Landscape</div>
   <h2>BriefOS vs 기존 솔루션</h2>
-  <p class="sub">단순 협업툴도, 문서 관리 도구도 아닌 — 조직 커뮤니케이션 OS입니다.</p>
+  <p class="sub">단순 협업툴도, 문서 관리 도구도 아닌 — 커뮤니케이션 OS입니다.</p>
   <div class="cmp">
     <table class="ctbl">
       <thead><tr>
@@ -442,44 +561,93 @@
       </tr></thead>
       <tbody>
         <tr><th>핵심 목적</th><td>메시지 전달 / 대화</td><td>문서 작성 / 저장</td><td>커뮤니케이션 효율</td><td class="us">커뮤니케이션 OS</td></tr>
-        <tr><th>주요 기능</th><td>채팅, 알림, 공유</td><td>문서 작성, 템플릿</td><td>글쓰기 스타일 개선</td><td class="us">구조 재설계 + 자동 최적화</td></tr>
-        <tr><th>AI 역할</th><td>없음 / 보조</td><td>보조적 검색·요약</td><td>문장·스타일 개선</td><td class="us">구조 재설계 및 자동화</td></tr>
+        <tr><th>주요 기능</th><td>채팅 · 알림 · 공유</td><td>문서 작성 · 템플릿</td><td>글쓰기 스타일 개선</td><td class="us">구조 재설계 + 자동 최적화</td></tr>
+        <tr><th>AI 역할</th><td>없음 / 보조</td><td>보조적 검색 · 요약</td><td>문장 · 스타일 개선</td><td class="us">구조 재설계 및 자동화</td></tr>
         <tr><th>한국어 지원</th><td>부분 지원</td><td>부분 지원</td><td>미지원</td><td class="us">한국어 특화</td></tr>
-        <tr><th>분석 · 측정</th><td>제한적</td><td>제한적</td><td>이메일 오픈율</td><td class="us">읽힘·집중도·반응 전체</td></tr>
-        <tr><th>적용 단위</th><td>개인 · 팀</td><td>팀 · 부서</td><td>커뮤니케이션 팀</td><td class="us">조직 전사 인프라</td></tr>
+        <tr><th>분석 · 측정</th><td>제한적</td><td>제한적</td><td>이메일 오픈율</td><td class="us">읽힘 · 집중도 · 반응 전체</td></tr>
         <tr><th>차별점</th><td>범용 커뮤니케이션</td><td>문서 관리 중심</td><td>글쓰기 스타일 도구</td><td class="us">조직 커뮤니케이션 인프라</td></tr>
       </tbody>
     </table>
   </div>
-  <div class="cmpnote"><b>결론</b> — BriefOS는 '더 잘 쓰게 만드는 도구'가 아니라, '쓰는 방식 자체를 바꾸는 OS'입니다. 경쟁 축이 기능이 아닌 <b>조직 운영 방식</b>이므로 전환 비용이 높고 Lock-in이 강합니다.</div>
+  <div class="cmpnote"><b>결론</b> — BriefOS는 '더 잘 쓰게 만드는 도구'가 아니라, '쓰는 방식 자체를 바꾸는 OS'입니다.</div>
+</div></section>
+
+<!-- MARKET SIZE -->
+<section id="market"><div class="wrap">
+  <div class="eyebrow">Market Size</div>
+  <h2>거대한 시장, 구조적 기회</h2>
+  <p class="sub">글로벌 기업 커뮤니케이션 SaaS 시장의 성장(CAGR +15%)에, 한국 시장 특화 기회가 더해집니다.</p>
+  <div class="som">
+    <div class="somc t1"><span class="cagr">CAGR +15%</span><div class="lab">TAM</div><div class="amt mono">$420억</div><div class="desc">글로벌 기업 커뮤니케이션 SaaS (2027E)</div></div>
+    <div class="somc t2"><div class="lab">SAM</div><div class="amt mono">약 $50억</div><div class="desc">아시아·한국어권 기업 커뮤니케이션 시장</div></div>
+    <div class="somc t3"><div class="lab">SOM</div><div class="amt mono">300억원</div><div class="desc">3년 내 확보 목표 국내 시장</div></div>
+  </div>
+  <div class="kadv">
+    <div class="a"><h4>한국 기업 특화</h4><p>Axios HQ 진출 불가 영역 · 한국어 AI + 토종 협업툴 연동</p></div>
+    <div class="a"><h4>공공 · 금융 진입</h4><p>ISMS-P 인증 후 조달 등록 · 온프레미스 요구 대응</p></div>
+    <div class="a"><h4>데이터 네트워크 효과</h4><p>고객 데이터 축적 → AI 품질 향상 · 경쟁사 복제 불가</p></div>
+    <div class="a"><h4>글로벌 확장성</h4><p>한국 기업 해외법인 경유 · 동남아 B2B 시장 확장</p></div>
+  </div>
+</div></section>
+
+<!-- TARGET CUSTOMER -->
+<section class="panel-sec"><div class="wrap">
+  <div class="eyebrow">Target Customer</div>
+  <h2>목표 고객 세그먼트</h2>
+  <p class="sub">Beachhead에서 시작해 엔터프라이즈·공공으로 확장하는 단계적 고객 전략입니다.</p>
+  <div class="segs">
+    <div class="seg mid">
+      <div class="st">1차 · Beachhead</div>
+      <h3>성장 스타트업 · 중견기업</h3>
+      <div class="sz">50 ~ 300인 규모</div>
+      <ul><li>의사결정 속도가 곧 경쟁력</li><li>보고 체계가 급격히 무거워지는 구간</li><li>도입 결정권자 접근이 빠름</li></ul>
+      <div class="own">핵심 담당 · 경영지원 · HR · 전략기획</div>
+    </div>
+    <div class="seg">
+      <div class="st">2차 · Enterprise</div>
+      <h3>대기업 · 계열사</h3>
+      <div class="sz">1,000인 이상</div>
+      <ul><li>전사 공지 도달률 관리 필요</li><li>임원 보고 표준화 수요</li><li>조직 진단 서비스로 진입</li></ul>
+      <div class="own">핵심 담당 · 인사 · 커뮤니케이션실</div>
+    </div>
+    <div class="seg">
+      <div class="st">3차 · Public / Finance</div>
+      <h3>공공기관 · 금융권</h3>
+      <div class="sz">보안 요구 높음</div>
+      <ul><li>온프레미스 · 망분리 대응 필수</li><li>ISMS-P 인증 후 조달 등록</li><li>계약 규모 크고 이탈률 낮음</li></ul>
+      <div class="own">핵심 담당 · 정보화 · 총무 부서</div>
+    </div>
+  </div>
+  <div class="segnote"><b>진입 전략</b> — 팀장급 무료 체험(PLG)으로 조직 내부에서 확산 → 전사 계약 전환 → 조직 진단 서비스로 계약 단가 확대</div>
 </div></section>
 
 <!-- BUSINESS MODEL -->
-<section id="model" class="panel-sec"><div class="wrap">
+<section id="model"><div class="wrap">
+  <div class="part">Part 4 · 사업 전략</div>
   <div class="eyebrow">Business Model</div>
   <h2>SaaS + 서비스로 확장 가능한 수익 구조</h2>
-  <p class="sub">반복 구독 매출을 기반으로 고마진 서비스 레이어를 쌓아 올리는 3단계 모델입니다.</p>
+  <p class="sub">반복 구독 매출을 기반으로 고마진 서비스 레이어를 쌓는 3단계 모델입니다.</p>
 
   <div class="layer">
     <div class="lh"><span class="tag3">LAYER 1</span> SaaS 구독 — ARR 기반 반복 매출</div>
     <div class="tiers">
-      <div class="tier"><div class="pl">Starter</div><div class="price mono">₩30만<small style="font-size:12px;color:var(--sub)"> / 월</small></div><div class="cap">50인 이하 · AI 압축 · 기본 템플릿 5종</div></div>
-      <div class="tier mid"><span class="star">추천</span><div class="pl">Business</div><div class="price mono">₩80만<small style="font-size:12px;color:var(--sub)"> / 월</small></div><div class="cap">300인 이하 · 분석 · 협업툴 2종 · 맞춤 템플릿</div></div>
-      <div class="tier"><div class="pl">Enterprise</div><div class="price">견적 협의</div><div class="cap">인원 무제한 · 온프레미스 · 전담 CS · ISMS</div></div>
+      <div class="tier"><div class="pl">Starter</div><div class="price mono">월 30만원</div><div class="cap">50인 이하 · AI 압축 · 기본 템플릿 5종</div></div>
+      <div class="tier mid"><span class="star">추천</span><div class="pl">Business</div><div class="price mono">월 80만원</div><div class="cap">300인 이하 · 분석 · 협업툴 2종 · 맞춤 템플릿</div></div>
+      <div class="tier"><div class="pl">Enterprise</div><div class="price">견적 협의</div><div class="cap">무제한 · 온프레미스 · 전담 CS · ISMS 대응</div></div>
     </div>
   </div>
 
   <div class="layer">
     <div class="lh"><span class="tag3">LAYER 2</span> 프로페셔널 서비스 — 고마진 프로젝트 매출</div>
     <div class="svc">
-      <div class="s"><h4>조직 커뮤니케이션 진단</h4><div class="p mono">₩500만~</div><p>현행 보고 체계 분석 → BriefOS 설계</p></div>
-      <div class="s"><h4>임원 라이팅 코칭</h4><div class="p mono">₩200만~ / 월</div><p>C-Suite 보고 글쓰기 1:1 워크숍</p></div>
-      <div class="s"><h4>커뮤니케이션 리포트</h4><div class="p mono">₩300만~ / 분기</div><p>조직 정보 전달 효율 진단서 발행</p></div>
+      <div class="s"><h4>조직 커뮤니케이션 진단</h4><div class="p mono">500만원~</div><p>현행 보고 체계 분석 → BriefOS 설계</p></div>
+      <div class="s"><h4>임원 라이팅 코칭</h4><div class="p mono">월 200만원~</div><p>C-Suite 보고 글쓰기 1:1 워크숍</p></div>
+      <div class="s"><h4>커뮤니케이션 리포트</h4><div class="p mono">분기 300만원~</div><p>조직 정보 전달 효율 진단서 제공</p></div>
     </div>
   </div>
 
   <div class="layer">
-    <div class="lh"><span class="tag3">LAYER 3</span> 플랫폼 확장 — 장기 해자 구축 (Year 3+)</div>
+    <div class="lh"><span class="tag3">LAYER 3</span> 플랫폼 확장 — 장기 해자 구축 (Y3 이후)</div>
     <div class="plat">
       <div class="p"><h4>템플릿 마켓플레이스</h4><p>외부 컨설턴트 등록 · 수수료 30%</p></div>
       <div class="p"><h4>BriefOS API (B2B2B)</h4><p>AI 압축 엔진 개방 · 사용량 과금</p></div>
@@ -490,102 +658,131 @@
 </div></section>
 
 <!-- GO TO MARKET -->
-<section><div class="wrap">
+<section class="panel-sec"><div class="wrap">
   <div class="eyebrow">Go-to-Market</div>
   <h2>단계별 시장 진입 전략</h2>
   <p class="sub">Beachhead에서 시작해 공공·금융까지, 이후 플랫폼화로 해자를 구축합니다.</p>
   <div class="phases">
-    <div class="ph"><div class="pn">PHASE 1</div><div class="pt">0 ~ 12개월</div><h3>Beachhead</h3><ul><li>스타트업·중견기업 50개사 파일럿</li><li>Product-led Growth (팀장급 무료체험)</li><li>조직 전체 확산 구조 검증</li></ul><div class="goal">목표 ARR ₩3억</div><div class="arw">›</div></div>
-    <div class="ph"><div class="pn">PHASE 2</div><div class="pt">Year 1 ~ 2</div><h3>Enterprise</h3><ul><li>대기업 HR·경영지원팀 공략</li><li>조직 진단 서비스로 문 열고 SaaS 전환</li><li>NRR 85% 이상 유지</li></ul><div class="goal">목표 ARR ₩15억</div><div class="arw">›</div></div>
-    <div class="ph"><div class="pn">PHASE 3</div><div class="pt">Year 2 ~ 3</div><h3>공공 · 금융</h3><ul><li>ISMS-P 인증 완료 후 공공기관 진입</li><li>금융기관 온프레미스 공급</li><li>나라장터 조달 등록</li></ul><div class="goal">목표 ARR ₩30억</div><div class="arw">›</div></div>
-    <div class="ph"><div class="pn">PHASE 4</div><div class="pt">Year 3+</div><h3>플랫폼화</h3><ul><li>API 개방 · 마켓플레이스 론칭</li><li>동남아 한국계 기업 글로벌 확장</li><li>커뮤니케이션 인텔리전스 사업화</li></ul><div class="goal">목표 ARR ₩100억+</div><div class="arw">›</div></div>
+    <div class="ph"><div class="pn">PHASE 1</div><div class="pt">0 ~ 12M</div><h3>Beachhead</h3><ul><li>스타트업·중견기업 50개사 파일럿</li><li>팀장급 무료 체험 기반 PLG</li><li>조직 전체 확산 구조 검증</li></ul><div class="goal">목표 ARR 3억원</div><div class="arw">›</div></div>
+    <div class="ph"><div class="pn">PHASE 2</div><div class="pt">Year 1 ~ 2</div><h3>Enterprise</h3><ul><li>대기업 HR·경영지원팀 공략</li><li>조직 진단 서비스로 진입 후 SaaS 전환</li><li>NRR 85% 이상 유지</li></ul><div class="goal">목표 ARR 15억원</div><div class="arw">›</div></div>
+    <div class="ph"><div class="pn">PHASE 3</div><div class="pt">Year 2 ~ 3</div><h3>공공 · 금융</h3><ul><li>ISMS-P 인증 후 공공기관 진입</li><li>금융기관 온프레미스 공급</li><li>나라장터 조달 등록</li></ul><div class="goal">목표 ARR 30억원</div><div class="arw">›</div></div>
+    <div class="ph"><div class="pn">PHASE 4</div><div class="pt">Year 3+</div><h3>플랫폼화</h3><ul><li>API 개방 · 마켓플레이스 론칭</li><li>동남아 한국계 기업 확장</li><li>커뮤니케이션 인텔리전스 사업화</li></ul><div class="goal">목표 ARR 100억원+</div><div class="arw">›</div></div>
   </div>
 </div></section>
 
 <!-- ROADMAP -->
-<section class="panel-sec"><div class="wrap">
+<section><div class="wrap">
   <div class="eyebrow">Roadmap</div>
-  <h2>사업 추진 일정</h2>
-  <p class="sub">2026년 2분기 제품 출시부터 2028년 플랫폼 확장까지의 단계별 실행 계획입니다.</p>
+  <h2>추진 로드맵</h2>
+  <p class="sub">제품 · 시장 · 인증 · 조직 4개 트랙의 반기별 실행 계획입니다.</p>
   <div class="road">
     <table class="rtbl">
-      <thead>
-        <tr><th rowspan="2"></th><th class="yr" colspan="3">2026</th><th class="yr" colspan="4">2027</th><th class="yr" colspan="4">2028</th></tr>
-        <tr><th class="q">Q2</th><th class="q">Q3</th><th class="q">Q4</th><th class="q">Q1</th><th class="q">Q2</th><th class="q">Q3</th><th class="q">Q4</th><th class="q">Q1</th><th class="q">Q2</th><th class="q">Q3</th><th class="q">Q4</th></tr>
-      </thead>
+      <thead><tr><th></th><th class="q">Y1 상반기</th><th class="q">Y1 하반기</th><th class="q">Y2 상반기</th><th class="q">Y2 하반기</th><th class="q">Y3</th></tr></thead>
       <tbody>
-        <tr><th>제품 개발</th><td colspan="2"><div class="bar b-main">MVP 개발</div></td><td><div class="bar b-main">정식 출시</div></td><td colspan="4"><div class="bar b-main">분석 모듈 고도화</div></td><td colspan="4"><div class="bar b-main">API · 마켓플레이스</div></td></tr>
-        <tr><th>인증 · 보안</th><td></td><td></td><td></td><td colspan="4"><div class="bar b-amber">ISMS-P 준비 → 인증 취득</div></td><td colspan="4"><div class="bar b-amber">온프레미스 공급</div></td></tr>
-        <tr><th>영업 · 마케팅</th><td colspan="3"><div class="bar b-green">파일럿 50개사</div></td><td colspan="4"><div class="bar b-green">엔터프라이즈 확산</div></td><td colspan="4"><div class="bar b-green">공공 · 금융 진입</div></td></tr>
-        <tr><th>조직 · 인력</th><td colspan="3"><div class="bar b-slate">12명</div></td><td colspan="4"><div class="bar b-slate">24명</div></td><td colspan="4"><div class="bar b-slate">40명</div></td></tr>
-        <tr><th>투자 유치</th><td><div class="bar b-main">Pre-A ₩10억</div></td><td></td><td></td><td></td><td></td><td colspan="2"><div class="bar b-main">Series A</div></td><td colspan="4"></td></tr>
+        <tr><th>제품 개발</th><td colspan="2"><div class="bar b-main">MVP 출시 · AI 압축 엔진 v1</div></td><td colspan="2"><div class="bar b-main">분석 대시보드 · 템플릿 확장</div></td><td><div class="bar b-main">마켓플레이스 · API 개방</div></td></tr>
+        <tr><th>시장 진입</th><td><div class="bar b-green">파일럿 20개사</div></td><td colspan="2"><div class="bar b-green">유료 전환 · 50개사 확보</div></td><td colspan="2"><div class="bar b-green">엔터프라이즈 · 공공 진입</div></td></tr>
+        <tr><th>인증 · 보안</th><td></td><td colspan="2"><div class="bar b-amber">ISMS-P 준비 및 심사</div></td><td><div class="bar b-amber">인증 취득 · 조달 등록</div></td><td><div class="bar b-amber">온프레미스 상용 배포</div></td></tr>
+        <tr><th>조직 · 운영</th><td><div class="bar b-slate">핵심 팀 8명</div></td><td colspan="2"><div class="bar b-slate">핵심 인력 15명 확보</div></td><td colspan="2"><div class="bar b-slate">조직 25명 규모 확대</div></td></tr>
       </tbody>
     </table>
   </div>
-  <div class="milestone"><b>핵심 마일스톤</b> — 2026 Q4 정식 출시 · ARR ₩3억 &nbsp;|&nbsp; 2027 Q4 ISMS-P 인증 취득 후 공공·금융 진입 &nbsp;|&nbsp; 2028 Q4 ARR ₩30억 · 손익분기점 달성</div>
+  <div class="milestone">
+    <div class="ms"><div class="y">Y1</div><p>MVP 출시 · 파일럿 50개사 · ARR 3억원</p></div>
+    <div class="ms"><div class="y">Y2</div><p>ISMS-P 인증 · ARR 15억원 달성</p></div>
+    <div class="ms"><div class="y">Y3</div><p>공공/금융 진입 · 흑자 전환 · ARR 30억원</p></div>
+  </div>
 </div></section>
 
 <!-- FINANCIALS -->
-<section><div class="wrap">
+<section id="finance" class="panel-sec"><div class="wrap">
+  <div class="part">Part 5 · 재무 및 조직</div>
   <div class="eyebrow">Financial Plan</div>
   <h2>3개년 재무 계획</h2>
-  <p class="sub">3차년도 매출 ₩30억, 손익분기점 달성을 목표로 하는 추정 손익 (단위: 억원).</p>
+  <p class="sub">Y3 손익분기 돌파를 목표로 한 매출·비용 추정 (단위: 억원).</p>
   <div class="fin">
     <div class="fintbl">
       <table class="ftbl">
-        <thead><tr><th>구분</th><th>2026 (Y1)</th><th>2027 (Y2)</th><th>2028 (Y3)</th></tr></thead>
+        <thead><tr><th>구분</th><th>Y1</th><th>Y2</th><th>Y3</th></tr></thead>
         <tbody>
           <tr><th>SaaS 구독 매출</th><td class="mono">1.8</td><td class="mono">9.0</td><td class="mono">18.0</td></tr>
           <tr><th>서비스 매출</th><td class="mono">1.2</td><td class="mono">6.0</td><td class="mono">12.0</td></tr>
           <tr class="sum"><th>매출 합계</th><td class="mono">3.0</td><td class="mono">15.0</td><td class="mono">30.0</td></tr>
-          <tr><th>매출원가</th><td class="mono">0.9</td><td class="mono">4.2</td><td class="mono">8.1</td></tr>
-          <tr><th>매출총이익</th><td class="mono">2.1</td><td class="mono">10.8</td><td class="mono">21.9</td></tr>
-          <tr><th>(매출총이익률)</th><td class="mono">70%</td><td class="mono">72%</td><td class="mono">73%</td></tr>
-          <tr><th>판매관리비</th><td class="mono">7.6</td><td class="mono">12.8</td><td class="mono">17.4</td></tr>
-          <tr class="op"><th>영업이익</th><td class="mono neg">-5.5</td><td class="mono neg">-2.0</td><td class="mono">4.5</td></tr>
-          <tr><th>기말 인원 (명)</th><td class="mono">12</td><td class="mono">24</td><td class="mono">40</td></tr>
+          <tr><th>영업비용</th><td class="mono">8.5</td><td class="mono">17.0</td><td class="mono">27.0</td></tr>
+          <tr class="op"><th>영업이익</th><td class="mono neg">-5.5</td><td class="mono neg">-2.0</td><td class="mono pos">+3.0</td></tr>
+          <tr><th>도입 기업 수</th><td class="mono">50</td><td class="mono">120</td><td class="mono">200</td></tr>
         </tbody>
       </table>
     </div>
     <div class="finkpi">
-      <div class="fk"><div class="n">2028년</div><div class="l">손익분기점 달성</div><div class="d">3차년도 영업이익 흑자 전환</div></div>
-      <div class="fk"><div class="n mono">70%+</div><div class="l">매출총이익률 유지</div><div class="d">SaaS 구조의 고마진</div></div>
-      <div class="fk"><div class="n mono">40%</div><div class="l">서비스 매출 비중</div><div class="d">방어적 사업 구조</div></div>
+      <div class="fk"><div class="n mono">400% · 100%</div><div class="l">ARR 성장률</div><div class="d">Y1→Y2 · Y2→Y3</div></div>
+      <div class="fk"><div class="n mono">40%</div><div class="l">서비스 매출 비중</div><div class="d">전 기간 유지</div></div>
+      <div class="fk"><div class="n">Y3 흑자</div><div class="l">손익분기 전환</div><div class="d">영업이익 +3.0억원</div></div>
+      <div class="fk"><div class="n mono">6개월</div><div class="l">Payback Period</div><div class="d">이내 목표</div></div>
     </div>
   </div>
-  <div class="finnote">재무 전략 — 1~2차년도는 제품 고도화와 레퍼런스 확보에 집중해 계획된 적자를 감수하고, 3차년도 ARR ₩30억 시점에 영업이익 흑자로 전환합니다.</div>
+  <div class="finnote">재무 전략 — 1~2차년도는 제품 고도화와 레퍼런스 확보에 집중해 계획된 적자를 감수하고, 3차년도 ARR 30억원 시점에 영업이익 흑자로 전환합니다.</div>
 </div></section>
 
-<!-- INVESTMENT -->
-<section id="invest" class="panel-sec"><div class="wrap">
-  <div class="eyebrow">Investment Ask</div>
-  <h2>투자 유치 및 자금 사용 계획</h2>
-  <p class="sub">Pre-A 라운드 — 제품 고도화 및 엔터프라이즈 영업 조직 구축.</p>
-  <div class="askbox">
-    <div class="askhero">
-      <div class="r">PRE-A ROUND</div>
-      <div class="amt mono">₩10억</div>
-      <div class="l">목표 투자액 · 기업가치 ₩100억 기준 (Post-money)</div>
-      <div class="val">희석률 약 10% · 자금 소진 기간 약 18개월 · 후속 라운드 2027년 하반기</div>
-    </div>
-    <div class="use">
-      <div class="u"><div class="pct mono">40%<small>₩4.0억</small></div><h4>AI 엔진 고도화</h4><div class="bar"><i style="width:100%"></i></div></div>
-      <div class="u"><div class="pct mono">30%<small>₩3.0억</small></div><h4>엔터프라이즈 영업 조직</h4><div class="bar"><i style="width:75%"></i></div></div>
-      <div class="u"><div class="pct mono">15%<small>₩1.5억</small></div><h4>보안 인증 (ISMS-P)</h4><div class="bar"><i style="width:37%"></i></div></div>
-      <div class="u"><div class="pct mono">15%<small>₩1.5억</small></div><h4>마케팅 · 브랜딩</h4><div class="bar"><i style="width:37%"></i></div></div>
-    </div>
-  </div>
-</div></section>
-
-<!-- VISION / CONCLUSION -->
+<!-- ORGANIZATION -->
 <section><div class="wrap">
-  <div class="eyebrow">Conclusion</div>
-  <h2>BriefOS는 단순한 도구가 아닙니다</h2>
-  <p class="sub">조직이 소통하는 방식을 바꾸는 인프라입니다. 검증된 시장 · 구조적 차별화 · 명확한 실행 계획을 갖췄습니다.</p>
+  <div class="eyebrow">Organization</div>
+  <h2>조직 및 인력 운영 계획</h2>
+  <p class="sub">현재 8명 → Y1 15명 → Y2 25명. AI 개발과 엔터프라이즈 영업을 중심으로 확충합니다.</p>
+  <div class="orgteams">
+    <div class="ot"><h3>AI · 데이터</h3><div class="grow mono">3 → 6 → 9</div><div class="gl">현재 → Y1 → Y2 (명)</div><p>압축 엔진 · 한국어 데이터셋 구축 · 모델 최적화</p></div>
+    <div class="ot"><h3>제품 · 개발</h3><div class="grow mono">2 → 4 → 7</div><div class="gl">현재 → Y1 → Y2 (명)</div><p>웹 서비스 · 협업툴 연동 · 분석 대시보드</p></div>
+    <div class="ot"><h3>영업 · CS</h3><div class="grow mono">2 → 4 → 7</div><div class="gl">현재 → Y1 → Y2 (명)</div><p>엔터프라이즈 영업 · 고객 성공 · 파트너십</p></div>
+    <div class="ot"><h3>컨설팅 · 경영</h3><div class="grow mono">1 → 1 → 2</div><div class="gl">현재 → Y1 → Y2 (명)</div><p>조직 진단 · 라이팅 코칭 · 경영 관리</p></div>
+  </div>
+  <div class="orgrow">
+    <div class="hires">
+      <h4>핵심 채용 계획 (Y1)</h4>
+      <div class="hi"><b>NLP 리서치 엔지니어 2명</b><span>한국어 문서 구조 분석 모델 고도화</span></div>
+      <div class="hi"><b>엔터프라이즈 세일즈 2명</b><span>대기업 HR·경영지원 채널 개척</span></div>
+      <div class="hi"><b>보안 담당 1명</b><span>ISMS-P 인증 및 온프레미스 배포 대응</span></div>
+      <div class="hi"><b>커뮤니케이션 컨설턴트 1명</b><span>조직 진단 · 임원 라이팅 코칭 서비스</span></div>
+    </div>
+    <div class="talent">
+      <h4>인재 확보 전략</h4>
+      <ul>
+        <li>스톡옵션 기반 초기 인재 유치</li>
+        <li>대학 NLP 연구실 산학 협력</li>
+        <li>컨설팅 인력은 프리랜서 풀 병행 운영</li>
+        <li>개발 조직 원격 근무로 채용 범위 확대</li>
+      </ul>
+    </div>
+  </div>
+</div></section>
+
+<!-- RISK -->
+<section class="panel-sec"><div class="wrap">
+  <div class="part">Part 6 · 리스크 관리</div>
+  <div class="eyebrow">Risk Management</div>
+  <h2>리스크 요인 및 대응 방안</h2>
+  <p class="sub">예상되는 사업 리스크를 사전에 정의하고 구조적 대응책을 마련합니다.</p>
+  <div class="cmp">
+    <table class="ctbl">
+      <thead><tr><th>리스크 요인</th><th>영향도</th><th>주요 내용</th><th class="us">대응 방안</th></tr></thead>
+      <tbody>
+        <tr><th>글로벌 빅테크 진입</th><td><span class="imp hi">높음</span></td><td>MS Copilot 등 범용 AI의 문서 요약 기능 확대</td><td class="us">한국어 보고 데이터셋과 국내 협업툴 연동, 조직 진단 서비스 결합으로 범용 도구가 대체하기 어려운 영역 확보</td></tr>
+        <tr><th>AI 추론 원가 상승</th><td><span class="imp mid">중간</span></td><td>모델 API 단가 변동에 따른 마진 압박</td><td class="us">문서 유형별 경량 모델 라우팅·캐싱 적용, 자체 파인튜닝 모델 비중을 Y2까지 50%로 확대</td></tr>
+        <tr><th>보안 · 데이터 우려</th><td><span class="imp hi">높음</span></td><td>기업 내부 문서 처리에 대한 도입 저항</td><td class="us">ISMS-P 인증 Y1 내 취득, 비식별화 처리 및 금융·공공 대상 온프레미스 배포 옵션 제공</td></tr>
+        <tr><th>조직 문화 저항</th><td><span class="imp mid">중간</span></td><td>기존 보고 관행 변경에 대한 내부 반발</td><td class="us">팀 단위 무료 체험으로 소규모 성공 사례 축적 후 확산, 조직 진단 컨설팅을 도입 전 선행</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="risknote"><b>핵심 대응 원칙</b> — 기술 해자(한국어 데이터) · 신뢰 해자(보안 인증) · 관계 해자(컨설팅 결합)를 동시에 축적합니다.</div>
+</div></section>
+
+<!-- VISION -->
+<section><div class="wrap">
+  <div class="eyebrow">Vision</div>
+  <h2>모든 조직이 짧고 명확하게 소통하는 환경을</h2>
+  <p class="sub">BriefOS는 단순한 도구가 아닙니다. 조직이 소통하는 방식을 바꾸는 인프라입니다.</p>
   <div class="vis">
-    <div class="vc v1"><div class="step">01 검증된 시장</div><h3>이미 증명된 수요</h3><p>Axios HQ가 2년 만에 ARR $10M을 달성하며 '짧고 명확한 커뮤니케이션' 시장의 존재를 이미 증명했습니다.</p></div>
-    <div class="vc v2"><div class="step">02 구조적 차별화</div><h3>복제 불가한 해자</h3><p>한국어 특화 AI와 조직 진단 컨설팅의 결합으로 글로벌 사업자가 진입하기 어려운 해자를 구축합니다.</p></div>
-    <div class="vc v3"><div class="step">03 명확한 실행 계획</div><h3>3년 로드맵</h3><p>3년 내 도입 기업 200개사, ARR ₩30억, 손익분기점 달성까지의 단계별 로드맵을 갖추고 있습니다.</p></div>
+    <div class="vc v1"><div class="step">01 시장 확장성</div><h3>팀에서 전 조직으로</h3><p>커뮤니케이션 팀에서 시작해 전 조직으로 TAM을 확대합니다.</p></div>
+    <div class="vc v2"><div class="step">02 락인 강화</div><h3>높아지는 전환 비용</h3><p>조직 운영 방식 자체가 바뀌어 전환 비용이 상승하고 Lock-in이 강해집니다.</p></div>
+    <div class="vc v3"><div class="step">03 데이터 네트워크 효과</div><h3>지속 고도화</h3><p>축적된 커뮤니케이션 데이터로 AI가 지속 고도화되며 경쟁사가 복제하기 어려운 해자를 만듭니다.</p></div>
   </div>
 </div></section>
 
@@ -593,14 +790,14 @@
 <section><div class="wrap">
   <div class="band">
     <div class="eyebrow">조직이 소통하는 방식을 바꾼다</div>
-    <h2>긴 보고서를 1페이지로, 지금 직접 확인하세요</h2>
+    <h2>모든 보고와 공지를 1페이지로, 지금 직접 확인하세요</h2>
     <p>AI가 독자 관점에서 구조를 재설계하고, 실제 읽힘 데이터로 커뮤니케이션을 개선합니다. BriefOS 데모에서 압축 엔진과 분석 대시보드를 체험해 보세요.</p>
     <a class="btn-lg btn-p" href="demo/index.html">▶ BriefOS 데모 열기</a>
   </div>
 </div></section>
 
 <footer><div class="wrap">
-  <b>BriefOS</b> · 조직 커뮤니케이션을 1페이지로 재정의하는 AI SaaS · 사업계획서 v0.2 기반 소개<br>
+  <b>BriefOS</b> · 조직 커뮤니케이션을 1페이지로 재정의하는 AI SaaS · 사업계획서 2026 기반 소개<br>
   이 페이지는 소개용 <b>데모</b>이며, 수치·사례는 사업계획서 요약입니다. · contact@briefos.ai · <a href="demo/index.html">데모 열기</a>
 </div></footer>
 
