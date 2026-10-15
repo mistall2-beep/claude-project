@@ -25,7 +25,8 @@
   const pctile = v => Math.round(COHORT.filter(x => x < v).length / COHORT.length * 100);
 
   // ---------- 저장소 (데이터레이크 시뮬레이션) ----------
-  const store = { sessions: [], current: null, lake: { sessions: 1284, events: 21840, records: 2913400, inst: 40, consent: 93.4 }, reviewed: {} };
+  const store = { sessions: [], current: null, lake: { sessions: 1284, events: 21840, records: 2913400, inst: 40, consent: 93.4 }, reviewed: {}, tier: 'ai', series: [] };
+  const allSessions = () => [...store.series, ...store.sessions];
   function lakeTxt() { $('#liveTxt').textContent = `데이터레이크 · 세션 ${fmtN(store.lake.sessions)} · 레코드 ${(store.lake.records / 1e6).toFixed(2)}M`; }
 
   // =====================================================================
@@ -294,7 +295,7 @@
     };
     sessSeq++;
     return {
-      id: c.label || `S-${String(1000 + sessSeq)}`, user: c.user || `L-DEMO-${String(sessSeq).padStart(2, '0')}`,
+      id: c.label || `S-${String(1000 + sessSeq)}`, user: c.user || 'L-0412', attempt: 1,
       who: c.persona ? PERSONAS[c.persona].name + ' (자동)' : '직접 조작', date: nowStr(), course: COURSES[c.course].name + (c.course === 'single' ? ' · ' + EV[c.single].name : ''),
       mode: c.mode, level: c.level, temper: c.temper, stage: c.stage, offline: !!c.offline, simT: E.t,
       evs, safety: E.safety, dangers: E.dangers, choices: E.choices, hintEv: E.hintEv, metrics, six,
@@ -393,11 +394,12 @@
         <div class="grid" style="gap:8px">
           ${[
             ['sim', '시뮬레이터에서 실습', '자동 실습자(보통)로 체험 데모 과정 실행 — 센서 점등, Rule Engine 판정, AI Coach의 질문·힌트·Q&A'],
-            ['report', 'AI Report 확인', '점수(1.0 동일) → 코호트 위치 → 표준자세 비교 → AI 분석 Q1~Q3 → 재교육 추천 → PDF'],
+            ['report', 'AI Report 3대 비교', '① 표준자세 vs 나 ② 코호트 분포 속 나의 위치 ③ 나의 반복 실습(1~4회차) 비교 → AI 해석 · 반복 실수 · 재교육 · PDF'],
             ['model', '표준 모델에 축적', '방금 세션이 비식별되어 데이터레이크·지표엔진에 반영되는 과정과 18종 평가기준'],
             ['office', '기관 백오피스', '검토 대기 → 발행 워크플로, 실습자별 표준자세 이탈 히트맵, 장비·이용권'],
             ['region', '공공데이터 결합', '17개 시·도 → 보령시 드릴다운, 공공데이터 기반 교육과정 자동 추천, 정책 시뮬레이션'],
             ['personal', '개인화 서비스', '부모 앱: 내 약점 복습 + 예방접종·검진 일정 + 지역 출산지원 혜택 맞춤 알림'],
+            ['biz', '구독 모델 전환', 'HW 판매(1.0) → AI Report·AI Coach 연 구독(2.0): 제품 3종 기능 구성과 5년 매출 구조 시뮬레이션'],
             ['roadmap', '로드맵 · 고려사항', 'AI Report 3단계 · AI Coach 3단계, 제품·수익, 의사결정 필요 사항'],
           ].map((s, i) => `<div class="step"><b class="n">${i + 1}</b><div class="tx"><div>${s[1]}</div><p>${s[2]}</p></div><button class="btn sm" data-go="${s[0]}">열기</button></div>`).join('')}
         </div>
@@ -450,7 +452,7 @@
   // =====================================================================
   const POSE_ROT = { lie: -90, hold: -50, burp: 0, play: -15, prone: -90, upside: 180 };
   const SIM = {
-    cfg: { course: 'demo', single: 'feed', mode: 'learn', level: 2, persona: '', speed: 1, stage: 1, temper: 'normal', offline: false },
+    cfg: { user: 'L-0412', course: 'demo', single: 'feed', mode: 'learn', level: 2, persona: '', speed: 1, stage: 1, temper: 'normal', offline: false },
     eng: null, timer: null, running: false, built: false, lastChoiceEl: null, voice: false,
   };
   renderers.sim = function () { if (!SIM.built) buildSim(); };
@@ -490,7 +492,8 @@
         <label class="f" id="cSingleW" style="display:none">이벤트<select class="inp" id="cSingle">${evOpts}</select></label>
         <label class="f">모드<div class="seg" id="cMode"><button data-v="learn">학습</button><button data-v="practice">실습</button><button data-v="eval">평가</button></div></label>
         <label class="f">난이도<div class="seg" id="cLevel"><button data-v="1">1</button><button data-v="2">2</button><button data-v="3">3</button></div></label>
-        <label class="f">실습자<select class="inp" id="cPersona"><option value="">직접 조작</option>${Object.entries(PERSONAS).map(([k, p]) => `<option value="${k}">자동 · ${p.name}</option>`).join('')}</select></label>
+        <label class="f">실습자 ID<select class="inp" id="cUser"><option value="L-0412">L-0412 (이전 3회 이력)</option><option value="L-0420">L-0420 (신규)</option></select></label>
+        <label class="f">조작<select class="inp" id="cPersona"><option value="">직접 조작</option>${Object.entries(PERSONAS).map(([k, p]) => `<option value="${k}">자동 · ${p.name}</option>`).join('')}</select></label>
         <label class="f">속도<div class="seg" id="cSpeed"><button data-v="1">×1</button><button data-v="5">×5</button><button data-v="10">×10</button><button data-v="30">×30</button></div></label>
         <div style="display:flex;gap:6px;margin-left:auto">
           <button class="btn pri" id="bStart">▶ 시작</button>
@@ -559,6 +562,7 @@
     });
     segBind('cMode', 'mode'); segBind('cLevel', 'level', 1); segBind('cSpeed', 'speed', 1); segBind('cStage', 'stage', 1);
     $('#cCourse').addEventListener('change', e => { SIM.cfg.course = e.target.value; SIM.syncCtrls(); });
+    $('#cUser').addEventListener('change', e => { SIM.cfg.user = e.target.value; });
     $('#cSingle').addEventListener('change', e => { SIM.cfg.single = e.target.value; });
     $('#cPersona').addEventListener('change', e => { SIM.cfg.persona = e.target.value; if (e.target.value && SIM.cfg.speed === 1) { SIM.cfg.speed = 10; SIM.syncCtrls(); } });
     $('#cTemper').addEventListener('change', e => { SIM.cfg.temper = e.target.value; });
@@ -587,7 +591,7 @@
   SIM.syncCtrls = function () {
     if (!SIM.built) return;
     const c = SIM.cfg;
-    $('#cCourse').value = c.course; $('#cSingle').value = c.single; $('#cPersona').value = c.persona; $('#cTemper').value = c.temper;
+    $('#cUser').value = c.user; $('#cCourse').value = c.course; $('#cSingle').value = c.single; $('#cPersona').value = c.persona; $('#cTemper').value = c.temper;
     $('#cSingleW').style.display = c.course === 'single' ? '' : 'none';
     [['cMode', c.mode], ['cLevel', c.level], ['cSpeed', c.speed], ['cStage', c.stage]].forEach(([id, val]) => $$('#' + id + ' button').forEach(b => b.classList.toggle('on', b.dataset.v == val)));
     $('#cTemper').style.display = c.stage === 3 ? '' : 'none';
@@ -809,6 +813,7 @@
     ask(q);
   }
   function onSessionEnd(s) {
+    s.attempt = allSessions().filter(x => x.user === s.user).length + 1;
     store.sessions.push(s); store.current = s;
     store.lake.sessions++; store.lake.events += s.evs.length + s.safety.length; store.lake.records += Math.round(s.simT * 13 * 2);
     lakeTxt();
@@ -822,115 +827,197 @@
   //  2. AI Report
   // =====================================================================
   renderers.report = function () {
-    const all = [store.base, ...store.sessions];
+    const all = allSessions();
     const s = store.current || store.base;
     const v = $('#v-report');
-    v.innerHTML = head('② SW · 개인화 리포트', 'AI Report — 점수에서 해석으로', '실습 세션의 Rule Engine 판정값을 근거로, AI가 코호트·표준자세와 비교해 해석과 재교육을 제안합니다.',
-      `<div style="display:flex;gap:6px;flex-wrap:wrap"><select class="inp" id="repSel">${all.map((x, i) => `<option value="${i}" ${x === s ? 'selected' : ''}>${x.id} · ${x.user} · ${x.who}</option>`).join('')}</select><button class="btn" id="repPrint">⎙ PDF 결과보고서</button></div>`) + reportHtml(s);
+    v.innerHTML = head('② SW · AI 구독 서비스', 'AI Report — 표준 · 코호트 · 나의 반복 실습 3대 비교', '실습이 끝나면 Rule Engine 판정값(불변)을 근거로 ① 표준자세 ② 같은 조건 코호트 ③ 나의 이전 실습과 비교해 해석·재교육을 제안합니다.',
+      `<div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center"><div class="seg" id="repTier"><button data-t="basic" class="${store.tier === 'basic' ? 'on' : ''}">BASIC (1.0)</button><button data-t="ai" class="${store.tier === 'ai' ? 'on' : ''}">AI 구독 (2.0)</button></div><select class="inp" id="repSel">${all.map((x, i) => `<option value="${i}" ${x === s ? 'selected' : ''}>${x.user} · ${x.attempt}회차 · ${x.id} · ${x.who}</option>`).join('')}</select><button class="btn" id="repPrint">⎙ PDF 결과보고서</button></div>`) + reportHtml(s);
     $('#repSel').addEventListener('change', e => { store.current = all[+e.target.value]; renderers.report(); });
     $('#repPrint').addEventListener('click', () => window.print());
+    $$('#repTier button').forEach(b => b.addEventListener('click', () => { store.tier = b.dataset.t; renderers.report(); }));
   };
+
+  // ---------- 표준·코호트·반복 비교 도구 ----------
+  const AX = { react: 20, neck: 5, tilt: 50, burp: 80, gyro: 3, roll: 60 };
+  const STD_V = { react: 3, neck: 0, tilt: 10, burp: 15, gyro: 0, roll: 0 };
+  const SHORT = { react: '울음 반응시간', neck: '목 지지', tilt: '머리 기울기', burp: '트림 첫 두드림', gyro: '달래기 각속도', roll: '수면 자세(롤)' };
+  const UNIT = k => k === 'tilt' || k === 'roll' ? '°' : k === 'neck' || k === 'gyro' ? '회' : '초';
+  // 표준 허용범위 밖으로 벗어난 거리 (0 = 범위 내)
+  function devOf(k, v) { if (v == null) return null; const r = STD.find(x => x.k === k); const hi = k === 'gyro' ? 0 : r.hi; return v < r.lo ? r.lo - v : v > hi ? v - hi : 0; }
+  // 같은 조건 코호트 · 자세 지표별 분포 (C-2026-Q3 · 시연용 합성)
+  const COHORT_M = (() => {
+    const R = mulberry(19), gen = (n, f) => Array.from({ length: n }, f).sort((a, b) => a - b);
+    return {
+      react: gen(228, () => clamp(+Math.exp(Math.log(4) + gauss(R) * 0.45).toFixed(1), 1, 20)),
+      neck: gen(240, () => { const u = R(); return u < .55 ? 0 : u < .8 ? 1 : u < .92 ? 2 : u < .98 ? 3 : 4; }),
+      tilt: gen(240, () => clamp(Math.round(15 + gauss(R) * 8), 3, 45)),
+      burp: gen(180, () => clamp(Math.round(28 + gauss(R) * 11), 6, 80)),
+      gyro: gen(240, () => { const u = R(); return u < .9 ? 0 : u < .98 ? 1 : 2; }),
+      roll: gen(240, () => clamp(Math.round(Math.abs(8 + gauss(R) * 6)), 0, 60)),
+    };
+  })();
+  // 나보다 표준에 가까운 교육생 비율(%) → '상위 x%'
+  function cohortPos(k, v) {
+    const a = COHORT_M[k]; if (v == null) return null;
+    const d = devOf(k, v), better = a.filter(x => devOf(k, x) < d).length, same = a.filter(x => devOf(k, x) === d).length;
+    return { top: clamp(Math.round((better + same / 2) / a.length * 100), 1, 99), med: med(a), n: a.length, inStd: Math.round(a.filter(x => devOf(k, x) === 0).length / a.length * 100) };
+  }
+  const posTxt = t => t <= 50 ? `상위 ${t}%` : `하위 ${100 - t + 1}%`;
+  const RATE_COL = { ok: '#1f8a5b', warn: '#b9791a', out: '#c33b36', na: '#9aa3b3' };
+  function bulletSvg(k, v) {
+    const r = STD.find(x => x.k === k), W = 300, H = 40, x = val => 8 + clamp(val, 0, AX[k]) / AX[k] * (W - 16);
+    const hi = k === 'gyro' ? 0 : r.hi, rate = stdRate(k, v);
+    let s = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;max-width:300px;height:auto;display:block" font-family="Pretendard,sans-serif">`;
+    s += `<rect x="8" y="14" width="${W - 16}" height="10" rx="5" fill="#eef1f6"/>`;
+    if (k !== 'gyro') s += `<rect x="${x(hi)}" y="14" width="${Math.max(2, x(r.warn) - x(hi))}" height="10" fill="#fbf1de"/>`;
+    s += `<rect x="${x(r.lo)}" y="14" width="${Math.max(4, x(hi) - x(r.lo))}" height="10" rx="3" fill="#cdebd9"/>`;
+    s += `<line x1="${x(STD_V[k])}" y1="10" x2="${x(STD_V[k])}" y2="28" stroke="#1f8a5b" stroke-width="2"/><text x="${x(STD_V[k])}" y="8" text-anchor="middle" font-size="9" fill="#1f8a5b">표준</text>`;
+    if (v != null) s += `<path d="M${x(v)} 26 l-5 8 h10z" fill="${RATE_COL[rate]}"/><text x="${clamp(x(v), 14, W - 14)}" y="${H - 1}" text-anchor="middle" font-size="9.5" font-weight="800" fill="${RATE_COL[rate]}">나 ${fmtStd(k, v)}</text>`;
+    else s += `<text x="${W / 2}" y="${H - 2}" text-anchor="middle" font-size="9.5" fill="#9aa3b3">미체험</text>`;
+    return s + '</svg>';
+  }
+  function stripSvg(k, v) {
+    const a = COHORT_M[k], r = STD.find(x => x.k === k), W = 300, H = 54, bins = 20, mx = AX[k], bw = mx / bins, x = val => 8 + clamp(val, 0, mx) / mx * (W - 16);
+    const cnt = Array(bins).fill(0); a.forEach(val => cnt[Math.min(bins - 1, Math.floor(val / bw))]++);
+    const top = Math.max(...cnt), hi = k === 'gyro' ? 0.4 : r.hi, m = med(a);
+    let s = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;max-width:300px;height:auto;display:block" font-family="Pretendard,sans-serif">`;
+    s += `<rect x="${x(r.lo)}" y="4" width="${Math.max(4, x(hi) - x(r.lo))}" height="${H - 18}" fill="#e3f3ea"/>`;
+    cnt.forEach((c, i) => { const h = c / top * (H - 22); s += `<rect x="${8 + i * (W - 16) / bins + 1}" y="${H - 14 - h}" width="${(W - 16) / bins - 2}" height="${h}" rx="1.5" fill="#c9d3e3"/>`; });
+    s += `<line x1="${x(m)}" y1="2" x2="${x(m)}" y2="${H - 14}" stroke="#6a7487" stroke-dasharray="3 2"/><text x="${x(m) + 3}" y="10" font-size="9" fill="#6a7487">중앙값 ${fmtStd(k, m)}</text>`;
+    if (v != null) s += `<line x1="${x(v)}" y1="2" x2="${x(v)}" y2="${H - 14}" stroke="#d13b3b" stroke-width="2.5"/><circle cx="${x(v)}" cy="${H - 14}" r="4" fill="#d13b3b"/>`;
+    s += `<text x="8" y="${H - 2}" font-size="9" fill="#9aa3b3">0</text><text x="${W - 8}" y="${H - 2}" text-anchor="end" font-size="9" fill="#9aa3b3">${mx}${UNIT(k)}</text>`;
+    return s + '</svg>';
+  }
+  function trendSvg(H, keyFn, opts) {
+    const W = 520, Ht = 150, p = 30, n = H.length, xs = i => n === 1 ? W / 2 : p + i * (W - p * 2) / (n - 1);
+    const lo = opts.lo, hi = opts.hi, y = v => Ht - 24 - (clamp(v, lo, hi) - lo) / (hi - lo) * (Ht - 44);
+    let s = `<svg viewBox="0 0 ${W} ${Ht}" style="width:100%;height:auto" font-family="Pretendard,sans-serif">`;
+    [lo, (lo + hi) / 2, hi].forEach(v => { s += `<line x1="${p}" x2="${W - p}" y1="${y(v)}" y2="${y(v)}" stroke="#eef1f6"/><text x="${p - 6}" y="${y(v) + 4}" text-anchor="end" font-size="10" fill="#9aa3b3">${Math.round(v)}</text>`; });
+    if (opts.band) s += `<rect x="${p}" y="${y(opts.band[1])}" width="${W - p * 2}" height="${y(opts.band[0]) - y(opts.band[1])}" fill="#e3f3ea"/>`;
+    opts.series.forEach(se => {
+      const pts = H.map((h, i) => [xs(i), se.f(h)]).filter(q => q[1] != null);
+      if (pts.length > 1) s += `<polyline points="${pts.map(q => q[0] + ',' + y(q[1])).join(' ')}" fill="none" stroke="${se.c}" stroke-width="2.5"/>`;
+      pts.forEach((q, i) => { s += `<circle cx="${q[0]}" cy="${y(q[1])}" r="${i === pts.length - 1 ? 5.5 : 4}" fill="${se.c}"/><text x="${q[0]}" y="${y(q[1]) - 9}" text-anchor="middle" font-size="10.5" font-weight="800" fill="${se.c}">${Math.round(q[1] * 10) / 10}</text>`; });
+    });
+    H.forEach((h, i) => { s += `<text x="${xs(i)}" y="${Ht - 6}" text-anchor="middle" font-size="10.5" fill="${i === n - 1 ? '#d13b3b' : '#6a7487'}" font-weight="${i === n - 1 ? 800 : 500}">${h.attempt}회차${i === n - 1 ? ' (현재)' : ''}</text>`; });
+    s += opts.series.map((se, i) => `<text x="${W - p - i * 90}" y="12" text-anchor="end" font-size="10.5" fill="${se.c}" font-weight="700">● ${se.n}</text>`).join('');
+    return s + '</svg>';
+  }
+  const KS = ['react', 'neck', 'tilt', 'burp', 'gyro', 'roll'];
+  const SAFE_K = k => STD.find(x => x.k === k).safety;
+
   function reportHtml(s) {
-    const pc = pctile(s.total), q1 = COHORT[60], q3 = COHORT[180], cm = med(COHORT);
-    const M = s.metrics;
-    const rows = STD.map(r => ({ ...r, v: M[r.k], rate: stdRate(r.k, M[r.k]) }));
-    const unexp = rows.filter(r => r.rate === 'na').map(r => r.task.split(' · ')[0]);
-    const issues = rows.filter(r => r.rate === 'out' || r.rate === 'warn').sort((a, b) => (b.safety - a.safety) || ((b.rate === 'out') - (a.rate === 'out')));
-    const emerEv = s.evs.filter(e => e.cat === 'emer');
-    const hintPct = s.evs.length ? Math.round(s.hintEv / s.evs.length * 100) : 0;
-    const legacy = s.evs.map(e => `${e.name.replace(' 시키기', '').replace(' 먹이기', '')} ${e.score}`).join(' · ');
-    const msg = (GRADE_MSG.find(g => s.total >= g.min) || GRADE_MSG[4]).t;
-    const safeAvg = s.safety.length ? avg(s.safety.map(x => x.grade)) : null;
-    const conj = safeAvg != null && safeAvg <= 3 ? '하지만' : '그리고';
-    const safeMsg = safeAvg == null ? '' : safeAvg >= 4.5 ? '저를 안전하게 돌봐주셔서 감사드려요.' : safeAvg >= 3.5 ? '위험한 상황에 저를 잘 보살펴 주셨네요.' : safeAvg >= 2.5 ? '안전에 좀 더 신경을 써 주세요.' : '위험했어요. 안전에 대해 다시 생각해 보세요.';
-    // 재교육 추천
+    const M = s.metrics, cm = med(COHORT), pc = pctile(s.total);
+    const rows = KS.map(k => ({ ...STD.find(x => x.k === k), v: M[k], rate: stdRate(k, M[k]), dev: devOf(k, M[k]), pos: cohortPos(k, M[k]) }));
+    const issues = rows.filter(r => r.rate === 'out' || r.rate === 'warn');
+    const hist = allSessions().filter(x => x.user === s.user && x.attempt <= s.attempt).sort((a, b) => a.attempt - b.attempt);
+    const first = hist[0], prev = hist.length > 1 ? hist[hist.length - 2] : null;
+    // 반복 실수: 이번 포함 2회 이상 주의/이탈
+    const persistent = KS.filter(k => hist.filter(h => ['warn', 'out'].includes(stdRate(k, h.metrics[k]))).length >= 2 && ['warn', 'out'].includes(stdRate(k, M[k])));
+    const trendOf = k => { if (!prev) return null; const a = devOf(k, prev.metrics[k]), b = devOf(k, M[k]); if (a == null || b == null) return null; return b < a ? 'up' : b > a ? 'down' : (b === 0 ? 'keep' : 'same'); };
+    const TR = { up: ['▲ 개선', 'ok'], down: ['▼ 악화', 'bad'], keep: ['● 유지(범위 내)', 'ok'], same: ['■ 변화 없음', 'warn'] };
+    const improved = KS.filter(k => trendOf(k) === 'up'), worse = KS.filter(k => trendOf(k) === 'down');
+    // 우선 보완: 반복 실수(안전) > 안전 이탈 > 반복 실수 > 나머지
+    const prioScore = r => (persistent.includes(r.k) ? 4 : 0) + (r.safety ? 2 : 0) + (r.rate === 'out' ? 1 : 0);
+    const prio = [...issues].sort((a, b) => prioScore(b) - prioScore(a));
     const REC = {
       neck: ['목 지지와 자세 변경 연결 실습', 15, '시범 5분 + 인형 연결 동작 10분'], tilt: ['목 지지와 자세 변경 연결 실습', 15, '시범 5분 + 인형 연결 동작 10분'],
       burp: ['수유 종료부터 트림까지 이어서', 10, '힌트 없이 순서대로 완료하기'], react: ['울음 신호 구분 훈련 (사운드 7종)', 10, '소리 듣고 원인 고르기 + 즉시 반응'],
       gyro: ['흔들린아이증후군 예방 · 달래기', 10, '각속도 피드백으로 작고 느리게'], roll: ['안전수면 자세', 10, '바로 눕히기 · 침구 정리 체크리스트'],
     };
     const recs = []; const seen = new Set();
-    for (const r of issues) { const x = REC[r.k]; if (x && !seen.has(x[0])) { seen.add(x[0]); recs.push(x); } }
-    if (emerEv.some(e => e.score < 70)) recs.push(['영아 CPR · 기도폐쇄 반복 실습', 15, '압박 깊이·속도 센서 피드백']);
-    recs.splice(2); recs.push(['도움 없는 확인 평가', 15, '평가모드 10분 + 교사 확인 5분']);
-    const sim = 12 + store.sessions.filter(x => x.metrics.neck > 1).length;
-    const evRows = s.evs.map(e => `<tr><td>${EV[e.id].ico} ${e.name}</td><td><span class="tag ${e.cat === 'emer' ? 'red' : ''}">${CAT[e.cat]}</span></td><td class="num">${e.t1 == null ? '—' : e.t1 + '초'}</td><td><b>${e.g1}</b> ${e.s1}</td><td><b>${e.g2}</b> ${e.s2}</td><td class="num"><b>${e.score}</b></td><td class="num">${e.react == null ? '—' : e.react + '초'}</td><td>${e.hints ? '💡' + e.hints : '—'}</td><td>${e.choice == null ? '—' : e.choice ? '<span class="ok">정답</span>' : '<span class="bad">오답</span>'}</td></tr>`).join('');
-    const sfRows = s.safety.map(x => `<tr><td>⚠ ${x.name}</td><td class="num">${x.resp == null ? '—' : x.resp + '초'}</td><td><b>${x.grade}</b>/5</td><td><span class="tag ${x.grade >= 4 ? 'pill-ok' : x.grade >= 2 ? 'pill-warn' : 'pill-bad'}">${x.st}</span></td></tr>`).join('');
-    const top = issues[0];
-    const q1txt = `종합점수는 같은 조건 교육생 중앙값(${cm}점)보다 ${Math.abs(s.total - cm)}점 ${s.total >= cm ? '높아' : '낮아'} <u class="ev">백분위 ${pc}</u>입니다. ` +
-      (M.react != null ? `울음 후 첫 반응은 <u class="ev">${r1(M.react)}초</u>로 중앙값 4초 대비 ${M.react > 5 ? '느린 편' : '빠른 편'}이고, ` : '') +
-      (M.burp != null ? `트림 첫 행동은 <u class="ev">${r1(M.burp)}초</u>(중앙값 28초)입니다. ` : '') +
-      `힌트 사용 이벤트는 <u class="ev">${hintPct}%</u>(중앙값 17%)${s.mode === 'learn' ? ' — 학습모드 자동 힌트 포함' : ''}입니다.`;
-    return `
+    for (const r of prio) { const x = REC[r.k]; if (x && !seen.has(x[0])) { seen.add(x[0]); recs.push([...x, persistent.includes(r.k) ? 'AI Coach 학습모드로 배정' : 'AI Coach 실습모드']); } }
+    recs.splice(2); recs.push(['도움 없는 확인 평가', 15, '평가모드 10분 + 교사 확인 5분', '다음 회차 비교 기준']);
+    const simN = 12 + store.sessions.filter(x => (x.metrics.neck || 0) > 1).length;
+    const evRows = s.evs.map(e => `<tr><td>${EV[e.id].ico} ${e.name}</td><td class="num">${e.t1 == null ? '—' : e.t1 + '초'}</td><td><b>${e.g1}</b> ${e.s1}</td><td><b>${e.g2}</b> ${e.s2}</td><td class="num"><b>${e.score}</b></td><td>${e.hints ? '💡' + e.hints : '—'}</td></tr>`).join('');
+    const sfTxt = s.safety.map(x => `${x.name} ${x.grade}/5`).join(' · ');
+    const locked = store.tier === 'basic';
+    const lockCard = `<div class="rsec"><div class="card" style="text-align:center;padding:28px;background:repeating-linear-gradient(135deg,#fafbfd,#fafbfd 10px,#f3f5f9 10px,#f3f5f9 20px)">
+      <div style="font-size:28px">🔒</div><h2 style="margin:6px 0">AI 구독(2.0)에서 제공되는 분석</h2>
+      <p class="muted" style="font-size:13px">① 표준자세 vs 나의 자세 · ② 코호트 분포 속 나의 위치 · ③ 나의 반복 실습 비교 · AI 해석 · 맞춤 재교육 · AI Coach 연동</p>
+      <p class="note" style="margin-top:6px">BASIC은 1.0 결과지(점수·등급)만 제공 · 판정값은 동일 · 데이터는 축적되어 구독 전환 즉시 과거 회차 비교 가능</p>
+      <button class="btn pri" style="margin-top:12px" id="unlockBtn">AI 구독으로 보기</button> <button class="btn" data-go="biz" style="margin-top:12px">구독 모델 보기 →</button></div></div>`;
+
+    const html = `
     <div class="rep" id="repDoc">
-      <div class="rh"><span>SUNBABY 2.0 · AI REPORT</span><span>가상 예시 · 실측 결과 아님</span></div>
+      <div class="rh"><span>SUNBABY 2.0 · AI REPORT · ${locked ? 'BASIC (1.0 결과지)' : 'AI 구독'}</span><span>가상 예시 · 실측 결과 아님</span></div>
       <h1>AI 돌봄 훈련 분석 리포트</h1>
-      <div class="meta"><div><span>실습자</span>${esc(s.user)} (가명) · ${esc(s.who)}</div><div><span>세션</span>${esc(s.id)} · ${esc(s.date)}</div><div><span>과정</span>${esc(s.course)}</div><div><span>판정 규칙</span>R1.0 · ${MODE_NM[s.mode]} · 난이도 ${s.level}</div></div>
+      <div class="meta"><div><span>실습자</span>${esc(s.user)} (가명) · <b>${s.attempt}회차</b></div><div><span>세션</span>${esc(s.id)} · ${esc(s.date)}</div><div><span>과정</span>${esc(s.course)}</div><div><span>판정 규칙 · 비교 기준</span>R1.0 · 표준 S1 · 코호트 C-2026-Q3</div></div>
 
-      <div class="rsec"><h2><span class="no">1</span>기존 점수 <span class="note" style="font-weight:600">태블릿 1.0 Report와 동일한 값 · AI가 바꾸지 않음</span></h2>
-        <div class="grid g4">
-          <div class="kpi"><div class="l">종합점수</div><div class="big num">${s.total}<small style="font-size:14px;color:var(--muted)"> 점 · ${s.grade}등급</small></div></div>
-          <div class="kpi"><div class="l">일상돌봄 성공률</div><div class="v num">${s.dailyN ? Math.round(s.dailyOK / s.dailyN * 100) : '—'}%<small>${s.dailyOK} / ${s.dailyN}회</small></div></div>
-          <div class="kpi"><div class="l">안전예방 정상처리율</div><div class="v num">${s.safeN ? Math.round(s.safeOK / s.safeN * 100) + '%' : '—'}<small>${s.safeOK} / ${s.safeN}회</small></div></div>
-          <div class="kpi"><div class="l">양육역량지수 (K-PCI)</div><div class="v num" style="color:var(--teal-d)">${s.index}<small>돌봄·안전·응급 가중</small></div></div>
-        </div>
-        <div class="note" style="margin-top:8px">1.0 결과지: ${esc(legacy)} · 아기의 한마디 — "${msg} ${safeMsg ? conj + ' ' + safeMsg : ''}"</div>
-        <div class="tw" style="margin-top:10px"><table class="t"><tr><th>이벤트</th><th>분류</th><th>1차 완수</th><th>1차(A~F)</th><th>2차(ㄱㄴㄷ)</th><th>점수</th><th>첫 반응</th><th>힌트</th><th>판단(선택형)</th></tr>${evRows || '<tr><td colspan="9" class="muted">이벤트 없음</td></tr>'}</table></div>
-        ${sfRows ? `<div class="tw" style="margin-top:8px"><table class="t"><tr><th>안전 이벤트</th><th>대응 시간</th><th>안전 점수</th><th>판정</th></tr>${sfRows}</table></div>` : ''}
-      </div>
-
-      <div class="rsec"><h2><span class="no">2</span>같은 조건 교육생 중 나의 위치</h2>
-        <div class="note">비교집단: 같은 과정·시나리오·난이도·규칙 버전의 첫 체험자 240명 · 코호트 C-2026-Q3 · 사용자별 1세션 (시연용 합성 분포)</div>
-        <div class="grid" style="grid-template-columns:2fr 1fr;gap:14px;margin-top:8px">
-          <div>${histSvg(COHORT, s.total, null)}</div>
-          <div class="grid" style="gap:8px">
-            <div class="kpi card" style="padding:12px"><div class="l">백분위</div><div class="v num">${pc}</div><div class="d">가운데 50% 범위 ${q1} ~ ${q3}점</div></div>
-            <div class="card" style="padding:12px;font-size:12.5px"><div>울음 후 반응시간 <b class="num">${r1(M.react)}초</b> · 중앙값 4초 (n=228)</div><div>트림 첫 행동 <b class="num">${r1(M.burp)}${M.burp == null ? '' : '초'}</b> · 중앙값 28초 (n=180)</div><div>힌트 사용 이벤트 <b class="num">${hintPct}%</b> · 중앙값 17% <span class="note">감점 아님</span></div></div>
+      <div class="rsec"><h2><span class="no">0</span>이번 실습 결과 <span class="note" style="font-weight:600">Rule Engine 판정 · 1.0 결과지와 동일 · AI가 바꾸지 않음</span></h2>
+        <div class="grid" style="grid-template-columns:1.4fr 1fr;gap:14px;align-items:start">
+          <div>
+            <div class="grid g3">
+              <div class="kpi"><div class="l">종합점수</div><div class="big num">${s.total}<small style="font-size:14px;color:var(--muted)"> 점 · ${s.grade}</small></div></div>
+              <div class="kpi"><div class="l">일상돌봄 성공</div><div class="v num">${s.dailyOK}/${s.dailyN}</div><div class="d">안전 ${sfTxt || '—'}</div></div>
+              <div class="kpi"><div class="l">양육역량지수</div><div class="v num" style="color:var(--teal-d)">${s.index}</div><div class="d">K-PCI</div></div>
+            </div>
+            <div class="tw" style="margin-top:10px"><table class="t"><tr><th>이벤트</th><th>1차 완수</th><th>1차</th><th>2차</th><th>점수</th><th>힌트</th></tr>${evRows}</table></div>
           </div>
+          <div class="card" style="padding:12px"><h3 style="margin-bottom:2px">종합평가 요소 6가지</h3>${radarSvg(s.six)}</div>
+        </div>
+      </div>
+      ${locked ? lockCard : `
+      <div class="rsec"><h2><span class="no">1</span>표준자세 vs 나의 자세</h2>
+        <div class="note">표준 프로파일 S1 (전문가 5인 × 5회 수행) · 인형 IMU(가속도·각속도·자세) · 초록 = 허용범위, 노랑 = 주의</div>
+        <div class="tw" style="margin-top:8px"><table class="t"><tr><th>과제 · 측정항목</th><th>표준 (허용범위)</th><th style="min-width:230px">표준 대비 나의 위치</th><th>표준과의 차이</th><th>판정</th></tr>
+          ${rows.map(r => `<tr><td><b>${r.task}</b>${r.safety ? ' <span class="tag red">안전</span>' : ''}<div class="note">${r.sensor}</div></td><td>${r.std}<div class="note">${r.k === 'gyro' ? '기준 이하' : r.lo + '~' + r.hi + r.unit}</div></td><td>${bulletSvg(r.k, r.v)}</td><td class="num">${r.v == null ? '—' : r.dev === 0 ? '<span class="ok">범위 안</span>' : `<b class="${r.rate === 'out' ? 'bad' : 'warn'}">+${r1(r.dev)}${UNIT(r.k)}</b> 초과`}${r.k === 'neck' && M.lifts ? `<div class="note">들어올림 ${M.lifts}회 중</div>` : ''}</td><td><span class="tag ${RATE_CL[r.rate]}">${RATE_TX[r.rate]}</span></td></tr>`).join('')}
+        </table></div>
+        <p class="note" style="margin-top:6px">범위 내 ${rows.filter(r => r.rate === 'ok').length} · 주의 ${rows.filter(r => r.rate === 'warn').length} · 이탈 ${rows.filter(r => r.rate === 'out').length} · 미체험 ${rows.filter(r => r.rate === 'na').length} (미체험은 0점 아님)</p>
+      </div>
+
+      <div class="rsec"><h2><span class="no">2</span>코호트 자세 분포 vs 나의 위치</h2>
+        <div class="note">같은 과정·시나리오·난이도·규칙 버전의 첫 체험자 · C-2026-Q3 · 사용자별 1세션 · 초록 = 표준 허용범위 · 빨간 선 = 나 (시연용 합성 분포)</div>
+        <div class="grid g3" style="margin-top:10px">
+          ${rows.map(r => `<div class="card" style="padding:12px;box-shadow:none"><div style="display:flex;justify-content:space-between;gap:6px;align-items:baseline"><b style="font-size:13px">${SHORT[r.k]}</b>${r.pos ? `<span class="tag ${r.pos.top <= 30 ? 'pill-ok' : r.pos.top <= 70 ? '' : 'pill-bad'}">${posTxt(r.pos.top)}</span>` : '<span class="tag">미체험</span>'}</div>${stripSvg(r.k, r.v)}<div class="note">나 ${fmtStd(r.k, r.v)} · 중앙값 ${fmtStd(r.k, med(COHORT_M[r.k]))} · 표준 충족 ${cohortPos(r.k, 0) ? cohortPos(r.k, STD_V[r.k]).inStd : '—'}% · n=${COHORT_M[r.k].length}</div></div>`).join('')}
+        </div>
+        <div class="grid" style="grid-template-columns:2fr 1fr;gap:14px;margin-top:12px;align-items:center">
+          <div>${histSvg(COHORT, s.total, null)}</div>
+          <div class="kpi card" style="padding:12px"><div class="l">종합점수 백분위</div><div class="v num">${pc}</div><div class="d">중앙값 ${cm}점 · 가운데 50% ${COHORT[60]}~${COHORT[180]}점 · n=240</div></div>
         </div>
       </div>
 
-      <div class="rsec"><h2><span class="no">3</span>표준자세 대비 훈련 비교표</h2>
-        <div class="note">표준 프로파일 S1 (전문가 5인 × 5회 수행) · 인형 IMU(가속도·각속도·자세) 측정값</div>
-        <div class="grid" style="grid-template-columns:1.6fr 1fr;gap:14px;margin-top:8px;align-items:start">
-          <div class="tw"><table class="t"><tr><th>과제 · 측정항목</th><th>센서</th><th>표준 (허용범위)</th><th>나</th><th>판정</th></tr>
-            ${rows.map(r => `<tr><td>${r.task}${r.safety ? ' <span class="tag red">안전</span>' : ''}</td><td>${r.sensor}</td><td>${r.std} (${r.k === 'gyro' ? '기준 이하' : r.lo + '~' + r.hi + r.unit})</td><td class="num"><b>${fmtStd(r.k, r.v)}</b>${r.k === 'neck' && M.lifts ? `<span class="note"> / 들어올림 ${M.lifts}회</span>` : ''}</td><td><span class="tag ${RATE_CL[r.rate]}">${RATE_TX[r.rate]}</span></td></tr>`).join('')}
-          </table></div>
-          <div class="card" style="padding:12px"><h3 style="margin-bottom:4px">종합평가 요소 6가지</h3>${radarSvg(s.six)}</div>
+      <div class="rsec"><h2><span class="no">3</span>나의 반복 실습 vs 이번 실습 <span class="tag ${hist.length > 1 ? 'teal' : 'amber'}">${hist.length}회차 누적</span></h2>
+        ${hist.length < 2 ? `<div class="card" style="padding:14px;box-shadow:none">첫 실습입니다. 이번 결과가 <b>나의 기준선</b>이 되며, 다음 실습부터 회차별 변화와 반복 실수를 비교합니다.</div>` : `
+        <div class="grid g2" style="align-items:start">
+          <div class="card" style="padding:12px;box-shadow:none"><h3 style="margin-bottom:2px">종합점수 · 양육역량지수 추이</h3>${trendSvg(hist, null, { lo: 40, hi: 100, series: [{ n: '종합점수', c: '#13284d', f: h => h.total }, { n: 'K-PCI', c: '#13a089', f: h => h.index }] })}
+            <p style="font-size:12.5px">1회차 대비 종합 <b class="${s.total >= first.total ? 'ok' : 'bad'}">${s.total - first.total >= 0 ? '+' : ''}${s.total - first.total}점</b> · 직전 대비 <b class="${s.total >= prev.total ? 'ok' : 'bad'}">${s.total - prev.total >= 0 ? '+' : ''}${s.total - prev.total}점</b></p></div>
+          <div class="card" style="padding:12px;box-shadow:none"><h3 style="margin-bottom:2px">머리 기울기(안전) 추이 <span class="note">초록 = 표준 0~20°</span></h3>${trendSvg(hist, null, { lo: 0, hi: 50, band: [0, 20], series: [{ n: '머리 기울기°', c: '#d13b3b', f: h => h.metrics.tilt }] })}
+            <p style="font-size:12.5px">반복 실수: ${persistent.length ? persistent.map(k => `<b class="bad">${SHORT[k]}</b>`).join(', ') : '<span class="ok">없음</span>'}</p></div>
         </div>
-        ${unexp.length ? `<div class="note" style="margin-top:6px">미체험: ${unexp.join(' · ')} — 수행 기회가 없어 비교하지 않았습니다 (0점 아님).</div>` : ''}
+        <div class="tw" style="margin-top:10px"><table class="t"><tr><th>회차</th><th>일자</th><th>종합</th><th>K-PCI</th>${KS.map(k => `<th>${SHORT[k]}</th>`).join('')}</tr>
+          ${hist.map(h => `<tr${h === s ? ' style="background:#fff6f5"' : ''}><td><b>${h.attempt}회차</b>${h === s ? ' <span class="tag red">현재</span>' : ''}</td><td class="note">${esc(h.date.slice(0, 10))}</td><td class="num"><b>${h.total}</b></td><td class="num">${h.index}</td>${KS.map(k => { const rt = stdRate(k, h.metrics[k]); return `<td><span class="tag ${RATE_CL[rt]}">${fmtStd(k, h.metrics[k])}</span></td>`; }).join('')}</tr>`).join('')}
+          <tr><td colspan="4"><b>직전 대비 변화</b></td>${KS.map(k => { const t = trendOf(k); return `<td>${t ? `<b class="${TR[t][1]}" style="font-size:12px">${TR[t][0]}</b>` : '<span class="note">—</span>'}</td>`; }).join('')}</tr>
+        </table></div>`}
       </div>
 
-      <div class="rsec"><h2><span class="no">4</span>AI 분석 <span class="note" style="font-weight:600">밑줄 친 수치는 위 표의 근거와 연결 · 템플릿 기반 시뮬레이션</span></h2>
-        <div class="qbox"><div class="q">Q1 · 같은 조건의 교육생과 비교하면 어떤 특징이 있나요?</div><p>${q1txt}</p><div class="chips"><code>cohort.total</code><code>cohort.reaction_time</code><code>cohort.burp_first_action</code><code>session.hint_events</code></div></div>
-        <div class="qbox"><div class="q">Q2 · 어떤 행동을 먼저 보완해야 하나요?</div>
-          ${issues.length ? issues.slice(0, 3).map((r, i) => `<div class="prio"><b class="n">${i + 1}</b><div><b>${r.task.split(' · ')[0]} — ${r.safety ? '안전기준 미충족' : '표준 대비 ' + RATE_TX[r.rate]}</b><p class="muted" style="font-size:12.8px">${prioTxt(r, M)}</p></div></div>`).join('') : '<p>표준자세 6개 항목이 모두 허용범위 안입니다. 다음 체험은 <b>평가모드(힌트 없음)</b>로 독립 수행을 확인하세요.</p>'}
-          ${s.dangers.length ? `<p class="note" style="margin-top:6px">위험행동 기록: ${s.dangers.map(d => d.k).join(', ')}</p>` : ''}
-        </div>
-        <div class="qbox"><div class="q" style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap">Q3 · 유사한 사례에서는 어떤 교육 후 개선이 관찰되었나요? <span class="tag ${sim >= 20 ? 'teal' : 'amber'}">유사사례 ${sim >= 20 ? '기준 충족' : '축적 중'} · ${Math.min(sim, 20)} / 20명</span></div>
-          <p>${sim >= 20 ? `같은 조건에서 목 지지 문제가 반복된 교육생 ${sim}명 중 재교육 완료 ${sim - 3}명, 재평가 시 허용각 초과가 평균 2.4회 → 0.6회로 줄었습니다(탈락 3명 제외).` : `같은 조건의 재교육 기록이 아직 기준(20명)에 못 미칩니다. 그래서 이번 추천은 <b>승인된 교육과정</b>을 근거로 합니다. 기록이 쌓이면 등록·완료·재평가·탈락 인원과 함께 관찰된 변화를 보여드립니다.`}</p>
-          <div class="grid g3" style="margin-top:10px">${recs.map((r, i) => `<div class="rec"><span class="k">추천 ${i + 1} · ${r[1]}분</span><div>${r[0]}</div><p>${r[2]}</p></div>`).join('')}</div>
+      <div class="rsec"><h2><span class="no">4</span>AI 종합 해석 <span class="note" style="font-weight:600">밑줄 = 위 표의 근거 · 템플릿 기반 시뮬레이션 · 판정값 불변</span></h2>
+        <div class="qbox"><div class="q">Q1 · 표준과 비교하면 어디가 다른가요?</div><p>${issues.length ? `표준 6개 항목 중 <u class="ev">${issues.length}개</u>가 허용범위를 벗어났습니다. ${issues.filter(r => r.safety).length ? `특히 안전 항목 <b>${issues.filter(r => r.safety).map(r => SHORT[r.k]).join(', ')}</b>은(는) 다른 교육생보다 나은지와 관계없이 먼저 교정해야 합니다.` : '안전 항목은 모두 범위 안입니다.'}` : '표준 6개 항목이 모두 허용범위 안입니다.'}</p><div class="chips"><code>std.S1</code><code>imu.tilt_max</code><code>imu.neck_exceed</code></div></div>
+        <div class="qbox"><div class="q">Q2 · 같은 조건 교육생 중 나는 어디쯤인가요?</div><p>종합점수는 중앙값(${cm}점) 대비 ${s.total >= cm ? '+' : ''}${s.total - cm}점, <u class="ev">백분위 ${pc}</u>입니다. ${(() => { const p = rows.filter(r => r.pos); if (!p.length) return ''; const b = [...p].sort((a, c) => a.pos.top - c.pos.top)[0], w = [...p].sort((a, c) => c.pos.top - a.pos.top)[0]; return `자세 지표 중 <b>${SHORT[b.k]}</b>는 <u class="ev">${posTxt(b.pos.top)}</u>로 강점이고, <b>${SHORT[w.k]}</b>는 <u class="ev">${posTxt(w.pos.top)}</u>로 같은 조건 교육생 대부분보다 표준에서 멉니다.`; })()}</p><div class="chips"><code>cohort.C-2026-Q3</code><code>cohort.posture_dist</code></div></div>
+        <div class="qbox"><div class="q">Q3 · 지난 실습보다 나아졌나요? 반복되는 실수는?</div><p>${hist.length < 2 ? '첫 실습이라 비교할 이전 기록이 없습니다. 이번 결과를 기준선으로 저장했습니다.' : `${s.attempt}회차 실습입니다. 1회차 대비 종합 <u class="ev">${s.total - first.total >= 0 ? '+' : ''}${s.total - first.total}점</u>. 직전 대비 개선: ${improved.length ? improved.map(k => '<b class="ok">' + SHORT[k] + '</b>').join(', ') : '없음'} · 악화: ${worse.length ? worse.map(k => '<b class="bad">' + SHORT[k] + '</b>').join(', ') : '없음'}. ${persistent.length ? `<b>${persistent.map(k => SHORT[k]).join(', ')}</b>은(는) ${hist.length}회 중 반복해서 표준을 벗어난 <u class="ev">반복 실수</u>로, 이번 재교육 1순위로 배정합니다.` : '반복 실수는 없습니다.'}`}</p><div class="chips"><code>history.${esc(s.user)}</code><code>repeat_error.detect</code></div></div>
+        <div class="qbox"><div class="q" style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap">우선 보완 순서 · 맞춤 재교육 <span class="tag ${simN >= 20 ? 'teal' : 'amber'}">유사사례 ${simN >= 20 ? '기준 충족' : '축적 중'} · ${Math.min(simN, 20)}/20명</span></div>
+          ${prio.length ? prio.slice(0, 3).map((r, i) => `<div class="prio"><b class="n">${i + 1}</b><div><b>${SHORT[r.k]}${persistent.includes(r.k) ? ' — 반복 실수' : ''}${r.safety ? ' (안전)' : ''}</b><p class="muted" style="font-size:12.8px">${prioTxt(r, M)}${r.pos ? ` 코호트 ${posTxt(r.pos.top)}.` : ''}</p></div></div>`).join('') : '<p>보완이 필요한 항목이 없습니다. 다음 실습은 평가모드로 독립 수행을 확인하세요.</p>'}
+          <div class="grid g3" style="margin-top:10px">${recs.map((r, i) => `<div class="rec"><span class="k">추천 ${i + 1} · ${r[1]}분 · ${r[3]}</span><div>${r[0]}</div><p>${r[2]}</p></div>`).join('')}</div>
+          <p class="note" style="margin-top:6px">${simN >= 20 ? '유사사례(같은 조건 반복 실수자)의 재교육 후 개선 기록을 근거로 추천합니다.' : '유사사례가 기준(20명)에 못 미쳐 승인된 교육과정을 근거로 추천합니다.'}</p>
         </div>
       </div>
 
-      <div class="rsec"><h2><span class="no">5</span>다음 체험에서 확인할 것</h2>
-        <div class="grid g3">
-          <div class="card" style="padding:12px"><b>목 지지</b><p class="muted" style="font-size:12.5px">들어올림 6회 중 허용각 초과 0~1회 (안전기준 충족)</p></div>
-          <div class="card" style="padding:12px"><b>${M.burp != null ? '트림' : '울음 반응'}</b><p class="muted" style="font-size:12.5px">${M.burp != null ? '도움 없이 올바른 순서로 완료 · 첫 두드림 25초 이내' : '신호 후 5초 이내 첫 행동'}</p></div>
-          <div class="card" style="padding:12px"><b>독립 수행</b><p class="muted" style="font-size:12.5px">이번 ${s.evs.length}회 중 힌트 없이 ${s.evs.length - s.hintEv}회 → 같은 구성에서 비교</p></div>
-        </div>
-      </div>
-      <div class="prov">근거 정보 · 규칙 R1.0 · 표준 프로파일 S1 · 코호트 C-2026-Q3 (n=240) · 프롬프트 P1.2 · 모델 [상용 LLM API] · ${STAGE_NM[s.stage] || ''} · 생성 ${esc(s.date)} · AI는 판정값을 바꾸지 않으며 교수자 검토 후 발행됩니다 (AI 기본법 투명성 고지)</div>
+      <div class="rsec"><h2><span class="no">5</span>다음 실습 목표 <span class="note" style="font-weight:600">${s.attempt + 1}회차에서 이번 결과와 자동 비교</span></h2>
+        <div class="grid g3">${(prio.length ? prio.slice(0, 3) : rows.filter(r => r.v != null).slice(0, 3)).map(r => `<div class="card" style="padding:12px;box-shadow:none"><b>${SHORT[r.k]}</b><p class="muted" style="font-size:12.5px">이번 ${fmtStd(r.k, r.v)} → 목표 ${r.k === 'gyro' ? '기준 이하' : r.k === 'neck' ? '0~1회' : r.lo + '~' + r.hi + r.unit} (표준 S1)</p></div>`).join('')}</div>
+      </div>`}
+      <div class="prov">근거 정보 · 규칙 R1.0 · 표준 프로파일 S1 · 코호트 C-2026-Q3 (n=240) · 이력 ${esc(s.user)} ${hist.length}회 · 프롬프트 P1.3 · 모델 [상용 LLM API] · 생성 ${esc(s.date)} · AI는 판정값을 바꾸지 않으며 교수자 검토 후 발행 (AI 기본법 투명성 고지)</div>
     </div>`;
+    setTimeout(() => { const u = $('#unlockBtn'); if (u) u.onclick = () => { store.tier = 'ai'; renderers.report(); }; });
+    return html;
   }
   function prioTxt(r, M) {
     switch (r.k) {
-      case 'neck': return `들어올림 ${M.lifts}회 중 ${M.neck}회 머리가 허용각을 넘었습니다. 다른 교육생보다 나은지와 관계없이 안전기준이 먼저입니다.`;
-      case 'tilt': return `들어 올릴 때 머리 기울기가 최대 ${Math.round(M.tilt)}°로 표준(0~20°)을 벗어났습니다. 목 지지와 같은 동작 구간이므로 함께 연습합니다.`;
-      case 'burp': return `첫 두드림까지 ${r1(M.burp)}초 — 표준(10~25초)과 차이가 있습니다. 속도보다 도움 없이 올바른 순서로 하는지를 먼저 확인합니다.`;
-      case 'react': return `울음 후 첫 행동까지 ${r1(M.react)}초 — 표준 2~5초보다 느립니다. 울음 소리 종류별 원인 구분 연습이 도움이 됩니다.`;
-      case 'gyro': return `달래기 중 각속도가 기준을 ${M.gyro}회 넘었습니다. 세게 흔들기는 흔들린아이증후군 위험이 있어 즉시 교정이 필요합니다.`;
-      case 'roll': return `눕힌 자세 롤 ${Math.round(M.roll)}° — 바로 누움(±15°)을 벗어났습니다. 수면 시 반드시 등을 대고 눕힙니다.`;
+      case 'neck': return `들어올림 ${M.lifts}회 중 ${M.neck}회 머리가 허용각을 넘었습니다. 안전기준이 먼저입니다.`;
+      case 'tilt': return `들어 올릴 때 머리 기울기 최대 ${Math.round(M.tilt)}° — 표준(0~20°)을 벗어났습니다. 목 지지와 같은 동작 구간이므로 함께 연습합니다.`;
+      case 'burp': return `첫 두드림까지 ${r1(M.burp)}초 — 표준 10~25초와 차이가 있습니다. 순서를 먼저 확인합니다.`;
+      case 'react': return `울음 후 첫 행동까지 ${r1(M.react)}초 — 표준 2~5초보다 느립니다.`;
+      case 'gyro': return `달래기 중 각속도가 기준을 ${M.gyro}회 넘었습니다(흔들린아이증후군 위험).`;
+      case 'roll': return `눕힌 자세 롤 ${Math.round(M.roll)}° — 바로 누움(±15°)을 벗어났습니다.`;
     }
     return '';
   }
@@ -1227,7 +1314,7 @@
     $('#v-personal').innerHTML = head('⑥ SW · 개인화 (B2C)', '베이비내비 — 우리 아기 맞춤 케어 리포트', '교육 이력(썬베이비) + 접종·검진 일정(공공) + 지역 출산지원 = 맞춤 케어 알림. 개인 구독 서비스의 시연 화면입니다.') + `
     <div class="grid" style="grid-template-columns:minmax(0,360px) 1fr;gap:20px;align-items:start">
       <div class="phone"><div class="pscreen">
-        <div class="phd"><small>베이비내비 · ${esc(PS.region)}</small><h3>써니(가명) · ${age}</h3><small>보호자 ${esc(s.user)} · 교육 ${store.sessions.length + 1}회 이수</small></div>
+        <div class="phd"><small>베이비내비 · ${esc(PS.region)}</small><h3>써니(가명) · ${age}</h3><small>보호자 ${esc(s.user)} · 실습 ${s.attempt}회차</small></div>
         <div class="pcard"><h4>나의 양육역량</h4><div style="display:flex;align-items:center;gap:12px"><div class="big num" style="font-size:34px;color:var(--teal-d)">${s.index}</div><div style="font-size:12px" class="muted">돌봄 ${s.domain.care == null ? '—' : Math.round(s.domain.care)} · 안전 ${s.domain.safe == null ? '—' : Math.round(s.domain.safe)} · 응급 ${s.domain.emer == null ? '—' : Math.round(s.domain.emer)}<br>같은 과정 백분위 ${pctile(s.total)}</div></div></div>
         <div class="pcard"><h4>🔔 오늘의 맞춤 알림</h4>
           ${PS.days >= 0 && PS.days <= 90 && weak.some(w => w.k === 'neck' || w.k === 'tilt') ? `<div class="alert"><div class="ic">🤲</div><div><b>목 지지 주의 시기 (생후 3개월까지)</b><small>실습에서 머리 기울기 ${Math.round(M.tilt)}° — 3분 복습 영상</small></div></div>` : ''}
@@ -1266,7 +1353,105 @@
   };
 
   // =====================================================================
-  //  7. 로드맵 · 고려사항
+  //  7. 구독 모델 — HW 판매(1.0) → 플랫폼 구독(2.0)
+  // =====================================================================
+  const BZ = { units: 60, price: 350, legacy: 150, conv: 30, ai: 60, pro: 20, fee: 80, proFee: 160, renew: 85, free: 1 };
+  function bizCalc() {
+    const yrs = [2027, 2028, 2029, 2030, 2031], ai = BZ.ai / 100, pro = BZ.pro / 100, rn = BZ.renew / 100;
+    const perUnit = ai * BZ.fee + pro * BZ.proFee, mixFee = (ai + pro) ? perUnit / (ai + pro) : 0;
+    return yrs.map((y, i) => {
+      const hw = BZ.units * BZ.price;
+      let sub = 0, subs = 0;
+      for (let k = 0; k <= i; k++) { const age = i - k - BZ.free; if (age >= 0) { const f = Math.pow(rn, age); sub += BZ.units * perUnit * f; subs += BZ.units * (ai + pro) * f; } }
+      const lg = BZ.legacy * BZ.conv / 100 * Math.pow(rn, i); sub += lg * mixFee; subs += lg;
+      return { y, hw, sub: Math.round(sub), subs: Math.round(subs) };
+    });
+  }
+  renderers.biz = function () {
+    const R = bizCalc(), tot1 = R.reduce((a, r) => a + r.hw, 0), tot2 = R.reduce((a, r) => a + r.hw + r.sub, 0), last = R[R.length - 1];
+    const mx = Math.max(...R.map(r => r.hw + r.sub)) * 1.1;
+    const W = 560, H = 230, p = 40, bw = (W - p * 2) / R.length, y = v => H - 28 - v / mx * (H - 50);
+    let chart = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto" font-family="Pretendard,sans-serif">`;
+    [0, .5, 1].forEach(f => { const v = mx * f; chart += `<line x1="${p}" x2="${W - 10}" y1="${y(v)}" y2="${y(v)}" stroke="#eef1f6"/><text x="${p - 6}" y="${y(v) + 4}" text-anchor="end" font-size="10" fill="#9aa3b3">${(v / 10000).toFixed(1)}억</text>`; });
+    R.forEach((r, i) => {
+      const x = p + i * bw + bw * .2, w = bw * .6;
+      chart += `<rect x="${x}" y="${y(r.hw)}" width="${w}" height="${H - 28 - y(r.hw)}" fill="#c9d3e3"/><rect x="${x}" y="${y(r.hw + r.sub)}" width="${w}" height="${y(r.hw) - y(r.hw + r.sub)}" fill="#13a089"/>`;
+      chart += `<text x="${x + w / 2}" y="${y(r.hw + r.sub) - 6}" text-anchor="middle" font-size="10.5" font-weight="800" fill="#0d7a69">${((r.hw + r.sub) / 10000).toFixed(1)}억</text><text x="${x + w / 2}" y="${H - 10}" text-anchor="middle" font-size="11" fill="#3a4456">${r.y}</text>`;
+    });
+    chart += `<polyline points="${R.map((r, i) => (p + i * bw + bw / 2) + ',' + y(r.hw)).join(' ')}" fill="none" stroke="#d13b3b" stroke-width="2" stroke-dasharray="5 4"/>`;
+    chart += `<text x="${W - 10}" y="14" text-anchor="end" font-size="10.5" fill="#13a089" font-weight="700">■ AI 구독(반복)</text><text x="${W - 120}" y="14" text-anchor="end" font-size="10.5" fill="#8a97ad" font-weight="700">■ 본체 판매</text><text x="${W - 210}" y="14" text-anchor="end" font-size="10.5" fill="#d13b3b" font-weight="700">┄ 1.0 (판매만)</text></svg>`;
+    const inp = (k, l, u, min, max, step) => `<label class="f">${l}<div style="display:flex;align-items:center;gap:6px"><input type="range" min="${min}" max="${max}" step="${step}" value="${BZ[k]}" data-bz="${k}"><b class="num" style="min-width:64px;color:var(--ink)" id="bz-${k}">${BZ[k]}${u}</b></div></label>`;
+    const F = [
+      ['아기 로봇 · 센서 13종 · BabyCareCenter 2.0', 1, 1, 1], ['1.0 결과지 (점수 · 등급 · 레이더)', 1, 1, 1], ['오프라인 기본 교육 (AI 장애 시에도)', 1, 1, 1],
+      ['AI Report ① 표준자세 vs 나의 자세', 0, 1, 1], ['AI Report ② 코호트 분포 속 나의 위치', 0, 1, 1], ['AI Report ③ 나의 반복 실습 비교 · 반복 실수 탐지', 0, 1, 1], ['AI 해석 · 맞춤 재교육 추천 · PDF', 0, 1, 1],
+      ['AI Coach 1단계 · 텍스트 (선택형 + Q&A)', 0, 1, 1], ['AI Coach 2단계 · 음성', 0, '옵션', 1], ['AI Coach 3단계 · 개인화 상태모델', 0, '2028~', '2028~'],
+      ['기관 대시보드 · 리포트 검토 · 반 관리', 0, 0, 1], ['기관 통계 Export · 다기관 운영', 0, 0, 1],
+    ];
+    const ck = v => v === 1 ? '<b class="ok">✓</b>' : v === 0 ? '<span class="note">—</span>' : `<span class="tag amber">${v}</span>`;
+    $('#v-biz').innerHTML = head('⑦ 사업 모델', 'HW 판매(1.0) → 플랫폼 구독(2.0)', '한 번 팔고 끝나는 본체 판매에서, 실습할 때마다 가치가 쌓이는 AI Report · AI Coach 연간 구독으로 전환합니다.') + `
+    <div class="grid g2">
+      <div class="card" style="border-top:4px solid #9aa3b3">
+        <div class="eyebrow" style="color:var(--muted)">SUNBABY 1.0 · 현재</div><h2 style="margin:4px 0 10px">HW 판매 모델</h2>
+        <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;font-size:13px"><span class="tag">본체 판매</span>→<span class="tag">실습</span>→<span class="tag">점수 결과지</span>→<span class="tag">끝</span></div>
+        <ul style="margin:12px 0 0 16px;font-size:12.8px;color:var(--ink2);display:flex;flex-direction:column;gap:3px"><li>매출이 판매 시점 1회 · 설치 후 추가 매출 없음</li><li>결과지가 '다음 행동'으로 이어지지 않음</li><li>데이터가 태블릿에 남고 쌓이지 않음</li><li>경쟁: 수입 시뮬레이터(리포트 상용) · 무료 AI 체험</li></ul>
+      </div>
+      <div class="card" style="border-top:4px solid var(--teal)">
+        <div class="eyebrow">SUNBABY 2.0 · 전환</div><h2 style="margin:4px 0 10px">플랫폼 + AI 구독 모델</h2>
+        <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;font-size:13px"><span class="tag">본체</span>+<span class="tag teal">AI Report</span>+<span class="tag teal">AI Coach</span>→<span class="tag navy">표준 모델 데이터</span>→<span class="tag amber">매년 갱신</span></div>
+        <ul style="margin:12px 0 0 16px;font-size:12.8px;color:var(--ink2);display:flex;flex-direction:column;gap:3px"><li>신규 구매 시 AI 1년 포함(예시) → 2년 차부터 연 구독</li><li>기존 설치 고객도 구독 전환 가능 (데이터 인터페이스 호환 확인 후)</li><li>실습할수록 ③ 반복 비교가 깊어져 <b>계속 쓸 이유</b>가 생김</li><li>코호트가 커질수록 ② 비교가 정확해지는 네트워크 효과</li></ul>
+      </div>
+    </div>
+    <div class="card mt">
+      <div class="ch"><h2>구독할수록 가치가 쌓이는 구조</h2><span class="note">AI Report 3대 비교가 구독의 핵심 가치</span></div>
+      <div class="grid g4" style="gap:8px">
+        ${[['🧍', '① 표준 vs 나', '전문가 표준(S1)과 IMU로 자세 차이를 수치화', '표준 모델이 업데이트될수록 정밀'], ['👥', '② 코호트 vs 나', '같은 조건 교육생 분포 속 나의 위치', '설치·실습이 늘수록 n↑ 정확도↑'], ['📈', '③ 반복 vs 현재', '나의 이전 회차와 비교 · 반복 실수 탐지', '실습 횟수가 쌓일수록 가치↑ → 갱신 이유'], ['🤖', 'AI Coach', '약점 → 학습/실습/평가 모드 배정 · 대화형 훈련', '다음 실습을 만들어 사용량↑']].map(([i, t, d, v]) => `<div class="card" style="padding:12px;box-shadow:none"><div style="font-size:22px">${i}</div><b>${t}</b><p class="muted" style="font-size:12.3px">${d}</p><p style="font-size:11.8px;color:var(--teal-d);font-weight:700;margin-top:4px">${v}</p></div>`).join('')}
+      </div>
+      <p class="note" style="margin-top:8px">순환: 실습 → AI Report → 맞춤 재교육(AI Coach) → 재실습 → 반복 비교 → 데이터 축적 → 표준·코호트 고도화 → 구독 갱신</p>
+    </div>
+    <div class="card mt"><h2>제품 3종 · 기능 구성</h2>
+      <div class="tw"><table class="t"><tr><th>기능</th><th>BASIC</th><th>AI <span class="tag teal">주력</span></th><th>AI PRO</th></tr>
+        ${F.map(f => `<tr><td>${f[0]}</td><td>${ck(f[1])}</td><td>${ck(f[2])}</td><td>${ck(f[3])}</td></tr>`).join('')}
+        <tr><td><b>과금</b></td><td>본체 1회 구매</td><td>본체 + 연 구독 (대당)</td><td>본체 + 연 구독 (기관)</td></tr>
+        <tr><td><b>대상</b></td><td class="note">학교·교육기관 · AI 미도입</td><td class="note">AI 교육 도입 기관</td><td class="note">보건소 · 대학 · 기업 · 교육청</td></tr>
+      </table></div>
+      <p class="note" style="margin-top:6px">시연: AI Report 화면 상단 <b>BASIC (1.0) / AI 구독 (2.0)</b> 전환으로 같은 실습의 결과물 차이를 비교 · <a href="#report" data-go="report">AI Report 열기 →</a></p>
+    </div>
+    <div class="card mt">
+      <div class="ch"><h2>매출 구조 시뮬레이션 (5년)</h2><span class="tag amber">모든 값은 예시 가정 · 가격 미정 (2026 Q4 가격 패키지 과제)</span></div>
+      <div class="grid" style="grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:18px;align-items:start">
+        <div class="grid" style="gap:10px">
+          ${inp('units', '연간 신규 판매 대수', '대', 10, 300, 10)}${inp('price', '본체 단가', '만원', 100, 800, 10)}${inp('legacy', '기존 설치 대수 (1.0)', '대', 0, 600, 10)}${inp('conv', '기존 설치 구독 전환율', '%', 0, 100, 5)}
+          ${inp('ai', '신규 중 AI 선택 비율', '%', 0, 100, 5)}${inp('pro', '신규 중 AI PRO 비율', '%', 0, 100, 5)}${inp('fee', 'AI 구독료 (대당 연)', '만원', 20, 300, 10)}${inp('proFee', 'AI PRO 구독료 (대당 연)', '만원', 40, 500, 10)}${inp('renew', '연 갱신율', '%', 50, 100, 1)}
+          <label class="f">신규 구매 시 AI 포함 기간<div class="seg" id="bzFree"><button data-v="0" class="${BZ.free === 0 ? 'on' : ''}">없음</button><button data-v="1" class="${BZ.free === 1 ? 'on' : ''}">1년 포함</button></div></label>
+        </div>
+        <div>
+          ${chart}
+          <div class="grid g4" style="gap:8px;margin-top:8px">
+            <div class="card kpi" style="padding:10px;box-shadow:none"><div class="l">5년 누적 · 1.0</div><div class="v num" style="font-size:20px">${(tot1 / 10000).toFixed(1)}억</div></div>
+            <div class="card kpi" style="padding:10px;box-shadow:none"><div class="l">5년 누적 · 2.0</div><div class="v num" style="font-size:20px;color:var(--teal-d)">${(tot2 / 10000).toFixed(1)}억</div><div class="d">+${tot1 ? Math.round((tot2 / tot1 - 1) * 100) : 0}%</div></div>
+            <div class="card kpi" style="padding:10px;box-shadow:none"><div class="l">${last.y} 반복매출 비중</div><div class="v num" style="font-size:20px">${Math.round(last.sub / (last.hw + last.sub) * 100)}%</div></div>
+            <div class="card kpi" style="padding:10px;box-shadow:none"><div class="l">${last.y} 구독 대수 · ARR</div><div class="v num" style="font-size:20px">${fmtN(last.subs)}대</div><div class="d">${(last.sub / 10000).toFixed(1)}억/년</div></div>
+          </div>
+          <div class="tw" style="margin-top:8px"><table class="t"><tr><th>연도</th>${R.map(r => `<th>${r.y}</th>`).join('')}</tr>
+            <tr><td>본체 판매</td>${R.map(r => `<td class="num">${(r.hw / 10000).toFixed(1)}억</td>`).join('')}</tr>
+            <tr><td>AI 구독</td>${R.map(r => `<td class="num ok">${(r.sub / 10000).toFixed(1)}억</td>`).join('')}</tr>
+            <tr><td>구독 대수</td>${R.map(r => `<td class="num">${fmtN(r.subs)}</td>`).join('')}</tr></table></div>
+          <p class="note" style="margin-top:6px">교육(TOT·강사) 매출과 B2G(CareGraph 지자체 구독) · B2C(베이비내비) 매출은 제외 · 기존 설치 전환은 2027년 일괄 가정</p>
+        </div>
+      </div>
+    </div>
+    <div class="grid g3 mt">
+      ${[['1 Hardware', '본체 판매', '1.0과 동일 · 신생아형 외관 개선'], ['2 Recurring', 'AI Report · AI Coach 연 구독', '2.0 전환의 핵심 · 매년 갱신'], ['3 Data & Platform', '기관 라이선스 · B2G 대시보드 · B2C', '표준 모델 데이터 기반 확장']].map(([a, b, c]) => `<div class="card"><b>${a}</b><p style="font-size:13px;margin-top:4px">${b}</p><p class="note">${c}</p></div>`).join('')}
+    </div>`;
+    $$('#v-biz [data-bz]').forEach(el => {
+      el.addEventListener('input', e => { $('#bz-' + el.dataset.bz).textContent = e.target.value + ($('#bz-' + el.dataset.bz).textContent.replace(/[\d.]/g, '')); });
+      el.addEventListener('change', e => { BZ[el.dataset.bz] = +e.target.value; renderers.biz(); });
+    });
+    $$('#bzFree button').forEach(b => b.addEventListener('click', () => { BZ.free = +b.dataset.v; renderers.biz(); }));
+  };
+
+  // =====================================================================
+  //  8. 로드맵 · 고려사항
   // =====================================================================
   renderers.roadmap = function () {
     const cols = ['2026 Q4', '2027 H1', '2027 H2', '2028', '2029', '장기'];
@@ -1289,7 +1474,7 @@
       ['통계 · 근거', ['코호트 n ≥ 30 미만 비교 보류', '유사사례 추천 n ≥ 20 기준', '사고 감소·비용 회피 모형은 시범사업 데이터로 검증', "'전국 최초' 등 대외 표현 근거 확보"]],
       ['사업 · 조달', ['BASIC · AI · AI PRO 가격 패키지 · AI 포함 기간', 'B2G: 디지털서비스 전문계약 / 정보화 용역', '예산 경로: 보건사업비 · 정보화 · 저출생 대응', '공공데이터 이용약관 · 갱신 주기 SLA']],
     ];
-    $('#v-roadmap').innerHTML = head('⑦ 계획', '개발 로드맵 · 고려사항', 'SUNBABY 1.0 → 2.0(AI Report · AI Coach) → AI 육아돌봄 데이터 플랫폼. 개발 기간 기준: AI Report MVP 약 3개월 + AI Coach 추가 2~3개월.') + `
+    $('#v-roadmap').innerHTML = head('⑧ 계획', '개발 로드맵 · 고려사항', 'SUNBABY 1.0 → 2.0(AI Report · AI Coach) → AI 육아돌봄 데이터 플랫폼. 개발 기간 기준: AI Report MVP 약 3개월 + AI Coach 추가 2~3개월.') + `
     <div class="card">${gantt}<p class="note" style="margin-top:8px">※ AI 관련 일정은 계획이며 검증 실적 아님 · 음성 Coach 도입 시점은 1안(2027 베타) / 2안(P3 유지) 결정 필요</p></div>
     <div class="grid g3 mt">
       ${[['COACH 1단계 · 2027', '#b9791a', '텍스트 멘토', ['선택형 대화 + 짧은 텍스트 Q&A', '학습 · 실습 · 평가 3모드', '단계별 힌트 (질문 → 방향 → 구체)', '교육 콘텐츠 RAG 범위 제한', '오프라인 폴백 · 사전 탑재 안내'], '시뮬레이터 Coach 탭 "1 텍스트"'],
@@ -1324,8 +1509,13 @@
   // =====================================================================
   //  초기화
   // =====================================================================
-  store.base = headless({ course: 'demo', mode: 'practice', level: 2, persona: 'novice', stage: 1, temper: 'normal', label: 'DEMO-002', user: 'L-0412' }, 20261124);
-  store.base.who = '첫 체험 실습자 (예시)';
+  // L-0412의 이전 실습 이력 3회 (반복 실습 비교용 예시)
+  [['novice', 20260908, '2026-09-08 10:20', 'learn'], ['novice', 20260922, '2026-09-22 14:05', 'practice'], ['normal', 20261006, '2026-10-06 09:40', 'practice']].forEach(([p, seed, date, mode], i) => {
+    const x = headless({ course: 'demo', mode, level: 2, persona: p, stage: 1, temper: 'normal', label: `DEMO-00${i + 1}`, user: 'L-0412' }, seed);
+    Object.assign(x, { attempt: i + 1, date, who: `${PERSONAS[p].name} (예시 이력)` });
+    store.series.push(x);
+  });
+  store.base = store.series[store.series.length - 1];
   sessSeq = 0;
   lakeTxt();
   const start = (location.hash || '').slice(1);
