@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Re:SELF 돌아봄 · 사업 소개</title>
+<meta name="description" content="AI 기반 학교폭력 가해학생 자기성찰 · 행동변화 및 특별교육 이행관리 플랫폼 Re:SELF의 사업모델 소개.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+  :root{
+    --main:#1F5C78; --main-d:#123E53; --main-l:#E6F0F4; --main-r:#C3DAE4;
+    --accent:#D9822B; --accent-l:#FBEEDF;
+    --ink:#1A2230; --ink2:#38414F; --muted:#677184; --faint:#9AA2B1;
+    --line:#E3E7EC; --bg:#F6F7F9; --panel:#fff;
+    --green:#2E7D52; --green-l:#E4F1E9; --rose:#B24A46; --rose-l:#F8E7E5;
+    --shadow:0 1px 2px rgba(15,30,45,.05),0 10px 28px rgba(15,30,45,.07);
+    --r:16px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{color:var(--ink);background:var(--bg);
+    font-family:"Pretendard","Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased;letter-spacing:-.012em;line-height:1.6}
+  a{color:inherit}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+  .num{font-variant-numeric:tabular-nums}
+
+  /* nav */
+  header.nav{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  header.nav .wrap{display:flex;align-items:center;gap:18px;height:60px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:900;font-size:17px;letter-spacing:-.03em;text-decoration:none}
+  .brand .mk{width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,var(--main),#3B8AA8);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900}
+  .brand small{font-weight:700;color:var(--muted);font-size:13px}
+  .links{display:flex;gap:4px;margin-left:auto}
+  .links a{font-size:13.5px;font-weight:700;color:var(--ink2);text-decoration:none;padding:7px 10px;border-radius:8px}
+  .links a:hover{background:var(--bg)}
+  .cta{font-size:13.5px;font-weight:800;color:#fff;background:var(--main);text-decoration:none;padding:9px 16px;border-radius:999px;white-space:nowrap}
+  .cta:hover{background:var(--main-d)}
+  @media(max-width:900px){.links{display:none}.brand small{display:none}header.nav .cta{margin-left:auto}}
+
+  /* hero */
+  .hero{background:radial-gradient(900px 420px at 85% -10%,rgba(59,138,168,.18),transparent 60%),radial-gradient(700px 380px at 0% 10%,rgba(217,130,43,.10),transparent 60%),#fff;border-bottom:1px solid var(--line)}
+  .hero .wrap{padding:72px 20px 64px;display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center}
+  .eyebrow{display:inline-flex;gap:8px;align-items:center;font-size:12.5px;font-weight:800;color:var(--main);background:var(--main-l);border:1px solid var(--main-r);padding:5px 12px;border-radius:999px;letter-spacing:.02em}
+  h1{font-size:46px;line-height:1.18;letter-spacing:-.04em;margin:18px 0 14px;font-weight:900}
+  h1 em{font-style:normal;color:var(--main)}
+  .lead{font-size:17.5px;color:var(--ink2);max-width:560px}
+  .quote{margin-top:22px;padding:14px 18px;border-left:3px solid var(--accent);background:var(--accent-l);border-radius:0 12px 12px 0;font-weight:700;color:#7A4A15;font-size:15px}
+  .hero-btns{display:flex;gap:10px;margin-top:26px;flex-wrap:wrap}
+  .btn{display:inline-flex;align-items:center;gap:8px;font-weight:800;font-size:15px;padding:13px 20px;border-radius:12px;text-decoration:none;border:1px solid transparent}
+  .btn.p{background:var(--main);color:#fff}.btn.p:hover{background:var(--main-d)}
+  .btn.s{background:#fff;border-color:var(--line);color:var(--ink)}.btn.s:hover{border-color:var(--main-r)}
+  .shift{background:#fff;border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:22px}
+  .shift h4{font-size:12px;letter-spacing:.08em;color:var(--faint);font-weight:800;margin-bottom:12px}
+  .flow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:13px;font-weight:700}
+  .flow span{padding:6px 10px;border-radius:8px;background:var(--bg);color:var(--ink2)}
+  .flow i{font-style:normal;color:var(--faint)}
+  .flow.new span{background:var(--main-l);color:var(--main-d)}
+  .flow span.end{background:var(--rose-l);color:var(--rose)}
+  .flow.new span.hl{background:var(--main);color:#fff}
+  .shift .lbl{font-size:12.5px;font-weight:800;margin:14px 0 8px;color:var(--muted)}
+  .shift .lbl.b{color:var(--main)}
+  @media(max-width:900px){.hero .wrap{grid-template-columns:1fr;padding:48px 20px}h1{font-size:34px}}
+
+  section{padding:76px 0;border-bottom:1px solid var(--line)}
+  section.alt{background:#fff}
+  .sh{margin-bottom:34px;max-width:760px}
+  .sh .tag{font-size:12.5px;font-weight:800;color:var(--accent);letter-spacing:.06em}
+  .sh h2{font-size:32px;letter-spacing:-.035em;line-height:1.25;margin:8px 0 10px;font-weight:900}
+  .sh p{color:var(--muted);font-size:16px}
+  @media(max-width:700px){.sh h2{font-size:25px}section{padding:56px 0}}
+
+  .grid{display:grid;gap:16px}
+  .g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+  @media(max-width:900px){.g3,.g4{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:620px){.g2,.g3,.g4{grid-template-columns:1fr}}
+  .card{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:22px;box-shadow:var(--shadow)}
+  section.alt .card{background:var(--bg);box-shadow:none}
+  .card .k{font-size:12px;font-weight:800;color:var(--main);letter-spacing:.06em}
+  .card h3{font-size:18.5px;letter-spacing:-.025em;margin:6px 0 8px;font-weight:850}
+  .card p,.card li{font-size:14.5px;color:var(--ink2)}
+  .card ul{padding-left:18px}.card li{margin:3px 0}
+  .card .note{font-size:12.5px;color:var(--muted);margin-top:10px}
+
+  /* 4W summary */
+  .w4 .card .big{font-size:28px;font-weight:900;color:var(--main);letter-spacing:-.04em}
+
+  /* business model */
+  .bm{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  @media(max-width:900px){.bm{grid-template-columns:1fr}}
+  .bm .card{border-top:4px solid var(--main)}
+  .bm .card:nth-child(2){border-top-color:#3B8AA8}
+  .bm .card:nth-child(3){border-top-color:var(--accent)}
+  .rev{display:flex;flex-direction:column;gap:8px;margin-top:6px}
+  .rev div{display:flex;justify-content:space-between;gap:10px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:14px}
+  .rev b{color:var(--main-d);white-space:nowrap}
+  .defn{margin-top:18px;background:var(--main-d);color:#fff;border-radius:var(--r);padding:26px 28px}
+  .defn .k{font-size:12px;font-weight:800;letter-spacing:.08em;color:#9CC6D8}
+  .defn p.t{font-size:22px;font-weight:850;letter-spacing:-.03em;margin:6px 0}
+  .defn p.s{color:#CFE2EA;font-size:15px}
+
+  /* calculator */
+  .calc{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  @media(max-width:900px){.calc{grid-template-columns:1fr}}
+  .ctl{display:flex;flex-direction:column;gap:16px}
+  .ctl label{display:block;font-size:13.5px;font-weight:800;color:var(--ink2)}
+  .ctl .row{display:flex;justify-content:space-between;align-items:baseline}
+  .ctl .row b{font-size:15px;color:var(--main-d)}
+  .ctl input[type=range]{width:100%;accent-color:var(--main);margin-top:6px}
+  .scn{display:flex;gap:6px;flex-wrap:wrap}
+  .scn button{font-family:inherit;font-size:13px;font-weight:800;border:1px solid var(--line);background:#fff;padding:8px 12px;border-radius:999px;cursor:pointer;color:var(--ink2)}
+  .scn button.on{background:var(--main);border-color:var(--main);color:#fff}
+  .out .tot{font-size:40px;font-weight:900;letter-spacing:-.04em;color:var(--main-d)}
+  .bar{height:14px;border-radius:7px;background:var(--bg);display:flex;overflow:hidden;margin:14px 0 10px}
+  .bar i{display:block;height:100%}
+  .legend{display:flex;flex-direction:column;gap:6px;font-size:14px}
+  .legend div{display:flex;justify-content:space-between;gap:8px}
+  .legend span{display:inline-flex;align-items:center;gap:8px}
+  .legend s{display:inline-block;width:10px;height:10px;border-radius:3px;text-decoration:none}
+
+  /* table */
+  .tbl{width:100%;border-collapse:collapse;font-size:14px;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  .tbl th,.tbl td{padding:11px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+  .tbl th{background:var(--bg);font-size:12.5px;color:var(--muted);font-weight:800}
+  .tbl tr:last-child td{border-bottom:0}
+  .tbl td.hl{color:var(--main-d);font-weight:800}
+  .tblwrap{overflow-x:auto}
+  .pill{display:inline-block;font-size:12px;font-weight:800;padding:2px 9px;border-radius:999px;background:var(--main-l);color:var(--main-d)}
+  .pill.a{background:var(--accent-l);color:#8A5114}
+  .pill.r{background:var(--rose-l);color:var(--rose)}
+  .pill.g{background:var(--green-l);color:var(--green)}
+
+  /* layers */
+  .layer .card{position:relative;padding-top:30px}
+  .layer .n{position:absolute;top:-12px;left:20px;font-size:12px;font-weight:900;background:var(--main);color:#fff;padding:4px 10px;border-radius:999px}
+
+  /* timeline */
+  .tl{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+  @media(max-width:900px){.tl{grid-template-columns:1fr}}
+  .tl .st{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px}
+  .tl .st .h{font-size:12px;font-weight:900;color:var(--accent)}
+  .tl .st h4{font-size:16px;margin:4px 0 6px}
+  .tl .st p{font-size:13.5px;color:var(--ink2)}
+  .tl .st .time{font-size:12.5px;color:var(--muted);margin-top:8px;font-weight:700}
+
+  /* modules */
+  .mods{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}
+  @media(max-width:900px){.mods{grid-template-columns:repeat(2,1fr)}}
+  .mod{border-radius:12px;padding:12px;border:1px solid var(--line);background:#fff;font-size:13px}
+  .mod b{display:block;font-size:15px}
+  .mod.on{background:var(--main-l);border-color:var(--main-r)}
+  .mod.off{background:var(--accent-l);border-color:#EED3B3}
+  .mod .t{color:var(--muted);font-weight:700}
+  .tracks{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+  .tracks button{font-family:inherit;font-size:13px;font-weight:800;border:1px solid var(--line);background:#fff;padding:8px 12px;border-radius:999px;cursor:pointer}
+  .tracks button.on{background:var(--main);color:#fff;border-color:var(--main)}
+  .mod.dim{opacity:.28}
+
+  /* market */
+  .mk{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  @media(max-width:900px){.mk{grid-template-columns:1fr}}
+  .mk .card .v{font-size:34px;font-weight:900;color:var(--main-d);letter-spacing:-.04em}
+
+  /* roadmap */
+  .rm .card .k{color:var(--accent)}
+
+  .demo-cta{background:linear-gradient(135deg,var(--main-d),var(--main));color:#fff;border-radius:22px;padding:40px;display:flex;justify-content:space-between;gap:24px;align-items:center;flex-wrap:wrap}
+  .demo-cta h3{font-size:26px;letter-spacing:-.03em}
+  .demo-cta p{color:#CFE2EA;margin-top:6px}
+  .demo-cta .btn{background:#fff;color:var(--main-d)}
+  footer{padding:30px 0 50px;color:var(--muted);font-size:13px}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top"><span class="mk">Re</span>Re:SELF <small>돌아봄</small></a>
+    <nav class="links">
+      <a href="#summary">요약</a>
+      <a href="#model">사업모델</a>
+      <a href="#problem">문제</a>
+      <a href="#solution">솔루션</a>
+      <a href="#program">프로그램</a>
+      <a href="#market">시장</a>
+      <a href="#roadmap">로드맵</a>
+    </nav>
+    <a class="cta" href="demo/">데모 시연 →</a>
+  </div>
+</header>
+
+<div class="hero" id="top">
+  <div class="wrap">
+    <div>
+      <span class="eyebrow">AI EDUTECH · 학교폭력 회복교육</span>
+      <h1>학교폭력 특별교육,<br><em>이수</em>에서 <em>변화</em>로.</h1>
+      <p class="lead">Re:SELF 돌아봄은 학교폭력 가해학생의 자기성찰 · 행동변화와 특별교육 이행관리를 하나로 묶은 AI 기반 플랫폼입니다. 법으로 이미 정해진 특별교육을 표준 프로그램과 이행관리 데이터로 바꿉니다.</p>
+      <p class="quote">“AI는 성찰을 대신하지 않는다. 성찰을 구조화하고, 기록하고, 추적한다.”</p>
+      <div class="hero-btns">
+        <a class="btn p" href="demo/">▶ 인터랙티브 데모 보기</a>
+        <a class="btn s" href="#model">사업모델 살펴보기</a>
+      </div>
+    </div>
+    <div class="shift">
+      <h4>KEY SHIFT · 핵심 전환</h4>
+      <div class="lbl">기존</div>
+      <div class="flow"><span>사건 발생</span><i>→</i><span>심의</span><i>→</i><span>조치</span><i>→</i><span>이수 확인</span><i>→</i><span class="end">종료 (변화 미확인)</span></div>
+      <div class="lbl b">Re:SELF</div>
+      <div class="flow new"><span>사건 발생</span><i>→</i><span>심의</span><i>→</i><span class="hl">자기성찰 교육과정</span><i>→</i><span class="hl">학생 승인 산출물</span><i>→</i><span class="hl">4·8주 추적</span><i>→</i><span>데이터 축적</span></div>
+    </div>
+  </div>
+</div>
+
+<section id="summary">
+  <div class="wrap">
+    <div class="sh"><div class="tag">SUMMARY · 한 장 요약</div><h2>무엇을, 왜, 어떻게, 누구에게</h2></div>
+    <div class="grid g4 w4">
+      <div class="card"><div class="k">WHAT · 무엇을</div><h3>특별교육의 표준화</h3><p>가해학생 특별교육을 AI 기반 표준 교육과정으로 전환하고, 조치 이행관리 플랫폼을 함께 제공합니다.</p></div>
+      <div class="card"><div class="k">WHY · 왜</div><h3>조치 이후가 비어 있다</h3><p>훈계·강의 중심 교육은 효과가 약하고, 조치 이후 변화를 추적하는 체계가 없습니다. 교사 행정부담과 학부모 불복은 커지고 있습니다.</p></div>
+      <div class="card"><div class="k">HOW · 어떻게</div><h3>표준 모듈 + MIRROR + 대시보드</h3><p>PRE / LIGHT / CORE / INTENSIVE 표준 모듈, 학생앱 MIRROR, 교육청 이행관리 대시보드로 구성됩니다.</p></div>
+      <div class="card"><div class="k">WHO · 누구에게</div><h3>제17조 특별교육 대상</h3><p>「학교폭력예방법」 제17조에 따른 특별교육·심리치료 대상 가해학생과 보호자. 1차 시범은 5호 조치 학생과 보호자입니다.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="alt" id="model">
+  <div class="wrap">
+    <div class="sh"><div class="tag">BUSINESS MODEL · 사업모델</div><h2>수요를 만들 필요가 없다.<br>이미 법으로 발생한다.</h2><p>장비나 강의 한 번을 파는 것이 아니라, 특별교육 프로그램 전체를 공급합니다.</p></div>
+    <div class="bm">
+      <div class="card">
+        <div class="k">무엇을 파는가</div>
+        <h3>특별교육 운영 솔루션</h3>
+        <ul>
+          <li>표준 교육 프로그램 (PRE · LIGHT · CORE · INTENSIVE · PARENTs)</li>
+          <li>학생 성찰 앱 <b>MIRROR</b></li>
+          <li>교사 이행관리 대시보드</li>
+          <li>「나와 나의 대화」 보고서 · 4·8주 사후추적</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="k">누가 사고 누가 쓰는가</div>
+        <h3>구매자와 사용자가 다르다</h3>
+        <div class="rev">
+          <div><span>구매</span><b>교육청 · 교육지원청 · 지정 특별교육기관</b></div>
+          <div><span>사용</span><b>학생 · 보호자 · 담당교사 · 강사</b></div>
+          <div><span>예산</span><b>학폭 특별교육 · 회복적 생활교육</b></div>
+          <div><span>결정</span><b>심의위원회 조치 → 대상 발생</b></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="k">어떻게 버는가</div>
+        <h3>3개의 매출축 · 반복 매출</h3>
+        <div class="rev">
+          <div><span>① 프로그램 운영비</span><b>1인당 15~30만원</b></div>
+          <div><span>② 플랫폼 연간 이용료</span><b>기관당 500~1,000만원</b></div>
+          <div><span>③ 강사 인증 · 라이선스</span><b>확산 단계</b></div>
+        </div>
+        <p class="note">사후추적 · 재교육으로 반복 매출이 발생합니다. 1회성 납품이 아닙니다.</p>
+      </div>
+    </div>
+    <div class="defn">
+      <div class="k">사업의 한 줄 정의</div>
+      <p class="t">이미 법으로 의무화된 특별교육을, 표준 프로그램과 이행관리 데이터로 대체한다.</p>
+      <p class="s">새로운 수요를 만드는 사업이 아니라, 이미 집행되고 있는 예산의 집행 방식을 바꾸는 사업입니다.</p>
+    </div>
+
+    <div class="sh" style="margin-top:56px"><div class="tag">REVENUE SIMULATOR</div><h2>매출 시뮬레이터</h2><p>시나리오를 고르거나 값을 조정해 연간 매출 구조를 확인해 보세요. (사업계획서 단가 기준 추정)</p></div>
+    <div class="calc">
+      <div class="card ctl">
+        <div class="scn" id="scn">
+          <button data-s="0" class="on">충남 시범</button>
+          <button data-s="1">충남 확대</button>
+          <button data-s="2">전국 확산</button>
+        </div>
+        <div><div class="row"><label>연간 조치 학생 수 (참여)</label><b class="num" id="vStu"></b></div><input type="range" id="stu" min="50" max="15000" step="50"></div>
+        <div><div class="row"><label>1인당 프로그램 운영비</label><b class="num" id="vPrice"></b></div><input type="range" id="price" min="15" max="30" step="1"></div>
+        <div><div class="row"><label>플랫폼 이용 기관 수</label><b class="num" id="vOrg"></b></div><input type="range" id="org" min="0" max="200" step="1"></div>
+        <div><div class="row"><label>기관당 연간 이용료</label><b class="num" id="vFee"></b></div><input type="range" id="fee" min="500" max="1000" step="50"></div>
+        <div><div class="row"><label>보호자 동반 이수율 (PARENTs)</label><b class="num" id="vPar"></b></div><input type="range" id="par" min="0" max="100" step="5"></div>
+      </div>
+      <div class="card out">
+        <div class="k">예상 연간 매출</div>
+        <div class="tot num" id="tot"></div>
+        <div class="bar" id="bar"></div>
+        <div class="legend" id="lg"></div>
+        <p class="note">※ 보호자 과정 단가는 학생 단가의 40%로 가정했습니다. 강사 인증 · 라이선스는 확산 단계 매출로 계산에서 제외했습니다. TAM은 매출이 아니라 시장 규모이며, 실제 점유율은 도입 속도에 따라 결정됩니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="problem">
+  <div class="wrap">
+    <div class="sh"><div class="tag">PART 01 · 문제 정의</div><h2>교육은 이수되지만,<br>변화는 확인되지 않는다</h2><p>학교 현장의 3중 딜레마. Re:SELF는 이 셋을 ‘조치 이후가 비어 있다’는 하나의 구조적 공백으로 봅니다.</p></div>
+    <div class="grid g3">
+      <div class="card"><div class="k">01</div><h3>교원 업무 · 민원 부담</h3><p>사안 조사 · 조치 이행관리 · 결과 보고가 교사에게 집중됩니다. 민원과 불복에 개인이 노출되면서 학교는 형식적 처리로 후퇴합니다.</p><p class="note">교사 1인당 학폭 이행관리 월 평균 8~15시간 (현장 조사 기준)</p></div>
+      <div class="card"><div class="k">02</div><h3>학생 인권</h3><p>가해학생도 교육 대상이라는 원칙과 실제 운영 사이의 간극이 큽니다. 낙인은 남고 변화는 없는 교육은 재발도 막지 못합니다.</p></div>
+      <div class="card"><div class="k">03</div><h3>보호자 저항</h3><p>정보 비대칭과 낙인감이 “우리 애 말은 안 들어줬다”로 이어집니다. 학교가 하는 말은 설득력을 갖기 어렵습니다.</p></div>
+    </div>
+    <div class="tblwrap" style="margin-top:26px">
+      <table class="tbl">
+        <thead><tr><th>영역</th><th>요구 (What they want)</th><th>현실 (What they get)</th><th>Gap</th></tr></thead>
+        <tbody>
+          <tr><td><b>콘텐츠</b></td><td>체험형 · 회복적 교육</td><td>이론 · 훈계 중심 강의</td><td><span class="pill r">큼</span></td></tr>
+          <tr><td><b>효과</b></td><td>생명존중 · 공감 형성</td><td>처벌 이행 확인 위주</td><td><span class="pill r">큼</span></td></tr>
+          <tr><td><b>사후</b></td><td>재발 방지 실효성</td><td>조치 종료 후 추적 없음</td><td><span class="pill r">큼</span></td></tr>
+          <tr><td><b>데이터</b></td><td>성과 기반 예산 근거</td><td>정성적 서술 보고서</td><td><span class="pill a">중</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="sh" style="margin-top:46px"><h2 style="font-size:24px">이해관계자 4자의 이해는 충돌하지 않는다</h2><p>모두 ‘같은 일이 다시 일어나지 않는 것’을 원합니다.</p></div>
+    <div class="tblwrap">
+      <table class="tbl">
+        <thead><tr><th>대상</th><th>원하는 것</th><th>현재의 장벽</th><th>Re:SELF가 제공하는 것</th></tr></thead>
+        <tbody>
+          <tr><td><b>학생</b></td><td>낙인 없이 학교로 돌아가고 싶다</td><td>훈계로 느껴지는 교육엔 마음을 열지 않는다</td><td class="hl">본인 언어로 말하고, 스스로 승인한 계획만 남는 구조</td></tr>
+          <tr><td><b>학교 · 교사</b></td><td>정확히 처리하고 민원에서 보호받고 싶다</td><td>조사 · 이행관리 · 보고가 개인 업무로 쌓인다</td><td class="hl">이행 로그 자동 기록 · 보고서 자동 생성</td></tr>
+          <tr><td><b>보호자</b></td><td>아이가 부당하게 처리되지 않기를</td><td>정보 비대칭과 낙인감 → 불복</td><td class="hl">자녀 승인 산출물 기반 소통 · 야간/비대면 이수</td></tr>
+          <tr><td><b>교육청</b></td><td>정책 효과를 숫자로 설명해야 한다</td><td>표준 KPI가 없어 예산 근거가 없다</td><td class="hl">이수율 · 재조치 여부 · 보호자 이수율 표준 지표</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="alt" id="solution">
+  <div class="wrap">
+    <div class="sh"><div class="tag">PART 02 · 솔루션</div><h2>AI Companion이 아니라<br>통제된 교육도구</h2><p>‘미성년자 × 자유형 AI 대화 × 정서적 주제’는 지금 규제가 가장 강하게 반대하는 조합입니다. Re:SELF는 교육 목적 · 세션 시간 · 인간 감독이 모두 통제된 학교 운영 교육도구입니다.</p></div>
+    <div class="grid g4" style="grid-template-columns:repeat(5,1fr)" id="principles">
+      <div class="card"><div class="k">원칙 1</div><h3>교육 목적 제한</h3><p>정해진 모듈 안에서만 분기. 자유대화 금지.</p></div>
+      <div class="card"><div class="k">원칙 2</div><h3>세션 제한</h3><p>교육기간 · 지정 세션에만 접근. 24시간 접근 불가.</p></div>
+      <div class="card"><div class="k">원칙 3</div><h3>학교 계정</h3><p>개인 가입 없음. 교사 발급 1회용 코드만 유효.</p></div>
+      <div class="card"><div class="k">원칙 4</div><h3>인간 감독</h3><p>교사 배석. 위기 발화는 즉시 교사에게 전달.</p></div>
+      <div class="card"><div class="k">원칙 5</div><h3>AI 판정 금지</h3><p>성격 · 위험도 진단 없음. 질문으로만 구조화.</p></div>
+    </div>
+    <style>@media(max-width:900px){#principles{grid-template-columns:repeat(2,1fr)!important}}@media(max-width:620px){#principles{grid-template-columns:1fr!important}}</style>
+
+    <div class="grid g3 layer" style="margin-top:40px">
+      <div class="card"><span class="n">LAYER 1</span><h3>MIRROR · 학생 성찰 앱</h3><ul><li>낙인 없는 중립 UI — 화면만 봐서는 용도를 알 수 없다</li><li>사건 돌아보기 · 입장 바꾸기 · 행동 리허설 · 재발방지 계획</li><li>교육 종료 시 학생이 직접 삭제 버튼을 누른다</li></ul></div>
+      <div class="card"><span class="n">LAYER 2</span><h3>Re:SELF 교육과정</h3><ul><li>PRE / LIGHT / CORE / INTENSIVE 4개 트랙</li><li>온라인 성찰 세션 + 오프라인 실습 혼합</li><li>심의위원회가 정한 시간에 맞춰 모듈 조합</li><li>강사 매뉴얼 · 표준 커리큘럼 동반</li></ul></div>
+      <div class="card"><span class="n">LAYER 3</span><h3>이행관리 대시보드</h3><ul><li>조치별 이수 진행률 · 보호자 동반 이수 현황</li><li>이수확인서 · 이행 증빙 자동 생성</li><li>4주 · 8주 추적 자동 알림</li><li>비식별 통계만 상급기관으로 집계</li></ul></div>
+    </div>
+
+    <div class="sh" style="margin-top:50px"><h2 style="font-size:24px">데이터 원칙 : Create → Reflect → Report → Destroy</h2><p>미성년자 · 학교폭력이라는 민감 맥락에서 개인정보 설계는 부가기능이 아니라 핵심 경쟁력입니다.</p></div>
+    <div class="grid g4">
+      <div class="card"><div class="k">CREATE · 생성</div><ul><li>학생이 고른 자료만 최소 수집</li><li>제3자 정보 자동 마스킹</li><li>원본과 성찰 프로필 분리 저장</li></ul></div>
+      <div class="card"><div class="k">REFLECT · 성찰</div><ul><li>교육기간에만 유효한 계정</li><li>대화 기록 암호화 · 권한 분리</li><li>교사에게 원문 전체 비공개</li></ul></div>
+      <div class="card"><div class="k">REPORT · 산출</div><ul><li>학생이 승인한 내용만 기록</li><li>학생 작성 / 학생 승인 / AI 요약 구분 표기</li><li>징계 · 사실판단 자료 사용 금지</li></ul></div>
+      <div class="card"><div class="k">DESTROY · 폐기</div><ul><li>사진 · 원본 · 대화원문 삭제</li><li>학생이 직접 누르는 삭제 의식</li><li>비식별 교육효과 통계만 잔존</li></ul></div>
+    </div>
+    <p class="quote" style="margin-top:22px">“앞으로 나는 필요하지 않을 수도 있다. 우리가 만든 행동계획은 네가 직접 실천해야 한다.” — 학생이 삭제 버튼을 누르면 성찰 도구는 사라지고, 자기 약속만 남는다.</p>
+  </div>
+</section>
+
+<section id="program">
+  <div class="wrap">
+    <div class="sh"><div class="tag">PART 03 · 프로그램</div><h2>조치 결정에서 사후 추적까지</h2><p>Re:SELF는 트랙을 정하는 주체가 아니라, 심의위원회가 결정한 시간을 표준 모듈로 채우는 역할을 합니다.</p></div>
+    <div class="tl">
+      <div class="st"><div class="h">사전</div><h4>조치 · 구성</h4><p>심의위원회 조치 · 기간 결정 → 교육지원청 · 지정기관 프로그램 구성 → 학생 · 보호자 동의</p><div class="time">0.5H</div></div>
+      <div class="st"><div class="h">본교육</div><h4>성찰 + 실습</h4><p>MIRROR 온보딩 · 성찰 세션 3회 · 오프라인 실습 2종 · 재발방지 계획 확정</p><div class="time">4~12H</div></div>
+      <div class="st"><div class="h">산출</div><h4>「나와 나의 대화」</h4><p>보고서 학생 승인 절차 · 이수확인서 발급 연계</p><div class="time">1H</div></div>
+      <div class="st"><div class="h">사후</div><h4>Follow-up</h4><p>4주 · 8주 세션 2회 · 행동계획 실행 점검 · 학교 이행 리포트 회신</p><div class="time">4 · 8주</div></div>
+      <div class="st"><div class="h">종료</div><h4>삭제 의식</h4><p>학생이 직접 페르소나 삭제 · 원본 자동 폐기 · 비식별 통계만 잔존</p><div class="time">—</div></div>
+    </div>
+
+    <div class="sh" style="margin-top:50px"><h2 style="font-size:24px">CORE 8H 표준 모듈 · 트랙별 조합</h2><p>모듈 단위 설계라 심의위원회가 정한 어떤 시간에도 대응할 수 있습니다. 트랙을 눌러 보세요.</p></div>
+    <div class="tracks" id="tracks">
+      <button data-t="LIGHT">LIGHT 4H</button>
+      <button data-t="6H">6H 구성</button>
+      <button data-t="CORE" class="on">CORE 8H (표준)</button>
+      <button data-t="INTENSIVE">INTENSIVE</button>
+    </div>
+    <div class="mods" id="mods">
+      <div class="mod on" data-m="M0"><b>M0</b><span class="t">1H · 온라인</span><br>MIRROR 온보딩 · 초기 질문</div>
+      <div class="mod on" data-m="M1"><b>M1</b><span class="t">1.5H · 온라인</span><br>사건 돌아보기</div>
+      <div class="mod off" data-m="M2"><b>M2</b><span class="t">0.5~1H · 오프라인</span><br>분노의 신체신호 인식</div>
+      <div class="mod on" data-m="M3"><b>M3</b><span class="t">1.5H · 혼합</span><br>입장 바꾸기 · 행동 리허설</div>
+      <div class="mod off" data-m="M4"><b>M4</b><span class="t">2H · 오프라인</span><br>응급처치 · 생명존중 실습</div>
+      <div class="mod on" data-m="M5"><b>M5</b><span class="t">1H · 온라인</span><br>재발방지 계획 · 보고서 확정</div>
+      <div class="mod" data-m="F"><b>F1 · F2</b><span class="t">각 0.5H · 비대면</span><br>4주 · 8주 Follow-up</div>
+    </div>
+    <p class="note" id="trackNote" style="margin-top:10px;color:var(--muted);font-size:13.5px"></p>
+
+    <div class="sh" style="margin-top:50px"><h2 style="font-size:24px">조치 × 트랙 적용체계</h2><p>조치 호수와 트랙을 1:1로 고정하지 않고, 학생 특성과 심의 결정에 따라 배정합니다.</p></div>
+    <div class="tblwrap">
+      <table class="tbl">
+        <thead><tr><th>조치</th><th>법정 특별교육 관계</th><th>적용 트랙</th><th>비고</th></tr></thead>
+        <tbody>
+          <tr><td>1호 서면사과</td><td>별도 의무 없음</td><td><span class="pill">PRE</span></td><td>학교 자체 운영</td></tr>
+          <tr><td>2호 접촉 · 협박 · 보복금지</td><td>추가 특별교육 · 심리치료 의무</td><td><span class="pill">LIGHT ~ CORE</span></td><td></td></tr>
+          <tr><td>3호 학교에서의 봉사</td><td>추가 특별교육 · 심리치료 의무</td><td><span class="pill">LIGHT ~ CORE</span></td><td></td></tr>
+          <tr><td>4호 사회봉사</td><td>추가 특별교육 · 심리치료 의무</td><td><span class="pill">CORE</span></td><td></td></tr>
+          <tr><td><b>5호 특별교육 · 심리치료 ★</b></td><td>조치 자체가 특별교육 · 심리치료</td><td><span class="pill g">CORE (표준)</span></td><td><b>시범 우선</b></td></tr>
+          <tr><td>6~8호 출석정지 · 학급교체 · 전학</td><td>추가 특별교육 · 심리치료 의무</td><td><span class="pill a">CORE ~ INTENSIVE</span></td><td>8호 Follow-up 8W</td></tr>
+          <tr><td>보호자 특별교육</td><td>학생 이수 시 동반 의무</td><td><span class="pill">PARENTs 5H</span></td><td>야간 · 주말 · 비대면 옵션</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note" style="margin-top:10px;color:var(--muted);font-size:12.5px">※ 실제 특별교육 · 심리치료 기간은 「학교폭력예방법」 제17조 제3항에 따라 심의위원회 결정에 따릅니다. 조문 기준은 2026년 학교폭력 사안처리 가이드북이며 도입 전 재확인이 필요합니다.</p>
+
+    <div class="grid g2" style="margin-top:40px">
+      <div class="card">
+        <div class="k">핵심 산출물</div><h3>「나와 나의 대화」 보고서</h3>
+        <p>모든 문장에 출처가 붙습니다 — <span class="pill">학생 직접 작성</span> <span class="pill g">학생 선택·승인</span> <span class="pill a">AI 요약</span></p>
+        <ul style="margin-top:10px"><li>내가 생각하는 사건 / AI가 던진 질문 / 처음 생각 → 달라진 생각</li><li>상대 입장에서 생각해 본 것 / 반복되는 감정 · 행동 패턴</li><li>미래의 나에게 보내는 말 / 재발방지 약속 (3개 이내)</li></ul>
+        <p class="note">징계 · 사실판단 자료가 아닌 ‘교육 · 성찰을 위한 학생 자기보고 자료’로 계약서에 한정합니다.</p>
+      </div>
+      <div class="card">
+        <div class="k">PARENTs 트랙 · 5H</div><h3>보호자 특별교육</h3>
+        <p>미이수의 실제 원인은 거부보다 생업인 경우가 많습니다. 자녀가 직접 쓰고 승인한 문장으로 보호자를 만납니다.</p>
+        <ul style="margin-top:10px"><li>P1 1H 조치 제도 이해 · 절차 안내</li><li>P2 1.5H 자녀 승인 산출물 기반 이해 세션</li><li>P3 1.5H 양육 · 의사소통 코칭</li><li>P4 1H 가정 내 재발방지 협력계획</li></ul>
+        <p class="note">학생 승인 없이는 어떤 내용도 공유하지 않습니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="alt" id="market">
+  <div class="wrap">
+    <div class="sh"><div class="tag">MARKET · 시장 규모</div><h2>이미 집행되는 예산의 전환</h2><p>충남 단위 시범에서 전국 확산까지. (교육부 학교폭력 통계 기반 추정, 1인당 25만원)</p></div>
+    <div class="mk">
+      <div class="card"><div class="k">충남 시범 · 2026~2027</div><div class="v num">0.5억<small style="font-size:16px">/년</small></div><p>연간 약 200건 × 25만원</p></div>
+      <div class="card"><div class="k">충남 확대 · 2027~2028</div><div class="v num">3억<small style="font-size:16px">/년</small></div><p>연간 약 1,200건 × 25만원</p></div>
+      <div class="card"><div class="k">전국 확산 · 2028~</div><div class="v num">37.5억<small style="font-size:16px">/년</small></div><p>연간 약 15,000건 × 25만원 · 라이선스 모델 전환</p></div>
+    </div>
+
+    <div class="sh" style="margin-top:50px"><h2 style="font-size:24px">경쟁 우위 : 기존 특별교육 vs Re:SELF</h2></div>
+    <div class="tblwrap">
+      <table class="tbl">
+        <thead><tr><th>비교 항목</th><th>기존 특별교육</th><th>Re:SELF</th><th>차이</th></tr></thead>
+        <tbody>
+          <tr><td><b>교육 콘텐츠</b></td><td>훈계 · 강의 1회성, 기관별 상이</td><td class="hl">표준 모듈 4트랙 + AI 성찰 세션</td><td>표준화 · 현대화</td></tr>
+          <tr><td><b>성찰 구조</b></td><td>없음 (처벌 이행 확인)</td><td class="hl">5층위 되물음 + 행동 리허설 + 협상</td><td>구조화된 성찰</td></tr>
+          <tr><td><b>사후 추적</b></td><td>조치 종료 후 추적 없음</td><td class="hl">4주 · 8주 Follow-up 자동화</td><td>추적 체계 내장</td></tr>
+          <tr><td><b>데이터</b></td><td>정성적 서술 보고서</td><td class="hl">표준 KPI + 비식별 통계 축적</td><td>예산 근거 확보</td></tr>
+          <tr><td><b>개인정보</b></td><td>서면 보관, 파기 불명확</td><td class="hl">Create → Reflect → Report → Destroy</td><td>Privacy-by-Design</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="quote" style="margin-top:20px">경쟁 방어선은 모델이 아니라 4중 장벽 — ① 교육청 · 지정기관 적용 레퍼런스 ② 「나와 나의 대화」 표준 교육 프로토콜 ③ 4·8주 사후추적 데이터 ④ Privacy-by-Design 운영체계</p>
+  </div>
+</section>
+
+<section id="roadmap">
+  <div class="wrap">
+    <div class="sh"><div class="tag">ROADMAP · 도입 · 투자</div><h2>단계마다 다음 투자를 결정하는 게이트 구조</h2><p>전체 개발비 3억원은 한 번에 들어가지 않습니다. 0.7억 검증 → 1억 운영 → 1.3억 확산.</p></div>
+    <div class="grid g3 rm">
+      <div class="card"><div class="k">PHASE 01 · 2026.9~12</div><h3>검증 · 0.7억</h3><ul><li>지정기관 · 교육지원청 파트너 확보</li><li>MVP 개발 → CORE 시범 (1개교 · 5호 + 보호자)</li><li>시범예산 3,000만원 (개발비와 별도)</li></ul><p class="note">통과 조건: 완료율 80%+ · 교사 만족도 4.0+/5</p></div>
+      <div class="card"><div class="k">PHASE 02 · 2027</div><h3>운영 · 누적 1.7억</h3><ul><li>보호자 과정 · 4·8주 Follow-up 자동화</li><li>교육청 공식 프로그램화 · 조례 추진</li><li>충남 5개 시·군 확대</li></ul><p class="note">통과 조건: 다학교 운영 안정 · 보안 진단 통과</p></div>
+      <div class="card"><div class="k">PHASE 03 · 2028~</div><h3>확산 · 누적 3억</h3><ul><li>교육지원청 · 강사 관리 · 비식별 통계 API</li><li>표준 커리큘럼 · 강사 인증 · 양성</li><li>타 시·도 라이선스 확산</li></ul><p class="note">통과 조건: 교육청 단위 운영 · 비식별 통계 확보</p></div>
+    </div>
+
+    <div class="sh" style="margin-top:50px"><h2 style="font-size:24px">시범사업 KPI</h2><p>시범은 재발 감소폭이 아니라 ‘운영 가능성 · 수용성 · 업무경감’을 검증합니다. 재조치 · 재발은 중장기 성과지표로 관리합니다.</p></div>
+    <div class="grid g3">
+      <div class="card"><div class="k">KPI 1</div><h3>프로그램 완료율</h3><p>학생 · 보호자 이수 완료율과 중도 이탈률</p><p class="note"><b>목표 80%+</b></p></div>
+      <div class="card"><div class="k">KPI 2</div><h3>교사 업무시간 감소율</h3><p>이행관리 · 결과 보고에 드는 교사 시간</p><p class="note"><b>목표 50%↓</b></p></div>
+      <div class="card"><div class="k">KPI 3</div><h3>행동계획 유지율</h3><p>4주 · 8주 시점 자기 행동계획 이행 · 유지</p><p class="note"><b>목표 70%+</b></p></div>
+    </div>
+
+    <div class="demo-cta" style="margin-top:54px">
+      <div><h3>직접 시연해 보세요</h3><p>학생 MIRROR 세션 → 보고서 승인 → 삭제 의식, 교사 이행관리 대시보드, 교육청 비식별 통계까지.</p></div>
+      <a class="btn" href="demo/">▶ 데모 열기</a>
+    </div>
+  </div>
+</section>
+
+<footer><div class="wrap">Re:SELF 돌아봄 · 사업계획서 · 개발계획서 2026 기반 데모 · 태양(SUNMEDI). 화면의 학생 · 학교 · 사안은 모두 가상의 예시입니다.</div></footer>
+
+<script>
+(function(){
+  // revenue simulator
+  const S=[{stu:200,price:25,org:3,fee:500,par:60},{stu:1200,price:25,org:15,fee:700,par:70},{stu:15000,price:25,org:180,fee:800,par:70}];
+  const $=id=>document.getElementById(id);
+  const ids=['stu','price','org','fee','par'];
+  const won=v=>v>=10000?(v/10000).toFixed(v>=100000?1:2).replace(/\.?0+$/,'')+'억원':Math.round(v).toLocaleString()+'만원';
+  function set(i){const s=S[i];ids.forEach(k=>$(k).value=s[k]);render();}
+  function render(){
+    const v={};ids.forEach(k=>v[k]=+$(k).value);
+    $('vStu').textContent=v.stu.toLocaleString()+'명';
+    $('vPrice').textContent=v.price+'만원';
+    $('vOrg').textContent=v.org+'곳';
+    $('vFee').textContent=v.fee.toLocaleString()+'만원';
+    $('vPar').textContent=v.par+'%';
+    const a=v.stu*v.price, b=v.org*v.fee, c=Math.round(v.stu*v.par/100*v.price*0.4);
+    const t=a+b+c;
+    $('tot').textContent=won(t);
+    const parts=[['학생 프로그램 운영비',a,'#1F5C78'],['플랫폼 연간 이용료',b,'#3B8AA8'],['보호자 과정 (PARENTs)',c,'#D9822B']];
+    $('bar').innerHTML=parts.map(p=>`<i style="width:${t?p[1]/t*100:0}%;background:${p[2]}"></i>`).join('');
+    $('lg').innerHTML=parts.map(p=>`<div><span><s style="background:${p[2]}"></s>${p[0]}</span><b class="num">${won(p[1])}</b></div>`).join('');
+  }
+  document.querySelectorAll('#scn button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#scn button').forEach(x=>x.classList.remove('on'));b.classList.add('on');set(+b.dataset.s);});
+  ids.forEach(k=>$(k).addEventListener('input',()=>{document.querySelectorAll('#scn button').forEach(x=>x.classList.remove('on'));render();}));
+  set(0);
+
+  // tracks
+  const T={LIGHT:{m:['M0','M1','M2','M5','F'],n:'LIGHT 4H — M0 + M1 + M2 + M5. 단기 특별교육 대응형.'},
+    '6H':{m:['M0','M1','M2','M3','M5','F'],n:'심의위원회가 6시간으로 결정하면 M0 + M1 + M2 + M3 + M5로 구성합니다.'},
+    CORE:{m:['M0','M1','M2','M3','M4','M5','F'],n:'CORE 8H — 화면 앞 4시간 · 몸을 쓰는 3시간 · 오리엔테이션 1시간. 핵심 상품.'},
+    INTENSIVE:{m:['M0','M1','M2','M3','M4','M5','F'],n:'INTENSIVE — CORE + 모듈 반복 · 심화. 6~8호 학교복귀 지원형.'}};
+  function track(t){document.querySelectorAll('#mods .mod').forEach(m=>m.classList.toggle('dim',!T[t].m.includes(m.dataset.m)));$('trackNote').textContent=T[t].n;}
+  document.querySelectorAll('#tracks button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#tracks button').forEach(x=>x.classList.remove('on'));b.classList.add('on');track(b.dataset.t);});
+  track('CORE');
+})();
+</script>
+</body>
+</html>
