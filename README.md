@@ -17,7 +17,7 @@
 | 🐾 **Pet Lifebook** | [`/pet-lifebook`](pet-lifebook/) | 반려동물의 흩어진 기억(사진·영상·음성·GPS·진료기록)을 AI가 읽어 한 권의 라이프북으로 엮는 Pet Memory OS | [제품소개](https://mistall2-beep.github.io/claude-project/pet-lifebook/) · [사용자화면](https://mistall2-beep.github.io/claude-project/pet-lifebook/app.html) · [브로셔](https://mistall2-beep.github.io/claude-project/pet-lifebook/brochure.html) |
 | 💼 **알바ink** | [`/albaink`](albaink/) | 구인·구직(알바) 매칭 데모 — 구직자/구인자/관리자 + 모바일 앱 | [앱](https://mistall2-beep.github.io/claude-project/albaink/app.html) · [관리자](https://mistall2-beep.github.io/claude-project/albaink/admin.html) |
 | 📄 **BriefOS** | [`/briefos`](briefos/) | 조직 커뮤니케이션을 1페이지로 재정의하는 B2B AI SaaS — 긴 보고서·공지를 AI가 독자 관점에서 재구조화해 1페이지로 압축하고 읽힘 데이터로 개선. 소개(사업계획서 v0.2) + AI 압축 엔진·템플릿·읽힘 분석·연동 인터랙티브 데모 | [소개](https://mistall2-beep.github.io/claude-project/briefos/) · [데모](https://mistall2-beep.github.io/claude-project/briefos/demo/) |
-| 👶 **SunBaby 2.0** | [`/sunbaby`](sunbaby/) | 썬베이비(아기 로봇 HW) 기반 AI 육아돌봄 데이터 플랫폼 시뮬레이터 — 센서 13종·이벤트 18종 Rule Engine 판정 + AI Coach(3단계) + AI Report, 표준 육아돌봄 모델, 기관 백오피스, 공공데이터 결합 지역 대시보드(CareGraph), 개인화(베이비내비), 로드맵 | [시뮬레이터](https://mistall2-beep.github.io/claude-project/sunbaby/) |
+| 👶 **SunBaby 2.0** | [`/sunbaby`](sunbaby/) | 썬베이비(아기 로봇 HW) 기반 AI 육아돌봄 데이터 플랫폼 시뮬레이터 — 센서 13종·이벤트 18종 Rule Engine 판정 + AI Coach(3단계) + AI Report(표준·코호트·반복 실습 3대 비교), HW 판매→AI 구독 전환 모델, 표준 육아돌봄 모델, 기관 백오피스, 공공데이터 결합 지역 대시보드(CareGraph), 개인화(베이비내비), 로드맵 | [시뮬레이터](https://mistall2-beep.github.io/claude-project/sunbaby/) |
 
 ## 폴더 구조
 
