@@ -18,6 +18,7 @@
 | 💼 **알바ink** | [`/albaink`](albaink/) | 구인·구직(알바) 매칭 데모 — 구직자/구인자/관리자 + 모바일 앱 | [앱](https://mistall2-beep.github.io/claude-project/albaink/app.html) · [관리자](https://mistall2-beep.github.io/claude-project/albaink/admin.html) |
 | 📄 **BriefOS** | [`/briefos`](briefos/) | 조직 커뮤니케이션을 1페이지로 재정의하는 B2B AI SaaS — 긴 보고서·공지를 AI가 독자 관점에서 재구조화해 1페이지로 압축하고 읽힘 데이터로 개선. 소개(사업계획서 v0.2) + AI 압축 엔진·템플릿·읽힘 분석·연동 인터랙티브 데모 | [소개](https://mistall2-beep.github.io/claude-project/briefos/) · [데모](https://mistall2-beep.github.io/claude-project/briefos/demo/) |
 | 👶 **SunBaby 2.0** | [`/sunbaby`](sunbaby/) | 썬베이비(아기 로봇 HW) 기반 AI 육아돌봄 데이터 플랫폼 시뮬레이터 — 센서 13종·이벤트 18종 Rule Engine 판정 + AI Coach(3단계) + AI Report(표준·코호트·반복 실습 3대 비교), HW 판매→AI 구독 전환 모델, 표준 육아돌봄 모델, 기관 백오피스, 공공데이터 결합 지역 대시보드(CareGraph), 개인화(베이비내비), 로드맵 | [시뮬레이터](https://mistall2-beep.github.io/claude-project/sunbaby/) |
+| 🪞 **Re:SELF 돌아봄** | [`/reself`](reself/) | AI 기반 학교폭력 가해학생 자기성찰 · 특별교육 이행관리 플랫폼 — 사업모델 소개(매출 시뮬레이터 · 트랙 조합 · 시장 · 로드맵) + 학생 MIRROR 성찰 세션(5층위 되물음 · 분기형 리허설 · 약속 협상 · 문장별 승인 · 삭제 의식) · 교사 이행관리 · 보호자 PARENTs · 교육청 비식별 통계 인터랙티브 데모 | [소개](https://mistall2-beep.github.io/claude-project/reself/) · [데모](https://mistall2-beep.github.io/claude-project/reself/demo/) |
 
 ## 폴더 구조
 
@@ -35,8 +36,13 @@ claude-project/
 │  └─ index.html app.html admin.html start.html styles.css assets/
 ├─ sunbaby/              # 👶 SunBaby 2.0 — index.html(시뮬레이션 콘솔) data.js(표준모델 데이터) app.js(엔진·화면)
 ├─ briefos/              # 📄 BriefOS — index.html(소개) demo/index.html(압축·분석 콘솔 데모)
+├─ reself/               # 🪞 Re:SELF — index.html(사업 소개) demo/index.html(MIRROR·교사·보호자·교육청 시연)
 └─ .github/workflows/pages.yml   # GitHub Pages 배포
 ```
+
+## Re:SELF 데모 동기화 방식
+- `reself/demo/` 는 저장 계층이 두 가지입니다. **claude.ai Artifact로 열면** 아티팩트 공유 DB(클라우드)에 연결되어 학생 휴대폰 · 교사 PC · 보호자 · 교육청 화면이 **기기 간 실시간 동기화**됩니다. **GitHub Pages로 열면** 서버가 없어 **같은 브라우저 탭끼리만** 동기화되는 로컬 모드로 동작합니다.
+- 클라우드 문서: `codes/<코드>`(교사 발급 1회용 코드), `sessions/<코드>`(진행 상태 · 승인 문장 · 위기 알림 · 보호자 예약). 대화 원문은 학생 본인만 읽을 수 있는 개인 영역(`data/users/<id>/temp-<코드>`)에만 저장되고, 삭제 의식 때 지워집니다.
 
 ## 접근 제어 메모
 - **공개 루트(`/`)** 에는 프로젝트 목록이 노출되지 않습니다. 방문자는 어떤 데모가 있는지 알 수 없습니다.
